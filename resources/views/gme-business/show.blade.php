@@ -314,11 +314,14 @@
         }
 
         .photo-item {
-            border-radius: 12px;
+            width: 100%;
+            height: 100%; /* equal height */
             overflow: hidden;
-            aspect-ratio: 4/3;
-            cursor: pointer;
-            transition: all 0.3s;
+            border-radius: 8px;
+            background: #f1f1f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .photo-item:hover {
@@ -720,18 +723,22 @@
         @endphp
 
         @if(count($photos) > 0)
-        <div class="content-card">
-            <h2 class="section-title">Photos & Media</h2>
-            <div class="photos-grid">
-                @foreach($photos as $photo)
-                <div class="photo-item">
-                    <img src="{{ asset('assets/' . $photo) }}" 
-                         alt="Business Photo"
-                         onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=300&fit=crop'">
+            <div class="content-card">
+                <h2 class="section-title">Photos & Media</h2>
+
+                <div class="row justify-content-center photo-grid">
+                    @foreach($photos as $photo)
+                        <div class="col-6 col-md-3 mb-3 d-flex justify-content-center">
+                            <div class="photo-item">
+                                <img src="{{ asset('assets/' . $photo) }}"
+                                    alt="Business Photo"
+                                    onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=300&fit=crop'">
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
-        </div>
+
         @endif
 
         <!-- Contact Information -->

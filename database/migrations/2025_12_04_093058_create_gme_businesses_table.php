@@ -16,7 +16,7 @@ return new class extends Migration
 
             // Step 1: Business Identity
             $table->string('business_name');
-            $table->string('tagline')->nullable();
+            $table->text('tagline')->nullable();
             $table->string('year_established')->nullable();
             $table->string('business_category')->nullable();
             $table->string('business_countries')->nullable();

@@ -564,7 +564,7 @@
                 //     ? `{{ asset('storage') }}/${business.photos[0]}`
                 //     : 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=300&fit=crop';
 
-                console.log(business.photos);
+                // console.log(business.photos);
                 const photos =
                     business.photos && business.photos.length > 0
                         ? `{{ asset('assets') }}/${business.photos[0]}`
