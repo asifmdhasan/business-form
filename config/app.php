@@ -12,8 +12,8 @@ return [
     | other UI elements where an application name needs to be displayed.
     |
     */
-    'locale' => 'jp',
-    'fallback_locale' => 'jp',
+    'locale' => 'en',
+    'fallback_locale' => 'en',
 
     'name' => env('APP_NAME', 'Laravel'),
 

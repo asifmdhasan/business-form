@@ -15,14 +15,14 @@ class SetLocale
     {
         
         $supportedLocales = ['en', 'jp'];
-        $locale = $request->query('lang') ?? session('locale') ?? 'jp';
+        $locale = $request->query('lang') ?? session('locale') ?? 'en';
         
         if (in_array($locale, $supportedLocales)) {
             App::setLocale($locale);
             Session::put('locale', $locale);
         } else {
-            App::setLocale('jp'); // default to jp
-            Session::put('locale', 'jp');
+            App::setLocale('en'); // default to jp
+            Session::put('locale', 'en');
         }
 
         return $next($request);

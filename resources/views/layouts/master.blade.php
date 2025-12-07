@@ -147,7 +147,7 @@
         }
     </script>
 
-    @stack('scripts')
+    {{-- @stack('scripts') --}}
 
 </body>
 </html>

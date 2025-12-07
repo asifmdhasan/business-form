@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('layouts.projectName') }}</title>
+    {{-- <title>{{ __('layouts.projectName') }}</title> --}}
+    <title>GME Network Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -74,14 +75,15 @@
                 </div>
             @endif
             <h2 class="text-center text-2xl font-bold text-white mb-2">
-                {{ __('layouts.projectName') }}
+                {{-- {{ __('layouts.projectName') }} --}}
+                GME Network
             </h2>
             {{-- <p class="text-center text-indigo-100 text-sm">
                 Access your inventory management dashboard
             </p> --}}
 
             <!-- Language Toggle -->
-            <div class="text-center mt-6">
+            {{-- <div class="text-center mt-6">
                 <div class="inline-flex bg-white bg-opacity-20 rounded-full p-1">
                     <a href="?lang=jp"
                         class="px-4 py-2 text-sm font-medium text-white hover:bg-white hover:bg-opacity-20 rounded-full transition-all duration-200">
@@ -93,7 +95,7 @@
                         English
                     </a>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Form Section -->
@@ -182,7 +184,7 @@
                         @enderror
                     </div>
 
-                    <div class="my-3 flex items-center justify-between">
+                    {{-- <div class="my-3 flex items-center justify-between">
                         <div class="flex items-center">
                             <input id="remember_token" value="true" type="checkbox" name="remember_me"
                                 class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded transition duration-150 ease-in-out" />
@@ -191,12 +193,12 @@
                             </label>
                         </div>
                         <div class="text-sm">
-                            {{-- <a href="#"
+                            <a href="#"
                                 class="font-medium text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out">
                                 {{ __('login.forgot_pass') }}
-                            </a> --}}
+                            </a>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Submit Button -->
                     <div class="mb-6">

@@ -72,6 +72,13 @@ return [
             'throw' => false,
             'report' => false,
         ],
+        'public_folder' => [
+            'driver' => 'local',
+            'root' => public_path('assets'),  // all uploads will go inside /public/gme
+            'url' => env('APP_URL') . '/assets',
+            'visibility' => 'public',
+        ],
+
         'custom_uploads' => [
             'driver' => 'local',
             'root' => 'D:\CameraUploader\uploads',

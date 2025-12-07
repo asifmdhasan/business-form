@@ -42,19 +42,19 @@
                 <div class="col-md-4">
                     <label>Business Countries</label>
                     <select name="business_countries" class="form-control">
-                        <option>Technology</option>
-                        <option>Food & Beverage</option>
-                        <option>Fashion</option>
-                        <option>Education</option>
+                        <option>Bangladesh</option>
+                        <option>Japan</option>
+                        <option>Canada</option>
+                        <option>Germany</option>
                     </select>
                 </div>
                 <div class="col-md-4">
                     <label>Business Cities</label>
                     <select name="business_cities" class="form-control">
-                        <option>Technology</option>
-                        <option>Food & Beverage</option>
-                        <option>Fashion</option>
-                        <option>Education</option>
+                        <option>Dhaka</option>
+                        <option>Tokyo</option>
+                        <option>Toronto</option>
+                        <option>Berlin</option>
                     </select>
                 </div>
             </div>

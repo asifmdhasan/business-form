@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Middleware\LoginAuthMiddleware;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\GmeBusinessController;
+use App\Http\Controllers\FrontendGmeBusinessController;
 
 
 Route::middleware(['web', 'setLocale'])->group(function () {
@@ -29,9 +30,13 @@ Route::middleware([
 ])->group(function () {
 
     // Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
-    Route::get('/gme-business/create', [GmeBusinessController::class, 'create'])->name('gme-business.create');
-    Route::post('/gme-business/store', [GmeBusinessController::class, 'store'])->name('gme-business.store');
-    Route::get('/gme-business', [GmeBusinessController::class, 'index'])->name('gme-business.index');
+    // Route::get('/gme-business/create', [GmeBusinessController::class, 'create'])->name('gme-business.create');
+    // Route::post('/gme-business/store', [GmeBusinessController::class, 'store'])->name('gme-business.store');
+    // Route::get('/gme-business', [GmeBusinessController::class, 'index'])->name('gme-business.index');
+
+    Route::resource('gme-business', FrontendGmeBusinessController::class);
+
+    Route::resource('gme-business-admin', GmeBusinessController::class);
 
 
 

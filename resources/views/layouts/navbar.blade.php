@@ -30,7 +30,17 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         {{-- <li><a class="dropdown-item" href="{{ route('user.profile') }}">Profile</a></li> --}}
-                        <li><a class="dropdown-item text-danger" href="{{ route('logout') }}">Logout</a></li>
+                        {{-- <li><a class="dropdown-item text-danger" href="{{ route('logout') }}">Logout</a></li> --}}
+                        <li class="">
+                            <a href="#" class="nav-link text-danger fw-bold"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fa fa-sign-out-alt me-2"></i> Logout
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
+                                @csrf
+                            </form>
+                        </li>
                     </ul>
                 </li>
 
