@@ -2,7 +2,7 @@
 
 return [
 
-    'siteTitle' => 'Mock Test Service',
+    'siteTitle' => 'GME',
     //Dashboard
     'total_users' => 'Total Users',
     'total_files' => 'Total Files',

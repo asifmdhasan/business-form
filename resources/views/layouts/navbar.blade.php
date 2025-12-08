@@ -7,7 +7,7 @@
         </button>
 
         <span class="navbar-brand ms-2">
-            {{ __('layouts.siteTitle') }}
+            {{-- {{ __('layouts.siteTitle') }} --}}
         </span>
 
         <div class="collapse navbar-collapse justify-content-end">

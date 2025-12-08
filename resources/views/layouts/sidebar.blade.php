@@ -4,7 +4,7 @@
 
         <!-- Branding -->
         <h4 class="text-center py-3 border-bottom">
-            {{ config('app.name', 'Dashboard') }}
+            Gme Network
         </h4>
 
         <!-- Menu -->
