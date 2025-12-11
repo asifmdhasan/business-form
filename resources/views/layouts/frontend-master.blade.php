@@ -38,18 +38,20 @@
 <body class="bg-light">
 
     <!-- Sidebar -->
+    @include('layouts.frontend-sidebar')
 
     <!-- Main Content -->
-    <main class="main-content" style="min-height:100vh;">
+    <main class="main-content" style="margin-left:260px; min-height:100vh;">
         
         <!-- Navbar -->
+        @include('layouts.frontend-navbar')
 
         <div class="container-fluid py-4">
             @yield('content')
         </div>
 
         <!-- Footer -->
-        @include('layouts.footer')
+        @include('layouts.frontend-footer')
         
     </main>
 

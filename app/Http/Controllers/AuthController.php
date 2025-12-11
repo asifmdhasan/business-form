@@ -22,13 +22,7 @@ class AuthController extends Controller
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
                 if (Auth::user()->is_admin) {
-                    // if ($user->username === 'superadmin') {
                         return redirect()->route('admin.dashboard');
-                    // } else {
-                        // return redirect()->route('files.index');
-                    // }
-
-                    // return redirect()->route('admin.dashboard');
                 } else {
                     Auth::logout();
                     return redirect()->route('login')->withErrors([
@@ -42,6 +36,11 @@ class AuthController extends Controller
             ]);
 
     }
+
+
+    
+
+
 
     public function logout()
     {

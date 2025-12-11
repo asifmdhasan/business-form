@@ -1,13 +1,16 @@
 <?php
 
+use App\Http\Middleware\CustomerAuth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Middleware\LoginAuthMiddleware;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\GmeBusinessController;
+use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\FrontendGmeBusinessController;
 
 
@@ -16,6 +19,56 @@ Route::middleware(['web', 'setLocale'])->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+
+Route::middleware(['setLocale'])->group(function () {
+    Route::get('/gme-network-login', [CustomerAuthController::class, 'showCustomerLoginForm'])->name('customer.login');
+    Route::post('/gme-network-login', [CustomerAuthController::class, 'cusLogin'])->name('customer.login.submit');
+    Route::get('/gme-network-register', function () { return view('customer.auth.register');})->name('customer.register');
+    Route::post('/register', [CustomerAuthController::class, 'register']);
+
+    //customer.forget.password.post
+    Route::get('/gme-network-forget-password', [CustomerAuthController::class, 'showForgetPasswordForm'])->name('customer.forget.password');
+    Route::post('/gme-network-forget-password', [CustomerAuthController::class, 'forgotPassword'])->name('customer.forget.password.post');
+
+    //verifyOtpForm
+    Route::get('/gme-network-verify-otp', [CustomerAuthController::class, 'showVerifyOtpForm'])->name('customer.verify.otp');
+    Route::post('/gme-network-verify-otp', [CustomerAuthController::class, 'verifyOtp'])->name('customer.verify.otp.post');
+
+    //resetPasswordForm
+    Route::get('/gme-network-reset-password', [CustomerAuthController::class, 'showResetPasswordForm'])->name('customer.reset.password');
+    Route::post('/gme-network-reset-password', [CustomerAuthController::class, 'resetPassword'])->name('customer.reset.password.post');
+});
+
+
+
+
+
+
+// Route::post('/logout', [CustomerAuthController::class, 'logout'])->middleware('auth:customer');
+Route::post('/forgot-password', [CustomerAuthController::class, 'forgotPassword']);
+Route::post('/verify-otp', [CustomerAuthController::class, 'verifyOtp']);
+Route::post('/reset-password', [CustomerAuthController::class, 'resetPassword']);
+
+
+
+
+
+Route::middleware([
+    'setLocale',
+    CustomerAuth::class,
+])->group(function () {
+    Route::get('/customer/dashboard', [CustomerAuthController::class, 'customerDashboard'])->name('customer.dashboard');
+    Route::get('/customer/logout', [CustomerAuthController::class, 'cusLogout'])->name('customer.logout');
+
+
+    Route::get('/customer/profile', [CustomerController::class, 'customerProfile'])->name('customer.profile');
+    Route::put('/customer/profile', [CustomerController::class, 'updateProfile'])->name('customer.profile.update');
+
+});
+
+
+
 
 Route::get('/make-hash/{string}', function ($string) {
     return response()->json([
