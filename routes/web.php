@@ -6,12 +6,41 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Middleware\LoginAuthMiddleware;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\GmeBusinessController;
 use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\FrontendGmeBusinessController;
+
+
+
+
+
+
+
+
+
+
+
+
+Route::prefix('gme')->name('gme.')->group(function () {
+    Route::get('/business/register', [GmeBusinessController::class, 'showRegister'])->name('business.register');
+    Route::post('/business/save-step', [GmeBusinessController::class, 'saveStep'])->name('business.save-step');
+    Route::get('/business/success', [GmeBusinessController::class, 'success'])->name('business.success');
+});
+
+
+
+
+
+
+
+
+
+
 
 
 Route::middleware(['web', 'setLocale'])->group(function () {
@@ -65,6 +94,12 @@ Route::middleware([
     Route::get('/customer/profile', [CustomerController::class, 'customerProfile'])->name('customer.profile');
     Route::put('/customer/profile', [CustomerController::class, 'updateProfile'])->name('customer.profile.update');
 
+    Route::get('/update-password', [CustomerController::class, 'updatePassword'])->name('customer.updatePassword');
+    Route::post('/update-password', [CustomerController::class, 'storeUpdatePassword'])->name('customer.storeUpdatePassword');
+
+
+    Route::get('/gme-business-form', [CustomerController::class, 'createGmeBusinessForm'])->name('customer.gme-business-form.create');
+
 });
 
 
@@ -82,10 +117,20 @@ Route::middleware([
     LoginAuthMiddleware::class,
 ])->group(function () {
 
+
+
+
     // Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
     // Route::get('/gme-business/create', [GmeBusinessController::class, 'create'])->name('gme-business.create');
     // Route::post('/gme-business/store', [GmeBusinessController::class, 'store'])->name('gme-business.store');
     // Route::get('/gme-business', [GmeBusinessController::class, 'index'])->name('gme-business.index');
+
+    Route::resource('business-categories', BusinessCategoryController::class);
+    Route::resource('services', ServiceController::class);
+
+    
+
+
 
     Route::resource('gme-business', FrontendGmeBusinessController::class);
 

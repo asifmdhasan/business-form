@@ -51,7 +51,7 @@
         </div>
 
         <!-- Footer -->
-        @include('layouts.footer')
+        {{-- @include('layouts.footer') --}}
         
     </main>
 

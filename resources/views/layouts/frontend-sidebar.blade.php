@@ -12,13 +12,13 @@
 
             <!-- Dashboard -->
             <li class="nav-item mb-2">
-                <a href="{{ route('admin.dashboard') }}" class="nav-link text-white fw-bold">
+                <a href="{{ route('customer.dashboard') }}" class="nav-link text-white fw-bold">
                     <i class="fa fa-home me-2"></i> Dashboard
                 </a>
             </li>
 
             <!-- Admin Channel -->
-            <li class="nav-item mt-3">
+            {{-- <li class="nav-item mt-3">
                 <span class="text-uppercase text-secondary small fw-bold">Admin Channel</span>
             </li>
 
@@ -32,9 +32,9 @@
                 <a href="{{ route('gme-business-admin.create') }}" class="nav-link text-white">
                     <i class="fa fa-edit me-2"></i> Edit
                 </a>
-            </li>
+            </li> --}}
 
-            <!-- User Channel -->
+            <!-- Customer Channel -->
             <li class="nav-item mt-4">
                 <span class="text-uppercase text-secondary small fw-bold">User Channel</span>
             </li>
@@ -46,7 +46,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="{{ route('gme-business.create') }}" class="nav-link text-white">
+                <a href="{{ route('customer.gme-business-form.create') }}" class="nav-link text-white">
                     <i class="fa fa-plus-circle me-2"></i> Create
                 </a>
             </li>

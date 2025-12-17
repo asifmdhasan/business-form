@@ -82,6 +82,8 @@ return [
         'Reports' => 'Reports',
     ],
 
+    'customer_dashboard' => 'Customer Dashboard',
+    'customers' => 'Customers',
     //Analytics
     'reports' => 'Reports',
     'custom_range' => 'Custom Range',
