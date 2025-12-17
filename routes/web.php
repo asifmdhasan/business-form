@@ -14,6 +14,7 @@ use App\Http\Controllers\GmeBusinessController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\FrontendGmeBusinessController;
+use App\Http\Controllers\GmeRegController;
 
 
 
@@ -26,11 +27,11 @@ use App\Http\Controllers\FrontendGmeBusinessController;
 
 
 
-Route::prefix('gme')->name('gme.')->group(function () {
-    Route::get('/business/register', [GmeBusinessController::class, 'showRegister'])->name('business.register');
-    Route::post('/business/save-step', [GmeBusinessController::class, 'saveStep'])->name('business.save-step');
-    Route::get('/business/success', [GmeBusinessController::class, 'success'])->name('business.success');
-});
+// Route::prefix('gme')->name('gme.')->group(function () {
+//     Route::get('/business/register', [GmeBusinessController::class, 'showRegister'])->name('business.register');
+//     Route::post('/business/save-step', [GmeBusinessController::class, 'saveStep'])->name('business.save-step');
+//     Route::get('/business/success', [GmeBusinessController::class, 'success'])->name('business.success');
+// });
 
 
 
@@ -67,6 +68,14 @@ Route::middleware(['setLocale'])->group(function () {
     //resetPasswordForm
     Route::get('/gme-network-reset-password', [CustomerAuthController::class, 'showResetPasswordForm'])->name('customer.reset.password');
     Route::post('/gme-network-reset-password', [CustomerAuthController::class, 'resetPassword'])->name('customer.reset.password.post');
+
+
+
+    Route::get('/business/register', [GmeRegController::class, 'showRegister'])->name('gme.business.register');
+    Route::post('/business/save-step', [GmeRegController::class, 'saveStep'])->name('gme.business.save-step');
+    Route::get('/business/success', [GmeRegController::class, 'success'])->name('gme.business.success');
+    Route::get('/get-services/{category}', [GmeRegController::class, 'getServices'])->name('get.services');
+
 });
 
 
@@ -99,6 +108,14 @@ Route::middleware([
 
 
     Route::get('/gme-business-form', [CustomerController::class, 'createGmeBusinessForm'])->name('customer.gme-business-form.create');
+
+
+
+
+
+
+
+
 
 });
 

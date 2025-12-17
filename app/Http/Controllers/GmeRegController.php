@@ -1,24 +1,39 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\BusinessCategory;
+use App\Models\GmeBusinessForm;
+use App\Models\Service;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class GmeRegController extends Controller
 {
+    public function getServices($categoryId)
+    {
+        return response()->json(
+            Service::where('business_category_id', $categoryId)
+                ->select('id', 'name')
+                ->get()
+        );
+    }
+
+
     public function showRegister(Request $request)
     {
         $step = $request->get('step', 1);
         $businessId = $request->get('business_id');
         
-        $business = $businessId ? GmeBusiness::find($businessId) : new GmeBusiness();
+        $business = $businessId ? GmeBusinessForm::find($businessId) : new GmeBusinessForm();
         
         // Get dropdown data
         $categories = BusinessCategory::all();
         $services = Service::all();
         $countries = $this->getCountries(); // You can create this helper method
         
-        return view('gme.business.register', compact('step', 'business', 'categories', 'services', 'countries'));
+        return view('gme-reg.register', compact('step', 'business', 'categories', 'services', 'countries'));
     }
 
     /**
@@ -39,7 +54,7 @@ class GmeRegController extends Controller
         }
         
         // Find or create business
-        $business = $businessId ? GmeBusiness::find($businessId) : new GmeBusiness();
+        $business = $businessId ? GmeBusinessForm::find($businessId) : new GmeBusinessForm();
         
         // Save data based on step
         switch ($step) {
@@ -128,7 +143,7 @@ class GmeRegController extends Controller
                     'avoid_riba' => 'required|in:yes,partially_transitioning,no,prefer_not_to_say',
                     'avoid_haram_products' => 'required|in:yes,partially_compliant,no',
                     'fair_pricing' => 'required|in:yes,mostly,needs_improvement',
-                    'ethical_description' => 'nullable|string|min:100|max:1200',
+                    'ethical_description' => 'nullable|string|min:10|max:1200',
                     'open_for_guidance' => 'required|in:yes,no,maybe',
                     'collaboration_open' => 'required|in:yes,no,maybe',
                     'collaboration_types' => 'nullable|array',
@@ -152,7 +167,7 @@ class GmeRegController extends Controller
     /**
      * Save Step 1 data
      */
-    private function saveStep1(Request $request, GmeBusiness $business)
+    private function saveStep1(Request $request, GmeBusinessForm $business)
     {
         $business->business_name = $request->business_name;
         $business->short_introduction = $request->short_introduction;
@@ -176,7 +191,7 @@ class GmeRegController extends Controller
     /**
      * Save Step 2 data
      */
-    private function saveStep2(Request $request, GmeBusiness $business)
+    private function saveStep2(Request $request, GmeBusinessForm $business)
     {
         $business->registration_status = $request->registration_status;
         $business->employee_count = $request->employee_count;
@@ -233,7 +248,7 @@ class GmeRegController extends Controller
     /**
      * Save Step 3 data
      */
-    private function saveStep3(Request $request, GmeBusiness $business)
+    private function saveStep3(Request $request, GmeBusinessForm $business)
     {
         $business->avoid_riba = $request->avoid_riba;
         $business->avoid_haram_products = $request->avoid_haram_products;
@@ -247,7 +262,7 @@ class GmeRegController extends Controller
     /**
      * Save Step 4 data
      */
-    private function saveStep4(Request $request, GmeBusiness $business)
+    private function saveStep4(Request $request, GmeBusinessForm $business)
     {
         $business->info_accuracy = $request->has('info_accuracy');
         $business->allow_publish = $request->has('allow_publish');
