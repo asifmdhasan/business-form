@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\GmeBusinessForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -97,6 +98,49 @@ class CustomerController extends Controller
     }
 
 
+    public function gmeBusinessIndex(Request $request)
+    {
+        // Check if it's an AJAX request for JSON data
+        if ($request->ajax() || $request->wantsJson()) {
+            $businesses = GmeBusinessForm::select([
+                'id',
+                'business_name',
+                'short_introduction',
+                'business_category_id',
+                'countries_of_operation',
+                'founders',
+                'logo',
+                'photos',
+                'status',
+                'created_at'
+            ])
+            ->with('category')
+            ->where('allow_publish', true) // Only show businesses that allow publishing
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+            // Parse JSON fields
+            $businesses = $businesses->map(function($business) {
+                if ($business->photos && is_string($business->photos)) {
+                    $business->photos = json_decode($business->photos, true);
+                }
+                return $business;
+            });
+
+            return response()->json([
+                'businesses' => $businesses
+            ]);
+        }
+
+        // Return the view for normal page load
+        return view('gme-business.index');
+    }
+
+    public function show($id)
+    {
+        $business = GmeBusinessForm::findOrFail($id);
+        return view('gme-business.show', compact('business'));
+    }
 
 
 

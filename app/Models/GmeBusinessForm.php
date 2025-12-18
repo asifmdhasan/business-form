@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GmeBusinessForm extends Model
 {
+    protected $guarded = [];
     protected $casts = [
         'countries_of_operation' => 'array',
         'founders' => 'array',
@@ -31,6 +32,11 @@ class GmeBusinessForm extends Model
     public function services()
     {
         return $this->belongsToMany(Service::class, 'business_service', 'business_id', 'service_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 
     /**

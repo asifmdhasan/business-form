@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Models\GmeBusinessForm;
+use App\Models\BusinessCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -45,10 +47,26 @@ class CustomerAuthController extends Controller
     // ============================
     // SHOW REGISTER FORM
     // ============================
-    public function showRegisterForm()
-    {
-        return view('customer.auth.register');
-    }
+    // public function showRegisterForm()
+    // {
+    //     return view('customer.auth.register');
+    // }
+    // public function showRegisterForm(Request $request)
+    // {
+    //     $step = $request->get('step', 1);
+    //     $user = auth()->user(); // Authenticated user
+        
+    //     // Get or create business for this user
+    //     $business = GmeBusinessForm::firstOrCreate(
+    //         ['user_id' => $user->id, 'status' => 'draft'],
+    //         ['user_id' => $user->id]
+    //     );
+        
+    //     $categories = BusinessCategory::all();
+    //     $countries = $this->getCountriesList();
+        
+    //     return view('gme.business.register', compact('step', 'business', 'categories', 'countries'));
+    // }
 
     // ============================
     // REGISTER

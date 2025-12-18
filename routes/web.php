@@ -71,7 +71,7 @@ Route::middleware(['setLocale'])->group(function () {
 
 
 
-    Route::get('/business/register', [GmeRegController::class, 'showRegister'])->name('gme.business.register');
+
     Route::post('/business/save-step', [GmeRegController::class, 'saveStep'])->name('gme.business.save-step');
     Route::get('/business/success', [GmeRegController::class, 'success'])->name('gme.business.success');
     Route::get('/get-services/{category}', [GmeRegController::class, 'getServices'])->name('get.services');
@@ -96,6 +96,24 @@ Route::middleware([
     'setLocale',
     CustomerAuth::class,
 ])->group(function () {
+
+
+        Route::get('/business/register', [GmeRegController::class, 'showRegisterForm'])->name('gme.business.register');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Route::get('/customer/dashboard', [CustomerAuthController::class, 'customerDashboard'])->name('customer.dashboard');
     Route::get('/customer/logout', [CustomerAuthController::class, 'cusLogout'])->name('customer.logout');
 
@@ -108,6 +126,8 @@ Route::middleware([
 
 
     Route::get('/gme-business-form', [CustomerController::class, 'createGmeBusinessForm'])->name('customer.gme-business-form.create');
+    Route::get('/gme-business-index', [CustomerController::class, 'gmeBusinessIndex'])->name('customer.gme-business-form.index');
+    Route::get('/gme-business-form/{business}', [CustomerController::class, 'show'])->name('customer.gme-business-form.show');
 
 
 

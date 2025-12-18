@@ -402,7 +402,7 @@
             // Fetch businesses from server
             function fetchBusinesses() {
                 $.ajax({
-                    url: '{{ route("gme-business.index") }}',
+                    url: '{{ route("customer.gme-business-form.index") }}',
                     method: 'GET',
                     dataType: 'json',
                     success: function(response) {
@@ -548,13 +548,15 @@
 
             // Create business card HTML
             function createBusinessCard(business) {
-                const location = [business.business_cities, business.business_countries]
+                const location = [business.countries_of_operation]
                     .filter(l => l).join(', ');
-                
-                const category = business.business_category || business.founder_name || 'Business';
-                const logo = business.logo 
-                    ? `{{ asset('assets') }}/${business.logo}`
-                    : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}&background=D4AF37&color=fff&size=50`;
+                // console.log(business.category.name);
+                const category = business.category.name;
+                // business.business_category || business.founder_name || 'Business';
+                const logo = `{{ asset('assets') }}/${business.logo}`
+                //     ? `{{ asset('assets') }}/${business.logo}`
+                //     : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}&background=D4AF37&color=fff&size=50`;
+                // console.log(`{{ asset('assets') }}/${business.logo}`);
 
                 // const logo = business.logo 
                 //     ? `{{ asset('storage') }}/${business.logo}`
@@ -564,11 +566,12 @@
                 //     ? `{{ asset('storage') }}/${business.photos[0]}`
                 //     : 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=300&fit=crop';
 
-                // console.log(business.photos);
+                
                 const photos =
                     business.photos && business.photos.length > 0
                         ? `{{ asset('assets') }}/${business.photos[0]}`
                         : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
+                    console.log(`{{ asset('assets') }}/${business.photos[0]}`);
 
 
                 // const photos = business.photos && business.photos.length > 0
@@ -586,9 +589,9 @@
 
                 return `
                     <div class="col-md-6 col-lg-4">
-                        <div class="business-card" onclick="window.location.href='{{ url('gme-business') }}/${business.id}'">
+                        <div class="business-card" onclick="window.location.href='{{ url('gme-business-form') }}/${business.id}'">
                             <div style="position: relative;">
-                                <img src="${photos}" alt="${business.business_name}" class="business-image" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=300&fit=crop'">
+                                <img src="${photos}" alt="${business.business_name}" class="business-image" onerror="this.src='http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop'">
                                 ${verifiedBadge}
                             </div>
                             <div class="business-content">
@@ -599,7 +602,7 @@
                                         <div class="business-category">${category}</div>
                                     </div>
                                 </div>
-                                ${business.tagline ? `<div class="business-tagline">${business.tagline}</div>` : ''}
+                                ${business.short_introduction ? `<div class="business-short-introduction">${business.short_introduction}</div>` : ''}
                                 ${location ? `
                                     <div class="business-location">
                                         <i class="fas fa-map-marker-alt location-icon"></i>

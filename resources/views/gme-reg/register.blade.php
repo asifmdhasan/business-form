@@ -4,13 +4,32 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-xl-10 col-lg-11">
+            {{-- Success Message --}}
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa fa-check-circle me-2"></i>{{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            {{-- Error Message --}}
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-circle me-2"></i>{{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            {{-- Validation Errors --}}
             @if ($errors->any())
-                <div class="bg-red-100 text-red-600 p-2 rounded mb-3">
-                    <ul class="list-disc pl-5">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <h6 class="alert-heading"><i class="fa fa-exclamation-triangle me-2"></i>Please fix the following errors:</h6>
+                    <ul class="mb-0">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
 
@@ -55,10 +74,11 @@
                     <form method="POST" action="{{ route('gme.business.save-step') }}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="step" value="{{ $step }}">
-                        <input type="hidden" name="business_id" value="{{ $business->id ?? '' }}">
 
                         {{-- ================= STEP 1 ================= --}}
+
                         @if($step == 1)
+
                             <h5 class="fw-bold mb-3">Business & Founder Identity</h5>
 
                             <div class="mb-3">
@@ -130,8 +150,6 @@
                                 <textarea class="form-control" rows="2" name="business_address">{{ old('business_address', $business->business_address ?? '') }}</textarea>
                             </div>
 
-                            
-
                             <hr>
                             <h6 class="fw-bold mb-3">Founder Information</h6>
 
@@ -177,25 +195,24 @@
                             </button>
                         @endif
 
-
                         {{-- ================= STEP 2 ================= --}}
-                        @if($step == 2)
+
+                        {{-- @if($step == 2)
                             <h5 class="fw-bold mb-3">Business Size & Structure</h5>
 
-                            <div class="mb-3">
-                                <label class="form-label">Registration Status</label>
-                                <select class="form-select" name="registration_status">
-                                    <option value="">Select</option>
-                                    <option value="registered_company">Registered Company</option>
-                                    <option value="sole_proprietorship">Sole Proprietorship</option>
-                                    <option value="partnership">Partnership</option>
-                                    <option value="startup_early_stage">Startup Early Stage</option>
-                                    <option value="home_based"> Home Based </option>
-                                    <option value="not_registered_yet">Not Registered Yet</option>
-                                </select>
-                            </div>
-
                             <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Registration Status</label>
+                                    <select class="form-select" name="registration_status">
+                                        <option value="">Select</option>
+                                        <option value="registered_company">Registered Company</option>
+                                        <option value="sole_proprietorship">Sole Proprietorship</option>
+                                        <option value="partnership">Partnership</option>
+                                        <option value="startup_early_stage">Startup Early Stage</option>
+                                        <option value="home_based"> Home Based </option>
+                                        <option value="not_registered_yet">Not Registered Yet</option>
+                                    </select>
+                                </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Number of Employees</label>
                                     <select class="form-select" name="employee_count">
@@ -219,151 +236,597 @@
                                         <option value="hybrid">Hybrid</option>
                                     </select>
                                 </div>
+                            
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Annual Revenue (Optional)</label>
+                                    <select class="form-select" name="annual_revenue">
+                                        <option value="">Select</option>
+                                        <option value="under_10k">Under $10K</option>
+                                        <option value="10k-50k">$10K – $50K</option>
+                                        <option value="50k-200k">$50K – $200K</option>
+                                        <option value="200k-1m">$200K – $1M</option>
+                                        <option value="above_1m"> Above $1M</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Products / Services</label>
+                                    <select class="form-select search_select" multiple name="services_id[]" id="services">
+                                        <option value="">Select category first</option>
+                                    </select>
+                                </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Annual Revenue (Optional)</label>
-                                <select class="form-select" name="annual_revenue">
-                                    <option value="">Select</option>
-                                    <option value="under_10k">Under $10K</option>
-                                    <option value="10k-50k">$10K – $50K</option>
-                                    <option value="50k-200k">$50K – $200K</option>
-                                    <option value="200k-1m">$200K – $1M</option>
-                                    <option value="above_1m"> Above $1M</option>
-                                </select>
+                            <div class="row">
+                                <div class="col-md-2 mb-3">
+                                    <label class="form-label">Upload Business Logo</label>
+
+                                    <!-- Upload Container -->
+                                    <div class="rounded p-2 text-center position-relative" 
+                                        style="width: 10rem; height: 10rem; cursor: pointer; border: 1px dashed #ccc; overflow: hidden;">
+                                        
+                                        <!-- Preview Image -->
+                                        <img id="logoPreview"
+                                            src="{{ !empty($business->logo) ? asset('storage/'.$business->logo) : asset('assets/uploads/placeholder.png') }}"
+                                            class="img-fluid w-100 h-100"
+                                            style="object-fit: cover;">
+
+                                        <!-- Hidden File Input -->
+                                        <input type="file"
+                                            name="logo"
+                                            accept="image/*"
+                                            onchange="previewLogo(this)"
+                                            style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;">
+                                    </div>
+
+                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 2MB)</small>
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label class="form-label">Upload Cover Photo</label>
+
+                                    <!-- Upload Container -->
+                                    <div class="rounded p-2 text-center position-relative" 
+                                        style="width: 10rem; height: 10rem; cursor: pointer; border: 1px dashed #ccc; overflow: hidden;">
+                                        
+                                        <!-- Preview Image -->
+                                        <img id="coverPhotoPreview"
+                                            src="{{ !empty($business->cover_photo) ? asset('storage/'.$business->cover_photo) : asset('assets/uploads/placeholder.png') }}"
+                                            class="img-fluid w-100 h-100"
+                                            style="object-fit: cover;">
+
+                                        <!-- Hidden File Input -->
+                                        <input type="file"
+                                            name="cover_photo"
+                                            accept="image/*"
+                                            onchange="previewCoverPhoto(this)"
+                                            style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;">
+                                    </div>
+
+                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 2MB)</small>
+                                </div>
+
+                                <!-- Business Photos Gallery -->
+                                <div class="col-md-8 mb-3">
+                                    <label class="form-label">Business Photos Gallery</label>
+                                    <div class="d-flex flex-wrap gap-2">
+
+                                        <!-- Existing Images Preview (if editing) -->
+                                        @if(!empty($business->photos))
+                                            @foreach(json_decode($business->photos, true) as $index => $photo)
+                                            <div class="position-relative rounded" style="width: 10rem; height: 10rem; border: 1px dashed #ccc; overflow: hidden; cursor: pointer;">
+                                                <img src="{{ asset('storage/'.$photo) }}" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                                                <button type="button" onclick="removeGalleryImage(this)" class="position-absolute top-0 end-0 btn btn-sm btn-danger" style="padding:0.2rem 0.4rem;">&times;</button>
+                                            </div>
+                                            @endforeach
+                                        @endif
+
+                                        <!-- New Upload Placeholder -->
+                                        <div class="rounded text-center position-relative gallery-upload" 
+                                            style="width: 10rem; height: 10rem; border: 1px dashed #ccc; cursor: pointer; display:flex; align-items:center; justify-content:center;">
+                                            <i class="fa fa-plus" style="font-size:2rem; color: rgba(0,0,0,0.5); pointer-events:none;"></i>
+                                            <input type="file" name="photos[]" accept="image/*" multiple 
+                                                style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;"
+                                                onchange="previewGallery(this)">
+                                        </div>
+                                    </div>
+                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 5 images)</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- Registration Document -->
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Upload Registration Document</label>
+                                    <input type="file" name="registration_document" class="form-control">
+                                </div>
+                                <!-- Business business_profile -->
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Business Profile</label>
+                                    <input type="file" name="business_profile" class="form-control">
+                                </div>
+                                <!-- product_catalogue -->
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Product Catalogue</label>
+                                    <input type="file" name="product_catalogue" class="form-control">
+                                </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Business Overview</label>
-                                <textarea class="form-control" rows="4" name="business_overview"></textarea>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">Business Overview</label>
+                                    <textarea class="form-control" rows="6" name="business_overview"></textarea>
+                                </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Products / Services</label>
-                                <select class="form-select search_select" multiple name="services_id[]" id="services">
-                                    <option value="">Select category first</option>
-                                </select>
-                                {{-- <select class="form-select search_select" multiple name="services_id[]">
-                                    @foreach($services as $service)
-                                        <option value="{{ $service->id }}">{{ $service->name }}</option>
-                                    @endforeach
-                                </select> --}}
+                        @endif --}}
+
+                        {{-- ================= STEP 2 ================= --}}
+
+                        @if($step == 2)
+                            <h5 class="fw-bold mb-3">Business Size & Structure</h5>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Registration Status</label>
+                                    <select class="form-select @error('registration_status') is-invalid @enderror" name="registration_status">
+                                        <option value="">Select</option>
+                                        <option value="registered_company" {{ old('registration_status', $business->registration_status ?? '') == 'registered_company' ? 'selected' : '' }}>Registered Company</option>
+                                        <option value="sole_proprietorship" {{ old('registration_status', $business->registration_status ?? '') == 'sole_proprietorship' ? 'selected' : '' }}>Sole Proprietorship</option>
+                                        <option value="partnership" {{ old('registration_status', $business->registration_status ?? '') == 'partnership' ? 'selected' : '' }}>Partnership</option>
+                                        <option value="startup_early_stage" {{ old('registration_status', $business->registration_status ?? '') == 'startup_early_stage' ? 'selected' : '' }}>Startup Early Stage</option>
+                                        <option value="home_based" {{ old('registration_status', $business->registration_status ?? '') == 'home_based' ? 'selected' : '' }}>Home Based</option>
+                                        <option value="not_registered_yet" {{ old('registration_status', $business->registration_status ?? '') == 'not_registered_yet' ? 'selected' : '' }}>Not Registered Yet</option>
+                                    </select>
+                                    @error('registration_status')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Number of Employees</label>
+                                    <select class="form-select @error('employee_count') is-invalid @enderror" name="employee_count">
+                                        <option value="">Select</option>
+                                        <option value="1-3" {{ old('employee_count', $business->employee_count ?? '') == '1-3' ? 'selected' : '' }}>1–3</option>
+                                        <option value="4-10" {{ old('employee_count', $business->employee_count ?? '') == '4-10' ? 'selected' : '' }}>4–10</option>
+                                        <option value="11-25" {{ old('employee_count', $business->employee_count ?? '') == '11-25' ? 'selected' : '' }}>11–25</option>
+                                        <option value="26-50" {{ old('employee_count', $business->employee_count ?? '') == '26-50' ? 'selected' : '' }}>26–50</option>
+                                        <option value="51+" {{ old('employee_count', $business->employee_count ?? '') == '51+' ? 'selected' : '' }}>51+</option>
+                                    </select>
+                                    @error('employee_count')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Operational Scale</label>
+                                    <select class="form-select @error('operational_scale') is-invalid @enderror" name="operational_scale">
+                                        <option value="">Select</option>
+                                        <option value="local" {{ old('operational_scale', $business->operational_scale ?? '') == 'local' ? 'selected' : '' }}>Local</option>
+                                        <option value="nationwide" {{ old('operational_scale', $business->operational_scale ?? '') == 'nationwide' ? 'selected' : '' }}>Nationwide</option>
+                                        <option value="international" {{ old('operational_scale', $business->operational_scale ?? '') == 'international' ? 'selected' : '' }}>International</option>
+                                        <option value="online_only" {{ old('operational_scale', $business->operational_scale ?? '') == 'online_only' ? 'selected' : '' }}>Online Only</option>
+                                        <option value="hybrid" {{ old('operational_scale', $business->operational_scale ?? '') == 'hybrid' ? 'selected' : '' }}>Hybrid</option>
+                                    </select>
+                                    @error('operational_scale')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Annual Revenue (Optional)</label>
+                                    <select class="form-select @error('annual_revenue') is-invalid @enderror" name="annual_revenue">
+                                        <option value="">Select</option>
+                                        <option value="under_10k" {{ old('annual_revenue', $business->annual_revenue ?? '') == 'under_10k' ? 'selected' : '' }}>Under $10K</option>
+                                        <option value="10k-50k" {{ old('annual_revenue', $business->annual_revenue ?? '') == '10k-50k' ? 'selected' : '' }}>$10K – $50K</option>
+                                        <option value="50k-200k" {{ old('annual_revenue', $business->annual_revenue ?? '') == '50k-200k' ? 'selected' : '' }}>$50K – $200K</option>
+                                        <option value="200k-1m" {{ old('annual_revenue', $business->annual_revenue ?? '') == '200k-1m' ? 'selected' : '' }}>$200K – $1M</option>
+                                        <option value="above_1m" {{ old('annual_revenue', $business->annual_revenue ?? '') == 'above_1m' ? 'selected' : '' }}>Above $1M</option>
+                                    </select>
+                                    @error('annual_revenue')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                {{-- <div class="col-md-6 mb-3">
+                                    <label class="form-label">Products / Services</label>
+                                    <select class="form-select search_select @error('services_id') is-invalid @enderror @error('services_id.*') is-invalid @enderror" 
+                                            multiple name="services_id[]" id="services">
+                                        @php
+                                            $savedServices = old('services_id', 
+                                                is_array($business->services_id ?? null) 
+                                                    ? $business->services_id 
+                                                    : json_decode($business->services_id ?? '[]', true)
+                                            );
+                                        @endphp
+                                        @if(!empty($savedServices) && is_array($savedServices))
+                                            @foreach($savedServices as $serviceId)
+                                                @php
+                                                    $service = \App\Models\Service::find($serviceId);
+                                                @endphp
+                                                @if($service)
+                                                    <option value="{{ $service->id }}" selected>{{ $service->name }}</option>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <option value="">Select category first</option>
+                                        @endif
+                                    </select>
+                                    @error('services_id')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                    @error('services_id.*')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div> --}}
+                                {{-- DEBUG: Remove after testing --}}
+                                @php
+                                    $savedServices = old('services_id', 
+                                        is_array($business->services_id ?? null) 
+                                            ? $business->services_id 
+                                            : json_decode($business->services_id ?? '[]', true)
+                                    );
+                                    // dd($savedServices, $business->services_id); // Uncomment to debug
+                                @endphp
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Products / Services</label>
+                                    <select class="form-select search_select @error('services_id') is-invalid @enderror" 
+                                            multiple name="services_id[]" id="services">
+                                        <!-- Options will be loaded by JavaScript -->
+                                    </select>
+                                    @error('services_id')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Upload Business Logo</label>
-                                <input type="file" class="form-control" name="logo">
+                            <div class="row">
+                                <div class="col-md-2 mb-3">
+                                    <label class="form-label">Upload Business Logo</label>
+
+                                    <!-- Upload Container -->
+                                    <div class="rounded p-2 text-center position-relative @error('logo') border-danger @enderror" 
+                                        style="width: 10rem; height: 10rem; cursor: pointer; border: 1px dashed #ccc; overflow: hidden;">
+                                        
+                                        <!-- Preview Image -->
+                                        <img id="logoPreview"
+                                            src="{{ !empty($business->logo) ? asset('assets/' . $business->logo) : asset('assets/uploads/placeholder.png') }}"
+                                            class="img-fluid w-100 h-100"
+                                            style="object-fit: cover;">
+
+                                        <!-- Hidden File Input -->
+                                        <input type="file"
+                                            name="logo"
+                                            accept="image/*"
+                                            onchange="previewLogo(this)"
+                                            style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;">
+                                    </div>
+
+                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 2MB)</small>
+                                    @if(!empty($business->logo))
+                                        <small class="text-success d-block"><i class="fa fa-check"></i> Logo uploaded</small>
+                                    @endif
+                                    @error('logo')
+                                        <small class="text-danger d-block">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label class="form-label">Upload Cover Photo</label>
+
+                                    <!-- Upload Container -->
+                                    <div class="rounded p-2 text-center position-relative @error('cover_photo') border-danger @enderror" 
+                                        style="width: 10rem; height: 10rem; cursor: pointer; border: 1px dashed #ccc; overflow: hidden;">
+                                        
+                                        <!-- Cover Photo Preview -->
+                                        <img id="coverPhotoPreview"
+                                            src="{{ !empty($business->cover_photo) ? asset('assets/' . $business->cover_photo) : asset('assets/uploads/placeholder.png') }}"
+                                            class="img-fluid w-100 h-100"
+                                            style="object-fit: cover;">
+
+                                        <!-- Hidden File Input -->
+                                        <input type="file"
+                                            name="cover_photo"
+                                            accept="image/*"
+                                            onchange="previewCoverPhoto(this)"
+                                            style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;">
+                                    </div>
+
+                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 2MB)</small>
+                                    @if(!empty($business->cover_photo))
+                                        <small class="text-success d-block"><i class="fa fa-check"></i> Cover uploaded</small>
+                                    @endif
+                                    @error('cover_photo')
+                                        <small class="text-danger d-block">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <!-- Business Photos Gallery -->
+                                <!-- Business Photos Gallery -->
+                                <div class="col-md-8 mb-3">
+                                    <label class="form-label">Business Photos Gallery</label>
+                                    <div class="d-flex flex-wrap gap-2" id="gallery-container">
+
+                                        <!-- Existing Images Preview (if editing) -->
+                                        @if(!empty($business->photos))
+                                            @php
+                                                $existingPhotos = is_array($business->photos) 
+                                                    ? $business->photos 
+                                                    : json_decode($business->photos ?? '[]', true);
+                                            @endphp
+                                            @foreach($existingPhotos as $index => $photo)
+                                            <div class="position-relative rounded existing-photo" style="width: 10rem; height: 10rem; border: 1px dashed #ccc; overflow: hidden;">
+                                                <img src="{{ asset('assets/' . $photo) }}" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                                                <button type="button" onclick="removeGalleryImage(this)" class="position-absolute top-0 end-0 btn btn-sm btn-danger" style="padding:0.2rem 0.4rem;">&times;</button>
+                                                <input type="hidden" name="existing_photos[]" value="{{ $photo }}">
+                                            </div>
+                                            @endforeach
+                                        @endif
+
+                                        <!-- New Upload Placeholder -->
+                                        <div class="rounded text-center position-relative gallery-upload @error('photos') border-danger @enderror @error('photos.*') border-danger @enderror" 
+                                            style="width: 10rem; height: 10rem; border: 1px dashed #ccc; cursor: pointer; display:flex; align-items:center; justify-content:center;">
+                                            <i class="fa fa-plus" style="font-size:2rem; color: rgba(0,0,0,0.5); pointer-events:none;"></i>
+                                            <input type="file" name="photos[]" accept="image/*" multiple 
+                                                style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;"
+                                                onchange="previewGallery(this)">
+                                        </div>
+                                    </div>
+                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 5 images)</small>
+                                    @error('photos')
+                                        <small class="text-danger d-block">{{ $message }}</small>
+                                    @enderror
+                                    @error('photos.*')
+                                        <small class="text-danger d-block">{{ $message }}</small>
+                                    @enderror
+                                </div>
                             </div>
+                            
+                            <div class="row">
+                                <!-- Registration Document -->
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Upload Registration Document</label>
+                                    <input type="file" name="registration_document" class="form-control @error('registration_document') is-invalid @enderror">
+                                    <!-- Document Links -->
+                                    @if(!empty($business->registration_document))
+                                        <small class="text-success d-block mt-1">
+                                            <i class="fa fa-check"></i> Document uploaded: 
+                                            <a href="{{ asset('assets/' .$business->registration_document) }}" target="_blank">View</a>
+                                        </small>
+                                    @endif
+                                    @error('registration_document')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <!-- Business Profile -->
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Business Profile</label>
+                                    <input type="file" name="business_profile" class="form-control @error('business_profile') is-invalid @enderror">
+                                    @if(!empty($business->business_profile))
+                                        <small class="text-success d-block mt-1">
+                                            <i class="fa fa-check"></i> Profile uploaded: 
+                                            <a href="{{ asset('assets/' .$business->business_profile) }}" target="_blank">View</a>
+                                        </small>
+                                    @endif
+                                    @error('business_profile')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <!-- Product Catalogue -->
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Product Catalogue</label>
+                                    <input type="file" name="product_catalogue" class="form-control @error('product_catalogue') is-invalid @enderror">
+                                    @if(!empty($business->product_catalogue))
+                                        <small class="text-success d-block mt-1">
+                                            <i class="fa fa-check"></i> Catalogue uploaded: 
+                                            <a href="{{ asset('assets/' .$business->product_catalogue) }}" target="_blank">View</a>
+                                        </small>
+                                    @endif
+                                    @error('product_catalogue')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">Business Overview</label>
+                                    <textarea class="form-control @error('business_overview') is-invalid @enderror" 
+                                            rows="6" 
+                                            name="business_overview" 
+                                            placeholder="Describe your business, mission, vision, products/services in detail...">{{ old('business_overview', $business->business_overview ?? '') }}</textarea>
+                                    @error('business_overview')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">Maximum 1800 characters</small>
+                                </div>
+                            </div>
+
                         @endif
 
                         {{-- ================= STEP 3 ================= --}}
+
+                        {{-- ================= STEP 3 ================= --}}
+
                         @if($step == 3)
                             <h5 class="fw-bold mb-3">Islamic Ethics & Community</h5>
 
                             <div class="mb-3">
                                 <label class="form-label">Avoid Interest (Riba)? *</label>
-                                <select class="form-select" name="avoid_riba" required>
+                                <select class="form-select @error('avoid_riba') is-invalid @enderror" name="avoid_riba" required>
                                     <option value="">Select</option>
-                                    <option value="yes">Yes</option>
-                                    <option value="partially_transitioning">Partially Transitioning</option>
-                                    <option value="no">No</option>
-                                    <option value="prefer_not_to_say"> Prefer Not to Say </option>
+                                    <option value="yes" {{ old('avoid_riba', $business->avoid_riba ?? '') == 'yes' ? 'selected' : '' }}>Yes</option>
+                                    <option value="partially_transitioning" {{ old('avoid_riba', $business->avoid_riba ?? '') == 'partially_transitioning' ? 'selected' : '' }}>Partially Transitioning</option>
+                                    <option value="no" {{ old('avoid_riba', $business->avoid_riba ?? '') == 'no' ? 'selected' : '' }}>No</option>
+                                    <option value="prefer_not_to_say" {{ old('avoid_riba', $business->avoid_riba ?? '') == 'prefer_not_to_say' ? 'selected' : '' }}>Prefer Not to Say</option>
                                 </select>
+                                @error('avoid_riba')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Avoid Haram Products? *</label>
-                                <select class="form-select" name="avoid_haram_products" required>
+                                <select class="form-select @error('avoid_haram_products') is-invalid @enderror" name="avoid_haram_products" required>
                                     <option value="">Select</option>
-                                    <option value="yes">Yes</option>
-                                    <option value="partially_compliant">Partially Compliant</option>
-                                    <option value="no">No</option>
+                                    <option value="yes" {{ old('avoid_haram_products', $business->avoid_haram_products ?? '') == 'yes' ? 'selected' : '' }}>Yes</option>
+                                    <option value="partially_compliant" {{ old('avoid_haram_products', $business->avoid_haram_products ?? '') == 'partially_compliant' ? 'selected' : '' }}>Partially Compliant</option>
+                                    <option value="no" {{ old('avoid_haram_products', $business->avoid_haram_products ?? '') == 'no' ? 'selected' : '' }}>No</option>
                                 </select>
+                                @error('avoid_haram_products')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Fair Pricing</label>
-                                <select class="form-select" name="fair_pricing" required>
+                                <label class="form-label">Fair Pricing *</label>
+                                <select class="form-select @error('fair_pricing') is-invalid @enderror" name="fair_pricing" required>
                                     <option value="">Select</option>
-                                    <option value="yes">Yes</option>
-                                    <option value="mostly">Mostly</option>
-                                    <option value="needs_improvement">Needs Improvement</option>
+                                    <option value="yes" {{ old('fair_pricing', $business->fair_pricing ?? '') == 'yes' ? 'selected' : '' }}>Yes</option>
+                                    <option value="mostly" {{ old('fair_pricing', $business->fair_pricing ?? '') == 'mostly' ? 'selected' : '' }}>Mostly</option>
+                                    <option value="needs_improvement" {{ old('fair_pricing', $business->fair_pricing ?? '') == 'needs_improvement' ? 'selected' : '' }}>Needs Improvement</option>
                                 </select>
+                                @error('fair_pricing')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             
                             <div class="mb-3">
-                                <label class="form-label">Open for Guidance</label>
-                                <select class="form-select" name="open_for_guidance" required>
+                                <label class="form-label">Open for Guidance *</label>
+                                <select class="form-select @error('open_for_guidance') is-invalid @enderror" name="open_for_guidance" required>
                                     <option value="">Select</option>
-                                    <option value="yes">Yes</option>
-                                    <option value="no">No</option>
-                                    <option value="maybe">Maybe</option>
+                                    <option value="yes" {{ old('open_for_guidance', $business->open_for_guidance ?? '') == 'yes' ? 'selected' : '' }}>Yes</option>
+                                    <option value="no" {{ old('open_for_guidance', $business->open_for_guidance ?? '') == 'no' ? 'selected' : '' }}>No</option>
+                                    <option value="maybe" {{ old('open_for_guidance', $business->open_for_guidance ?? '') == 'maybe' ? 'selected' : '' }}>Maybe</option>
                                 </select>
+                                @error('open_for_guidance')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Collaboration Open</label>
-                                <select class="form-select" name="collaboration_open" required>
+                                <label class="form-label">Collaboration Open *</label>
+                                <select class="form-select @error('collaboration_open') is-invalid @enderror" name="collaboration_open" required>
                                     <option value="">Select</option>
-                                    <option value="yes">Yes</option>
-                                    <option value="no">No</option>
-                                    <option value="maybe">Maybe</option>
+                                    <option value="yes" {{ old('collaboration_open', $business->collaboration_open ?? '') == 'yes' ? 'selected' : '' }}>Yes</option>
+                                    <option value="no" {{ old('collaboration_open', $business->collaboration_open ?? '') == 'no' ? 'selected' : '' }}>No</option>
+                                    <option value="maybe" {{ old('collaboration_open', $business->collaboration_open ?? '') == 'maybe' ? 'selected' : '' }}>Maybe</option>
                                 </select>
+                                @error('collaboration_open')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Ethical Description</label>
-                                <textarea class="form-control" rows="4" name="ethical_description"></textarea>
+                                <textarea class="form-control @error('ethical_description') is-invalid @enderror" 
+                                        rows="4" 
+                                        name="ethical_description"
+                                        placeholder="Describe your business ethics and values...">{{ old('ethical_description', $business->ethical_description ?? '') }}</textarea>
+                                @error('ethical_description')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="text-muted">Maximum 1200 characters</small>
                             </div>
-
-                            
-
-                            {{-- <div class="mb-3">
-                                <label class="form-label">Ethical Description</label>
-                                <textarea class="form-control" rows="4" name="ethical_description"></textarea>
-                            </div> --}}
-                            
 
                             <hr>
                             <h6 class="fw-bold">Collaboration Interest</h6>
 
-                            @foreach(['Partnerships','Investment','Marketing','Supply Chain','Training'] as $type)
+                            @php
+                                $savedCollaborationTypes = old('collaboration_types', 
+                                    is_array($business->collaboration_types ?? null) 
+                                        ? $business->collaboration_types 
+                                        : json_decode($business->collaboration_types ?? '[]', true)
+                                );
+                            @endphp
+
+                            @foreach(['Partnerships','Investment Oportunities','Vendor Supply Chain','Marketing Promotion','Networking','Training Workshops','Community Charity Projects','Not Sure Yet'] as $type)
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="collaboration_types[]" value="{{ $type }}">
+                                <input class="form-check-input" 
+                                    type="checkbox" 
+                                    name="collaboration_types[]" 
+                                    value="{{ $type }}"
+                                    {{ in_array($type, $savedCollaborationTypes) ? 'checked' : '' }}>
                                 <label class="form-check-label">{{ $type }}</label>
                             </div>
                             @endforeach
+                            
+                            @error('collaboration_types')
+                                <div class="text-danger mt-2"><small>{{ $message }}</small></div>
+                            @enderror
                         @endif
 
                         {{-- ================= STEP 4 ================= --}}
+
                         @if($step == 4)
                             <h5 class="fw-bold mb-3">Consent & Approval</h5>
 
                             <div class="alert alert-warning">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="info_accuracy" required>
+                                    <input class="form-check-input @error('info_accuracy') is-invalid @enderror" 
+                                        type="checkbox" 
+                                        name="info_accuracy" 
+                                        value="1"
+                                        {{ old('info_accuracy', $business->info_accuracy ?? false) ? 'checked' : '' }}
+                                        required>
                                     <label class="form-check-label">
                                         I confirm all provided information is accurate *
+                                    </label>
+                                    @error('info_accuracy')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="alert alert-warning">
+                                <div class="form-check">
+                                    <input class="form-check-input" 
+                                        type="checkbox" 
+                                        name="allow_publish"
+                                        value="1"
+                                        required
+                                        {{ old('allow_publish', $business->allow_publish ?? false) ? 'checked' : '' }}>
+                                    <label class="form-check-label">
+                                        Allow GME to publish my business profile
                                     </label>
                                 </div>
                             </div>
 
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" name="allow_publish">
-                                <label class="form-check-label">
-                                    Allow GME to publish my business profile
-                                </label>
+                            <div class="alert alert-warning">
+                                <div class="form-check">
+                                    <input class="form-check-input" 
+                                        type="checkbox" 
+                                        name="allow_contact"
+                                        value="1"
+                                        required
+                                        {{ old('allow_contact', $business->allow_contact ?? false) ? 'checked' : '' }}>
+                                    <label class="form-check-label">
+                                        Allow GME to contact me for verification
+                                    </label>
+                                </div>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Digital Signature *</label>
-                                <input type="text" class="form-control" name="digital_signature" required>
+                                <input type="text" 
+                                    class="form-control @error('digital_signature') is-invalid @enderror" 
+                                    name="digital_signature" 
+                                    value="{{ old('digital_signature', $business->digital_signature ?? '') }}"
+                                    placeholder="Type your full name as digital signature"
+                                    required>
+                                @error('digital_signature')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="alert alert-success">
                                 <strong>✓ Ready to submit</strong><br>
                                 Our team will review your application.
                             </div>
+
+
                         @endif
 
                         <!-- Navigation --> 
@@ -381,44 +844,6 @@
                         </div>
 
                     </form>
-
-                        {{-- ================= STEP 4 (example) =================
-                        @if($step == 4)
-                        <h5 class="fw-bold mb-3">Consent & Approval</h5>
-
-                        <div class="alert alert-info">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="info_accuracy" required>
-                                <label class="form-check-label">
-                                    I confirm all information is accurate *
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Digital Signature *</label>
-                            <input type="text" class="form-control" name="digital_signature" required>
-                        </div>
-                        @endif
-
-                        <div class="d-flex justify-content-between mt-4">
-                            @if($step > 1)
-                                <a href="{{ route('gme.business.register', ['step' => $step - 1, 'business_id' => $business->id ?? '']) }}"
-                                   class="btn btn-secondary">
-                                    ← Previous
-                                </a>
-                            @else
-                                <span></span>
-                            @endif
-
-                            <button type="submit"
-                                    class="btn {{ $step < 4 ? 'btn-primary' : 'btn-success' }}">
-                                {{ $step < 4 ? 'Save & Next →' : 'Submit Application' }}
-                            </button>
-                        </div>
-
-                    </form> --}}
-
                 </div>
             </div>
 
@@ -462,41 +887,185 @@ function addFounder() {
 
 
 
-
 @if($step == 2)
-<script>
-$(document).ready(function () {
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
 
-    let categoryId = "{{ $business->business_category_id ?? '' }}";
-    let $services = $('#services');
+            let categoryId = "{{ $business->business_category_id ?? '' }}";
+            let $services = $('#services');
 
-    if (!categoryId || !$services.length) {
-        return;
-    }
+            // Get selected services
+            let selectedServices = @json(
+                old(
+                    'services_id',
+                    is_array($business->services_id ?? null)
+                        ? $business->services_id
+                        : json_decode($business->services_id ?? '[]', true)
+                ) ?? []
+            );
 
-    $.ajax({
-        url: '/get-services/' + categoryId,
-        type: 'GET',
-        success: function (data) {
-            $services.empty();
+            console.log('Category ID:', categoryId);
+            console.log('Selected Services:', selectedServices);
 
-            if (data.length === 0) {
-                $services.append('<option value="">No services found</option>');
-                return;
+            // Initial load
+            if (categoryId && $services.length) {
+                loadServices(categoryId, selectedServices);
             }
 
-            $.each(data, function (index, service) {
-                $services.append(
-                    `<option value="${service.id}">${service.name}</option>`
-                );
+            // On category change
+            $('#business_category').on('change', function () {
+                const newCategoryId = $(this).val();
+
+                if (newCategoryId) {
+                    loadServices(newCategoryId, []);
+                } else {
+                    $services.empty().append('<option value="">Select category first</option>');
+                }
             });
+
+            function loadServices(catId, selected = []) {
+
+                if (!Array.isArray(selected)) {
+                    selected = [];
+                }
+
+                $.ajax({
+                    url: '/get-services/' + catId,
+                    type: 'GET',
+                    success: function (data) {
+
+                        $services.empty();
+
+                        if (!Array.isArray(data) || data.length === 0) {
+                            $services.append('<option value="">No services found</option>');
+                            return;
+                        }
+
+                        $.each(data, function (index, service) {
+
+                            const serviceId   = service?.id ?? null;
+                            const serviceName = service?.name ?? '';
+
+                            if (!serviceId || !serviceName) {
+                                return;
+                            }
+
+                            const isSelected = selected.some(function (val) {
+                                return val != null && val.toString() === serviceId.toString();
+                            });
+
+                            $services.append(`
+                                <option value="${serviceId}" ${isSelected ? 'selected' : ''}>
+                                    ${serviceName}
+                                </option>
+                            `);
+                        });
+                    },
+                    error: function () {
+                        $services.empty().append('<option value="">Error loading services</option>');
+                    }
+                });
+            }
+        });
+
+        /* ================= LOGO PREVIEW ================= */
+        function previewLogo(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+
+                if (file.size > 2048 * 1024) {
+                    alert('Logo file size must be less than 2MB');
+                    input.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = e => {
+                    document.getElementById('logoPreview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
         }
-    });
 
-});
-</script>
+        /* ================= COVER PHOTO PREVIEW ================= */
+        function previewCoverPhoto(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+
+                if (file.size > 5120 * 1024) {
+                    alert('Cover photo file size must be less than 5MB');
+                    input.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = e => {
+                    document.getElementById('coverPhotoPreview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+    /* ================= GALLERY ================= */
+        let galleryFiles = new DataTransfer();
+
+        function previewGallery(input) {
+            const container = document.getElementById('gallery-container');
+            const uploadBox = container.querySelector('.gallery-upload');
+            const existingPhotos = container.querySelectorAll('.existing-photo').length;
+
+            Array.from(input.files).forEach(file => {
+
+                if (galleryFiles.files.length + existingPhotos >= 5) {
+                    alert('Maximum 5 photos allowed');
+                    return;
+                }
+
+                if (file.size > 5120 * 1024) {
+                    alert('Each photo must be less than 5MB');
+                    return;
+                }
+
+                galleryFiles.items.add(file);
+
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const div = document.createElement('div');
+                    div.className = 'position-relative rounded new-photo';
+                    div.style.cssText = 'width:10rem;height:10rem;border:1px dashed #ccc;overflow:hidden;';
+                    div.innerHTML = `
+                        <img src="${e.target.result}" class="w-100 h-100" style="object-fit:cover;">
+                        <button type="button"
+                            class="btn btn-sm btn-danger position-absolute top-0 end-0"
+                            onclick="removeNewPhoto(this)">×</button>
+                    `;
+                    container.insertBefore(div, uploadBox);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            input.files = galleryFiles.files;
+        }
+
+        function removeNewPhoto(btn) {
+            const photos = document.querySelectorAll('.new-photo');
+            const index = [...photos].indexOf(btn.parentElement);
+
+            if (index > -1) {
+                galleryFiles.items.remove(index);
+            }
+
+            btn.parentElement.remove();
+            document.querySelector('input[name="photos[]"]').files = galleryFiles.files;
+        }
+
+        function removeGalleryImage(btn) {
+            if (confirm('Are you sure you want to remove this image?')) {
+                btn.closest('.existing-photo').remove();
+            }
+        }
+    </script>
 @endif
-
-
 
 @endsection

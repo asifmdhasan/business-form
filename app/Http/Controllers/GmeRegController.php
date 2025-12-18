@@ -11,6 +11,34 @@ use Illuminate\Support\Facades\Validator;
 
 class GmeRegController extends Controller
 {
+    public function showRegisterForm(Request $request)
+    {
+        $step = $request->get('step', 1);
+        // $customer = session('customer');
+        $customer = auth()->guard('customer')->user(); 
+        
+        if (!$customer) {
+            return redirect()->route('customer.login')->with('error', 'Please login first');
+        }
+        
+        // Check if draft exists
+        $business = GmeBusinessForm::where('customer_id', $customer->id)
+            ->where('status', 'draft')
+            ->first();
+        
+        // If no draft exists, create a blank object (not saved yet)
+        if (!$business) {
+            $business = new GmeBusinessForm();
+            $business->customer_id = $customer->id;
+            $business->status = 'draft';
+        }
+        
+        $categories = BusinessCategory::all();
+        $countries = $this->getCountries();
+        
+        return view('gme-reg.register', compact('step', 'business', 'categories', 'countries'));
+    }
+
     public function getServices($categoryId)
     {
         return response()->json(
@@ -20,31 +48,16 @@ class GmeRegController extends Controller
         );
     }
 
-
-    public function showRegister(Request $request)
-    {
-        $step = $request->get('step', 1);
-        $businessId = $request->get('business_id');
-        
-        $business = $businessId ? GmeBusinessForm::find($businessId) : new GmeBusinessForm();
-        
-        // Get dropdown data
-        $categories = BusinessCategory::all();
-        $services = Service::all();
-        $countries = $this->getCountries(); // You can create this helper method
-        
-        return view('gme-reg.register', compact('step', 'business', 'categories', 'services', 'countries'));
-    }
-
-    /**
-     * Save step data
-     */
     public function saveStep(Request $request)
     {
         $step = $request->input('step');
-        $businessId = $request->input('business_id');
+        $customer = auth()->guard('customer')->user();
         
-        // Validate based on step
+        if (!$customer) {
+            return redirect()->route('customer.login')->with('error', 'Session expired. Please login again.');
+        }
+        
+        // Validation
         $validator = $this->validateStep($request, $step);
         
         if ($validator->fails()) {
@@ -53,8 +66,16 @@ class GmeRegController extends Controller
                 ->withInput();
         }
         
-        // Find or create business
-        $business = $businessId ? GmeBusinessForm::find($businessId) : new GmeBusinessForm();
+        // Find existing draft or create new
+        $business = GmeBusinessForm::where('customer_id', $customer->id)
+            ->where('status', 'draft')
+            ->first();
+        
+        if (!$business) {
+            $business = new GmeBusinessForm();
+            $business->customer_id = $customer->id;
+            $business->status = 'draft';
+        }
         
         // Save data based on step
         switch ($step) {
@@ -72,20 +93,22 @@ class GmeRegController extends Controller
                 break;
         }
         
+        $business->last_updated_step = $step;
         $business->save();
         
-        // Determine next action
-        if ($request->input('action') === 'submit' && $step == 4) {
+        // If final step, change status to pending
+        if ($step == 4) {
+            $business->status = 'pending';
+            $business->save();
+            
             return redirect()->route('gme.business.success')
                 ->with('success', 'Your business has been successfully registered!');
         }
         
         // Move to next step
         $nextStep = $step + 1;
-        return redirect()->route('gme.business.register', [
-            'step' => $nextStep,
-            'business_id' => $business->id
-        ])->with('success', 'Step ' . $step . ' saved successfully!');
+        return redirect()->route('gme.business.register', ['step' => $nextStep])
+            ->with('success', 'Step ' . $step . ' saved successfully!');
     }
 
     /**
@@ -147,7 +170,9 @@ class GmeRegController extends Controller
                     'open_for_guidance' => 'required|in:yes,no,maybe',
                     'collaboration_open' => 'required|in:yes,no,maybe',
                     'collaboration_types' => 'nullable|array',
-                    'collaboration_types.*' => 'in:partnerships,investment_opportunities,vendor_supply_chain,marketing_promotion,networking,training_workshops,community_charity_projects,not_sure_yet',
+                    // 'collaboration_types.*' => 'in:Partnerships,Investment Opportunities,Marketing,Supply Chain,Training', // Updated values
+
+                    'collaboration_types.*' => 'in:Partnerships,Investment Oportunities,Vendor Supply Chain,Marketing Promotion,Networking,Training Workshops,Community Charity Projects,Not Sure Yet',
                 ];
                 break;
                 
@@ -191,6 +216,7 @@ class GmeRegController extends Controller
     /**
      * Save Step 2 data
      */
+
     private function saveStep2(Request $request, GmeBusinessForm $business)
     {
         $business->registration_status = $request->registration_status;
@@ -198,50 +224,89 @@ class GmeRegController extends Controller
         $business->operational_scale = $request->operational_scale;
         $business->annual_revenue = $request->annual_revenue;
         $business->business_overview = $request->business_overview;
-        $business->services_id = json_encode($request->services_id);
         
-        // Handle file uploads
-        if ($request->hasFile('registration_document')) {
-            if ($business->registration_document) {
-                Storage::disk('public')->delete($business->registration_document);
-            }
-            $business->registration_document = $request->file('registration_document')->store('business/documents', 'public');
-        }
+        // FIX: Save services_id properly
+        $business->services_id = $request->services_id ? json_encode($request->services_id) : null;
         
+        // Handle LOGO upload
         if ($request->hasFile('logo')) {
-            if ($business->logo) {
-                Storage::disk('public')->delete($business->logo);
+            if ($business->logo && file_exists(public_path('assets/' . $business->logo))) {
+                unlink(public_path('assets/' . $business->logo));
             }
-            $business->logo = $request->file('logo')->store('business/logos', 'public');
+            $business->logo = $request->file('logo')
+                ->store('uploads/business/logos', 'public_folder');
         }
         
+        // Handle COVER PHOTO upload
         if ($request->hasFile('cover_photo')) {
-            if ($business->cover_photo) {
-                Storage::disk('public')->delete($business->cover_photo);
+            if ($business->cover_photo && file_exists(public_path('assets/' . $business->cover_photo))) {
+                unlink(public_path('assets/' . $business->cover_photo));
             }
-            $business->cover_photo = $request->file('cover_photo')->store('business/covers', 'public');
+            $business->cover_photo = $request->file('cover_photo')
+                ->store('uploads/business/covers', 'public_folder');
         }
         
+        // FIX: Handle MULTIPLE PHOTOS (Gallery) - Improved logic
+        $existingPhotos = $request->input('existing_photos', []);
+        
+        // Decode current photos from database if they exist
+        $currentPhotos = [];
+        if ($business->photos) {
+            $currentPhotos = is_array($business->photos) 
+                ? $business->photos 
+                : json_decode($business->photos, true) ?? [];
+        }
+        
+        // Only keep photos that are in the existing_photos array (user didn't delete them)
+        $keptPhotos = [];
+        foreach ($currentPhotos as $photo) {
+            if (in_array($photo, $existingPhotos)) {
+                $keptPhotos[] = $photo;
+            } else {
+                // Delete removed photos
+                if (file_exists(public_path('assets/' . $photo))) {
+                    unlink(public_path('assets/' . $photo));
+                }
+            }
+        }
+        
+        // Add new photos
+        $newPhotos = [];
         if ($request->hasFile('photos')) {
-            $photos = [];
             foreach ($request->file('photos') as $photo) {
-                $photos[] = $photo->store('business/photos', 'public');
+                $newPhotos[] = $photo->store('uploads/business/gallery', 'public_folder');
             }
-            $business->photos = json_encode($photos);
         }
         
+        // Merge kept and new photos
+        $allPhotos = array_merge($keptPhotos, $newPhotos);
+        $business->photos = !empty($allPhotos) ? json_encode($allPhotos) : null;
+        
+        // Handle REGISTRATION DOCUMENT upload
+        if ($request->hasFile('registration_document')) {
+            if ($business->registration_document && file_exists(public_path('assets/' . $business->registration_document))) {
+                unlink(public_path('assets/' . $business->registration_document));
+            }
+            $business->registration_document = $request->file('registration_document')
+                ->store('uploads/business/documents', 'public_folder');
+        }
+        
+        // Handle BUSINESS PROFILE upload
         if ($request->hasFile('business_profile')) {
-            if ($business->business_profile) {
-                Storage::disk('public')->delete($business->business_profile);
+            if ($business->business_profile && file_exists(public_path('assets/' . $business->business_profile))) {
+                unlink(public_path('assets/' . $business->business_profile));
             }
-            $business->business_profile = $request->file('business_profile')->store('business/profiles', 'public');
+            $business->business_profile = $request->file('business_profile')
+                ->store('uploads/business/profiles', 'public_folder');
         }
         
+        // Handle PRODUCT CATALOGUE upload
         if ($request->hasFile('product_catalogue')) {
-            if ($business->product_catalogue) {
-                Storage::disk('public')->delete($business->product_catalogue);
+            if ($business->product_catalogue && file_exists(public_path('assets/' . $business->product_catalogue))) {
+                unlink(public_path('assets/' . $business->product_catalogue));
             }
-            $business->product_catalogue = $request->file('product_catalogue')->store('business/catalogues', 'public');
+            $business->product_catalogue = $request->file('product_catalogue')
+                ->store('uploads/business/catalogues', 'public_folder');
         }
     }
 
@@ -276,7 +341,7 @@ class GmeRegController extends Controller
      */
     public function success()
     {
-        return view('gme.business.success');
+        return view('gme-reg.success');
     }
 
     /**

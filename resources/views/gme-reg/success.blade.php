@@ -1,62 +1,244 @@
-@extends('layouts.app')
+@extends('layouts.frontend-master')
 
 @section('content')
-<div class="container mx-auto px-4 py-16 max-w-2xl">
-    <div class="bg-white rounded-lg shadow-lg p-8 text-center">
-        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-        </div>
-        
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">Registration Successful!</h1>
-        
-        <p class="text-gray-600 mb-6">
-            Thank you for registering your business with GME. Your application has been submitted successfully and is now pending review.
-        </p>
-        
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 text-left">
-            <h2 class="font-semibold text-blue-900 mb-3">What happens next?</h2>
-            <ul class="space-y-2 text-blue-800 text-sm">
-                <li class="flex items-start">
-                    <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span>Our team will review your application within 3-5 business days</span>
-                </li>
-                <li class="flex items-start">
-                    <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span>You will receive an email notification once your profile is approved</span>
-                </li>
-                <li class="flex items-start">
-                    <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span>We may contact you if additional information is needed</span>
-                </li>
-                <li class="flex items-start">
-                    <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span>Once approved, your business profile will be published on the GME website</span>
-                </li>
-            </ul>
-        </div>
-        
-        <div class="space-y-3">
-            <a href="{{ route('home') }}" class="block w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                Return to Home
-            </a>
-            <a href="{{ route('gme.business.register') }}" class="block w-full px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
-                Register Another Business
-            </a>
-        </div>
-        
-        <div class="mt-8 pt-6 border-t text-sm text-gray-500">
-            <p>Questions? Contact us at <a href="mailto:support@gme.com" class="text-blue-600 hover:underline">support@gme.com</a></p>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-10">
+            
+            <!-- Success Card -->
+            <div class="card shadow-lg border-0 overflow-hidden">
+                
+                <!-- Celebration Header -->
+                <div class="card-header bg-gradient text-white text-center py-5 position-relative" 
+                     style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    
+                    <!-- Animated Confetti Background -->
+                    <div class="position-absolute w-100 h-100 top-0 start-0" style="opacity: 0.1;">
+                        <div class="confetti">🎉 🎊 ✨ 🌟 🎈 🎉 🎊 ✨ 🌟 🎈 🎉 🎊 ✨ 🌟 🎈 🎉 🎊 ✨ 🌟 🎈</div>
+                    </div>
+                    
+                    <!-- Success Icon -->
+                    <div class="mb-4 position-relative">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white shadow-lg animate-bounce" 
+                             style="width: 100px; height: 100px;">
+                            <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                        </div>
+                    </div>
+                    
+                    <h1 class="display-5 fw-bold mb-2">🎉 Registration Successful! 🎉</h1>
+                    <p class="lead mb-0">Your business journey with GME begins now!</p>
+                </div>
+
+                <div class="card-body p-5">
+                    
+                    <!-- Thank You Message -->
+                    <div class="text-center mb-5">
+                        <h3 class="fw-bold text-primary mb-3">
+                            <i class="fas fa-heart text-danger me-2"></i>
+                            Thank You for Joining GME!
+                        </h3>
+                        <p class="text-muted fs-5">
+                            Your application has been submitted successfully and is now pending review by our team.
+                        </p>
+                    </div>
+
+                    <!-- What's Next Section -->
+                    <div class="alert alert-info border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" 
+                                 style="width: 40px; height: 40px;">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h5 class="mb-0 fw-bold text-primary">What Happens Next?</h5>
+                        </div>
+                        
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-3 d-flex align-items-start">
+                                <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center me-3 flex-shrink-0" 
+                                     style="width: 30px; height: 30px; font-size: 0.8rem;">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div>
+                                    <strong class="text-dark">Review Process:</strong>
+                                    <span class="text-muted">Our team will carefully review your application within 3-5 business days</span>
+                                </div>
+                            </li>
+                            
+                            <li class="mb-3 d-flex align-items-start">
+                                <div class="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center me-3 flex-shrink-0" 
+                                     style="width: 30px; height: 30px; font-size: 0.8rem;">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <strong class="text-dark">Email Notification:</strong>
+                                    <span class="text-muted">You'll receive an email once your profile is approved</span>
+                                </div>
+                            </li>
+                            
+                            <li class="mb-3 d-flex align-items-start">
+                                <div class="rounded-circle bg-info text-white d-flex align-items-center justify-content-center me-3 flex-shrink-0" 
+                                     style="width: 30px; height: 30px; font-size: 0.8rem;">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div>
+                                    <strong class="text-dark">Additional Information:</strong>
+                                    <span class="text-muted">We may contact you if we need any clarification</span>
+                                </div>
+                            </li>
+                            
+                            <li class="d-flex align-items-start">
+                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3 flex-shrink-0" 
+                                     style="width: 30px; height: 30px; font-size: 0.8rem;">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <div>
+                                    <strong class="text-dark">Go Live:</strong>
+                                    <span class="text-muted">Once approved, your business profile will be published on GME</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Benefits Section -->
+                    <div class="row g-3 mb-5">
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm text-center p-4" style="background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);">
+                                <div class="mb-3">
+                                    <i class="fas fa-users fa-3x text-white"></i>
+                                </div>
+                                <h6 class="fw-bold text-white">Connect with Community</h6>
+                                <p class="small text-white mb-0">Join a network of ethical businesses</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm text-center p-4" style="background: linear-gradient(135deg, #81ecec 0%, #00b894 100%);">
+                                <div class="mb-3">
+                                    <i class="fas fa-handshake fa-3x text-white"></i>
+                                </div>
+                                <h6 class="fw-bold text-white">Collaboration Opportunities</h6>
+                                <p class="small text-white mb-0">Find partners and grow together</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm text-center p-4" style="background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);">
+                                <div class="mb-3">
+                                    <i class="fas fa-chart-line fa-3x text-white"></i>
+                                </div>
+                                <h6 class="fw-bold text-white">Business Growth</h6>
+                                <p class="small text-white mb-0">Access resources and support</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <a href="{{ route('customer.dashboard') }}" 
+                               class="btn btn-primary btn-lg w-100 shadow-sm">
+                                <i class="fas fa-home me-2"></i>
+                                Return to Dashboard
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{{ route('gme.business.register') }}" 
+                               class="btn btn-outline-secondary btn-lg w-100">
+                                <i class="fas fa-plus-circle me-2"></i>
+                                Register Another Business
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Contact Section -->
+                    <div class="text-center pt-4 border-top">
+                        <p class="text-muted mb-2">
+                            <i class="fas fa-question-circle me-2"></i>
+                            Have questions or need assistance?
+                        </p>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <a href="mailto:support@gme.com" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-envelope me-1"></i>
+                                support@gme.com
+                            </a>
+                            <a href="https://wa.me/1234567890" class="btn btn-sm btn-outline-success">
+                                <i class="fab fa-whatsapp me-1"></i>
+                                WhatsApp Support
+                            </a>
+                            <a href="tel:+1234567890" class="btn btn-sm btn-outline-info">
+                                <i class="fas fa-phone me-1"></i>
+                                Call Us
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+<!-- Custom CSS for Animations -->
+<style>
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.animate-bounce {
+    animation: bounce 2s infinite;
+}
+
+@keyframes confetti {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(100%); }
+}
+
+.confetti {
+    display: flex;
+    gap: 2rem;
+    font-size: 2rem;
+    animation: confetti 20s linear infinite;
+    white-space: nowrap;
+}
+
+/* Hover Effects */
+.card:hover {
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Gradient Background */
+.bg-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Card Shadows */
+.shadow-lg {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+}
+</style>
+
+<!-- Auto-dismiss success message after 5 seconds -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Optional: Add confetti effect using canvas or library
+    console.log('🎉 Registration successful! Welcome to GME!');
+    
+    // Optional: Play success sound
+    // const audio = new Audio('/sounds/success.mp3');
+    // audio.play();
+});
+</script>
+
 @endsection

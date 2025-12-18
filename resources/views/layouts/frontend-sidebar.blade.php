@@ -40,7 +40,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="{{ route('gme-business.index') }}" class="nav-link text-white">
+                <a href="{{ route('customer.gme-business-form.index') }}" class="nav-link text-white">
                     <i class="fa fa-users me-2"></i> Index
                 </a>
             </li>
@@ -50,6 +50,15 @@
                     <i class="fa fa-plus-circle me-2"></i> Create
                 </a>
             </li>
+
+
+
+            <li class="nav-item">
+                <a href="{{ route('gme.business.register') }}" class="nav-link text-white">
+                    <i class="fa fa-plus-circle me-2"></i> Create Business Update
+                </a>
+            </li>
+            
 
             <!-- Logout -->
             <li class="nav-item mt-4">
