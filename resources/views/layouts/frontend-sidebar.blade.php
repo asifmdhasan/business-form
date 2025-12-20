@@ -45,17 +45,17 @@
                 </a>
             </li>
 
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a href="{{ route('customer.gme-business-form.create') }}" class="nav-link text-white">
                     <i class="fa fa-plus-circle me-2"></i> Create
                 </a>
-            </li>
+            </li> --}}
 
 
 
             <li class="nav-item">
                 <a href="{{ route('gme.business.register') }}" class="nav-link text-white">
-                    <i class="fa fa-plus-circle me-2"></i> Create Business Update
+                    <i class="fa fa-plus-circle me-2"></i> Create Form
                 </a>
             </li>
             
