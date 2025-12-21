@@ -18,4 +18,8 @@ class Customer extends Authenticatable
         'remember_token',
         'otp'
     ];
+
+    protected $casts = [
+        'otp_expires_at' => 'datetime',
+    ];
 }

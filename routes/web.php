@@ -56,6 +56,13 @@ Route::middleware(['setLocale'])->group(function () {
     Route::post('/gme-network-login', [CustomerAuthController::class, 'cusLogin'])->name('customer.login.submit');
     Route::get('/gme-network-register', function () { return view('customer.auth.register');})->name('customer.register');
     Route::post('/register', [CustomerAuthController::class, 'register']);
+    
+    Route::get('/gme-network-verify-otp-form/{customer}', function ($customerId) {
+        return view('customer.auth.verify-reg-otp', compact('customerId'));
+    })->name('customer.reg.otp.form');
+
+    Route::post('/verify-reg-otp', [CustomerAuthController::class, 'verifyRegOtp'])->name('customer.reg.otp.verify');
+        
 
     //customer.forget.password.post
     Route::get('/gme-network-forget-password', [CustomerAuthController::class, 'showForgetPasswordForm'])->name('customer.forget.password');
@@ -99,6 +106,9 @@ Route::middleware([
 
 
         Route::get('/business/register', [GmeRegController::class, 'showRegisterForm'])->name('gme.business.register');
+        Route::get('/gme-business-index', [CustomerController::class, 'gmeBusinessIndex'])->name('customer.gme-business-form.index');
+            //For Customer Own
+        Route::get('/business-index', [GmeRegController::class, 'businessIndexCustomer'])->name('customer.business-form.index');
 
 
 
@@ -126,7 +136,7 @@ Route::middleware([
 
 
     Route::get('/gme-business-form', [CustomerController::class, 'createGmeBusinessForm'])->name('customer.gme-business-form.create');
-    Route::get('/gme-business-index', [CustomerController::class, 'gmeBusinessIndex'])->name('customer.gme-business-form.index');
+
     Route::get('/gme-business-form/{business}', [CustomerController::class, 'show'])->name('customer.gme-business-form.show');
 
 

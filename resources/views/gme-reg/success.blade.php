@@ -177,6 +177,8 @@
 
         </div>
     </div>
+    <canvas id="confetti-canvas" style="position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 9999;"></canvas>
+
 </div>
 
 <!-- Custom CSS for Animations -->
@@ -238,6 +240,77 @@ document.addEventListener('DOMContentLoaded', function() {
     // Optional: Play success sound
     // const audio = new Audio('/sounds/success.mp3');
     // audio.play();
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Make canvas full screen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Confetti particles
+    const confettiCount = 150; // Increase for bigger blast
+    const confetti = [];
+
+    for (let i = 0; i < confettiCount; i++) {
+        confetti.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            r: Math.random() * 6 + 4, // radius
+            d: Math.random() * confettiCount,
+            color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+            tilt: Math.random() * 10 - 10,
+            tiltAngleIncremental: Math.random() * 0.07 + 0.05,
+            tiltAngle: 0
+        });
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < confettiCount; i++) {
+            const c = confetti[i];
+            ctx.beginPath();
+            ctx.lineWidth = c.r / 2;
+            ctx.strokeStyle = c.color;
+            ctx.moveTo(c.x + c.tilt + c.r / 4, c.y);
+            ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 4);
+            ctx.stroke();
+        }
+        update();
+    }
+
+    function update() {
+        for (let i = 0; i < confettiCount; i++) {
+            const c = confetti[i];
+            c.tiltAngle += c.tiltAngleIncremental;
+            c.y += (Math.cos(c.d) + 3 + c.r / 2) / 2;
+            c.x += Math.sin(c.d);
+            c.tilt = Math.sin(c.tiltAngle - i / 3) * 15;
+
+            if (c.y > canvas.height) {
+                c.x = Math.random() * canvas.width;
+                c.y = -20;
+            }
+        }
+    }
+
+    // Animate
+    function animate() {
+        draw();
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Optional: Remove confetti after 10 seconds
+    setTimeout(() => {
+        canvas.remove();
+    }, 10000);
+
 });
 </script>
 

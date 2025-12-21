@@ -552,19 +552,8 @@
                     .filter(l => l).join(', ');
                 // console.log(business.category.name);
                 const category = business.category.name;
-                // business.business_category || business.founder_name || 'Business';
                 const logo = `{{ asset('assets') }}/${business.logo}`
-                //     ? `{{ asset('assets') }}/${business.logo}`
-                //     : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}&background=D4AF37&color=fff&size=50`;
-                // console.log(`{{ asset('assets') }}/${business.logo}`);
 
-                // const logo = business.logo 
-                //     ? `{{ asset('storage') }}/${business.logo}`
-                //     : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}&background=D4AF37&color=fff&size=50`;
-                
-                // const photos = business.photos && business.photos.length > 0
-                //     ? `{{ asset('storage') }}/${business.photos[0]}`
-                //     : 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=300&fit=crop';
 
                 
                 const photos =

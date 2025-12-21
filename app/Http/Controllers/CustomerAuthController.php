@@ -28,13 +28,14 @@ class CustomerAuthController extends Controller
             'password' => 'required'
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $credentials = [
+            'email'           => $request->email,
+            'password'        => $request->password,
+            'status'          => 1,
+            'is_otp_verified' => 1,
+        ];
 
-        // Use the correct guard
         if (Auth::guard('customer')->attempt($credentials)) {
-
-            $customer = Auth::guard('customer')->user();
-
             return redirect()->route('customer.dashboard');
         }
 
@@ -42,6 +43,29 @@ class CustomerAuthController extends Controller
             'email' => __('login.login_failed'),
         ]);
     }
+
+
+    // public function cusLogin(Request $request)
+    // {
+    //     $request->validate([
+    //         'email'    => 'required|email',
+    //         'password' => 'required'
+    //     ]);
+
+    //     $credentials = $request->only('email', 'password');
+
+    //     // Use the correct guard
+    //     if (Auth::guard('customer')->attempt($credentials)) {
+
+    //         $customer = Auth::guard('customer')->user();
+
+    //         return redirect()->route('customer.dashboard');
+    //     }
+
+    //     return redirect()->back()->withErrors([
+    //         'email' => __('login.login_failed'),
+    //     ]);
+    // }
 
 
     // ============================
@@ -81,15 +105,66 @@ class CustomerAuthController extends Controller
             'dob'      => 'nullable|date',
         ]);
 
-        Customer::create([
+        $otp = rand(100000, 999999);
+
+        $customer = Customer::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'phone'    => $request->phone,
             'dob'      => $request->dob,
             'password' => Hash::make($request->password),
+            'otp'             => $otp,
+            'otp_expires_at'  => now()->addMinutes(3),
+            'status'          => 0,
         ]);
 
+        // Send OTP via Email (example)
+        Mail::raw("Your OTP is: {$otp}", function ($message) use ($customer) {
+            $message->to($customer->email)
+                    ->subject('OTP Verification');
+        });
+
+        return redirect()
+            ->route('customer.reg.otp.form', $customer->id)
+            ->with('success', 'OTP sent to your email.');
+
         return redirect()->route('customer.login')->with('success', 'Registration successful! Please login.');
+    }
+
+    public function verifyRegOtp(Request $request)
+    {
+        $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'otp'         => 'required|digits:6',
+        ]);
+
+        $customer = Customer::findOrFail($request->customer_id);
+
+        // OTP mismatch
+        if ($customer->otp !== $request->otp) {
+            return back()->withErrors([
+                'otp' => 'Invalid OTP'
+            ]);
+        }
+
+        // OTP expired
+        if ($customer->otp_expires_at && $customer->otp_expires_at->isPast()) {
+            return back()->withErrors([
+                'otp' => 'OTP has expired'
+            ]);
+        }
+
+        // Clear OTP after success
+        $customer->update([
+            'otp' => null,
+            'otp_expires_at' => null,
+            'status' => 1,
+            'is_otp_verified' => 1,
+        ]);
+
+        return redirect()
+            ->route('customer.login')
+            ->with('success', 'Registration successful! Please login.');
     }
 
     // ============================

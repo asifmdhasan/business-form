@@ -402,7 +402,7 @@
             // Fetch businesses from server
             function fetchBusinesses() {
                 $.ajax({
-                    url: '{{ route("gme-business.index") }}',
+                    url: '{{ route("customer.business-form.index") }}',
                     method: 'GET',
                     dataType: 'json',
                     success: function(response) {

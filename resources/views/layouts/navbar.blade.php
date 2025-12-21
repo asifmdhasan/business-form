@@ -14,14 +14,14 @@
             <ul class="navbar-nav">
 
                 <!-- Notifications -->
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="notif" data-bs-toggle="dropdown">
                         <i class="fa fa-bell"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><span class="dropdown-item">No notifications</span></li>
                     </ul>
-                </li>
+                </li> --}}
 
                 <!-- User Menu -->
                 <li class="nav-item dropdown ms-3">

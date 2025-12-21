@@ -1,6 +1,15 @@
 @extends('layouts.frontend-master')
 
 @section('content')
+<style>
+    /* Fixed width for labels so all buttons align */
+    .question-label {
+        display: inline-block;
+        width: 220px; /* Adjust width as needed */
+        margin-bottom: 0;
+    }
+</style>
+
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-xl-10 col-lg-11">
@@ -653,71 +662,109 @@
                         @if($step == 3)
                             <h5 class="fw-bold mb-3">Islamic Ethics & Community</h5>
 
-                            <div class="mb-3">
-                                <label class="form-label">Avoid Interest (Riba)? *</label>
-                                <select class="form-select @error('avoid_riba') is-invalid @enderror" name="avoid_riba" required>
-                                    <option value="">Select</option>
-                                    <option value="yes" {{ old('avoid_riba', $business->avoid_riba ?? '') == 'yes' ? 'selected' : '' }}>Yes</option>
-                                    <option value="partially_transitioning" {{ old('avoid_riba', $business->avoid_riba ?? '') == 'partially_transitioning' ? 'selected' : '' }}>Partially Transitioning</option>
-                                    <option value="no" {{ old('avoid_riba', $business->avoid_riba ?? '') == 'no' ? 'selected' : '' }}>No</option>
-                                    <option value="prefer_not_to_say" {{ old('avoid_riba', $business->avoid_riba ?? '') == 'prefer_not_to_say' ? 'selected' : '' }}>Prefer Not to Say</option>
-                                </select>
-                                @error('avoid_riba')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            {{-- Avoid Interest (Riba)? --}}
+                            <div class="mb-3 d-flex align-items-center">
+                                <label class="form-label question-label">Avoid Interest (Riba)? *</label>
+                                @php $value = old('avoid_riba', $business->avoid_riba ?? ''); @endphp
+                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
+                                    @foreach ([
+                                        'yes' => 'Yes',
+                                        'partially_transitioning' => 'Partially Transitioning',
+                                        'no' => 'No',
+                                        'prefer_not_to_say' => 'Prefer Not to Say'
+                                    ] as $key => $label)
+                                        <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
+                                            <input type="radio" name="avoid_riba" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
+                                        </label>
+                                    @endforeach
+                                </div>
                             </div>
+                            @error('avoid_riba')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
 
-                            <div class="mb-3">
-                                <label class="form-label">Avoid Haram Products? *</label>
-                                <select class="form-select @error('avoid_haram_products') is-invalid @enderror" name="avoid_haram_products" required>
-                                    <option value="">Select</option>
-                                    <option value="yes" {{ old('avoid_haram_products', $business->avoid_haram_products ?? '') == 'yes' ? 'selected' : '' }}>Yes</option>
-                                    <option value="partially_compliant" {{ old('avoid_haram_products', $business->avoid_haram_products ?? '') == 'partially_compliant' ? 'selected' : '' }}>Partially Compliant</option>
-                                    <option value="no" {{ old('avoid_haram_products', $business->avoid_haram_products ?? '') == 'no' ? 'selected' : '' }}>No</option>
-                                </select>
-                                @error('avoid_haram_products')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            {{-- Avoid Haram Products? --}}
+                            <div class="mb-3 d-flex align-items-center">
+                                <label class="form-label question-label">Avoid Haram Products? *</label>
+                                @php $value = old('avoid_haram_products', $business->avoid_haram_products ?? ''); @endphp
+                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
+                                    @foreach ([
+                                        'yes' => 'Yes',
+                                        'partially_compliant' => 'Partially Compliant',
+                                        'no' => 'No'
+                                    ] as $key => $label)
+                                        <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
+                                            <input type="radio" name="avoid_haram_products" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
+                                        </label>
+                                    @endforeach
+                                </div>
                             </div>
+                            @error('avoid_haram_products')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
 
-                            <div class="mb-3">
-                                <label class="form-label">Fair Pricing *</label>
-                                <select class="form-select @error('fair_pricing') is-invalid @enderror" name="fair_pricing" required>
-                                    <option value="">Select</option>
-                                    <option value="yes" {{ old('fair_pricing', $business->fair_pricing ?? '') == 'yes' ? 'selected' : '' }}>Yes</option>
-                                    <option value="mostly" {{ old('fair_pricing', $business->fair_pricing ?? '') == 'mostly' ? 'selected' : '' }}>Mostly</option>
-                                    <option value="needs_improvement" {{ old('fair_pricing', $business->fair_pricing ?? '') == 'needs_improvement' ? 'selected' : '' }}>Needs Improvement</option>
-                                </select>
-                                @error('fair_pricing')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            {{-- Fair Pricing --}}
+                            <div class="mb-3 d-flex align-items-center">
+                                <label class="form-label question-label">Fair Pricing *</label>
+                                @php $value = old('fair_pricing', $business->fair_pricing ?? ''); @endphp
+                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
+                                    @foreach ([
+                                        'yes' => 'Yes',
+                                        'mostly' => 'Mostly',
+                                        'needs_improvement' => 'Needs Improvement'
+                                    ] as $key => $label)
+                                        <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
+                                            <input type="radio" name="fair_pricing" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
+                                        </label>
+                                    @endforeach
+                                </div>
                             </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Open for Guidance *</label>
-                                <select class="form-select @error('open_for_guidance') is-invalid @enderror" name="open_for_guidance" required>
-                                    <option value="">Select</option>
-                                    <option value="yes" {{ old('open_for_guidance', $business->open_for_guidance ?? '') == 'yes' ? 'selected' : '' }}>Yes</option>
-                                    <option value="no" {{ old('open_for_guidance', $business->open_for_guidance ?? '') == 'no' ? 'selected' : '' }}>No</option>
-                                    <option value="maybe" {{ old('open_for_guidance', $business->open_for_guidance ?? '') == 'maybe' ? 'selected' : '' }}>Maybe</option>
-                                </select>
-                                @error('open_for_guidance')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            @error('fair_pricing')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
 
-                            <div class="mb-3">
-                                <label class="form-label">Collaboration Open *</label>
-                                <select class="form-select @error('collaboration_open') is-invalid @enderror" name="collaboration_open" required>
-                                    <option value="">Select</option>
-                                    <option value="yes" {{ old('collaboration_open', $business->collaboration_open ?? '') == 'yes' ? 'selected' : '' }}>Yes</option>
-                                    <option value="no" {{ old('collaboration_open', $business->collaboration_open ?? '') == 'no' ? 'selected' : '' }}>No</option>
-                                    <option value="maybe" {{ old('collaboration_open', $business->collaboration_open ?? '') == 'maybe' ? 'selected' : '' }}>Maybe</option>
-                                </select>
-                                @error('collaboration_open')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            {{-- Open for Guidance --}}
+                            <div class="mb-3 d-flex align-items-center">
+                                <label class="form-label question-label">Open for Guidance *</label>
+                                @php $value = old('open_for_guidance', $business->open_for_guidance ?? ''); @endphp
+                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
+                                    @foreach ([
+                                        'yes' => 'Yes',
+                                        'no' => 'No',
+                                        'maybe' => 'Maybe'
+                                    ] as $key => $label)
+                                        <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
+                                            <input type="radio" name="open_for_guidance" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
+                                        </label>
+                                    @endforeach
+                                </div>
                             </div>
+                            @error('open_for_guidance')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+
+                            {{-- Collaboration Open --}}
+                            <div class="mb-3 d-flex align-items-center">
+                                <label class="form-label question-label">Collaboration Open *</label>
+                                @php $value = old('collaboration_open', $business->collaboration_open ?? ''); @endphp
+                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
+                                    @foreach ([
+                                        'yes' => 'Yes',
+                                        'no' => 'No',
+                                        'maybe' => 'Maybe'
+                                    ] as $key => $label)
+                                        <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
+                                            <input type="radio" name="collaboration_open" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @error('collaboration_open')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+
+
+
 
                             <div class="mb-3">
                                 <label class="form-label">Ethical Description</label>
