@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\GmeBusinessForm;
+use App\Models\BusinessCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -98,12 +99,23 @@ class CustomerController extends Controller
     }
 
 
-    public function gmeBusinessIndex(Request $request)
+    //Here serve customer budiness Index
+    public function gmeBusinessIndex()
     {
-        // Check if it's an AJAX request for JSON data
-        if ($request->ajax() || $request->wantsJson()) {
-            $businesses = GmeBusinessForm::select([
+        return view('gme-business.index');
+    }
+    public function indexAjax(Request $request)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        if (!$customer) {
+            return response()->json([], 401);
+        }
+
+        $businesses = GmeBusinessForm::query()
+            ->select([
                 'id',
+                'customer_id',
                 'business_name',
                 'short_introduction',
                 'business_category_id',
@@ -112,29 +124,48 @@ class CustomerController extends Controller
                 'logo',
                 'photos',
                 'status',
-                'created_at'
+                'created_at',
             ])
-            ->with('category')
-            ->where('allow_publish', true) // Only show businesses that allow publishing
-            ->orderBy('created_at', 'desc')
-            ->get();
+            ->with('category:id,name')
+            ->where('customer_id', $customer->id)
+            ->orderByDesc('id')
+            ->get()
+            ->transform(function ($business) {
+                $business->photos = is_string($business->photos)
+                    ? json_decode($business->photos, true)
+                    : ($business->photos ?? []);
 
-            // Parse JSON fields
-            $businesses = $businesses->map(function($business) {
-                if ($business->photos && is_string($business->photos)) {
-                    $business->photos = json_decode($business->photos, true);
-                }
+                $business->founders = is_string($business->founders)
+                    ? json_decode($business->founders, true)
+                    : ($business->founders ?? []);
+
                 return $business;
             });
 
-            return response()->json([
-                'businesses' => $businesses
-            ]);
-        }
-
-        // Return the view for normal page load
-        return view('gme-business.index');
+        return response()->json([
+            'businesses' => $businesses
+        ]);
     }
+
+
+    public function getCategoryAjax()
+    {
+        $categories = BusinessCategory::select('id', 'name')
+            ->orderBy('name')
+            ->get();
+
+        return response()->json([
+            'categories' => $categories
+        ]);
+    }
+
+    public function getLocationAjax()
+    {
+        return response()->json([
+            'locations' => $this->getCountries()
+        ]);
+    }
+
 
     public function show($id)
     {
@@ -142,6 +173,36 @@ class CustomerController extends Controller
         return view('gme-business.show', compact('business'));
     }
 
-
+    private function getCountries()
+    {
+        return [
+            'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Argentina', 'Armenia', 'Australia',
+            'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium',
+            'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei',
+            'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde',
+            'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo',
+            'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica',
+            'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea',
+            'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia',
+            'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana',
+            'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland',
+            'Israel', 'Italy', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'North Korea',
+            'South Korea', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho',
+            'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar',
+            'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius',
+            'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique',
+            'Myanmar', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger',
+            'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Palestine', 'Panama', 'Papua New Guinea',
+            'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia', 'Rwanda',
+            'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines', 'Samoa', 'San Marino',
+            'Sao Tome and Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone',
+            'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan',
+            'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria',
+            'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad and Tobago', 'Tunisia',
+            'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom',
+            'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam',
+            'Yemen', 'Zambia', 'Zimbabwe'
+        ];
+    }
 
 }

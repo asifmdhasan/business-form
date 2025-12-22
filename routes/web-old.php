@@ -13,6 +13,7 @@ use App\Http\Middleware\LoginAuthMiddleware;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\GmeBusinessController;
 use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\GmeFormAllUserController;
 use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\GmeBusinessAdminController;
 use App\Http\Controllers\FrontendGmeBusinessController;
@@ -21,7 +22,12 @@ use App\Http\Controllers\FrontendGmeBusinessController;
 
 
 
-
+/////////////////////For All///////////////////////
+        Route::get('/get-business/form', [GmeFormAllUserController::class, 'getBusinessForm'])->name('get.business');
+        Route::get('/get-business/index', [GmeFormAllUserController::class, 'getAllBusiness'])->name('get.business-index');
+        Route::get('/get-business/services/{category}', [GmeFormAllUserController::class, 'getServices'])->name('get.business.services');
+        Route::post('/add-business/save-step', [GmeFormAllUserController::class, 'saveStep'])->name('add.business.save-step');
+        Route::get('/get-business/success', [GmeFormAllUserController::class, 'success'])->name('get.business.success');
 
 
 
@@ -100,29 +106,14 @@ Route::post('/reset-password', [CustomerAuthController::class, 'resetPassword'])
 
 
 
-Route::middleware([
-    'setLocale',
-    CustomerAuth::class,
-])->group(function () {
 
-    //////// This is for Customer Own (OK)/////////////
 
+Route::middleware(['setLocale',CustomerAuth::class,])->group(function () {
 
         Route::get('/business/register', [GmeRegController::class, 'showRegisterForm'])->name('gme.business.register');
         Route::get('/gme-business-index', [CustomerController::class, 'gmeBusinessIndex'])->name('customer.gme-business-form.index');
-
-        // API route (JSON ONLY)
-        Route::get('/api/customer/gme-businesses', [CustomerController::class, 'indexAjax'])
-            ->name('customer.gme-business.ajax');
-        // get category ajax
-        Route::get('/get-category', [CustomerController::class, 'getCategoryAjax'])->name('customer.get-category.ajax');
-        //get Location Ajax
-        Route::get('/get-locations', [CustomerController::class, 'getLocationAjax'])->name('customer.get-locations.ajax');
-
-
-
-    ///////////////////////////////////////////////////
-
+            //For Customer Own
+        Route::get('/business-index', [GmeRegController::class, 'businessIndexCustomer'])->name('customer.business-form.index');
 
     Route::get('/customer/dashboard', [CustomerAuthController::class, 'customerDashboard'])->name('customer.dashboard');
     Route::get('/customer/logout', [CustomerAuthController::class, 'cusLogout'])->name('customer.logout');
@@ -135,9 +126,16 @@ Route::middleware([
     Route::post('/update-password', [CustomerController::class, 'storeUpdatePassword'])->name('customer.storeUpdatePassword');
 
 
-    Route::get('/gme-business-form', [CustomerController::class, 'createGmeBusinessForm'])->name('customer.gme-business-form.create');
+    // Route::get('/gme-business-form', [CustomerController::class, 'createGmeBusinessForm'])->name('customer.gme-business-form.create');
 
-    Route::get('/gme-business-form/{business}', [CustomerController::class, 'show'])->name('customer.gme-business-form.show');
+    // Route::get('/gme-business-form/{business}', [CustomerController::class, 'show'])->name('customer.gme-business-form.show');
+
+
+
+
+
+
+
 
 
 });
@@ -179,44 +177,44 @@ Route::middleware([
 
 
 
-    // Route::group(['prefix' => 'roles'], function () {
-    //     Route::get('/', [RoleController::class, 'index'])->name('role.list');
-    //     Route::get('/create', [RoleController::class, 'create'])->name('role.create');
-    //     Route::post('/store', [RoleController::class, 'store'])->name('role.store');
-    //     Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('role.edit');
-    //     Route::post('/update/{id}', [RoleController::class, 'update'])->name('role.update');
-    //     Route::get('/delete/{id}', [RoleController::class, 'delete'])->name('role.delete');
-    // });
+    Route::group(['prefix' => 'roles'], function () {
+        Route::get('/', [RoleController::class, 'index'])->name('role.list');
+        Route::get('/create', [RoleController::class, 'create'])->name('role.create');
+        Route::post('/store', [RoleController::class, 'store'])->name('role.store');
+        Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('role.edit');
+        Route::post('/update/{id}', [RoleController::class, 'update'])->name('role.update');
+        Route::get('/delete/{id}', [RoleController::class, 'delete'])->name('role.delete');
+    });
 
-    // Route::group(['prefix' => 'reports'], function () {
-    //     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('reports.analytics');
-    //     Route::get('/export-csv', [AnalyticsController::class, 'exportCsv'])->name('reports.export.csv');
-    //     Route::get('/export-xlsx', [AnalyticsController::class, 'exportXlsx'])->name('reports.export.xlsx');
-    //     Route::get('/export-pdf', [AnalyticsController::class, 'exportPdf'])->name('reports.export.pdf');
+    Route::group(['prefix' => 'reports'], function () {
+        Route::get('/analytics', [AnalyticsController::class, 'index'])->name('reports.analytics');
+        Route::get('/export-csv', [AnalyticsController::class, 'exportCsv'])->name('reports.export.csv');
+        Route::get('/export-xlsx', [AnalyticsController::class, 'exportXlsx'])->name('reports.export.xlsx');
+        Route::get('/export-pdf', [AnalyticsController::class, 'exportPdf'])->name('reports.export.pdf');
 
-    //     // Route::get('/analytics', [AnalyticsController::class, 'index'])->name('reports.index');
-    //     Route::get('/data', [AnalyticsController::class, 'fetchData'])->name('reports.data');
-    // });
+        // Route::get('/analytics', [AnalyticsController::class, 'index'])->name('reports.index');
+        Route::get('/data', [AnalyticsController::class, 'fetchData'])->name('reports.data');
+    });
 
 
-    // Route::get('/notifications/latest', [AdminController::class, 'latestNotifications']);
-    // Route::post('/notifications/read/{id}', [AdminController::class, 'markAsRead']);
+    Route::get('/notifications/latest', [AdminController::class, 'latestNotifications']);
+    Route::post('/notifications/read/{id}', [AdminController::class, 'markAsRead']);
 
-    // Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    // // Route::get('/dashboard/chart-data', [AdminController::class, 'dashboard'])->name('admin.dashboard.chartData');
-    // Route::get('/admin/dashboard/chart-data', [AdminController::class, 'chartData'])->name('admin.dashboard.chartData');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    // Route::get('/dashboard/chart-data', [AdminController::class, 'dashboard'])->name('admin.dashboard.chartData');
+    Route::get('/admin/dashboard/chart-data', [AdminController::class, 'chartData'])->name('admin.dashboard.chartData');
 
-    // Route::get('/stock-entry-chart', [AdminController::class, 'stockEntryChart'])
-    //     ->name('dashboard.stockEntryChart');
+    Route::get('/stock-entry-chart', [AdminController::class, 'stockEntryChart'])
+        ->name('dashboard.stockEntryChart');
 
-    // Route::get('/stock-out-chart', [AdminController::class, 'stockOutChart'])
-    //     ->name('dashboard.stockOutChart');
+    Route::get('/stock-out-chart', [AdminController::class, 'stockOutChart'])
+        ->name('dashboard.stockOutChart');
 
-    // Route::get('/stock-in-out-chart', [AdminController::class, 'stockInOutChart'])
-    //     ->name('dashboard.stockInOutChart');
+    Route::get('/stock-in-out-chart', [AdminController::class, 'stockInOutChart'])
+        ->name('dashboard.stockInOutChart');
 
-    // Route::get('/purchase-and-requisition-chart', [AdminController::class, 'purchaseRequisitionChart'])
-    //     ->name('dashboard.purchaseRequisitionChart');
+    Route::get('/purchase-and-requisition-chart', [AdminController::class, 'purchaseRequisitionChart'])
+        ->name('dashboard.purchaseRequisitionChart');
 
 
 

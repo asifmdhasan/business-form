@@ -13,26 +13,33 @@ use App\Jobs\SendBusinessCreationEmailJob;
 class GmeRegController extends Controller
 {
     //FOR ALL
-    // public function gmeBusinessIndex(Request $request)
+
+    // public function businessIndexCustomer(Request $request)
     // {
+    //     $customer = auth()->guard('customer')->user();
+
+    //     if (!$customer) {
+    //         return redirect()->route('customer.login')->with('error', 'Please login first.');
+    //     }
+
     //     // Check if it's an AJAX request for JSON data
     //     if ($request->ajax() || $request->wantsJson()) {
     //         $businesses = GmeBusinessForm::select([
-    //             'id',
-    //             'business_name',
-    //             'short_introduction',
-    //             'business_category_id',
-    //             'countries_of_operation',
-    //             'founders',
-    //             'logo',
-    //             'photos',
-    //             'status',
-    //             'created_at'
-    //         ])
-    //         ->with('category')
-    //         ->where('allow_publish', true) // Only show businesses that allow publishing
-    //         ->orderBy('created_at', 'desc')
-    //         ->get();
+    //                 'id',
+    //                 'business_name',
+    //                 'short_introduction',
+    //                 'business_category_id',
+    //                 'countries_of_operation',
+    //                 'founders',
+    //                 'logo',
+    //                 'photos',
+    //                 'status',
+    //                 'created_at'
+    //             ])
+    //             ->with('category')
+    //             ->where('customer_id', $customer->id) // Only his own businesses
+    //             ->orderBy('created_at', 'desc')
+    //             ->get();
 
     //         // Parse JSON fields
     //         $businesses = $businesses->map(function($business) {
@@ -48,55 +55,10 @@ class GmeRegController extends Controller
     //     }
 
     //     // Return the view for normal page load
-    //     return view('gme-business.index');
+    //     return view('customer.gme-business.index-own', [
+    //         'customer' => $customer
+    //     ]);
     // }
-
-    //FOR CUSTOMER
-    public function businessIndexCustomer(Request $request)
-    {
-        $customer = auth()->guard('customer')->user();
-
-        if (!$customer) {
-            return redirect()->route('customer.login')->with('error', 'Please login first.');
-        }
-
-        // Check if it's an AJAX request for JSON data
-        if ($request->ajax() || $request->wantsJson()) {
-            $businesses = GmeBusinessForm::select([
-                    'id',
-                    'business_name',
-                    'short_introduction',
-                    'business_category_id',
-                    'countries_of_operation',
-                    'founders',
-                    'logo',
-                    'photos',
-                    'status',
-                    'created_at'
-                ])
-                ->with('category')
-                ->where('customer_id', $customer->id) // Only his own businesses
-                ->orderBy('created_at', 'desc')
-                ->get();
-
-            // Parse JSON fields
-            $businesses = $businesses->map(function($business) {
-                if ($business->photos && is_string($business->photos)) {
-                    $business->photos = json_decode($business->photos, true);
-                }
-                return $business;
-            });
-
-            return response()->json([
-                'businesses' => $businesses
-            ]);
-        }
-
-        // Return the view for normal page load
-        return view('customer.gme-business.index-own', [
-            'customer' => $customer
-        ]);
-    }
 
     public function showRegisterForm(Request $request)
     {

@@ -1,16 +1,9 @@
 @extends('layouts.frontend-master')
 
 @section('content')
-{{-- <!DOCTYPE html>
-<html lang="en"> --}}
-<head>
-    {{-- <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GME Business Directory</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> --}}
+
+
+
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
     <style>
         :root {
@@ -289,8 +282,8 @@
             }
         }
     </style>
-</head>
-<body>
+
+
     <div class="container py-5">
         <div class="row">
             <!-- Filter Sidebar -->
@@ -312,6 +305,10 @@
                         <select class="form-select" id="categoryFilter" style="width: 100%;">
                             <option value="">All Categories</option>
                         </select>
+
+                        {{-- <select class="form-select" id="categoryFilter" style="width: 100%;">
+                            <option value="">All Categories</option>
+                        </select> --}}
                     </div>
 
                     <!-- Location Filter -->
@@ -378,264 +375,507 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     
-    <script>
-        $(document).ready(function() {
-            let allBusinesses = [];
-            let filteredBusinesses = [];
+    
+{{-- <script>
+$(document).ready(function () {
 
-            // Initialize Select2
-            $('#categoryFilter').select2({
-                theme: 'bootstrap-5',
-                placeholder: 'All Categories',
-                allowClear: true
-            });
+    let allBusinesses = [];
+    let filteredBusinesses = [];
 
-            $('#locationFilter').select2({
-                theme: 'bootstrap-5',
-                placeholder: 'Select Location(s)',
-                allowClear: true
-            });
+    /* =========================
+       Select2 Init
+    ========================== */
+    $('#categoryFilter').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'All Categories',
+        allowClear: true
+    });
 
-            // Fetch businesses from server
-            function fetchBusinesses() {
-                $.ajax({
-                    url: '{{ route("customer.gme-business-form.index") }}',
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        allBusinesses = response.businesses || response;
-                        filteredBusinesses = [...allBusinesses];
-                        populateFilters();
-                        renderBusinesses();
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching businesses:', error);
-                        $('#businessGrid').html(`
-                            <div class="col-12 no-results">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <p>Failed to load businesses. Please try again later.</p>
-                            </div>
-                        `);
-                    }
-                });
-            }
+    $('#locationFilter').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Select Location(s)',
+        allowClear: true
+    });
 
-            // Populate filter dropdowns with unique values
-            function populateFilters() {
-                // Categories
-                const categories = [...new Set(allBusinesses
-                    .map(b => b.business_category)
-                    .filter(c => c))];
-                
-                categories.forEach(category => {
-                    $('#categoryFilter').append(new Option(category, category));
-                });
-
-                // Locations (combining cities and countries)
-                const locations = new Set();
-                allBusinesses.forEach(business => {
-                    if (business.business_cities && business.business_countries) {
-                        locations.add(`${business.business_cities}, ${business.business_countries}`);
-                    } else if (business.business_cities) {
-                        locations.add(business.business_cities);
-                    } else if (business.business_countries) {
-                        locations.add(business.business_countries);
-                    }
-                });
-
-                [...locations].sort().forEach(location => {
-                    $('#locationFilter').append(new Option(location, location));
-                });
-            }
-
-            // Filter businesses
-            function filterBusinesses() {
-                const searchText = $('#searchInput').val().toLowerCase();
-                const selectedCategories = $('#categoryFilter').val();
-                const selectedLocations = $('#locationFilter').val() || [];
-                const status = $('input[name="status"]:checked').val();
-
-                filteredBusinesses = allBusinesses.filter(business => {
-                    // Search filter
-                    if (searchText) {
-                        const searchableText = [
-                            business.business_name,
-                            business.tagline,
-                            business.business_category,
-                            business.founder_name
-                        ].join(' ').toLowerCase();
-                        
-                        if (!searchableText.includes(searchText)) {
-                            return false;
-                        }
-                    }
-
-                    // Category filter
-                    if (selectedCategories && business.business_category !== selectedCategories) {
-                        return false;
-                    }
-
-                    // Location filter
-                    if (selectedLocations.length > 0) {
-                        const businessLocation = business.business_cities && business.business_countries
-                            ? `${business.business_cities}, ${business.business_countries}`
-                            : business.business_cities || business.business_countries || '';
-                        
-                        if (!selectedLocations.includes(businessLocation)) {
-                            return false;
-                        }
-                    }
-
-                    // Status filter
-                    if (status && business.status !== status) {
-                        return false;
-                    }
-
-                    return true;
-                });
-
-                renderBusinesses();
-            }
-
-            // Sort businesses
-            function sortBusinesses() {
-                const sortBy = $('#sortBy').val();
-
-                switch(sortBy) {
-                    case 'newest':
-                        filteredBusinesses.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-                        break;
-                    case 'asc':
-                        filteredBusinesses.sort((a, b) => a.business_name.localeCompare(b.business_name));
-                        break;
-                    case 'desc':
-                        filteredBusinesses.sort((a, b) => b.business_name.localeCompare(a.business_name));
-                        break;
-                    default:
-                        // Most relevant - keep original order
-                        break;
-                }
-
-                renderBusinesses();
-            }
-
-            // Render business cards
-            function renderBusinesses() {
-                const $grid = $('#businessGrid');
-                $grid.empty();
-
-                if (filteredBusinesses.length === 0) {
-                    $grid.html(`
-                        <div class="col-12 no-results">
-                            <i class="fas fa-search"></i>
-                            <p>No businesses found matching your criteria.</p>
-                        </div>
-                    `);
-                    updateResultsCount(0);
-                    return;
-                }
-
-                filteredBusinesses.forEach(business => {
-                    const card = createBusinessCard(business);
-                    $grid.append(card);
-                });
-
-                updateResultsCount(filteredBusinesses.length);
-            }
-
-            // Create business card HTML
-            function createBusinessCard(business) {
-                const location = [business.countries_of_operation]
-                    .filter(l => l).join(', ');
-                // console.log(business.category.name);
-                const category = business.category.name;
-                const logo = `{{ asset('assets') }}/${business.logo}`
-
-
-                
-                const photos =
-                    business.photos && business.photos.length > 0
-                        ? `{{ asset('assets') }}/${business.photos[0]}`
-                        : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
-                    console.log(`{{ asset('assets') }}/${business.photos[0]}`);
-
-
-                // const photos = business.photos && business.photos.length > 0
-                //     console.log(business.photos);
-                //     ? `{{ asset('assets/business-photos') }}/${business.photos[0]}`
-                //     // ? `{{ asset('storage') }}/${business.photos[0]}`
-                //     : 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=300&fit=crop';
-
-                const verifiedBadge = business.status === 'approved' ? `
-                    <div class="verified-badge">
-                        <i class="fas fa-check-circle verified-icon"></i>
-                        GME Verified
-                    </div>
-                ` : '';
-
-                return `
-                    <div class="col-md-6 col-lg-4">
-                        <div class="business-card" onclick="window.location.href='{{ url('gme-business-form') }}/${business.id}'">
-                            <div style="position: relative;">
-                                <img src="${photos}" alt="${business.business_name}" class="business-image" onerror="this.src='http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop'">
-                                ${verifiedBadge}
-                            </div>
-                            <div class="business-content">
-                                <div class="business-header">
-                                    <img src="${logo}" alt="Logo" class="business-logo" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}&background=D4AF37&color=fff&size=50'">
-                                    <div class="business-info">
-                                        <div class="business-name">${business.business_name}</div>
-                                        <div class="business-category">${category}</div>
-                                    </div>
-                                </div>
-                                ${business.short_introduction ? `<div class="business-short-introduction">${business.short_introduction}</div>` : ''}
-                                ${location ? `
-                                    <div class="business-location">
-                                        <i class="fas fa-map-marker-alt location-icon"></i>
-                                        ${location}
-                                    </div>
-                                ` : ''}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Update results count
-            function updateResultsCount(count) {
-                const total = allBusinesses.length;
-                $('#showingCount').text(count);
-                $('#totalCount').text(total);
-            }
-
-            // Event Listeners
-            $('#applyFilters').on('click', function() {
-                filterBusinesses();
-            });
-
-            $('#resetFilters').on('click', function() {
-                $('#searchInput').val('');
-                $('#categoryFilter').val('').trigger('change');
-                $('#locationFilter').val(null).trigger('change');
-                $('#statusAll').prop('checked', true);
+    /* =========================
+       Fetch Businesses
+    ========================== */
+    function fetchBusinesses() {
+        $.ajax({
+            url: '{{ route("customer.gme-business.ajax") }}',
+            method: 'GET',
+            success: function (response) {
+                allBusinesses = response.businesses;
                 filteredBusinesses = [...allBusinesses];
                 renderBusinesses();
-            });
-
-            $('#sortBy').on('change', function() {
-                sortBusinesses();
-            });
-
-            $('#searchInput').on('keyup', function() {
-                filterBusinesses();
-            });
-
-            // Initialize
-            fetchBusinesses();
+            }
         });
-    </script>
+    }
+
+    /* =========================
+       Fetch Categories
+    ========================== */
+    function fetchCategories() {
+        $.ajax({
+            url: '{{ route("customer.get-category.ajax") }}',
+            method: 'GET',
+            success: function (response) {
+                const $category = $('#categoryFilter').empty()
+                    .append('<option value="">All Categories</option>');
+
+                response.categories.forEach(cat => {
+                    $category.append(new Option(cat.name, cat.id));
+                });
+
+                $category.trigger('change');
+            }
+        });
+    }
+
+    /* =========================
+       ✅ Fetch Locations (COUNTRIES)
+    ========================== */
+    function fetchLocations() {
+        $.ajax({
+            url: '{{ route("customer.get-locations.ajax") }}',
+            method: 'GET',
+            success: function (response) {
+                const $location = $('#locationFilter').empty();
+
+                response.locations.forEach(country => {
+                    $location.append(new Option(country, country));
+                });
+
+                $location.trigger('change');
+            }
+        });
+    }
+
+    /* =========================
+       Filter Businesses
+    ========================== */
+    function filterBusinesses() {
+
+        const searchText = $('#searchInput').val().toLowerCase();
+        const selectedCategory = $('#categoryFilter').val();
+        const selectedLocations = $('#locationFilter').val() || [];
+        const status = $('input[name="status"]:checked').val();
+
+        filteredBusinesses = allBusinesses.filter(business => {
+
+            // Search
+            if (searchText) {
+                const text = [
+                    business.business_name,
+                    business.short_introduction,
+                    business.category?.name
+                ].join(' ').toLowerCase();
+
+                if (!text.includes(searchText)) return false;
+            }
+
+            // Category
+            if (selectedCategory && business.business_category_id != selectedCategory) {
+                return false;
+            }
+
+            // ✅ LOCATION FILTER (ARRAY MATCH)
+            if (selectedLocations.length > 0) {
+                const countries = Array.isArray(business.countries_of_operation)
+                    ? business.countries_of_operation
+                    : [];
+
+                const match = selectedLocations.some(loc =>
+                    countries.includes(loc)
+                );
+
+                if (!match) return false;
+            }
+
+            // Status
+            if (status && business.status !== status) {
+                return false;
+            }
+
+            return true;
+        });
+
+        renderBusinesses();
+    }
+
+    /* =========================
+       Sort
+    ========================== */
+    function sortBusinesses() {
+        const sortBy = $('#sortBy').val();
+
+        if (sortBy === 'newest') {
+            filteredBusinesses.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        } else if (sortBy === 'asc') {
+            filteredBusinesses.sort((a, b) => a.business_name.localeCompare(b.business_name));
+        } else if (sortBy === 'desc') {
+            filteredBusinesses.sort((a, b) => b.business_name.localeCompare(a.business_name));
+        }
+
+        renderBusinesses();
+    }
+
+    /* =========================
+       Render Cards
+    ========================== */
+    function renderBusinesses() {
+
+        const $grid = $('#businessGrid').empty();
+
+        if (!filteredBusinesses.length) {
+            $grid.html(`
+                <div class="col-12 no-results">
+                    <i class="fas fa-search"></i>
+                    <p>No businesses found.</p>
+                </div>
+            `);
+            updateResultsCount(0);
+            return;
+        }
+
+        filteredBusinesses.forEach(business => {
+            $grid.append(createBusinessCard(business));
+        });
+
+        updateResultsCount(filteredBusinesses.length);
+    }
+
+    /* =========================
+       Card HTML
+    ========================== */
+    function createBusinessCard(business) {
+
+        const category = business.category?.name ?? '';
+        const logo = `{{ asset('assets') }}/${business.logo}`;
+
+        const photo = business.photos?.length
+            ? `{{ asset('assets') }}/${business.photos[0]}`
+            : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
+
+        const verified = business.status === 'approved'
+            ? `<div class="verified-badge">
+                    <i class="fas fa-check-circle"></i> GME Verified
+               </div>`
+            : '';
+
+        return `
+        <div class="col-md-6 col-lg-4">
+            <div class="business-card" onclick="location.href='{{ url('gme-business-form') }}/${business.id}'">
+                <div style="position:relative">
+                    <img src="${photo}" class="business-image">
+                    ${verified}
+                </div>
+                <div class="business-content">
+                    <div class="business-header">
+                        <img src="${logo}" class="business-logo">
+                        <div>
+                            <div class="business-name">${business.business_name}</div>
+                            <div class="business-category">${category}</div>
+                        </div>
+                    </div>
+                    ${business.short_introduction ?? ''}
+                </div>
+            </div>
+        </div>`;
+    }
+
+    /* =========================
+       Count
+    ========================== */
+    function updateResultsCount(count) {
+        $('#showingCount').text(count);
+        $('#totalCount').text(allBusinesses.length);
+    }
+
+    /* =========================
+       Events
+    ========================== */
+    $('#applyFilters').on('click', filterBusinesses);
+    $('#searchInput').on('keyup', filterBusinesses);
+    $('#sortBy').on('change', sortBusinesses);
+    $('#categoryFilter, #locationFilter').on('change', filterBusinesses);
+
+    $('#resetFilters').on('click', function () {
+        $('#searchInput').val('');
+        $('#categoryFilter').val('').trigger('change');
+        $('#locationFilter').val(null).trigger('change');
+        $('#statusAll').prop('checked', true);
+        filteredBusinesses = [...allBusinesses];
+        renderBusinesses();
+    });
+
+    /* =========================
+       Init
+    ========================== */
+    fetchBusinesses();
+    fetchCategories();
+    fetchLocations();
+
+});
+</script> --}}
+
+
+
+
+
+
+
+<script>
+$(document).ready(function () {
+
+    let allBusinesses = [];
+    let filteredBusinesses = [];
+
+    /* =========================
+       Select2 Init
+    ========================== */
+    $('#categoryFilter').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'All Categories',
+        allowClear: true
+    });
+
+    $('#locationFilter').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Select Location(s)',
+        allowClear: true
+    });
+
+    /* =========================
+       Fetch Businesses
+    ========================== */
+    function fetchBusinesses() {
+        $.ajax({
+            url: '{{ route("customer.gme-business.ajax") }}',
+            method: 'GET',
+            success: function (response) {
+                // ✅ Parse countries_of_operation JSON
+                allBusinesses = response.businesses.map(business => {
+                    try {
+                        business.countries_of_operation = Array.isArray(business.countries_of_operation)
+                            ? business.countries_of_operation
+                            : JSON.parse(business.countries_of_operation || '[]');
+                    } catch(e) {
+                        business.countries_of_operation = [];
+                    }
+                    return business;
+                });
+
+                filteredBusinesses = [...allBusinesses];
+                renderBusinesses();
+            }
+        });
+    }
+
+    /* =========================
+       Fetch Categories
+    ========================== */
+    function fetchCategories() {
+        $.ajax({
+            url: '{{ route("customer.get-category.ajax") }}',
+            method: 'GET',
+            success: function (response) {
+                const $category = $('#categoryFilter').empty()
+                    .append('<option value="">All Categories</option>');
+
+                response.categories.forEach(cat => {
+                    $category.append(new Option(cat.name, cat.id));
+                });
+
+                $category.trigger('change');
+            }
+        });
+    }
+
+    /* =========================
+       Fetch Locations
+    ========================== */
+    function fetchLocations() {
+        $.ajax({
+            url: '{{ route("customer.get-locations.ajax") }}',
+            method: 'GET',
+            success: function (response) {
+                const $location = $('#locationFilter').empty();
+
+                response.locations.forEach(country => {
+                    $location.append(new Option(country, country));
+                });
+
+                $location.trigger('change');
+            }
+        });
+    }
+
+    /* =========================
+       Filter Businesses
+    ========================== */
+    function filterBusinesses() {
+
+        const searchText = $('#searchInput').val().toLowerCase();
+        const selectedCategory = $('#categoryFilter').val();
+        const selectedLocations = $('#locationFilter').val() || [];
+        const status = $('input[name="status"]:checked').val();
+
+        filteredBusinesses = allBusinesses.filter(business => {
+
+            // Search
+            if (searchText) {
+                const text = [
+                    business.business_name,
+                    business.short_introduction,
+                    business.category?.name
+                ].join(' ').toLowerCase();
+
+                if (!text.includes(searchText)) return false;
+            }
+
+            // Category
+            if (selectedCategory && business.business_category_id != selectedCategory) {
+                return false;
+            }
+
+            // ✅ Location Filter (handle JSON array)
+            if (selectedLocations.length > 0) {
+                const countries = business.countries_of_operation || [];
+                const match = selectedLocations.some(loc => countries.includes(loc));
+                if (!match) return false;
+            }
+
+            // Status
+            if (status && business.status !== status) {
+                return false;
+            }
+
+            return true;
+        });
+
+        renderBusinesses();
+    }
+
+    /* =========================
+       Sort
+    ========================== */
+    function sortBusinesses() {
+        const sortBy = $('#sortBy').val();
+
+        if (sortBy === 'newest') {
+            filteredBusinesses.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        } else if (sortBy === 'asc') {
+            filteredBusinesses.sort((a, b) => a.business_name.localeCompare(b.business_name));
+        } else if (sortBy === 'desc') {
+            filteredBusinesses.sort((a, b) => b.business_name.localeCompare(a.business_name));
+        }
+
+        renderBusinesses();
+    }
+
+    /* =========================
+       Render Cards
+    ========================== */
+    function renderBusinesses() {
+
+        const $grid = $('#businessGrid').empty();
+
+        if (!filteredBusinesses.length) {
+            $grid.html(`
+                <div class="col-12 no-results">
+                    <i class="fas fa-search"></i>
+                    <p>No businesses found.</p>
+                </div>
+            `);
+            updateResultsCount(0);
+            return;
+        }
+
+        filteredBusinesses.forEach(business => {
+            $grid.append(createBusinessCard(business));
+        });
+
+        updateResultsCount(filteredBusinesses.length);
+    }
+
+    /* =========================
+       Card HTML
+    ========================== */
+    function createBusinessCard(business) {
+
+        const category = business.category?.name ?? '';
+        const logo = `{{ asset('assets') }}/${business.logo}`;
+
+        const photo = business.photos?.length
+            ? `{{ asset('assets') }}/${business.photos[0]}`
+            : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
+
+        const verified = business.status === 'approved'
+            ? `<div class="verified-badge">
+                    <i class="fas fa-check-circle"></i> GME Verified
+               </div>`
+            : '';
+
+        return `
+        <div class="col-md-6 col-lg-4">
+            <div class="business-card" onclick="location.href='{{ url('gme-business-form') }}/${business.id}'">
+                <div style="position:relative">
+                    <img src="${photo}" class="business-image">
+                    ${verified}
+                </div>
+                <div class="business-content">
+                    <div class="business-header">
+                        <img src="${logo}" class="business-logo">
+                        <div>
+                            <div class="business-name">${business.business_name}</div>
+                            <div class="business-category">${category}</div>
+                        </div>
+                    </div>
+                    ${business.short_introduction ?? ''}
+                </div>
+            </div>
+        </div>`;
+    }
+
+    /* =========================
+       Count
+    ========================== */
+    function updateResultsCount(count) {
+        $('#showingCount').text(count);
+        $('#totalCount').text(allBusinesses.length);
+    }
+
+    /* =========================
+       Events
+    ========================== */
+    $('#applyFilters').on('click', filterBusinesses);
+    $('#searchInput').on('keyup', filterBusinesses);
+    $('#sortBy').on('change', sortBusinesses);
+    $('#categoryFilter, #locationFilter').on('change', filterBusinesses);
+
+    $('#resetFilters').on('click', function () {
+        $('#searchInput').val('');
+        $('#categoryFilter').val('').trigger('change');
+        $('#locationFilter').val(null).trigger('change');
+        $('#statusAll').prop('checked', true);
+        filteredBusinesses = [...allBusinesses];
+        renderBusinesses();
+    });
+
+    /* =========================
+       Init
+    ========================== */
+    fetchBusinesses();
+    fetchCategories();
+    fetchLocations();
+
+});
+</script>
+
+
 @endsection
 
