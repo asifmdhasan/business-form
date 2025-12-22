@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GmeRegController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Middleware\LoginAuthMiddleware;
@@ -13,8 +14,8 @@ use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\GmeBusinessController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\BusinessCategoryController;
+use App\Http\Controllers\GmeBusinessAdminController;
 use App\Http\Controllers\FrontendGmeBusinessController;
-use App\Http\Controllers\GmeRegController;
 
 
 
@@ -181,7 +182,7 @@ Route::middleware([
 
     Route::resource('gme-business', FrontendGmeBusinessController::class);
 
-    Route::resource('gme-business-admin', GmeBusinessController::class);
+    Route::resource('gme-business-admin', GmeBusinessAdminController::class);
 
 
 
