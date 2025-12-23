@@ -153,10 +153,7 @@ $(document).ready(function () {
                 searchable: false,
                 render: function (data, type, row) {
                     return `
-                        <a href="{{ url('gme-business-admin') }}/${row.id}" 
-                           class="btn btn-sm btn-info">
-                            <i class="fas fa-eye"></i>
-                        </a>
+                        
 
                         <a href="{{ url('gme-business-admin') }}/${row.id}/edit" 
                            class="btn btn-sm btn-primary">
@@ -178,4 +175,8 @@ $(document).ready(function () {
 
 });
 </script>
+{{-- <a href="{{ url('gme-business-admin') }}/${row.id}" 
+                           class="btn btn-sm btn-info">
+                            <i class="fas fa-eye"></i>
+                        </a> --}}
 @endsection

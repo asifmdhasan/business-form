@@ -1,857 +1,566 @@
 @extends('layouts.frontend-master')
 
 @section('content')
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $business->business_name }} - GME Business Directory</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #1DD1A1;
-            --secondary-color: #2C3E50;
-            --success-color: #27AE60;
-            --text-muted: #7F8C8D;
-            --light-bg: #F0F9FF;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #F8F9FA;
-        }
-
-        /* Header Section */
-        .hero-section {
-            background: linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%);
-            padding: 40px 0;
-            margin-bottom: 40px;
-        }
-
-        .business-header {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .business-logo-large {
-            width: 120px;
-            height: 120px;
-            border-radius: 15px;
-            object-fit: cover;
-            border: 3px solid white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            background: white;
-        }
-
-        .business-title-section h1 {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 8px;
-        }
-
-        .business-tagline {
-            color: #555;
-            font-size: 16px;
-            margin-bottom: 0;
-        }
-
-        .verified-badge-large {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: white;
-            padding: 8px 16px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--success-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-top: 10px;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            flex-direction: row-reverse;
-        }
-
-        .btn-download {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .btn-download:hover {
-            background: #10B981;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(29, 209, 161, 0.3);
-            color: white;
-        }
-
-        .btn-download-outline {
-            background: white;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
-
-        .btn-download-outline:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        /* Content Sections */
-        .content-card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .section-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 20px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .info-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .info-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--light-bg);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-            flex-shrink: 0;
-        }
-
-        .info-content {
-            flex: 1;
-        }
-
-        .info-label {
-            font-size: 12px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
-
-        .info-value {
-            font-size: 15px;
-            color: var(--secondary-color);
-            font-weight: 600;
-        }
-
-        /* Faith-Compliant Section */
-        .faith-section {
-            background: linear-gradient(135deg, #F0F9FF 0%, #E0F7FA 100%);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .faith-icon {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            color: var(--primary-color);
-            font-size: 28px;
-        }
-
-        .faith-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 10px;
-        }
-
-        .faith-subtitle {
-            color: var(--text-muted);
-            margin-bottom: 25px;
-        }
-
-        .faith-badges {
-            /* display: flex; */
-            justify-content: center;
-            text-align: center;
-            /* gap: 20px; */
-            flex-wrap: wrap;
-        }
-
-        .faith-badge {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            text-align: center;
-        }
-
-        .faith-badge i {
-            color: var(--success-color);
-            font-size: 20px;
-        }
-
-        .faith-badge span {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--secondary-color);
-        }
-
-        .faith-description {
-            margin-top: 25px;
-            padding: 20px;
-            /* background: white; */
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        /* Products Section */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .product-card {
-            background: white;
-            border: 1px solid #E5E7EB;
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .product-card:hover {
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            transform: translateY(-5px);
-        }
-
-        .product-icon {
-            width: 70px;
-            height: 70px;
-            background: var(--light-bg);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            color: var(--primary-color);
-            font-size: 32px;
-        }
-
-        .product-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 10px;
-        }
-
-        .product-description {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        .btn-view-all {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 30px;
-            background: #F3F4F6;
-            color: var(--secondary-color);
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .btn-view-all:hover {
-            background: #E5E7EB;
-            color: var(--secondary-color);
-        }
-
-        /* Photos Grid */
-        .photos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .photo-item {
-            width: 100%;
-            height: 100%; /* equal height */
-            overflow: hidden;
-            border-radius: 8px;
-            background: #f1f1f1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .photo-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-
-        .photo-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Contact Section */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--light-bg);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-            font-size: 20px;
-        }
-
-        .contact-info {
-            flex: 1;
-        }
-
-        .contact-label {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .contact-value {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--secondary-color);
-            word-break: break-word;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .social-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .social-btn.whatsapp {
-            background: #25D366;
-        }
-
-        .social-btn.facebook {
-            background: #1877F2;
-        }
-
-        .social-btn.instagram {
-            background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF);
-        }
-
-        .social-btn.linkedin {
-            background: #0A66C2;
-        }
-
-        .social-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        /* Footer */
-        .business-footer {
-            background: var(--secondary-color);
-            color: white;
-            padding: 40px 0;
-            margin-top: 60px;
-        }
-
-        .footer-logo {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 15px;
-        }
-
-        .footer-text {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary-color);
-        }
-        .about-business-info .info-item {
-            margin-bottom: 1rem;
-            margin-top: 1rem;
-        }
-
-        @media (max-width: 768px) {
-            .business-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .business-title-section h1 {
-                font-size: 24px;
-            }
-
-            .action-buttons {
-                justify-content: center;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .photos-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Hero Section -->
-    <div class="hero-section">
-        <div class="container">
-            <div class="business-header">
-                <img src="{{ $business->logo ? asset('assets/logo/' . $business->logo) : 'https://ui-avatars.com/api/?name=' . urlencode($business->business_name) . '&background=1DD1A1&color=fff&size=120' }}" 
-                     alt="{{ $business->business_name }}" 
-                     class="business-logo-large"
-                     onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($business->business_name) }}&background=1DD1A1&color=fff&size=120'">
-                
-                <div class="business-title-section flex-grow-1">
-                    <h1>{{ $business->business_name }}</h1>
-                    <p class="business-tagline">{{ $business->tagline ?? 'Empowering ethical entrepreneurship globally.' }}</p>
-                    
-                    @if($business->status === 'approved')
-                    <span class="verified-badge-large">
-                        <i class="fas fa-check-circle"></i>
-                        GME Verified
-                    </span>
-                    @endif
-                </div>
-            </div>
-
-            <div class="action-buttons">
-                @if($business->registration_document)
-                <a href="{{ asset('assets/' . $business->registration_document) }}" class="btn-download" download>
-                    <i class="fas fa-download"></i>
-                    Download Company Profile
-                </a>
-                @endif
-                
-                @if($business->products)
-                <a href="#products" class="btn-download btn-download-outline">
-                    <i class="fas fa-box"></i>
-                    Download Product Catalogue
-                </a>
-                @endif
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container pb-5">
-        <!-- About Section -->
-        <div class="content-card">
-            <h2 class="section-title">About the Business</h2>
-            <p style="color: #555; line-height: 1.8; margin-bottom: 30px;">
-                {{ $business->business_overview ?? 'This is a short introductory paragraph about the business, highlighting its mission and vision within the global market. It serves as a quick summary for visitors seeking to understand our core values and offerings.' }}
-            </p>
-            <hr>
-
-            <div class="info-grid">
-                <div class="row about-business-info">
-                    @if($business->year_established)
-                        <div class="info-item">
-                            <div class="info-icon">
-                                <i class="fas fa-calendar-alt"></i>
-                            </div>
-                            <div class="info-content">
-                                <div class="info-label">Year Established</div>
-                                <div class="info-value">{{ $business->year_established ?? 'Not Provided Yet' }}</div>
-                            </div>
-                        </div>
-                    @endif
-
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="info-content">
-                            <div class="info-label">Country & City</div>
-                            <div class="info-value">
-                                {{ $business->business_cities ?? 'N/A' }}, {{ $business->business_countries ?? 'Not Provided Yet' }}
-                            </div>
-                        </div>
+@php
+    $countries = is_string($business->countries_of_operation)
+        ? json_decode($business->countries_of_operation, true)
+        : ($business->countries_of_operation ?? []);
+
+    $photos = is_string($business->photos)
+        ? json_decode($business->photos, true)
+        : ($business->photos ?? []);
+
+    function badgeColor($value) {
+        return match($value) {
+            'yes' => 'text-success',
+            'no' => 'text-danger',
+            'maybe', 'mostly', 'partially_compliant', 'partially_transitioning' => 'text-warning',
+            default => 'text-muted',
+        };
+    }
+
+    function badgeIcon($value) {
+        return match($value) {
+            'yes' => 'fa-check-circle',
+            'no' => 'fa-times-circle',
+            'maybe', 'mostly', 'partially_compliant', 'partially_transitioning' => 'fa-exclamation-circle',
+            default => 'fa-minus-circle',
+        };
+    }
+@endphp
+
+<style>
+    /* Custom Colors */
+    :root {
+        --primary-color: #22cece;
+        --primary-hover: #1db8b8;
+        --text-muted: #519494;
+        --bg-light: #f6f8f8;
+        --border-light: #e5e7eb;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        background-size: cover;
+        background-position: center;
+        border-radius: 1rem;
+        padding: 5rem 4rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        min-height: 280px;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        border-radius: 1rem;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url('https://www.transparenttextures.com/patterns/subtle-prism.png');
+        opacity: 0.15;
+        z-index: 1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        color: white;
+    }
+
+    .hero-content h1,
+    .hero-content .section-title {
+        color: white;
+    }
+
+    .hero-content .text-muted {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    .hero-buttons {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        z-index: 3;
+    }
+
+    .logo-box {
+        width: 96px;
+        height: 96px;
+        background: white;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .logo-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .verified-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        background: rgba(34, 197, 94, 0.9);
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+    }
+
+    .btn-primary-custom {
+        background-color: var(--primary-color);
+        color: #0e1a1a;
+        font-weight: 600;
+        border: none;
+        transition: transform 0.2s;
+    }
+
+    .btn-primary-custom:hover {
+        background-color: var(--primary-hover);
+        color: #0e1a1a;
+        transform: scale(1.05);
+    }
+
+    .btn-outline-custom {
+        background-color: rgba(34, 206, 206, 0.2);
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        font-weight: 600;
+        transition: transform 0.2s;
+    }
+
+    .btn-outline-custom:hover {
+        background-color: rgba(34, 206, 206, 0.3);
+        color: var(--primary-color);
+        transform: scale(1.05);
+    }
+
+    /* About Section */
+    .about-card {
+        border: 1px solid var(--border-light);
+        border-radius: 1rem;
+        background: white;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: start;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .info-item i {
+        color: var(--primary-color);
+        margin-top: 0.25rem;
+    }
+
+    .info-label {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        margin-bottom: 0.25rem;
+    }
+
+    .info-value {
+        font-weight: 500;
+        color: #0e1a1a;
+    }
+
+    /* Faith Compliance Section */
+    .faith-section {
+        background: linear-gradient(135deg, #d5f4f4 0%, #a5f3f3 100%);
+        border-radius: 1rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .faith-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url('https://www.transparenttextures.com/patterns/gplay.png');
+        opacity: 0.1;
+    }
+
+    .faith-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .faith-card {
+        background: white;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .faith-card i {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Products Section */
+    .product-card {
+        border: 1px solid var(--border-light);
+        border-radius: 1rem;
+        background: white;
+        padding: 1.5rem;
+        text-align: center;
+        transition: box-shadow 0.3s;
+        margin-bottom: 1.5rem;
+    }
+
+    .product-card:hover {
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .product-icon {
+        width: 64px;
+        height: 64px;
+        background: rgba(34, 206, 206, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        color: var(--primary-color);
+        font-size: 1.75rem;
+    }
+
+    /* Gallery */
+    .gallery-img {
+        width: 100%;
+        aspect-ratio: 4/3;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        transition: transform 0.3s;
+    }
+
+    .gallery-img:hover {
+        transform: scale(1.05);
+    }
+
+    /* Contact Section */
+    .contact-card {
+        border: 1px solid var(--border-light);
+        border-radius: 1rem;
+        background: white;
+        padding: 1.5rem;
+    }
+
+    .social-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #f3f4f6;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #6b7280;
+        transition: all 0.3s;
+        text-decoration: none;
+    }
+
+    .social-icon:hover {
+        background: #e5e7eb;
+        color: #374151;
+    }
+
+    .whatsapp-btn {
+        background: #25d366;
+        color: white;
+        font-weight: 600;
+        border: none;
+    }
+
+    .whatsapp-btn:hover {
+        background: #20ba5a;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    /* Section Headers */
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0e1a1a;
+        margin-bottom: 0.25rem;
+    }
+
+    .section-subtitle {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+    }
+</style>
+
+<div class="container my-4">
+    <!-- HERO SECTION -->
+    <section class="hero-section" style="background-image: url('{{ $business->cover_photo ? asset('assets/'.$business->cover_photo) : 'https://images.unsplash.com/photo-1497366216548-37526070297c' }}');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="logo-box">
+                        <img src="{{ $business->logo ? asset('assets/'.$business->logo) : 'https://ui-avatars.com/api/?name='.urlencode($business->business_name) }}" 
+                             alt="{{ $business->business_name }}">
                     </div>
                 </div>
-                
-                <div class="row about-business-info">
-                    @if($business->business_category)
-                        <div class="info-item">
-                            <div class="info-icon">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <div class="info-content">
-                                <div class="info-label">Business Category</div>
-                                <div class="info-value">{{ $business->business_category ?? 'Not Provided Yet' }}</div>
-                            </div>
-                        </div>
-                    @endif
-
-                    @if($business->operational_scale)
-                        <div class="info-item">
-                            <div class="info-icon">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <div class="info-content">
-                                <div class="info-label">Operational Scale</div>
-                                <div class="info-value">{{ $business->operational_scale ?? 'Not Provided Yet' }}</div>
-                            </div>
-                        </div>
-                    @endif
+                <div class="col p-8">
+                    <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
+                        <h1 class="section-title mb-0">{{ $business->business_name }}</h1>
+                        @if($business->status === 'approved')
+                            <span class="verified-badge">
+                                <i class="fas fa-check-circle"></i>
+                                GME Verified
+                            </span>
+                        @else
+                            <span class="unverified-badge">
+                                
+                                ({{ $business->status }})
+                            </span>
+                        @endif
+                    </div>
+                    <p class="text-muted mb-0" style="color: rgba(255,255,255,0.9) !important;">{{ $business->short_introduction }}</p>
                 </div>
-                
             </div>
-            <hr>
-
-            @if($business->business_overview)
-            <p style="color: #555; line-height: 1.8;">
-                {{ $business->business_overview }}
-            </p>
-            @endif
         </div>
 
-        <!-- Faith-Compliant Section -->
-        @if($business->avoid_riba || $business->avoid_haram_products || $business->fair_pricing)
-        <div class="faith-section">
-            <div class="faith-icon">
-                <i class="fas fa-shield-alt"></i>
+        <!-- Buttons positioned at bottom-right -->
+        <div class="hero-buttons">
+            <div class="d-flex flex-wrap gap-2">
+                @if($business->business_profile)
+                    <a href="{{ asset('assets/'.$business->business_profile) }}" 
+                       class="btn btn-primary-custom" target="_blank">
+                        <i class="fas fa-download me-2"></i>Download Company Profile
+                    </a>
+                @endif
+                @if($business->product_catalogue)
+                    <a href="{{ asset('assets/'.$business->product_catalogue) }}" 
+                       class="btn btn-outline-custom" target="_blank">
+                        <i class="fas fa-book me-2"></i>Download Product Catalogue
+                    </a>
+                @endif
             </div>
-            <h3 class="faith-title">Faith-Compliant Business</h3>
-            <p class="faith-subtitle">This business is verified to operate under Islamic ethical principles.</p>
-
-            <div class="row faith-badges">
-                <div class="col-md-4">
-                    @if($business->avoid_riba === 'Yes')
-                        <div class="faith-badge">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Riba-free Financing</span>
-                        </div>
-                    @elseif($business->avoid_riba === 'Partially compliant')
-                        <div class="faith-badge">
-                            <i class="fas fa-times-circle text-warning"></i>
-                            <span>Partially Compliant Riba-free Financing</span>
-                        </div>
-                    @else
-                        <div class="faith-badge">
-                            <i class="fas fa-times-circle text-danger"></i>
-                            <span>No Riba Financing</span>
-                        </div>
-                    @endif
-                </div>
-
-                <div class="col-md-4">
-                    @if($business->avoid_haram_products === 'yes')
-                        <div class="faith-badge">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Ethical & Halal Conduct</span>
-                        </div>
-                    @elseif($business->avoid_haram_products === 'Partially compliant')
-                        <div class="faith-badge">
-                            <i class="fas fa-times-circle text-warning"></i>
-                            <span>Partially Compliant Ethical & Halal Conduct</span>
-                        </div>
-                    @else
-                        <div class="faith-badge">
-                            <i class="fas fa-times-circle text-danger"></i>
-                            <span>No Riba Financing</span>
-                        </div>
-                    @endif
-                </div>
-
-                <div class="col-md-4">
-                    @if($business->fair_pricing === 'yes')
-                        <div class="faith-badge">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Honest Pricing & Marketing</span>
-                        </div>
-                    @elseif($business->fair_pricing === 'Partially compliant')
-                        <div class="faith-badge">
-                            <i class="fas fa-times-circle text-warning"></i>
-                            <span>Partially Compliant Honest Pricing & Marketing</span>
-                        </div>
-                    @else
-                        <div class="faith-badge">
-                            <i class="fas fa-times-circle text-danger"></i>
-                            <span>No Honest Pricing & Marketing</span>
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            @if($business->ethical_description)
-            <div class="faith-description">
-                <p style="color: #555; margin: 0;">{{ $business->ethical_description }}</p>
-            </div>
-            @endif
         </div>
+    </section>
+
+    <!-- ABOUT THE BUSINESS -->
+    <section class="about-card">
+        <h2 class="section-title">About the Business</h2>
+        <p class="mb-4">{{ $business->business_overview }}</p>
+
+        <div class="row pt-3" style="border-top: 1px solid var(--border-light);">
+            <div class="col-md-6">
+                <div class="info-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div>
+                        <p class="info-label mb-0">Year Established</p>
+                        <p class="info-value mb-0">{{ $business->year_established ?? '—' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-item">
+                    <i class="fas fa-globe"></i>
+                    <div>
+                        <p class="info-label mb-0">Country & City</p>
+                        <p class="info-value mb-0">{{ $countries ? implode(', ', $countries) : '—' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-item">
+                    <i class="fas fa-th-large"></i>
+                    <div>
+                        <p class="info-label mb-0">Business Category</p>
+                        <p class="info-value mb-0">{{ optional($business->category)->name ?? '—' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-item">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                        <p class="info-label mb-0">Operational Scale</p>
+                        <p class="info-value mb-0">{{ $business->operational_scale ? ucfirst(str_replace('_',' ',$business->operational_scale)) : '—' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if($business->ethical_description)
+            <div class="pt-3 mt-3" style="border-top: 1px solid var(--border-light);">
+                <p class="mb-0">{{ $business->ethical_description }}</p>
+            </div>
         @endif
+    </section>
 
-        <!-- Products & Services -->
-        @php
-            $products = $business->products;
-            if (is_string($products)) {
-                $products = json_decode($products, true);
-            }
-            $products = is_array($products) ? $products : [];
-            $productIcons = ['fa-landmark', 'fa-credit-card', 'fa-piggy-bank', 'fa-chart-pie', 'fa-wallet', 'fa-coins'];
-        @endphp
+    <!-- FAITH COMPLIANCE -->
+    <section class="faith-section">
+        <div class="faith-content text-center">
+            <i class="fas fa-shield-alt text-primary-custom" style="font-size: 2.5rem;"></i>
+            <h2 class="section-title mt-2">Faith-Compliant Business</h2>
+            <p class="section-subtitle mx-auto" style="max-width: 600px;">
+                This business is verified to operate under Islamic ethical principles.
+            </p>
 
-        @if(count($products) > 0)
-        <div class="content-card" id="products">
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="faith-card">
+                        <i class="fas fa-check-circle {{ badgeColor($business->avoid_riba) }}"></i>
+                        <div class="fw-semibold">Riba-free Financing</div>
+                        <small class="text-muted">{{ ucfirst(str_replace('_',' ',$business->avoid_riba ?? 'n/a')) }}</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="faith-card">
+                        <i class="fas {{ badgeIcon($business->avoid_haram_products) }} {{ badgeColor($business->avoid_haram_products) }}"></i>
+                        <div class="fw-semibold">Ethical & Halal Conduct</div>
+                        <small class="text-muted">{{ ucfirst(str_replace('_',' ',$business->avoid_haram_products ?? 'n/a')) }}</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="faith-card">
+                        <i class="fas {{ badgeIcon($business->fair_pricing) }} {{ badgeColor($business->fair_pricing) }}"></i>
+                        <div class="fw-semibold">Honest Pricing & Marketing</div>
+                        <small class="text-muted">{{ ucfirst(str_replace('_',' ',$business->fair_pricing ?? 'n/a')) }}</small>
+                    </div>
+                </div>
+            </div>
+
+            <p class="mt-4 mb-0 mx-auto" style="max-width: 700px;">
+                Our commitment is to uphold the highest standards of integrity. We ensure all operations, 
+                from financing to product development and marketing, are fully aligned with ethical principles, 
+                fostering trust and transparency with our valued customers and partners.
+            </p>
+        </div>
+    </section>
+
+    <!-- PRODUCTS & SERVICES -->
+    @if($services->count())
+    <section>
+        <div class="text-start mb-4">
             <h2 class="section-title">Products & Services</h2>
-            <p style="color: var(--text-muted); margin-bottom: 30px;">What They Offer</p>
+            <p class="section-subtitle">What They Offer</p>
+        </div>
 
-            <div class="products-grid">
-                @foreach(array_slice($products, 0, 3) as $index => $product)
+        <div class="row">
+            @foreach($services as $service)
+            <div class="col-md-4">
                 <div class="product-card">
                     <div class="product-icon">
-                        <i class="fas {{ $productIcons[$index % count($productIcons)] }}"></i>
+                        <i class="fas fa-star"></i>
                     </div>
-                    <h4 class="product-title">{{ $product['name'] ?? 'Product ' . ($index + 1) }}</h4>
-                    <p class="product-description">{{ $product['description'] ?? 'High-quality product/service offering.' }}</p>
+                    <h3 class="h5 fw-bold">{{ $service->name }}</h3>
+                    <p class="text-muted small mb-0">
+                        {{ $service->description ?? 'Shariah-compliant service offerings.' }}
+                    </p>
                 </div>
-                @endforeach
             </div>
-
-            @if(count($products) > 3)
-            <div class="text-center">
-                <a href="#" class="btn-view-all">View All Products & Services</a>
-            </div>
-            @endif
+            @endforeach
         </div>
-        @endif
 
-        <!-- Photos & Media -->
-        @php
-            $photos = $business->photos;
-            if (is_string($photos)) {
-                $photos = json_decode($photos, true);
-            }
-            $photos = is_array($photos) ? $photos : [];
-        @endphp
+        <div class="text-center">
+            <button class="btn btn-secondary">View All Products & Services</button>
+        </div>
+    </section>
+    @endif
 
-        @if(count($photos) > 0)
-            <div class="content-card">
-                <h2 class="section-title">Photos & Media</h2>
+    <!-- GALLERY -->
+    @if(count($photos))
+    <section class="mt-4">
+        <h2 class="section-title mb-3">Photos & Media</h2>
+        <div class="row g-3">
+            @foreach($photos as $photo)
+            <div class="col-md-4 col-6">
+                <img src="{{ asset('assets/'.$photo) }}" 
+                     class="gallery-img" 
+                     alt="Business photo">
+            </div>
+            @endforeach
+        </div>
+    </section>
+    @endif
 
-                <div class="row justify-content-center photo-grid">
-                    @foreach($photos as $photo)
-                        <div class="col-6 col-md-3 mb-3 d-flex justify-content-center">
-                            <div class="photo-item">
-                                <img src="{{ asset('assets/' . $photo) }}"
-                                    alt="Business Photo"
-                                    onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=300&fit=crop'">
-                            </div>
-                        </div>
-                    @endforeach
+    <!-- CONTACT INFORMATION -->
+    <section class="contact-card mt-4">
+        <h2 class="section-title mb-3">Contact Information</h2>
+        
+        <div class="row g-3 pt-3" style="border-top: 1px solid var(--border-light);">
+            <div class="col-md-4">
+                <div class="info-item">
+                    <i class="fas fa-user"></i>
+                    <div>
+                        <p class="info-label mb-0">Primary Contact</p>
+                        <p class="info-value mb-0">{{ $business->contact_person ?? 'Business Owner' }}</p>
+                    </div>
                 </div>
             </div>
-
-        @endif
-
-        <!-- Contact Information -->
-        <div class="content-card">
-            <h2 class="section-title">Contact Information</h2>
-            <hr>
-            
-            <div class="contact-grid" style="margin-top: 2rem;">
-                @if($business->contact_person_name || $business->founder_name)
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="contact-info">
-                        <div class="contact-label">Primary Contact</div>
-                        <div class="contact-value">
-                            {{ $business->contact_person_name ?? $business->founder_name }}
-                            @if($business->contact_person_role)
-                            , {{ $business->contact_person_role }}
-                            @endif
-                        </div>
+            <div class="col-md-4">
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <p class="info-label mb-0">Email</p>
+                        <a href="mailto:{{ $business->email }}" class="info-value text-decoration-none">
+                            {{ $business->email }}
+                        </a>
                     </div>
                 </div>
-                @endif
-
-                @if($business->founder_email || $business->contact_person_email)
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <div class="contact-info">
-                        <div class="contact-label">Email</div>
-                        <div class="contact-value">{{ $business->contact_person_email ?? $business->founder_email }}</div>
-                    </div>
-                </div>
-                @endif
-
-                @if($business->website)
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-globe"></i>
-                    </div>
-                    <div class="contact-info">
-                        <div class="contact-label">Website</div>
-                        <div class="contact-value">
-                            <a href="{{ $business->website }}" target="_blank" style="color: var(--primary-color);">
+            </div>
+            <div class="col-md-4">
+                <div class="info-item">
+                    <i class="fas fa-globe"></i>
+                    <div>
+                        <p class="info-label mb-0">Website</p>
+                        @if($business->website)
+                            <a href="{{ $business->website }}" target="_blank" class="info-value text-decoration-none">
                                 {{ $business->website }}
                             </a>
-                        </div>
+                        @else
+                            <p class="info-value mb-0">—</p>
+                        @endif
                     </div>
                 </div>
-                @endif
-
-                @if($business->contact_person_phone || $business->founder_whatsapp)
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-phone"></i>
-                    </div>
-                    <div class="contact-info">
-                        <div class="contact-label">Phone</div>
-                        <div class="contact-value">{{ $business->contact_person_phone ?? $business->founder_whatsapp }}</div>
-                    </div>
-                </div>
-                @endif
             </div>
+        </div>
 
-            <!-- Social Links -->
-            <div class="social-links"  style="margin-top: 2rem;">
-                @if($business->founder_whatsapp)
-                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $business->founder_whatsapp) }}" class="social-btn whatsapp" target="_blank">
+        <div class="d-flex flex-wrap gap-2 mt-4 pt-3" style="border-top: 1px solid var(--border-light);">
+            @if($business->whatsapp_number)
+                <a href="https://wa.me/{{ $business->whatsapp_number }}" 
+                   class="social-icon" target="_blank">
                     <i class="fab fa-whatsapp"></i>
                 </a>
-                @endif
-
-                @if($business->facebook)
-                <a href="{{ $business->facebook }}" class="social-btn facebook" target="_blank">
+            @endif
+            @if($business->facebook)
+                <a href="{{ $business->facebook }}" class="social-icon" target="_blank">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                @endif
-
-                @if($business->instagram)
-                <a href="{{ $business->instagram }}" class="social-btn instagram" target="_blank">
+            @endif
+            @if($business->instagram)
+                <a href="{{ $business->instagram }}" class="social-icon" target="_blank">
                     <i class="fab fa-instagram"></i>
                 </a>
-                @endif
-
-                @if($business->linkedin)
-                <a href="{{ $business->linkedin }}" class="social-btn linkedin" target="_blank">
+            @endif
+            @if($business->linkedin)
+                <a href="{{ $business->linkedin }}" class="social-icon" target="_blank">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
-                @endif
-            </div>
+            @endif
         </div>
-    </div>
-
-    <!-- Footer -->
-    {{-- <div class="business-footer">
-        <div class="container">
-            <div class="footer-logo">
-                <img src="{{ asset('assets/gme-logo.png') }}" alt="GME Logo" style="width: 100%; filter: brightness(0) invert(1);" onerror="this.style.display='none'">
-            </div>
-            <div class="footer-text">
-                <p style="margin: 0;">Part of the Global Muslim Entrepreneurs Network</p>
-            </div>
-            <div class="footer-links">
-                <a href="{{ url('/') }}">Homepage</a>
-                <a href="{{ route('gme-business.index') }}">Events</a>
-                <a href="#">Join GME</a>
-                <a href="#">Contact</a>
-            </div>
-        </div>
-    </div> --}}
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    </section>
+</div>
 @endsection

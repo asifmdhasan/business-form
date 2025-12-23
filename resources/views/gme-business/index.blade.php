@@ -807,6 +807,8 @@ $(document).ready(function () {
     ========================== */
     function createBusinessCard(business) {
 
+        const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+
         const category = business.category?.name ?? '';
         const logo = `{{ asset('assets') }}/${business.logo}`;
 
@@ -831,7 +833,7 @@ $(document).ready(function () {
                     <div class="business-header">
                         <img src="${logo}" class="business-logo">
                         <div>
-                            <div class="business-name">${business.business_name}</div>
+                            <div class="business-name">${business.business_name} - (${capitalizeFirstLetter(business.status)})</div>
                             <div class="business-category">${category}</div>
                         </div>
                     </div>

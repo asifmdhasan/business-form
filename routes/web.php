@@ -159,7 +159,7 @@ Route::middleware([
 
 
 
-
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     // Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
     // Route::get('/gme-business/create', [GmeBusinessController::class, 'create'])->name('gme-business.create');
     // Route::post('/gme-business/store', [GmeBusinessController::class, 'store'])->name('gme-business.store');

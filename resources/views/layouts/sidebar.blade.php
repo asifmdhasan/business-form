@@ -38,15 +38,15 @@
                         <li class="nav-item">
                             <a href="{{ route('gme-business-admin.index') }}" 
                                class="nav-link text-white {{ request()->routeIs('gme-business-admin.index') ? 'active' : '' }}">
-                                <i class="fa fa-list me-2"></i> Admin Index
+                                <i class="fa fa-list me-2"></i> All Business
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('gme-business-admin.create') }}" 
                                class="nav-link text-white {{ request()->routeIs('gme-business-admin.create') ? 'active' : '' }}">
                                 <i class="fa fa-edit me-2"></i> Edit
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
             </li>

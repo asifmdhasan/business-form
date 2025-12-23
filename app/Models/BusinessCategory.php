@@ -17,4 +17,8 @@ class BusinessCategory extends Model
     {
         return $this->children()->with('childrenRecursive');
     }
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
 }
