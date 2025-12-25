@@ -1,41 +1,53 @@
-## Mock Test Service WebApp
+# Business Form Management System
 
-The Mock Test Service WebApp enables students and educators to efficiently create, manage, and attempt practice exams. It provides a realistic test-taking environment with instant feedback, performance analytics, and multilingual support (ex: English and Japanese). The system ensures a smooth experience for learners preparing for academic or competitive exams.
+The **Business Form Management System** is a Laravel-based web application that allows users to submit business information through a **4-step guided form**. Submitted data is managed via a dedicated **Admin CMS panel**, where administrators can **review, approve, or reject** submissions.
+
+The system also provides a **business card listing** with search and sorting features. **Admin and User panels are fully separated**, ensuring proper role-based access and clean CMS management.
+
+---
 
 ## Features
 
-- Test Creation:
-  - Create mock tests by subject and topic.
-  - Support for multiple question types (MCQ, True/False)
-  - Upload question banks via CSV or manual entry
+### Multi-Step Business Form (User Panel)
+- 4-step guided business submission form
+- Step-by-step validation
+- Submit complete business profiles
+- Secure and structured data handling
+
+---
+
+### Business Card Listing
+- Search business cards by keywords
+- Sorting functionality
+- Only **approved** businesses are publicly visible
+- Clean and responsive UI
+
+---
+
+###  Admin CMS Panel
+- Separate admin dashboard
+- View all submitted business forms
+- Approve or reject submissions
+- Status-based management (Pending / Approved / Rejected)
+- Full control over user-submitted data
+
+---
+
+### User CMS Panel
+- Separate user dashboard
+- View submitted business forms
+- Track approval or rejection status
+- Manage own submissions
 
 
-- Test Taking
+---
 
- - Timer-based test environment (exam-like interface)
- - Randomized question shuffling to prevent repetition
- - Multilingual support for test instructions and questions
-
-- Evaluation & Results
- - Auto-grading for objective questions
- - Manual evaluation for descriptive answers
- - Detailed scorecards with correct/incorrect answers
- - Performance aalytics (accuracy, speed, topic-wise breakdown)
-
-- User Management
- - Admin panel for managing students, teachers, and roles
- - Assign specific tests to groups or individuals
-
-- Reports & History
- - Access complete test history for each student
- - Export results in PDF/Excel format
- - Leaderboard and ranking system
-
-## Future Plans
-
-- Adaptive difficulty based on student performance
-- Integration with learning management systems (LMS)
-- Mobile app support for offline test-taking
+## Technology Stack
+- **Backend:** Laravel
+- **Frontend:** Blade
+- **Database:** MySQL
+- **Authentication:** Laravel Auth
+- **Version Control:** Git & GitHub
 
 ---
 
@@ -44,11 +56,11 @@ The Mock Test Service WebApp enables students and educators to efficiently creat
 #### First clone the repo. To do that open your terminal and run bellow code
 
 ``if you use SSH ``
-> git clone origin git@github.com:asifmdhasan/mock_service.git
+> git clone origin git@github.com:asifmdhasan/business-form.git
 
 
 ``if you use HTTPS ``
-> git clone origin https://github.com/asifmdhasan/mock_service.git
+> git clone origin https://github.com/asifmdhasan/business-form.git
 
 #### Run the composer command to get all the packages with into vendor directory
 > composer install
@@ -78,23 +90,5 @@ The Mock Test Service WebApp enables students and educators to efficiently creat
 > php artisan migrate
 
 
-#### Create symbolink link
->  php artisan storage:link
-
-
-<!-- #### Create custom symbolink link -->
-<!-- mklink /D C:\laragon\www\CameraUploader\public\uploads D:\CameraUploader\uploads -->
-
-
-
-
-
-
-
-<!-- #### Run the jwt secret to generate secret for API authentication
-> php artisan jwt:secret -->
-<!-- 
-#### Finally, Run the command to get the Bangladesh geo-location data
-> php artisan BangladeshGeocode:setup -->
 
 
