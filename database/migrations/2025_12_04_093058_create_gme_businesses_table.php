@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('business_name');
             $table->text('short_introduction')->nullable();
             $table->string('year_established')->nullable();
+            
             $table->foreignId('business_category_id')->nullable()->constrained('business_categories')->nullOnDelete();
 
             $table->json('countries_of_operation')->nullable(); // Multi-country support
