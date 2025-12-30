@@ -28,7 +28,7 @@ return new class extends Migration
                 $table->json('countries_of_operation')->nullable(); // Multi-country support
                 $table->text('business_address')->nullable();
                 $table->string('email');
-                $table->string('whatsapp_number');
+                $table->string('whatsapp_number')->nullable();
                 $table->string('website')->nullable();
                 
                 // Social Links (Optional)

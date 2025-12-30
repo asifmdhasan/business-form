@@ -11,15 +11,24 @@
         <ul class="nav flex-column mt-3">
 
             <!-- Dashboard -->
-            <li class="nav-item mb-2">
+            {{-- <li class="nav-item mb-2">
                 <a href="{{ route('admin.dashboard') }}" 
                    class="nav-link text-white fw-bold {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <i class="fa fa-home me-2"></i> Dashboard
                 </a>
+            </li> --}}
+
+            <li class="nav-item">
+                <a href="{{ route('gme-business-admin.index') }}" 
+                    class="nav-link text-white {{ request()->routeIs('gme-business-admin.index') ? 'active' : '' }}">
+                    <i class="fa fa-list me-2"></i> All Business
+                </a>
             </li>
 
+                        
+
             <!-- Admin Channel Dropdown -->
-            <li class="nav-item mt-3">
+            {{-- <li class="nav-item mt-3">
                 <a class="nav-link text-white d-flex justify-content-between align-items-center" 
                    data-bs-toggle="collapse" 
                    href="#adminChannelMenu" 
@@ -41,15 +50,9 @@
                                 <i class="fa fa-list me-2"></i> All Business
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a href="{{ route('gme-business-admin.create') }}" 
-                               class="nav-link text-white {{ request()->routeIs('gme-business-admin.create') ? 'active' : '' }}">
-                                <i class="fa fa-edit me-2"></i> Edit
-                            </a>
-                        </li> --}}
                     </ul>
                 </div>
-            </li>
+            </li> --}}
 
             <!-- Categories Dropdown -->
             <li class="nav-item mt-3">

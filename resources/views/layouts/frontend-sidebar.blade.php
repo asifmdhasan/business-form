@@ -11,11 +11,11 @@
         <ul class="nav flex-column mt-3">
 
             <!-- Dashboard -->
-            <li class="nav-item mb-2">
+            {{-- <li class="nav-item mb-2">
                 <a href="{{ route('customer.dashboard') }}" class="nav-link text-white fw-bold">
-                    <i class="fa fa-home me-2"></i> Dashboard
+                    <i class="fa fa-home me-2"></i> All Business
                 </a>
-            </li>
+            </li> --}}
 
             <!-- Admin Channel -->
             {{-- <li class="nav-item mt-3">
@@ -35,13 +35,13 @@
             </li> --}}
 
             <!-- Customer Channel -->
-            <li class="nav-item mt-4">
+            {{-- <li class="nav-item mt-4">
                 <span class="text-uppercase text-secondary small fw-bold">User Channel</span>
-            </li>
+            </li> --}}
 
             <li class="nav-item">
                 <a href="{{ route('customer.gme-business-form.index') }}" class="nav-link text-white">
-                    <i class="fa fa-users me-2"></i> Index
+                    <i class="fa fa-users me-2"></i> My Business
                 </a>
             </li>
 

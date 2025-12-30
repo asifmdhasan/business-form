@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\GmeBusinessForm;
+use App\Models\BusinessCategory;
 use App\Mail\BusinessStatusUpdated;
 use Illuminate\Support\Facades\Mail;
 
@@ -22,7 +23,7 @@ class GmeBusinessAdminController extends Controller
                 'created_at'
             )
             ->with('category:id,name')
-            ->orderByDesc('id')
+            ->orderBy('id', 'desc')
             ->get();
 
             return response()->json([
@@ -36,7 +37,9 @@ class GmeBusinessAdminController extends Controller
     {
         $business = GmeBusinessForm::findOrFail($id);
         $countries = $this->getCountries();
-        return view('gme-business-admin.edit', compact('business', 'countries'));
+        $categories = BusinessCategory::orderBy('name')->get();
+
+        return view('gme-business-admin.edit', compact('business', 'countries', 'categories'));
     }
     public function update(Request $request, $id)
     {
@@ -46,20 +49,20 @@ class GmeBusinessAdminController extends Controller
             // Business Identity
             'business_name'            => 'required|string|max:255',
             'short_introduction'       => 'nullable|string',
-            'year_established'         => 'nullable|string|max:4',
+            'year_established'         => 'nullable|string',
             'business_category_id'     => 'nullable|exists:business_categories,id',
             'countries_of_operation'   => 'nullable|array',
             'business_address'         => 'nullable|string',
             'email'                    => 'nullable|email|max:255',
             'whatsapp_number'          => 'nullable|string|max:20',
-            'website'                  => 'nullable|url|max:255',
+            'website'                  => 'nullable|string|max:255',
 
             // Social
-            'facebook'                 => 'nullable|url|max:255',
-            'instagram'                => 'nullable|url|max:255',
-            'linkedin'                 => 'nullable|url|max:255',
-            'youtube'                  => 'nullable|url|max:255',
-            'online_store'             => 'nullable|url|max:255',
+            'facebook'                 => 'nullable|string|max:255',
+            'instagram'                => 'nullable|string|max:255',
+            'linkedin'                 => 'nullable|string|max:255',
+            'youtube'                  => 'nullable|string|max:255',
+            'online_store'             => 'nullable|string|max:255',
 
             // Founders (JSON)
             'founders'                 => 'nullable|array',

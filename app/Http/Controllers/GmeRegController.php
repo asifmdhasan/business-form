@@ -181,36 +181,47 @@ class GmeRegController extends Controller
                     'countries_of_operation' => 'required|array|min:1',
                     'business_address' => 'nullable|string',
                     'email' => 'required|email',
-                    'whatsapp_number' => 'required|string',
-                    'website' => 'nullable|url',
-                    'facebook' => 'nullable|url',
-                    'instagram' => 'nullable|url',
-                    'linkedin' => 'nullable|url',
-                    'youtube' => 'nullable|url',
-                    'online_store' => 'nullable|url',
+                    'whatsapp_number' => 'nullable|string|max:20',
+                    'website' => 'nullable|string|max:255',
+                    'facebook' => 'nullable|string|max:255',
+                    'instagram' => 'nullable|string|max:255',
+                    'linkedin' => 'nullable|string|max:255',
+                    'youtube' => 'nullable|string|max:255',
+                    'online_store' => 'nullable|string|max:255',
                     'founders' => 'required|array|min:1',
                     'founders.*.name' => 'required|string',
                     'founders.*.designation' => 'required|string',
                     'founders.*.whatsapp' => 'nullable|string',
-                    'founders.*.linkedin' => 'nullable|url',
+                    'founders.*.linkedin' => 'nullable|string|max:255',
                 ];
                 break;
                 
             case 2:
                 $rules = [
-                    'registration_status' => 'nullable|in:registered_company,sole_proprietorship,partnership,startup_early_stage,home_based,not_registered_yet',
-                    'employee_count' => 'nullable|in:1-3,4-10,11-25,26-50,51+',
-                    'operational_scale' => 'nullable|in:local,nationwide,international,online_only,hybrid',
+                    'registration_status' => 'required|in:registered_company,sole_proprietorship,partnership,startup_early_stage,home_based,not_registered_yet',
+                    'employee_count' => 'required|in:1-3,4-10,11-25,26-50,51+',
+                    'operational_scale' => 'required|in:local,nationwide,international,online_only,hybrid',
                     'annual_revenue' => 'nullable|in:under_10k,10k-50k,50k-200k,200k-1m,above_1m',
                     'business_overview' => 'nullable|string|max:1800',
-                    'services_id' => 'nullable|array|max:10',
+                    'services_id' => 'required|array|max:10',
                     'services_id.*' => 'exists:services,id',
-                    'registration_document' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
-                    'logo' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-                    'cover_photo' => 'nullable|image|max:5120',
-                    'photos.*' => 'nullable|image|max:5120',
-                    'business_profile' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
-                    'product_catalogue' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+
+                    // Documents + Images
+                    'registration_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
+                    'business_profile'      => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
+                    'product_catalogue'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
+
+                    // Images only (all image types)
+                    'logo'                  => 'nullable|image|max:2048',
+                    'cover_photo'           => 'nullable|image|max:5120',
+                    'photos.*'              => 'nullable|image|max:5120',
+    
+                    // 'registration_document' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+                    // 'logo' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+                    // 'cover_photo' => 'nullable|image|max:5120',
+                    // 'photos.*' => 'nullable|image|max:5120',
+                    // 'business_profile' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+                    // 'product_catalogue' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
                 ];
                 break;
                 

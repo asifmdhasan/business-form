@@ -8,6 +8,10 @@
         width: 220px; /* Adjust width as needed */
         margin-bottom: 0;
     }
+    .btn-outline-secondary {
+        min-width: 140px;
+    text-align: center;
+    }
 </style>
 
 <div class="container-fluid">
@@ -80,7 +84,9 @@
                         </div>
                     </div>
 
-                    <form method="POST" action="{{ route('gme.business.save-step') }}" enctype="multipart/form-data">
+                    <hr>
+
+                    <form method="POST" action="{{ route('gme.business.save-step') }}" enctype="multipart/form-data" class="pt-3">
                         @csrf
                         <input type="hidden" name="step" value="{{ $step }}">
 
@@ -91,9 +97,14 @@
                             <h5 class="fw-bold mb-3">Business & Founder Identity</h5>
 
                             <div class="mb-3">
-                                <label class="form-label">Business Name *</label>
+                                <label class="form-label">Business Name <span class="text-danger">*</span></label>
                                 <input type="text" name="business_name" class="form-control"
                                     value="{{ old('business_name', $business->business_name ?? '') }}" required>
+                                
+                                <!-- Error Message -->
+                                @error('business_name')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
@@ -104,12 +115,12 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Year Established</label>
-                                    <input type="text" name="year_established" class="form-control"
+                                    <input type="date" name="year_established" class="form-control"
                                         value="{{ old('year_established', $business->year_established ?? '') }}">
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Business Category *</label>
+                                    <label class="form-label">Business Category <span class="text-danger">*</span></label>
                                     <select class="form-select" name="business_category_id" id="business_category" required>
                                         <option value="">Select Category</option>
                                         @foreach($categories as $category)
@@ -119,12 +130,16 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    <!-- Error Message -->
+                                    @error('business_category_id')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Countries of Operation *</label>
+                                    <label class="form-label">Countries of Operation <span class="text-danger">*</span></label>
                                         <select class="form-select search_select" name="countries_of_operation[]" multiple required>
                                             @foreach($countries as $country)
                                                 <option value="{{ $country }}"
@@ -133,30 +148,73 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                    <!-- Error Message -->
+                                    @error('countries_of_operation')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Email *</label>
+                                    <label class="form-label">Email <span class="text-danger">*</span></label>
                                     <input type="email" name="email" class="form-control"
                                         value="{{ old('email', $business->email ?? '') }}" required>
+                                    <!-- Error Message -->
+                                    @error('email')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">WhatsApp Number *</label>
+                                    <label class="form-label">WhatsApp Number</label>
                                     <input type="text" name="whatsapp_number" class="form-control"
-                                        value="{{ old('whatsapp_number', $business->whatsapp_number ?? '') }}" required>
+                                        value="{{ old('whatsapp_number', $business->whatsapp_number ?? '') }}">
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Website</label>
                                     <input type="website" name="website" class="form-control"
-                                        value="{{ old('website', $business->website ?? '') }}" required>
+                                        value="{{ old('website', $business->website ?? '') }}">
                                 </div>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Business Address</label>
                                 <textarea class="form-control" rows="2" name="business_address">{{ old('business_address', $business->business_address ?? '') }}</textarea>
+                            </div>
+
+                            <hr>
+                            <h6 class="fw-bold mb-3">Social Media Links</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!-- facebook url -->
+                                    <label class="form-label">Facebook URL</label>
+                                    <input type="string" name="facebook" class="form-control"
+                                        value="{{ old('facebook', $business->facebook ?? '') }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- instagram url -->
+                                    <label class="form-label">Instagram URL</label>
+                                    <input type="string" name="instagram" class="form-control"
+                                        value="{{ old('instagram', $business->instagram ?? '') }}">
+                                </div>
+                                <!-- linkedin url -->
+                                <div class="col-md-6">
+                                    <label class="form-label">LinkedIn URL</label>
+                                    <input type="string" name="linkedin" class="form-control"
+                                        value="{{ old('linkedin', $business->linkedin ?? '') }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Youtube url -->
+                                    <label class="form-label">YouTube URL</label>
+                                    <input type="string" name="youtube" class="form-control"
+                                        value="{{ old('youtube', $business->youtube ?? '') }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <!-- Online Store url -->
+                                    <label class="form-label">Online Store URL</label>
+                                    <input type="string" name="online_store" class="form-control"
+                                        value="{{ old('online_store', $business->online_store ?? '') }}">
+                                </div>
                             </div>
 
                             <hr>
@@ -171,13 +229,13 @@
                                 <div class="border rounded p-3 mb-3">
                                     <div class="row">
                                         <div class="col-md-6 mb-2">
-                                            <label class="form-label"> Founder / Owner Full Name *</label>
+                                            <label class="form-label"> Founder / Owner Full Name <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control"
                                                 name="founders[{{ $index }}][name]"
                                                 value="{{ $founder['name'] ?? '' }}" required>
                                         </div>
                                         <div class="col-md-6 mb-2">
-                                            <label class="form-label">Designation *</label>
+                                            <label class="form-label">Designation <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control"
                                                 name="founders[{{ $index }}][designation]"
                                                 value="{{ $founder['designation'] ?? '' }}" required>
@@ -186,10 +244,10 @@
                                             <label class="form-label">WhatsApp Number </label>
                                             <input type="text" class="form-control"
                                                 name="founders[{{ $index }}][whatsapp_number]"
-                                                value="{{ $founder['whatsapp_number'] ?? '' }}" required>
+                                                value="{{ $founder['whatsapp_number'] ?? '' }}">
                                         </div>
                                         <div class="col-md-6 mb-2">
-                                            <label class="form-label">Linkedin </label>
+                                            <label class="form-label">Linkedin URL </label>
                                             <input type="text" class="form-control"
                                                 name="founders[{{ $index }}][linkedin]"
                                                 value="{{ $founder['linkedin'] ?? '' }}">
@@ -202,172 +260,10 @@
                             <button type="button" class="btn btn-success btn-sm" onclick="addFounder()">
                                 <i class="fa fa-plus"></i> Add Founder
                             </button>
+
+                            
                         @endif
 
-                        {{-- ================= STEP 2 ================= --}}
-
-                        {{-- @if($step == 2)
-                            <h5 class="fw-bold mb-3">Business Size & Structure</h5>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Registration Status</label>
-                                    <select class="form-select" name="registration_status">
-                                        <option value="">Select</option>
-                                        <option value="registered_company">Registered Company</option>
-                                        <option value="sole_proprietorship">Sole Proprietorship</option>
-                                        <option value="partnership">Partnership</option>
-                                        <option value="startup_early_stage">Startup Early Stage</option>
-                                        <option value="home_based"> Home Based </option>
-                                        <option value="not_registered_yet">Not Registered Yet</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Number of Employees</label>
-                                    <select class="form-select" name="employee_count">
-                                        <option value="">Select</option>
-                                        <option value="1-3">1–3</option>
-                                        <option value="4-10">4–10</option>
-                                        <option value="11-25">11–25</option>
-                                        <option value="26-50">26–50</option>
-                                        <option value="51+">51+</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Operational Scale</label>
-                                    <select class="form-select" name="operational_scale">
-                                        <option value="">Select</option>
-                                        <option value="local">Local</option>
-                                        <option value="nationwide">Nationwide</option>
-                                        <option value="international">International</option>
-                                        <option value="online_only">Online Only</option>
-                                        <option value="hybrid">Hybrid</option>
-                                    </select>
-                                </div>
-                            
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Annual Revenue (Optional)</label>
-                                    <select class="form-select" name="annual_revenue">
-                                        <option value="">Select</option>
-                                        <option value="under_10k">Under $10K</option>
-                                        <option value="10k-50k">$10K – $50K</option>
-                                        <option value="50k-200k">$50K – $200K</option>
-                                        <option value="200k-1m">$200K – $1M</option>
-                                        <option value="above_1m"> Above $1M</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Products / Services</label>
-                                    <select class="form-select search_select" multiple name="services_id[]" id="services">
-                                        <option value="">Select category first</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-2 mb-3">
-                                    <label class="form-label">Upload Business Logo</label>
-
-                                    <!-- Upload Container -->
-                                    <div class="rounded p-2 text-center position-relative" 
-                                        style="width: 10rem; height: 10rem; cursor: pointer; border: 1px dashed #ccc; overflow: hidden;">
-                                        
-                                        <!-- Preview Image -->
-                                        <img id="logoPreview"
-                                            src="{{ !empty($business->logo) ? asset('storage/'.$business->logo) : asset('assets/uploads/placeholder.png') }}"
-                                            class="img-fluid w-100 h-100"
-                                            style="object-fit: cover;">
-
-                                        <!-- Hidden File Input -->
-                                        <input type="file"
-                                            name="logo"
-                                            accept="image/*"
-                                            onchange="previewLogo(this)"
-                                            style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;">
-                                    </div>
-
-                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 2MB)</small>
-                                </div>
-
-                                <div class="col-md-2 mb-3">
-                                    <label class="form-label">Upload Cover Photo</label>
-
-                                    <!-- Upload Container -->
-                                    <div class="rounded p-2 text-center position-relative" 
-                                        style="width: 10rem; height: 10rem; cursor: pointer; border: 1px dashed #ccc; overflow: hidden;">
-                                        
-                                        <!-- Preview Image -->
-                                        <img id="coverPhotoPreview"
-                                            src="{{ !empty($business->cover_photo) ? asset('storage/'.$business->cover_photo) : asset('assets/uploads/placeholder.png') }}"
-                                            class="img-fluid w-100 h-100"
-                                            style="object-fit: cover;">
-
-                                        <!-- Hidden File Input -->
-                                        <input type="file"
-                                            name="cover_photo"
-                                            accept="image/*"
-                                            onchange="previewCoverPhoto(this)"
-                                            style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;">
-                                    </div>
-
-                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 2MB)</small>
-                                </div>
-
-                                <!-- Business Photos Gallery -->
-                                <div class="col-md-8 mb-3">
-                                    <label class="form-label">Business Photos Gallery</label>
-                                    <div class="d-flex flex-wrap gap-2">
-
-                                        <!-- Existing Images Preview (if editing) -->
-                                        @if(!empty($business->photos))
-                                            @foreach(json_decode($business->photos, true) as $index => $photo)
-                                            <div class="position-relative rounded" style="width: 10rem; height: 10rem; border: 1px dashed #ccc; overflow: hidden; cursor: pointer;">
-                                                <img src="{{ asset('storage/'.$photo) }}" class="img-fluid w-100 h-100" style="object-fit: cover;">
-                                                <button type="button" onclick="removeGalleryImage(this)" class="position-absolute top-0 end-0 btn btn-sm btn-danger" style="padding:0.2rem 0.4rem;">&times;</button>
-                                            </div>
-                                            @endforeach
-                                        @endif
-
-                                        <!-- New Upload Placeholder -->
-                                        <div class="rounded text-center position-relative gallery-upload" 
-                                            style="width: 10rem; height: 10rem; border: 1px dashed #ccc; cursor: pointer; display:flex; align-items:center; justify-content:center;">
-                                            <i class="fa fa-plus" style="font-size:2rem; color: rgba(0,0,0,0.5); pointer-events:none;"></i>
-                                            <input type="file" name="photos[]" accept="image/*" multiple 
-                                                style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;"
-                                                onchange="previewGallery(this)">
-                                        </div>
-                                    </div>
-                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 5 images)</small>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <!-- Registration Document -->
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Upload Registration Document</label>
-                                    <input type="file" name="registration_document" class="form-control">
-                                </div>
-                                <!-- Business business_profile -->
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Business Profile</label>
-                                    <input type="file" name="business_profile" class="form-control">
-                                </div>
-                                <!-- product_catalogue -->
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Product Catalogue</label>
-                                    <input type="file" name="product_catalogue" class="form-control">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12 mb-3">
-                                    <label class="form-label">Business Overview</label>
-                                    <textarea class="form-control" rows="6" name="business_overview"></textarea>
-                                </div>
-                            </div>
-
-                        @endif --}}
 
                         {{-- ================= STEP 2 ================= --}}
 
@@ -376,8 +272,8 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Registration Status</label>
-                                    <select class="form-select @error('registration_status') is-invalid @enderror" name="registration_status">
+                                    <label class="form-label">Registration Status <span class="text-danger">*</span></label>
+                                    <select class="form-select @error('registration_status') is-invalid @enderror" name="registration_status" required>
                                         <option value="">Select</option>
                                         <option value="registered_company" {{ old('registration_status', $business->registration_status ?? '') == 'registered_company' ? 'selected' : '' }}>Registered Company</option>
                                         <option value="sole_proprietorship" {{ old('registration_status', $business->registration_status ?? '') == 'sole_proprietorship' ? 'selected' : '' }}>Sole Proprietorship</option>
@@ -392,8 +288,8 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Number of Employees</label>
-                                    <select class="form-select @error('employee_count') is-invalid @enderror" name="employee_count">
+                                    <label class="form-label">Number of Employees <span class="text-danger">*</span></label>
+                                    <select class="form-select @error('employee_count') is-invalid @enderror" name="employee_count" required>
                                         <option value="">Select</option>
                                         <option value="1-3" {{ old('employee_count', $business->employee_count ?? '') == '1-3' ? 'selected' : '' }}>1–3</option>
                                         <option value="4-10" {{ old('employee_count', $business->employee_count ?? '') == '4-10' ? 'selected' : '' }}>4–10</option>
@@ -407,8 +303,8 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Operational Scale</label>
-                                    <select class="form-select @error('operational_scale') is-invalid @enderror" name="operational_scale">
+                                    <label class="form-label">Operational Scale <span class="text-danger">*</span></label>
+                                    <select class="form-select @error('operational_scale') is-invalid @enderror" name="operational_scale" required>
                                         <option value="">Select</option>
                                         <option value="local" {{ old('operational_scale', $business->operational_scale ?? '') == 'local' ? 'selected' : '' }}>Local</option>
                                         <option value="nationwide" {{ old('operational_scale', $business->operational_scale ?? '') == 'nationwide' ? 'selected' : '' }}>Nationwide</option>
@@ -478,9 +374,9 @@
                                 @endphp
 
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Products / Services</label>
+                                    <label class="form-label">Products / Services <span class="text-danger">*</span></label>
                                     <select class="form-select search_select @error('services_id') is-invalid @enderror" 
-                                            multiple name="services_id[]" id="services">
+                                            multiple name="services_id[]" id="services" required>
                                         <!-- Options will be loaded by JavaScript -->
                                     </select>
                                     @error('services_id')
@@ -549,8 +445,9 @@
                                         <small class="text-danger d-block">{{ $message }}</small>
                                     @enderror
                                 </div>
+                            </div>
+                            <div class="row">
 
-                                <!-- Business Photos Gallery -->
                                 <!-- Business Photos Gallery -->
                                 <div class="col-md-8 mb-3">
                                     <label class="form-label">Business Photos Gallery</label>
@@ -657,20 +554,18 @@
 
                         {{-- ================= STEP 3 ================= --}}
 
-                        {{-- ================= STEP 3 ================= --}}
-
                         @if($step == 3)
                             <h5 class="fw-bold mb-3">Islamic Ethics & Community</h5>
 
                             {{-- Avoid Interest (Riba)? --}}
                             <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Avoid Interest (Riba)? *</label>
+                                <label class="form-label question-label">Avoid Interest (Riba)? <span class="text-danger">*</span></label>
                                 @php $value = old('avoid_riba', $business->avoid_riba ?? ''); @endphp
                                 <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
                                     @foreach ([
                                         'yes' => 'Yes',
-                                        'partially_transitioning' => 'Partially Transitioning',
                                         'no' => 'No',
+                                        'partially_transitioning' => 'Partially Transitioning',
                                         'prefer_not_to_say' => 'Prefer Not to Say'
                                     ] as $key => $label)
                                         <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
@@ -685,13 +580,13 @@
 
                             {{-- Avoid Haram Products? --}}
                             <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Avoid Haram Products? *</label>
+                                <label class="form-label question-label">Avoid Haram Products? <span class="text-danger">*</span></label>
                                 @php $value = old('avoid_haram_products', $business->avoid_haram_products ?? ''); @endphp
                                 <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
                                     @foreach ([
                                         'yes' => 'Yes',
+                                        'no' => 'No',
                                         'partially_compliant' => 'Partially Compliant',
-                                        'no' => 'No'
                                     ] as $key => $label)
                                         <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
                                             <input type="radio" name="avoid_haram_products" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
@@ -705,7 +600,7 @@
 
                             {{-- Fair Pricing --}}
                             <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Fair Pricing *</label>
+                                <label class="form-label question-label">Fair Pricing <span class="text-danger">*</span></label>
                                 @php $value = old('fair_pricing', $business->fair_pricing ?? ''); @endphp
                                 <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
                                     @foreach ([
@@ -725,7 +620,7 @@
 
                             {{-- Open for Guidance --}}
                             <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Open for Guidance *</label>
+                                <label class="form-label question-label">Open for Guidance <span class="text-danger">*</span></label>
                                 @php $value = old('open_for_guidance', $business->open_for_guidance ?? ''); @endphp
                                 <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
                                     @foreach ([
@@ -745,7 +640,7 @@
 
                             {{-- Collaboration Open --}}
                             <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Collaboration Open *</label>
+                                <label class="form-label question-label">Collaboration Open <span class="text-danger">*</span></label>
                                 @php $value = old('collaboration_open', $business->collaboration_open ?? ''); @endphp
                                 <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
                                     @foreach ([
@@ -808,7 +703,7 @@
                         {{-- ================= STEP 4 ================= --}}
 
                         @if($step == 4)
-                            <h5 class="fw-bold mb-3">Consent & Approval</h5>
+                            <h5 class="fw-bold mb-3">Consent & Approval <span class="text-danger">*</span></h5>
 
                             <div class="alert alert-warning">
                                 <div class="form-check">
@@ -819,7 +714,7 @@
                                         {{ old('info_accuracy', $business->info_accuracy ?? false) ? 'checked' : '' }}
                                         required>
                                     <label class="form-check-label">
-                                        I confirm all provided information is accurate *
+                                        I confirm all provided information is accurate
                                     </label>
                                     @error('info_accuracy')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -856,7 +751,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Digital Signature *</label>
+                                <label class="form-label">Digital Signature <span class="text-danger">*</span></label>
                                 <input type="text" 
                                     class="form-control @error('digital_signature') is-invalid @enderror" 
                                     name="digital_signature" 
@@ -907,11 +802,11 @@ function addFounder() {
         <div class="border rounded p-3 mb-3">
             <div class="row">
                 <div class="col-md-6 mb-2">
-                    <label class="form-label">Full Name *</label>
+                    <label class="form-label">Full Name <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" name="founders[${founderIndex}][name]" required>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label class="form-label">Designation *</label>
+                    <label class="form-label">Designation <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" name="founders[${founderIndex}][designation]" required>
                 </div>
                 <div class="col-md-6 mb-2">

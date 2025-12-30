@@ -8,6 +8,10 @@
         width: 220px; /* Adjust width as needed */
         margin-bottom: 0;
     }
+    .btn-outline-secondary {
+        min-width: 140px;
+        text-align: center;
+    }
 </style>
 <div class="container-fluid">
     @if ($errors->any())
@@ -34,10 +38,30 @@
                         <label>Year Established</label>
                         <input type="text" name="year_established" class="form-control" value="{{ old('year_established', $business->year_established) }}">
                     </div>
+                    {{-- <div class="col-md-6 form-group">
+                        <label>Business Category</label>
+                        <input type="text" name="business_category_id" class="form-control" value="{{ old('business_category_id', $business->category->name) }}">
+                    </div> --}}
                     <div class="col-md-6 form-group">
                         <label>Business Category</label>
-                        <input type="text" name="business_category_id" class="form-control" value="{{ old('business_category_id', $business->business_category_id) }}">
+
+                        <select name="business_category_id"
+                                class="form-control @error('business_category_id') is-invalid @enderror">
+                            <option value="">Select Category</option>
+
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ old('business_category_id', $business->business_category_id) == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @error('business_category_id')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
+
                     <div class="col-md-6 form-group">
                         <label class="form-label">Countries of Operation *</label>
                         
@@ -77,7 +101,7 @@
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Website</label>
-                        <input type="url" name="website" class="form-control" value="{{ old('website', $business->website) }}">
+                        <input type="text" name="website" class="form-control" value="{{ old('website', $business->website) }}">
                     </div>
                 </div>
 
@@ -86,23 +110,23 @@
                     {{-- Social links --}}
                     <div class="col-md-6 mt-2 form-group">
                         <label>Facebook</label>
-                        <input type="url" name="facebook" class="form-control" value="{{ old('facebook', $business->facebook) }}">
+                        <input type="string" name="facebook" class="form-control" value="{{ old('facebook', $business->facebook) }}">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Instagram</label>
-                        <input type="url" name="instagram" class="form-control" value="{{ old('instagram', $business->instagram) }}">
+                        <input type="string" name="instagram" class="form-control" value="{{ old('instagram', $business->instagram) }}">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>LinkedIn</label>
-                        <input type="url" name="linkedin" class="form-control" value="{{ old('linkedin', $business->linkedin) }}">
+                        <input type="string" name="linkedin" class="form-control" value="{{ old('linkedin', $business->linkedin) }}">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>YouTube</label>
-                        <input type="url" name="youtube" class="form-control" value="{{ old('youtube', $business->youtube) }}">
+                        <input type="string" name="youtube" class="form-control" value="{{ old('youtube', $business->youtube) }}">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Online Store</label>
-                        <input type="url" name="online_store" class="form-control" value="{{ old('online_store', $business->online_store) }}">
+                        <input type="string" name="online_store" class="form-control" value="{{ old('online_store', $business->online_store) }}">
                     </div>
                 </div>
             </div>
@@ -141,7 +165,7 @@
                             </div>
                             <div class="col-md-3 form-group">
                                 <label>LinkedIn</label>
-                                <input type="url" name="founders[{{ $index }}][linkedin]" class="form-control" value="{{ old("founders.$index.linkedin", $founder['linkedin'] ?? '') }}">
+                                <input type="string" name="founders[{{ $index }}][linkedin]" class="form-control" value="{{ old("founders.$index.linkedin", $founder['linkedin'] ?? '') }}">
                             </div>
                             <div class="col-md-12 mt-2 text-end">
                                 <button type="button" class="btn btn-danger remove-founder">Remove</button>
@@ -364,7 +388,7 @@
 
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                             {{-- Avoid Riba --}}
                             <div class="col-md-12 form-group">
                                 <label class="form-label question-label">Avoid Interest (Riba)? *</label>
@@ -372,8 +396,8 @@
                                 <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
                                     @foreach([
                                         'yes' => 'Yes',
-                                        'partially_transitioning' => 'Partially Transitioning',
                                         'no' => 'No',
+                                        'partially_transitioning' => 'Partially Transitioning',
                                         'prefer_not_to_say' => 'Prefer Not to Say'
                                     ] as $key => $label)
                                         <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
@@ -389,8 +413,9 @@
                                 <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
                                     @foreach([
                                         'yes' => 'Yes',
+                                        'no' => 'No',
                                         'partially_compliant' => 'Partially Compliant',
-                                        'no' => 'No'
+                                        
                                     ] as $key => $label)
                                         <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
                                             <input type="radio" name="avoid_haram_products" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }}> {{ $label }}
@@ -450,7 +475,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 ml-4">
+                        <div class="col-md-5 ml-4">
                             <p>Collaboration Interest: </p>
                             @php
                                 $savedCollaborationTypes = old('collaboration_types', 
@@ -535,7 +560,7 @@
 
         {{-- Step 5: Status --}}
         <div class="card mb-3">
-            <div class="card-header bg-success text-white">Step 5: Status - for Admin only</div>
+            <div class="card-header bg-info text-white">Step 5: Status - for Admin only</div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12 form-group">

@@ -295,6 +295,8 @@ class CustomerAuthController extends Controller
             'password'        => Hash::make($request->password),
             'otp'             => null,
             'otp_expires_at'  => null,
+            'is_otp_verified' => 1,
+            'status'          => 1,
         ]);
 
         return redirect()->route('customer.login')->with('success', 'Password reset successful!');
