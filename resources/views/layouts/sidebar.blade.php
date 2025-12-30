@@ -11,12 +11,12 @@
         <ul class="nav flex-column mt-3">
 
             <!-- Dashboard -->
-            {{-- <li class="nav-item mb-2">
+            <li class="nav-item mb-2">
                 <a href="{{ route('admin.dashboard') }}" 
                    class="nav-link text-white fw-bold {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <i class="fa fa-home me-2"></i> Dashboard
                 </a>
-            </li> --}}
+            </li>
 
             <li class="nav-item">
                 <a href="{{ route('gme-business-admin.index') }}" 

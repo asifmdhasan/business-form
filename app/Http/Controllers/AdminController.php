@@ -6,6 +6,7 @@ use Log;
 use App\Models\Mold;
 use App\Models\User;
 use App\Models\Variant;
+use App\Models\Customer;
 use App\Models\Purchase;
 use App\Models\Warehouse;
 use App\Models\FtpSetting;
@@ -15,6 +16,7 @@ use App\Models\UploadedFile;
 use Illuminate\Http\Request;
 use App\Models\WarehouseStock;
 use Illuminate\Support\Carbon;
+use App\Models\GmeBusinessForm;
 use App\Models\StockTransaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -114,87 +116,17 @@ class AdminController extends Controller
 
     public function dashboard(Request $request)
     {
-    //     $filter = $request->get('filter', 'month'); 
+   
+        $totalCustomers = Customer::where('status', 1)->where('is_otp_verified', 1)->count();
+        $totalBusinesses = GmeBusinessForm::count();
+        $approvedBusinesses = GmeBusinessForm::where('status', 'approved')->count();
 
-    //     $lowVariantStockCount = Variant::with('warehouseStocks')
-    //         ->where('status', '1')
-    //         ->get()
-    //         ->map(function ($variant) {
-    //             $totalStock = $variant->warehouseStocks->sum('stock');
-    //             return [
-    //                 'stock'     => $totalStock,
-    //                 'threshold' => $variant->threshold_status,
-    //             ];
-    //         })
-    //         ->filter(function ($variant) {
-    //             return $variant['stock'] <= $variant['threshold'];
-    //         })
-    //         ->count();
-    //     $molds = Mold::where('status', '1')->count();
-        $totalUsers = User::count();
-        
-    //     $totalVariants = Variant::where('status', '1')->whereNull('deleted_at')->count();
-    //     $totalVariantStockCount =  Variant::with('warehouseStocks')
-    //         ->where('status', '1') // only active variants
-    //         ->get()
-    //         ->sum(function ($variant) {
-    //             return $variant->warehouseStocks->sum('stock'); // sum of stock for each variant
-    //         });
-
-    //     $totalWarehouses = Warehouse::where('status', 'active')->count();
-        
-        
-    //     $totalTransactions = StockTransaction::count();
-    //     $totalStockIn = StockTransaction::where('activity_type', 'IN')->sum('quantity');
-    //     $totalStockOut = StockTransaction::where('activity_type', 'OUT')->sum('quantity');
-
-    //     $lowVariantStock = Variant::with(['part', 'warehouseStocks'])
-    //         ->where('status', '1')
-    //         ->get()
-    //         ->map(function ($variant) {
-    //             $totalStock = $variant->warehouseStocks->sum('stock');
-
-    //             return [
-    //                 'label'     => $variant->value,
-    //                 'total'     => $totalStock,
-    //                 'stock'     => $totalStock,
-    //                 'threshold' => $variant->threshold_status,
-    //                 'part_name' => $variant->part ? $variant->part->part_name : null,
-    //             ];
-    //         })
-    //         ->filter(function ($variant) {
-    //             return $variant['stock'] <= $variant['threshold'];
-    //         })
-    //         ->sortBy('stock')
-    //         ->take(10) // returns max 10 (if fewer, returns all)
-    //         ->values();
-
-    //     $variantStock = Variant::with(['part', 'warehouseStocks'])
-    //         ->get()
-    //         ->map(function ($variant) {
-    //         $totalStock = $variant->warehouseStocks->sum('stock');
-    //         return [
-    //             'label' => $variant->value,
-    //             'total' => $totalStock,
-    //             'stock' => $totalStock,
-    //             'part_name' => $variant->part ? $variant->part->part_name : null,
-    //         ];
-    //         })
-    //         ->sortByDesc('total')
-    //         ->take(10)
-    //         ->values();
+    
 
         return view('admin.dashboard', compact(
-            // 'lowVariantStockCount',
-            // 'molds',
-            // 'totalVariants',
-            'totalUsers',
-            // 'totalVariantStockCount',
-            // 'totalStockIn',
-            // 'totalStockOut',
-            // 'totalWarehouses',
-            // 'lowVariantStock',
-            // 'variantStock',
+            'totalBusinesses',
+            'totalCustomers',
+            'approvedBusinesses'
         ));
     }
 

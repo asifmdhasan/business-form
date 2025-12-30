@@ -36,7 +36,7 @@ class CustomerAuthController extends Controller
         ];
 
         if (Auth::guard('customer')->attempt($credentials)) {
-            return redirect()->route('customer.dashboard');
+            return redirect()->route('customer.gme-business-form.index');
         }
 
         return redirect()->back()->withErrors([
