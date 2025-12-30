@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\GmeBusinessForm;
 
 use App\Models\BusinessCategory;
+use App\Mail\BusinessCreatedMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Jobs\SendBusinessCreationEmailJob;
@@ -150,8 +152,9 @@ class GmeRegController extends Controller
             $business->status = 'pending';
             $business->save();
 
-            // Send email to customer for craetion of business  
-            SendBusinessCreationEmailJob::dispatch($business);
+            // Send email to customer for creation of business  
+            // BusinessCreatedMail::dispatch($business);
+            Mail::to($customer->email)->send(new BusinessCreatedMail($business));
 
             
             return redirect()->route('gme.business.success')

@@ -51,6 +51,17 @@ Route::middleware(['web', 'setLocale'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
+// Route for log
+Route::get('/show-log', function () {
+    $logPath = storage_path('logs/laravel.log');
+    if (!file_exists($logPath)) {
+        abort(404, 'Log file not found.');
+    }
+    return response()->file($logPath, [
+        'Content-Type' => 'text/plain'
+    ]);
+});
+
 
 Route::middleware(['setLocale'])->group(function () {
     Route::get('/gme-network-login', [CustomerAuthController::class, 'showCustomerLoginForm'])->name('customer.login');

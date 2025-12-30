@@ -135,7 +135,7 @@
                     <!-- Action Buttons -->
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
-                            <a href="{{ route('customer.dashboard') }}" 
+                            <a href="{{ route('customer.gme-business-form.index') }}" 
                                class="btn btn-primary btn-lg w-100 shadow-sm">
                                 <i class="fas fa-home me-2"></i>
                                 Return to Dashboard

@@ -197,7 +197,8 @@ class GmeBusinessAdminController extends Controller
             ];
 
             // Send mail (example using a Mailable class)
-            Mail::to('recipient@example.com')->send(new BusinessStatusUpdated($mailData));
+            $customer = $business->customer;
+            Mail::to($customer->email)->send(new BusinessStatusUpdated($mailData));
         }
         
 

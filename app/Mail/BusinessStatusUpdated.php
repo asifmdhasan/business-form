@@ -3,11 +3,12 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class BusinessStatusUpdated extends Mailable
 {
@@ -26,6 +27,8 @@ class BusinessStatusUpdated extends Mailable
      */
     public function envelope(): Envelope
     {
+        //add log here
+        Log::info('Receved envelope: ', $this->mailData);
         return new Envelope(
             subject: 'Business status ' . $this->mailData['status'] . '  for ' . $this->mailData['business_name'],
         );
@@ -36,6 +39,8 @@ class BusinessStatusUpdated extends Mailable
      */
     public function content(): Content
     {
+        //add log here
+        Log::info('send to blade...');
         return new Content(
             view: 'admin.emails.business-status-updated',
             with: [

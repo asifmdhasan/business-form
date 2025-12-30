@@ -12,6 +12,9 @@
         min-width: 140px;
     text-align: center;
     }
+    #pageLoader {
+        transition: opacity 0.2s ease;
+    }
 </style>
 
 <div class="container-fluid">
@@ -792,6 +795,16 @@
         </div>
     </div>
 </div>
+<!-- Global Loader -->
+<div id="pageLoader" class="position-fixed top-0 start-0 w-100 h-100 d-none"
+     style="background: rgba(255,255,255,0.8); z-index: 9999;">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-center">
+            <div class="spinner-border text-primary mb-3" role="status"></div>
+            <div class="fw-semibold">Please wait, loading next step...</div>
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script>
@@ -823,10 +836,6 @@ function addFounder() {
     founderIndex++;
 }
 </script>
-
-
-
-
 
 
 @if($step == 2)
@@ -1009,5 +1018,18 @@ function addFounder() {
         }
     </script>
 @endif
+<script>
+$(document).ready(function () {
+
+    $('form').on('submit', function () {
+        // Show loader
+        $('#pageLoader').removeClass('d-none');
+
+        // Disable submit button to prevent double click
+        $(this).find('button[type="submit"]').prop('disabled', true);
+    });
+
+});
+</script>
 
 @endsection

@@ -12,6 +12,9 @@
         min-width: 140px;
         text-align: center;
     }
+    #pageLoader {
+        transition: opacity 0.2s ease;
+    }
 </style>
 <div class="container-fluid">
     @if ($errors->any())
@@ -583,73 +586,81 @@
     </form>
 </div>
 
-
+<!-- Global Loader -->
+<div id="pageLoader" class="position-fixed top-0 start-0 w-100 h-100 d-none"
+     style="background: rgba(255,255,255,0.8); z-index: 9999;">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-center">
+            <div class="spinner-border text-primary mb-3" role="status"></div>
+            <div class="fw-semibold">Please wait, Status has been updated...</div>
+        </div>
+    </div>
+</div>
 
 
 {{-- JS for dynamic founder fields --}}
-<script>
-    let founderIndex = {{ count($founders) }};
-    
-    document.getElementById('add-founder').addEventListener('click', function() {
-        const container = document.getElementById('founders-container');
-        const row = document.createElement('div');
-        row.classList.add('row', 'founder-row', 'mb-2');
-        row.innerHTML = `
-            <div class="col-md-3 form-group">
-                <label>Full Name <span class="text-danger">*</span></label>
-                <input type="text" name="founders[${founderIndex}][name]" class="form-control" required>
-            </div>
-            <div class="col-md-3 form-group">
-                <label>Designation</label>
-                <input type="text" name="founders[${founderIndex}][designation]" class="form-control">
-            </div>
-            <div class="col-md-3 form-group">
-                <label>WhatsApp</label>
-                <input type="text" name="founders[${founderIndex}][whatsapp]" class="form-control">
-            </div>
-            <div class="col-md-3 form-group">
-                <label>LinkedIn</label>
-                <input type="url" name="founders[${founderIndex}][linkedin]" class="form-control">
-            </div>
-            <div class="col-md-12 mt-2 text-end">
-                <button type="button" class="btn btn-danger remove-founder">Remove</button>
-            </div>
-            <hr class="my-2">
-        `;
-        container.appendChild(row);
-        founderIndex++;
-    });
-
-    // Remove founder row
-    document.addEventListener('click', function(e) {
-        if(e.target.classList.contains('remove-founder')) {
-            e.target.closest('.founder-row').remove();
-        }
-    });
-</script>
-<script>
-function previewImage(input, previewId) {
-    const preview = document.getElementById(previewId);
-    if (input.files && input.files[0]) {
-        preview.src = URL.createObjectURL(input.files[0]);
-    }
-}
-
-function previewMultipleImages(input, previewContainerId) {
-    const container = document.getElementById(previewContainerId);
-    container.innerHTML = '';
-    if(input.files){
-        Array.from(input.files).forEach(file => {
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            img.className = 'img-thumbnail mb-1';
-            img.style.maxWidth = '100px';
-            container.appendChild(img);
+    <script>
+        let founderIndex = {{ count($founders) }};
+        
+        document.getElementById('add-founder').addEventListener('click', function() {
+            const container = document.getElementById('founders-container');
+            const row = document.createElement('div');
+            row.classList.add('row', 'founder-row', 'mb-2');
+            row.innerHTML = `
+                <div class="col-md-3 form-group">
+                    <label>Full Name <span class="text-danger">*</span></label>
+                    <input type="text" name="founders[${founderIndex}][name]" class="form-control" required>
+                </div>
+                <div class="col-md-3 form-group">
+                    <label>Designation</label>
+                    <input type="text" name="founders[${founderIndex}][designation]" class="form-control">
+                </div>
+                <div class="col-md-3 form-group">
+                    <label>WhatsApp</label>
+                    <input type="text" name="founders[${founderIndex}][whatsapp]" class="form-control">
+                </div>
+                <div class="col-md-3 form-group">
+                    <label>LinkedIn</label>
+                    <input type="url" name="founders[${founderIndex}][linkedin]" class="form-control">
+                </div>
+                <div class="col-md-12 mt-2 text-end">
+                    <button type="button" class="btn btn-danger remove-founder">Remove</button>
+                </div>
+                <hr class="my-2">
+            `;
+            container.appendChild(row);
+            founderIndex++;
         });
-    }
-}
-</script>
 
+        // Remove founder row
+        document.addEventListener('click', function(e) {
+            if(e.target.classList.contains('remove-founder')) {
+                e.target.closest('.founder-row').remove();
+            }
+        });
+    </script>
+    <script>
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                preview.src = URL.createObjectURL(input.files[0]);
+            }
+        }
+
+        function previewMultipleImages(input, previewContainerId) {
+            const container = document.getElementById(previewContainerId);
+            container.innerHTML = '';
+            if(input.files){
+                Array.from(input.files).forEach(file => {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.className = 'img-thumbnail mb-1';
+                    img.style.maxWidth = '100px';
+                    container.appendChild(img);
+                });
+            }
+        }
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script>
@@ -828,5 +839,19 @@ function previewMultipleImages(input, previewContainerId) {
                 btn.closest('.existing-photo').remove();
             }
         }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('form').on('submit', function () {
+                // Show loader
+                $('#pageLoader').removeClass('d-none');
+
+                // Disable submit button to prevent double click
+                $(this).find('button[type="submit"]').prop('disabled', true);
+            });
+
+        });
     </script>
 @endsection
