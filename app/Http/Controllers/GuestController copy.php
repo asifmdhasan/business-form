@@ -1,93 +1,54 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Mail\BusinessCreatedMail;
+use App\Models\BusinessCategory;
+use App\Models\GmeBusinessForm;
 use App\Models\Service;
 use Illuminate\Http\Request;
-use App\Models\GmeBusinessForm;
-
-use App\Models\BusinessCategory;
-use App\Mail\BusinessCreatedMail;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use App\Jobs\SendBusinessCreationEmailJob;
 
-class GmeRegController extends Controller
+
+
+class GuestController extends Controller
 {
-    //FOR ALL
-
-    // public function businessIndexCustomer(Request $request)
-    // {
-    //     $customer = auth()->guard('customer')->user();
-
-    //     if (!$customer) {
-    //         return redirect()->route('customer.login')->with('error', 'Please login first.');
-    //     }
-
-    //     // Check if it's an AJAX request for JSON data
-    //     if ($request->ajax() || $request->wantsJson()) {
-    //         $businesses = GmeBusinessForm::select([
-    //                 'id',
-    //                 'business_name',
-    //                 'short_introduction',
-    //                 'business_category_id',
-    //                 'countries_of_operation',
-    //                 'founders',
-    //                 'logo',
-    //                 'photos',
-    //                 'status',
-    //                 'created_at'
-    //             ])
-    //             ->with('category')
-    //             ->where('customer_id', $customer->id) // Only his own businesses
-    //             ->orderBy('created_at', 'desc')
-    //             ->get();
-
-    //         // Parse JSON fields
-    //         $businesses = $businesses->map(function($business) {
-    //             if ($business->photos && is_string($business->photos)) {
-    //                 $business->photos = json_decode($business->photos, true);
-    //             }
-    //             return $business;
-    //         });
-
-    //         return response()->json([
-    //             'businesses' => $businesses
-    //         ]);
-    //     }
-
-    //     // Return the view for normal page load
-    //     return view('customer.gme-business.index-own', [
-    //         'customer' => $customer
-    //     ]);
-    // }
 
     public function showRegisterForm(Request $request)
     {
         $step = $request->get('step', 1);
-        // $customer = session('customer');
-        $customer = auth()->guard('customer')->user(); 
+        $customer = auth()->guard('customer')->user();
         
-        if (!$customer) {
-            return redirect()->route('customer.login')->with('error', 'Please login first');
+        // Try to get existing draft from database (if logged in)
+        $business = null;
+        if ($customer) {
+            $business = GmeBusinessForm::where('customer_id', $customer->id)
+                ->where('status', 'draft')
+                ->first();
         }
         
-        // Check if draft exists
-        $business = GmeBusinessForm::where('customer_id', $customer->id)
-            ->where('status', 'draft')
-            ->first();
-        
-        // If no draft exists, create a blank object (not saved yet)
+        // If no database draft, check session
         if (!$business) {
+            $sessionData = session('business_draft', []);
             $business = new GmeBusinessForm();
-            $business->customer_id = $customer->id;
+            
+            // FIXED: Populate from session using fill() method
+            if (!empty($sessionData)) {
+                $business->fill($sessionData);
+            }
+            
+            if ($customer) {
+                $business->customer_id = $customer->id;
+            }
             $business->status = 'draft';
         }
         
         $categories = BusinessCategory::all();
         $countries = $this->getCountries();
         
-        return view('gme-reg.register', compact('step', 'business', 'categories', 'countries'));
+        return view('guest.register', compact('step', 'business', 'categories', 'countries', 'customer'));
     }
 
     public function getServices($categoryId)
@@ -95,6 +56,7 @@ class GmeRegController extends Controller
         return response()->json(
             Service::where('business_category_id', $categoryId)
                 ->select('id', 'name')
+                ->where('status', 1)
                 ->get()
         );
     }
@@ -102,11 +64,7 @@ class GmeRegController extends Controller
     public function saveStep(Request $request)
     {
         $step = $request->input('step');
-        $customer = auth()->guard('customer')->user();
-        
-        if (!$customer) {
-            return redirect()->route('customer.login')->with('error', 'Session expired. Please login again.');
-        }
+        // $customer = auth()->guard('customer')->user();
         
         // Validation
         $validator = $this->validateStep($request, $step);
@@ -117,16 +75,32 @@ class GmeRegController extends Controller
                 ->withInput();
         }
         
-        // Find existing draft or create new
-        $business = GmeBusinessForm::where('customer_id', $customer->id)
-            ->where('status', 'draft')
-            ->first();
+        // Get existing draft (from DB if logged in, from session if guest)
+        // $business = null;
+        // $isGuest = !$customer;
         
-        if (!$business) {
+        // if ($customer) {
+        //     // Logged in user - save to database
+        //     $business = GmeBusinessForm::where('customer_id', $customer->id)
+        //         ->where('status', 'draft')
+        //         ->first();
+            
+        //     if (!$business) {
+        //         $business = new GmeBusinessForm();
+        //         $business->customer_id = $customer->id;
+        //         $business->status = 'draft';
+        //     }
+        // } else {
+            // Guest user - use session
+            $sessionData = session('business_draft', []);
             $business = new GmeBusinessForm();
-            $business->customer_id = $customer->id;
+            
+            // FIXED: Populate from session using fill() method
+            if (!empty($sessionData)) {
+                $business->fill($sessionData);
+            }
             $business->status = 'draft';
-        }
+        // }
         
         // Save data based on step
         switch ($step) {
@@ -145,26 +119,97 @@ class GmeRegController extends Controller
         }
         
         $business->last_updated_step = $step;
-        $business->save();
+        // $business->save();
         
-        // If final step, change status to pending
+        
+        $sessionData = $business->getAttributes();
+        session(['business_draft' => $sessionData]);
+        // If final step
         if ($step == 4) {
+            // if ($isGuest) {
+            //     // Redirect guest to login/register
+            //     session(['redirect_after_login' => route('gme.business.complete-submission')]);
+            //     return redirect()->route('customer.register')
+            //         ->with('info', 'Please create an account to complete your business registration.');
+            // }
+
+            // Save to database or session
+            // if ($customer) {
+            //     $business->save();
+            // } else {
+            //     // Store in session for guests
+
+            //     // $business->save();
+            //     $sessionData = $business->getAttributes();
+            //     session(['business_draft' => $sessionData]);
+            // }
+
+            
+            // Logged in user - complete submission
             $business->status = 'pending';
             $business->save();
 
-            // Send email to customer for creation of business  
-            // BusinessCreatedMail::dispatch($business);
-            Mail::to($customer->email)->send(new BusinessCreatedMail($business));
-
+            Mail::to($business->email)->send(new BusinessCreatedMail($business));
             
-            return redirect()->route('gme.business.success')
+            // Mail::to($customer->email)->send(new BusinessCreatedMail($business));
+            
+            return redirect()->route('gme.business.success.guest')
                 ->with('success', 'Your business has been successfully registered!');
         }
         
         // Move to next step
         $nextStep = $step + 1;
-        return redirect()->route('gme.business.register', ['step' => $nextStep])
+        return redirect()->route('gme.business.register.guest', ['step' => $nextStep])
             ->with('success', 'Step ' . $step . ' saved successfully!');
+    }
+
+    /**
+     * Complete submission after login (for guests who filled the form)
+     */
+    public function completeSubmission()
+    {
+        $customer = auth()->guard('customer')->user();
+        
+        if (!$customer) {
+            return redirect()->route('customer.login')
+                ->with('error', 'Please login to complete your submission.');
+        }
+        
+        // Get session data
+        $sessionData = session('business_draft');
+        
+        if (!$sessionData) {
+            return redirect()->route('gme.business.register.guest')
+                ->with('error', 'No draft found. Please start again.');
+        }
+        
+        // Check if already has a pending/approved business
+        $existingBusiness = GmeBusinessForm::where('customer_id', $customer->id)
+            ->whereIn('status', ['pending', 'approved'])
+            ->first();
+        
+        if ($existingBusiness) {
+            session()->forget('business_draft');
+            return redirect()->route('gme.business.success.guest')
+                ->with('info', 'You already have a business registered.');
+        }
+        
+        // Create business record from session data
+        $business = new GmeBusinessForm();
+        $business->fill($sessionData);
+        
+        $business->customer_id = $customer->id;
+        $business->status = 'pending';
+        $business->save();
+        
+        // Clear session
+        session()->forget(['business_draft', 'redirect_after_login']);
+        
+        // Send email
+        Mail::to($customer->email)->send(new BusinessCreatedMail($business));
+        
+        return redirect()->route('gme.business.success.guest')
+            ->with('success', 'Your business has been successfully registered!');
     }
 
     /**
@@ -208,23 +253,12 @@ class GmeRegController extends Controller
                     'business_overview' => 'nullable|string|max:1800',
                     'services_id' => 'required|array|max:10',
                     'services_id.*' => 'exists:services,id',
-
-                    // Documents + Images
                     'registration_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
-                    'business_profile'      => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
-                    'product_catalogue'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
-
-                    // Images only (all image types)
-                    'logo'                  => 'nullable|image|max:2048',
-                    'cover_photo'           => 'nullable|image|max:5120',
-                    'photos.*'              => 'nullable|image|max:5120',
-    
-                    // 'registration_document' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
-                    // 'logo' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-                    // 'cover_photo' => 'nullable|image|max:5120',
-                    // 'photos.*' => 'nullable|image|max:5120',
-                    // 'business_profile' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
-                    // 'product_catalogue' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+                    'business_profile' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
+                    'product_catalogue' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
+                    'logo' => 'nullable|image|max:2048',
+                    'cover_photo' => 'nullable|image|max:5120',
+                    'photos.*' => 'nullable|image|max:5120',
                 ];
                 break;
                 
@@ -237,8 +271,6 @@ class GmeRegController extends Controller
                     'open_for_guidance' => 'required|in:yes,no,maybe',
                     'collaboration_open' => 'required|in:yes,no,maybe',
                     'collaboration_types' => 'nullable|array',
-                    // 'collaboration_types.*' => 'in:Partnerships,Investment Opportunities,Marketing,Supply Chain,Training', // Updated values
-
                     'collaboration_types.*' => 'in:Partnerships,Investment Oportunities,Vendor Supply Chain,Marketing Promotion,Networking,Training Workshops,Community Charity Projects,Not Sure Yet',
                 ];
                 break;
@@ -256,16 +288,13 @@ class GmeRegController extends Controller
         return Validator::make($request->all(), $rules);
     }
 
-    /**
-     * Save Step 1 data
-     */
     private function saveStep1(Request $request, GmeBusinessForm $business)
     {
         $business->business_name = $request->business_name;
         $business->short_introduction = $request->short_introduction;
         $business->year_established = $request->year_established;
         $business->business_category_id = $request->business_category_id;
-        $business->countries_of_operation = json_encode($request->countries_of_operation);
+        $business->countries_of_operation = $request->countries_of_operation; // ✅ array
         $business->business_address = $request->business_address;
         $business->email = $request->email;
         $business->whatsapp_number = $request->whatsapp_number;
@@ -275,14 +304,8 @@ class GmeRegController extends Controller
         $business->linkedin = $request->linkedin;
         $business->youtube = $request->youtube;
         $business->online_store = $request->online_store;
-        
-        // Save founders as JSON
-        $business->founders = json_encode($request->founders);
+        $business->founders = $request->founders; // ✅ array
     }
-
-    /**
-     * Save Step 2 data
-     */
 
     private function saveStep2(Request $request, GmeBusinessForm $business)
     {
@@ -313,42 +336,7 @@ class GmeRegController extends Controller
                 ->store('uploads/business/covers', 'public_folder');
         }
         
-        // FIX: Handle MULTIPLE PHOTOS (Gallery) - Improved logic
-        $existingPhotos = $request->input('existing_photos', []);
-        
-        // Decode current photos from database if they exist
-        $currentPhotos = [];
-        if ($business->photos) {
-            $currentPhotos = is_array($business->photos) 
-                ? $business->photos 
-                : json_decode($business->photos, true) ?? [];
-        }
-        
-        // Only keep photos that are in the existing_photos array (user didn't delete them)
-        $keptPhotos = [];
-        foreach ($currentPhotos as $photo) {
-            if (in_array($photo, $existingPhotos)) {
-                $keptPhotos[] = $photo;
-            } else {
-                // Delete removed photos
-                if (file_exists(public_path('assets/' . $photo))) {
-                    unlink(public_path('assets/' . $photo));
-                }
-            }
-        }
-        
-        // Add new photos
-        $newPhotos = [];
-        if ($request->hasFile('photos')) {
-            foreach ($request->file('photos') as $photo) {
-                $newPhotos[] = $photo->store('uploads/business/gallery', 'public_folder');
-            }
-        }
-        
-        // Merge kept and new photos
-        $allPhotos = array_merge($keptPhotos, $newPhotos);
-        $business->photos = !empty($allPhotos) ? json_encode($allPhotos) : null;
-        
+               
         // Handle REGISTRATION DOCUMENT upload
         if ($request->hasFile('registration_document')) {
             if ($business->registration_document && file_exists(public_path('assets/' . $business->registration_document))) {
@@ -377,9 +365,6 @@ class GmeRegController extends Controller
         }
     }
 
-    /**
-     * Save Step 3 data
-     */
     private function saveStep3(Request $request, GmeBusinessForm $business)
     {
         $business->avoid_riba = $request->avoid_riba;
@@ -391,29 +376,20 @@ class GmeRegController extends Controller
         $business->collaboration_types = json_encode($request->collaboration_types ?? []);
     }
 
-    /**
-     * Save Step 4 data
-     */
     private function saveStep4(Request $request, GmeBusinessForm $business)
     {
         $business->info_accuracy = $request->has('info_accuracy');
         $business->allow_publish = $request->has('allow_publish');
         $business->allow_contact = $request->has('allow_contact');
         $business->digital_signature = $request->digital_signature;
-        $business->status = 'pending'; // Set to pending for admin approval
+        $business->status = 'pending';
     }
 
-    /**
-     * Success page
-     */
-    public function success()
+    public function formSuccess()
     {
-        return view('gme-reg.success');
+        return view('guest.success');
     }
 
-    /**
-     * Get list of countries (helper method)
-     */
     private function getCountries()
     {
         return [
@@ -446,3 +422,4 @@ class GmeRegController extends Controller
         ];
     }
 }
+

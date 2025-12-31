@@ -1,21 +1,23 @@
 <?php
 
-use App\Http\Middleware\CustomerAuth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\GmeRegController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Middleware\LoginAuthMiddleware;
 use App\Http\Controllers\AnalyticsController;
-use App\Http\Controllers\GmeBusinessController;
-use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessCategoryController;
-use App\Http\Controllers\GmeBusinessAdminController;
+use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FrontendGmeBusinessController;
+use App\Http\Controllers\GmeBusinessAdminController;
+use App\Http\Controllers\GmeBusinessController;
+use App\Http\Controllers\GmeRegController;
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\CustomerAuth;
+use App\Http\Middleware\LoginAuthMiddleware;
+use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -46,7 +48,37 @@ use App\Http\Controllers\FrontendGmeBusinessController;
 
 
 Route::middleware(['web', 'setLocale'])->group(function () {
-    Route::get('/', [AuthController::class, 'showLoginForm']);
+    Route::get('/', [GuestController::class, 'landingPage']);
+
+    // Route::get('/gme-guest/business/register', [GuestController::class, 'showRegisterForm'])->name('gme.business.register.guest');
+    // Route::post('/gme-guest/business/save-step', [GuestController::class, 'saveStep'])->name('gme.business.save-step.guest');
+    // Route::get('/gme-guest/business/complete-submission', [GuestController::class, 'completeSubmission'])->name('gme.business.complete-submission');
+    // Route::get('/gme-guest/business/success', [GuestController::class, 'formSuccess'])->name('gme.business.success.guest');
+    // Route::get('/gme-guest-get-services/{categoryId}', [GuestController::class, 'getServices']);
+
+
+    Route::get('/business/register/form', [GuestController::class, 'guestForm'])->name('guest.form');
+    Route::post('/business/register/save-step', [GuestController::class, 'guestSaveStep'])->name('guest.save-step');
+    Route::get('/gme-guest/business/success', [GuestController::class, 'formSuccess'])->name('guest.success');
+    Route::get('/gme-guest-get-services/{categoryId}', [GuestController::class, 'getServices']);
+    
+    //Index
+    Route::get('/', [GuestController::class, 'guestIndex'])->name('guest.index');
+    
+    Route::get('/guest-gme-businesses', [GuestController::class, 'indexAjax'])
+            ->name('guest.gme-business.ajax');
+        // get category ajax
+        Route::get('/guest-get-category', [GuestController::class, 'getCategoryAjax'])->name('guest.get-category.ajax');
+        //get Location Ajax
+        Route::get('/guest-get-locations', [GuestController::class, 'getLocationAjax'])->name('guest.get-locations.ajax');
+
+
+
+
+
+
+
+    Route::get('/ad-backdoor', [AuthController::class, 'showLoginForm']);
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
@@ -171,68 +203,13 @@ Route::middleware([
 
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    // Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
-    // Route::get('/gme-business/create', [GmeBusinessController::class, 'create'])->name('gme-business.create');
-    // Route::post('/gme-business/store', [GmeBusinessController::class, 'store'])->name('gme-business.store');
-    // Route::get('/gme-business', [GmeBusinessController::class, 'index'])->name('gme-business.index');
-
     Route::resource('business-categories', BusinessCategoryController::class);
     Route::resource('services', ServiceController::class);
-
-    
-
-
 
     Route::resource('gme-business', FrontendGmeBusinessController::class);
 
     Route::resource('gme-business-admin', GmeBusinessAdminController::class);
 
-
-
-
-    // Route::group(['prefix' => 'roles'], function () {
-    //     Route::get('/', [RoleController::class, 'index'])->name('role.list');
-    //     Route::get('/create', [RoleController::class, 'create'])->name('role.create');
-    //     Route::post('/store', [RoleController::class, 'store'])->name('role.store');
-    //     Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('role.edit');
-    //     Route::post('/update/{id}', [RoleController::class, 'update'])->name('role.update');
-    //     Route::get('/delete/{id}', [RoleController::class, 'delete'])->name('role.delete');
-    // });
-
-    // Route::group(['prefix' => 'reports'], function () {
-    //     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('reports.analytics');
-    //     Route::get('/export-csv', [AnalyticsController::class, 'exportCsv'])->name('reports.export.csv');
-    //     Route::get('/export-xlsx', [AnalyticsController::class, 'exportXlsx'])->name('reports.export.xlsx');
-    //     Route::get('/export-pdf', [AnalyticsController::class, 'exportPdf'])->name('reports.export.pdf');
-
-    //     // Route::get('/analytics', [AnalyticsController::class, 'index'])->name('reports.index');
-    //     Route::get('/data', [AnalyticsController::class, 'fetchData'])->name('reports.data');
-    // });
-
-
-    // Route::get('/notifications/latest', [AdminController::class, 'latestNotifications']);
-    // Route::post('/notifications/read/{id}', [AdminController::class, 'markAsRead']);
-
-    // Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    // // Route::get('/dashboard/chart-data', [AdminController::class, 'dashboard'])->name('admin.dashboard.chartData');
-    // Route::get('/admin/dashboard/chart-data', [AdminController::class, 'chartData'])->name('admin.dashboard.chartData');
-
-    // Route::get('/stock-entry-chart', [AdminController::class, 'stockEntryChart'])
-    //     ->name('dashboard.stockEntryChart');
-
-    // Route::get('/stock-out-chart', [AdminController::class, 'stockOutChart'])
-    //     ->name('dashboard.stockOutChart');
-
-    // Route::get('/stock-in-out-chart', [AdminController::class, 'stockInOutChart'])
-    //     ->name('dashboard.stockInOutChart');
-
-    // Route::get('/purchase-and-requisition-chart', [AdminController::class, 'purchaseRequisitionChart'])
-    //     ->name('dashboard.purchaseRequisitionChart');
-
-
-
-
-    
     Route::group(['prefix' => 'user'], function () {
 
         // Route::resource('user', UserController::class);
