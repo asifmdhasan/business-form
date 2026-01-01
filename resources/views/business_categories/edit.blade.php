@@ -14,7 +14,7 @@
 
             <div class="card-body">
 
-                <form action="{{ route('business-categories.update', $businessCategory) }}" method="POST">
+                <form action="{{ route('business-categories.update', $businessCategory) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -31,6 +31,37 @@
                                required>
 
                         @error('name')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    {{-- Image --}}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            Category Image
+                        </label>
+                        <!-- recomendation size 300x300 px -->
+                        <p class="text-muted small">
+                            Recommended size: 160 × 100 px
+                        </p>
+                        {{-- Image preview --}}
+                        <div class="mb-2">
+                            <img id="imagePreview"
+                                 src="{{ $businessCategory->image ? asset('assets/' . $businessCategory->image) : '' }}"
+                                 alt="Image Preview"
+                                 style="max-width: 150px; max-height: 150px; display: {{ $businessCategory->image ? 'block' : 'none' }};"
+                                 class="img-thumbnail">
+                        </div>
+
+                        <input type="file"
+                               name="image"
+                               id="imageInput"
+                               class="form-control @error('image') is-invalid @enderror"
+                               accept="image/*">
+
+                        @error('image')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -73,4 +104,26 @@
 
     </div>
 </div>
+
+{{-- Image preview script --}}
+<script>
+document.getElementById('imageInput').addEventListener('change', function(event) {
+    const input = event.target;
+    const preview = document.getElementById('imagePreview');
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        preview.src = '';
+        preview.style.display = 'none';
+    }
+});
+</script>
 @endsection

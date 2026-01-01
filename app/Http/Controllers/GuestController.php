@@ -12,6 +12,23 @@ use Illuminate\Support\Facades\Validator;
 
 class GuestController extends Controller
 {
+    public function show($id)
+    {
+        $business = GmeBusinessForm::with('category.services')->findOrFail($id);
+
+        // Decode services_id JSON
+        $selectedServiceIds = $business->services_id ?? [];
+        if (is_string($selectedServiceIds)) {
+            $selectedServiceIds = json_decode($selectedServiceIds, true);
+        }
+
+        // Filter category services based on selected IDs
+        $services = $business->category
+            ? $business->category->services->whereIn('id', $selectedServiceIds)
+            : collect();
+
+        return view('guest.show', compact('business', 'services'));
+    }
     /**
      * Show guest registration form
      */
@@ -428,6 +445,10 @@ class GuestController extends Controller
                     ? json_decode($business->founders, true)
                     : ($business->founders ?? []);
 
+                $business->countries_of_operation = is_string($business->countries_of_operation)
+                    ? json_decode($business->countries_of_operation, true)
+                    : ($business->countries_of_operation ?? []);
+
                 return $business;
             });
 
@@ -439,8 +460,10 @@ class GuestController extends Controller
 
     public function getCategoryAjax()
     {
-        $categories = BusinessCategory::select('id', 'name')
+        $categories = BusinessCategory::select('id', 'name', 'image')
             ->orderBy('name')
+            ->where('status', 1)
+            ->take(4)
             ->get();
 
         return response()->json([

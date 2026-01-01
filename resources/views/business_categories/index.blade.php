@@ -24,6 +24,7 @@
                     <tr>
                         <th>#</th>
                         <th>Name</th>
+                        <th>Image</th>
                         <th>Status</th>
                         <th width="160">Action</th>
                     </tr>
@@ -33,6 +34,17 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $category->name }}</td>
+                            <td>
+                                @if($category->image)
+                                    <img src="{{ asset('assets/' . $category->image) }}"
+                                         alt="{{ $category->name }}"
+                                         width="50"
+                                         height="50"
+                                         style="object-fit: cover; border-radius: 5px;">
+                                @else
+                                    N/A
+                                @endif
+                            </td>
                             <td>
                                 <span class="badge {{ $category->status ? 'bg-success' : 'bg-danger' }}">
                                     {{ $category->status ? 'Active' : 'Inactive' }}

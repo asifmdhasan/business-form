@@ -27,17 +27,32 @@ class BusinessCategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the request
         $request->validate([
             'name'   => 'required|string|max:255',
+            'image'  => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048', // validate as image
             'status' => 'required|in:0,1',
         ]);
 
-        BusinessCategory::create($request->only('name', 'status'));
+        // Prepare data
+        $data = $request->only('name', 'status');
+
+        // Handle IMAGE upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName(); // unique name
+            $image->move(public_path('assets/uploads/business/categories'), $imageName); // move to public folder
+            $data['image'] = 'uploads/business/categories/' . $imageName;
+        }
+
+        // Create the business category
+        BusinessCategory::create($data);
 
         return redirect()
             ->route('business-categories.index')
             ->with('success', 'Business category created successfully.');
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -52,17 +67,37 @@ class BusinessCategoryController extends Controller
      */
     public function update(Request $request, BusinessCategory $businessCategory)
     {
+        // Validate the request
         $request->validate([
             'name'   => 'required|string|max:255',
+            'image'  => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048', // image validation
             'status' => 'required|in:0,1',
         ]);
 
-        $businessCategory->update($request->only('name', 'status'));
+        $data = $request->only('name', 'status');
+
+        // Handle IMAGE upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($businessCategory->image && file_exists(public_path('assets/' . $businessCategory->image))) {
+                unlink(public_path('assets/' . $businessCategory->image));
+            }
+
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('assets/uploads/business/categories'), $imageName);
+
+            $data['image'] = 'uploads/business/categories/' . $imageName;
+        }
+
+        // Update the business category
+        $businessCategory->update($data);
 
         return redirect()
             ->route('business-categories.index')
             ->with('success', 'Business category updated successfully.');
     }
+
 
     /**
      * Remove the specified resource.

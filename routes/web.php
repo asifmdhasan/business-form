@@ -65,14 +65,17 @@ Route::middleware(['web', 'setLocale'])->group(function () {
     //Index
     Route::get('/', [GuestController::class, 'guestIndex'])->name('guest.index');
     
-    Route::get('/guest-gme-businesses', [GuestController::class, 'indexAjax'])
-            ->name('guest.gme-business.ajax');
+    Route::get('/guest-gme-businesses', [GuestController::class, 'indexAjax'])->name('guest.gme-business.ajax');
         // get category ajax
-        Route::get('/guest-get-category', [GuestController::class, 'getCategoryAjax'])->name('guest.get-category.ajax');
+    Route::get('/guest-get-category', [GuestController::class, 'getCategoryAjax'])->name('guest.get-category.ajax');
         //get Location Ajax
-        Route::get('/guest-get-locations', [GuestController::class, 'getLocationAjax'])->name('guest.get-locations.ajax');
+    Route::get('/guest-get-locations', [GuestController::class, 'getLocationAjax'])->name('guest.get-locations.ajax');
 
+ 
 
+    //View GME Business Details
+    Route::get('/guest-gme-business-form/{business}', [GuestController::class, 'show'])->name('guest.gme-business-form.show');
+//    Route::get('/gme-business-form/{business}', [CustomerController::class, 'show'])->name('customer.gme-business-form.show');
 
 
 
