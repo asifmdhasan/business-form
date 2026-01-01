@@ -582,6 +582,10 @@
         padding-bottom:1.5rem;
     }
 }
+
+    .join-network:hover {
+        color: #fff;
+    }
 </style>
 </head>
 
@@ -631,9 +635,13 @@
                     <div class="footer-cta text-center mb-4 d-md-flex justify-content-between align-items-center">
                         <div class="mb-3 mb-md-0">
                             <h2 class="h4 mb-1 grow-business">Grow Your Business</h2>
-                            <p class="mb-0" style="color: rgba(255,255,255,0.8);">Join our network of talented Muslim entrepreneurs.</p>
+                            <p class="mb-0" style="color: rgba(255,255,255,0.8);">
+                                Join our network of talented Muslim entrepreneurs.
+                            </p>
                         </div>
-                        <button class="btn btn-login">Join the Network</button>
+                        <a href="{{ route('guest.form') }}" class="btn btn-login join-network" style=" color: #191970;">
+                            Join the Network
+                        </a>
                     </div>
 
                     <div class="row g-4 pb-4 border-bottom border-white border-opacity-25 pt-4">

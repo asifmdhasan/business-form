@@ -15,9 +15,13 @@
     #pageLoader {
         transition: opacity 0.2s ease;
     }
+    .main-form{
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
 </style>
 
-<div class="container-fluid">
+<div class="container-fluid main-form">
     <div class="row justify-content-center">
         <div class="col-xl-10 col-lg-11">
             {{-- Success Message --}}

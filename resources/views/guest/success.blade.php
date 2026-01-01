@@ -1,7 +1,13 @@
 @extends('layouts.guest-master')
 
 @section('content')
-<div class="container-fluid">
+<style>
+    .main-form{
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+    </style>
+<div class="container-fluid main-form">
     <div class="row justify-content-center">
         <div class="col-xl-8 col-lg-10">
             
@@ -135,7 +141,7 @@
                     <!-- Action Buttons -->
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
-                            <a href="{{ route('customer.gme-business-form.index') }}" 
+                            <a href="{{ url('/') }}" 
                                class="btn btn-primary btn-lg w-100 shadow-sm">
                                 <i class="fas fa-home me-2"></i>
                                 Return to Dashboard
