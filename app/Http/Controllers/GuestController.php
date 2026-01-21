@@ -434,6 +434,7 @@ class GuestController extends Controller
                 'created_at',
             ])
             ->with('category:id,name')
+            ->where('status', 'approved')
             ->orderByDesc('id')
             ->get()
             ->transform(function ($business) {

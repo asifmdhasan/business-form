@@ -33,6 +33,17 @@
     <link href="{{ asset('assets/css/tooltips.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/choices.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/site.css') }}" rel="stylesheet" />
+    <style>
+        .bg-primary {
+    --bs-bg-opacity: 1;
+    background-color: #9C7D2D !important;
+}
+.btn-primary
+{
+    background-color: #9C7D2D !important;
+    border: 1px solid #9C7D2D !important;
+}
+</style>
 </head>
 
 <body class="bg-light">

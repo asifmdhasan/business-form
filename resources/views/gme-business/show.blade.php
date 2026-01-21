@@ -468,7 +468,7 @@
 
     <!-- PRODUCTS & SERVICES -->
     @if($services->count())
-    <section>
+    <section class="mt-4">
         <div class="text-start mb-4">
             <h4 class="fw-bold mb-4 featured-business "
             style="

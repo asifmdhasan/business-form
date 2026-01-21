@@ -70,8 +70,9 @@
         }
 
         .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);
         }
+
 
         .input-focus:focus {
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
@@ -149,20 +150,41 @@
                             placeholder="Enter password" required>
                     </div>
 
-                    <button type="submit"
+                    {{-- <button type="submit"
                             class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
                         Login
-                    </button>
-                    <button type="button" onclick="location.href='{{ route('customer.forget.password') }}'"
-                            class="mt-4 w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-700">
-                        Forgot Password
-                    </button>
+                    </button> --}}
+                    <div class="mb-6" style="margin-top: 2rem;">
+                        <button type="submit"
+                            class="w-full flex justify-center items-center py-2 px-6 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 btn-hover transition-all duration-200 shadow-lg"
+                            style="background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1">
+                                </path>
+                            </svg>
+                            {{ __('login.sign_in_button') }}
+                        </button>
+                    </div>
+                    <div class="row text-center" style="display: flex;justify-content: space-between;">
+                        <a href='{{ route('customer.forget.password') }}'
+                            class=" text-sm" style="color:#9C7D2D; ">
+                            Forgot Password !!!
+                        </a>
 
-                    <div class="text-center mt-3">
-                        <a href="{{ route('customer.register') }}" class="text-blue-600 text-sm">
+                    
+                        <a href="{{ route('customer.register') }}" class=" text-sm"style="color:#9C7D2D; display:flex">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1">
+                                </path>
+                            </svg>
                             Create new account
                         </a>
+                    
                     </div>
+
+                    
 
                 </form>
 

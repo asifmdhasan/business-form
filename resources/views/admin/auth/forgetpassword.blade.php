@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
 <body>
-<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8" style="background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <img class="mx-auto h-20 w-auto rounded-full" src="{{url('/backend/images/logo.png')}}" alt="logo"/>
         <h2 class="mt-6 text-center text-3xl leading-3 font-bold text-gray-900">

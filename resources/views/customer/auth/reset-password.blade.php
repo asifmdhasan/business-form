@@ -17,8 +17,9 @@
             backdrop-filter: blur(10px);
         }
         .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);
         }
+
     </style>
 </head>
 
@@ -71,7 +72,8 @@
 
             <button type="submit"
                 class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow 
-                       hover:bg-indigo-700 transform hover:-translate-y-0.5 transition">
+                       hover:bg-indigo-700 transform hover:-translate-y-0.5 transition"
+                        style="background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);">
                 Reset Password
             </button>
 

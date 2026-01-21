@@ -43,6 +43,7 @@ class GmeBusinessAdminController extends Controller
     }
     public function update(Request $request, $id)
     {
+ 
         $business = GmeBusinessForm::findOrFail($id);
 
         $validated = $request->validate([
@@ -197,8 +198,13 @@ class GmeBusinessAdminController extends Controller
             ];
 
             // Send mail (example using a Mailable class)
-            $customer = $business->customer;
-            Mail::to($customer->email)->send(new BusinessStatusUpdated($mailData));
+            if ($business->customer && $business->customer->email) {
+                Mail::to($business->customer->email)
+                    ->send(new BusinessStatusUpdated($mailData));
+            } elseif ($business->email) {
+                Mail::to($business->email)
+                    ->send(new BusinessStatusUpdated($mailData));
+            }
         }
         
 

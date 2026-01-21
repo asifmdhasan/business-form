@@ -504,7 +504,7 @@
 
     <!-- PRODUCTS & SERVICES -->
     @if($services->count())
-    <section>
+    <section class="contact-card  mt-4"> 
         <div class="text-start mb-4">
             {{-- <h2 class="section-title">Products & Services</h2> --}}
             <h4 class="fw-bold mb-4 featured-business "
@@ -534,9 +534,9 @@
             @endforeach
         </div>
 
-        <div class="text-center">
+        {{-- <div class="text-center">
             <button class="btn btn-secondary">View All Products & Services</button>
-        </div>
+        </div> --}}
     </section>
     @endif
 

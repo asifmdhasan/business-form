@@ -101,14 +101,14 @@
                         <input type="radio" name="status" id="statusVerified" value="approved">
                         <label for="statusVerified">GME Verified</label>
                     </div>
-                    <div class="radio-option">
+                    {{-- <div class="radio-option">
                         <input type="radio" name="status" id="statusPending" value="pending">
                         <label for="statusPending">Pending</label>
                     </div>
                     <div class="radio-option">
                         <input type="radio" name="status" id="statusRejected" value="rejected">
                         <label for="statusRejected">Rejected</label>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <!-- Action Buttons -->
