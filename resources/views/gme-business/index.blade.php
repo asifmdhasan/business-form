@@ -182,11 +182,15 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            border: 1px solid #9b7d2d;
+            cursor: pointer;
         }
 
         .business-card:hover {
             box-shadow: 0 8px 20px rgba(0,0,0,0.12);
             transform: translateY(-3px);
+            border: 1px solid #9b7d2d;
+            cursor: pointer;
         }
 
         .business-image {
@@ -291,7 +295,15 @@
                 <div class="filter-sidebar">
                     <div class="filter-header">
                         <i class="fas fa-filter filter-icon"></i>
-                        Filter Businesses
+                        {{-- Filter Businesses --}}
+                        <h4 class="fw-bold mb-4 featured-business "
+                        style="
+                            font-size: 34px;
+                            text-transform: uppercase;
+                            line-height: 1.3em;">
+                        <span style=" font-weight: 300;"> Filter </span>
+                        <span style="color:#9b7d2d;font-weight: 900;">Businesses </span> 
+                    </h4>
                     </div>
 
                     <!-- Search Box -->

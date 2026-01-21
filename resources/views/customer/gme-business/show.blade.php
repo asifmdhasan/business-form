@@ -158,7 +158,7 @@
 
         .info-label {
             font-size: 12px;
-            color: var(--text-muted);
+            color: #9b7d2d;
             text-transform: uppercase;
             margin-bottom: 4px;
             font-weight: 600;
@@ -172,7 +172,7 @@
 
         /* Faith-Compliant Section */
         .faith-section {
-            background: linear-gradient(135deg, #F0F9FF 0%, #E0F7FA 100%);
+            background: linear-gradient(135deg, #9b7d2d; 0%, #9b7d2d 100%);
             border-radius: 12px;
             padding: 30px;
             margin-bottom: 30px;
@@ -251,7 +251,7 @@
 
         .product-card {
             background: white;
-            border: 1px solid #E5E7EB;
+            border: 1px solid #9b7d2d;
             border-radius: 12px;
             padding: 25px;
             text-align: center;
@@ -724,7 +724,15 @@
 
         @if(count($photos) > 0)
             <div class="content-card">
-                <h2 class="section-title">Photos & Media</h2>
+                {{-- <h2 class="section-title"> </h2> --}}
+                <h4 class="fw-bold mb-4 featured-business "
+                    style="
+                        font-size: 34px;
+                        text-transform: uppercase;
+                        line-height: 1.3em;">
+                    <span style=" font-weight: 300;">Photos & </span>
+                    <span style="color:#9b7d2d;font-weight: 900;">Media </span> 
+                </h4>
 
                 <div class="row justify-content-center photo-grid">
                     @foreach($photos as $photo)
@@ -743,7 +751,15 @@
 
         <!-- Contact Information -->
         <div class="content-card">
-            <h2 class="section-title">Contact Information</h2>
+            <h4 class="fw-bold mb-4 featured-business "
+                    style="
+                        font-size: 34px;
+                        text-transform: uppercase;
+                        line-height: 1.3em;">
+                    <span style=" font-weight: 300;">Contact </span>
+                    <span style="color:#9b7d2d;font-weight: 900;">Information </span> 
+                </h4>
+                <br>
             <hr>
             
             <div class="contact-grid" style="margin-top: 2rem;">

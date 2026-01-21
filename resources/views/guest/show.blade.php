@@ -165,13 +165,13 @@
     }
 
     .info-item i {
-        color: var(--primary-color);
+        color: #9b7d2d;
         margin-top: 0.25rem;
     }
 
     .info-label {
         font-size: 0.875rem;
-        color: var(--text-muted);
+        color: #9b7d2d;
         margin-bottom: 0.25rem;
     }
 
@@ -182,12 +182,15 @@
 
     /* Faith Compliance Section */
     .faith-section {
-        background: linear-gradient(135deg, #d5f4f4 0%, #a5f3f3 100%);
+        /* background: linear-gradient(135deg, #9b7d2d 0%, #9b7d2d 100%); */
         border-radius: 1rem;
         padding: 2rem;
         margin-bottom: 2rem;
         position: relative;
         overflow: hidden;
+        background-image: url('{{ asset('assets/image/bg.webp') }}');
+        background-size: cover;
+        background-position: center;
     }
 
     .faith-section::before {
@@ -218,7 +221,7 @@
 
     /* Products Section */
     .product-card {
-        border: 1px solid var(--border-light);
+        border: 1px solid #9b7d2d;
         border-radius: 1rem;
         background: white;
         padding: 1.5rem;
@@ -392,7 +395,16 @@
 
     <!-- ABOUT THE BUSINESS -->
     <section class="about-card">
-        <h2 class="section-title">About the Business</h2>
+        {{-- <h2 class="section-title">About the Business</h2> --}}
+        <h4 class="fw-bold mb-4 featured-business "
+            style="
+                font-size: 34px;
+                text-transform: uppercase;
+                line-height: 1.3em;">
+            <span style=" font-weight: 300;">About the </span>
+            <span style="color:#9b7d2d;font-weight: 900;">Business </span> 
+        </h4>
+
         <p class="mb-4">{{ $business->business_overview }}</p>
 
         <div class="row pt-3" style="border-top: 1px solid var(--border-light);">
@@ -444,9 +456,17 @@
     <!-- FAITH COMPLIANCE -->
     <section class="faith-section">
         <div class="faith-content text-center">
-            <i class="fas fa-shield-alt text-primary-custom" style="font-size: 2.5rem;"></i>
-            <h2 class="section-title mt-2">Faith-Compliant Business</h2>
-            <p class="section-subtitle mx-auto" style="max-width: 600px;">
+            {{-- <i class="fas fa-shield-alt text-primary-custom" style="font-size: 2.5rem;"></i> --}}
+            {{-- <h2 class="section-title mt-2"> </h2> --}}
+            <h4 class="fw-bold mb-4 featured-business "
+                style="
+                    font-size: 34px;
+                    text-transform: uppercase;
+                    line-height: 1.3em;">
+                <span style="color:#fff; font-weight: 300;">Faith-Compliant </span>
+                <span style="color:#fff;font-weight: 900;">Business </span> 
+            </h4>
+            <p class="section-subtitle mx-auto" style="max-width: 600px;color:#fff;">
                 This business is verified to operate under Islamic ethical principles.
             </p>
 
@@ -474,7 +494,7 @@
                 </div>
             </div>
 
-            <p class="mt-4 mb-0 mx-auto" style="max-width: 700px;">
+            <p class="mt-4 mb-0 mx-auto" style="max-width: 700px;color:#fff;">
                 Our commitment is to uphold the highest standards of integrity. We ensure all operations, 
                 from financing to product development and marketing, are fully aligned with ethical principles, 
                 fostering trust and transparency with our valued customers and partners.
@@ -486,17 +506,25 @@
     @if($services->count())
     <section>
         <div class="text-start mb-4">
-            <h2 class="section-title">Products & Services</h2>
-            <p class="section-subtitle">What They Offer</p>
+            {{-- <h2 class="section-title">Products & Services</h2> --}}
+            <h4 class="fw-bold mb-4 featured-business "
+            style="
+                font-size: 34px;
+                text-transform: uppercase;
+                line-height: 1.3em;">
+            <span style=" font-weight: 300;">Products & </span>
+            <span style="color:#9b7d2d;font-weight: 900;">Services </span> 
+        </h4>
+            <p class="section-subtitle"style="color:#414141;font-weight: 600; font-size: 24px;">What They Offer</p>
         </div>
 
         <div class="row">
             @foreach($services as $service)
             <div class="col-md-4">
                 <div class="product-card">
-                    <div class="product-icon">
+                    {{-- <div class="product-icon">
                         <i class="fas fa-star"></i>
-                    </div>
+                    </div> --}}
                     <h3 class="h5 fw-bold">{{ $service->name }}</h3>
                     <p class="text-muted small mb-0">
                         {{ $service->description ?? 'Shariah-compliant service offerings.' }}
@@ -513,9 +541,17 @@
     @endif
 
     <!-- GALLERY -->
-    {{-- @if(count($photos))
+    @if(count($photos))
     <section class="mt-4">
-        <h2 class="section-title mb-3">Photos & Media</h2>
+        {{-- <h2 class="section-title mb-3">Photos & Media</h2> --}}
+        <h4 class="fw-bold mb-4 featured-business "
+                    style="
+                        font-size: 34px;
+                        text-transform: uppercase;
+                        line-height: 1.3em;">
+                    <span style=" font-weight: 300;">Photos & </span>
+                    <span style="color:#9b7d2d;font-weight: 900;">Media </span> 
+                </h4>
         <div class="row g-3">
             @foreach($photos as $photo)
             <div class="col-md-4 col-6">
@@ -526,10 +562,17 @@
             @endforeach
         </div>
     </section>
-    @endif --}}
+    @endif
 @if(count($photos))
 <section class="mt-4 mb-4" style="padding-bottom: 2rem;">
-    <h2 class="section-title mb-3">Photos & Media</h2>
+    <h4 class="fw-bold mb-4 featured-business "
+                    style="
+                        font-size: 34px;
+                        text-transform: uppercase;
+                        line-height: 1.3em;">
+                    <span style=" font-weight: 300;">Photos & </span>
+                    <span style="color:#9b7d2d;font-weight: 900;">Media </span> 
+                </h4>
 
     <div class="gallery-grid">
         @foreach($photos as $photo)
@@ -547,7 +590,16 @@
 
     <!-- CONTACT INFORMATION -->
     <section class="contact-card mt-4 pt-4">
-        <h2 class="section-title mb-3">Contact Information</h2>
+        <h4 class="fw-bold mb-4 featured-business "
+                    style="
+                        font-size: 34px;
+                        text-transform: uppercase;
+                        line-height: 1.3em;">
+                    <span style=" font-weight: 300;">Contact </span>
+                    <span style="color:#9b7d2d;font-weight: 900;">Information </span> 
+                </h4>
+                <br>
+                <hr>
         
         <div class="row g-3 pt-3" style="border-top: 1px solid var(--border-light);">
             <div class="col-md-4">

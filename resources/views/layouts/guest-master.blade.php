@@ -39,6 +39,104 @@
 
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 <style>
+
+.hero-section {
+    position: relative;
+    padding: 120px 0;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            rgba(156, 125, 45, 0.9),
+            rgba(156, 125, 45, 0.9)
+        );
+}
+
+/* Islamic background enhancement */
+.islamic-bg {
+    background-color: #9C7D2D;
+}
+
+
+.hero-ornament {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.8;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.hero-ornament img {
+    width: 500px;
+    max-width: 90vw;
+    animation: rotatePattern 60s linear infinite;
+}
+
+/* Rotation animation */
+@keyframes rotatePattern {
+    from {
+        transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+/* ===============================
+   CONTENT ABOVE BACKGROUND
+================================ */
+
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* ===============================
+   TEXT STYLING
+================================ */
+
+.hero-section h1 {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    letter-spacing: 1px;
+}
+
+.hero-section p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* ===============================
+   SEARCH BOX STYLING
+================================ */
+
+#heroSearchInput {
+    border-radius: 999px 0 0 999px;
+    padding-left: 22px;
+    border: none;
+}
+
+#heroSearchBtn {
+    border-radius: 0 999px 999px 0;
+    font-weight: 600;
+}
+
+/* ===============================
+   MOBILE OPTIMIZATION
+================================ */
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 90px 0;
+    }
+
+    .hero-ornament img {
+        width: 280px;
+    }
+}
+
+
+
     :root {
         --primary-color: #D4AF37;
         --secondary-color: #2C3E50;
@@ -106,9 +204,13 @@
 
         /* Islamic Pattern Background */
     .islamic-bg {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23FFD700' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h16v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm-90-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm-90-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm-90-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9z'/%3E%3Cpath d='M6 5V0h1v5h94V0h1v5h-1v90h1v5H95v-5H6v5H5v-5H0V5h5V0h1v5h94V0h1v5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        padding-top:10rem; 
-        padding-bottom:10rem;
+        /* background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23FFD700' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h16v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm-90-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm-90-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm-90-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9z'/%3E%3Cpath d='M6 5V0h1v5h94V0h1v5h-1v90h1v5H95v-5H6v5H5v-5H0V5h5V0h1v5h94V0h1v5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); */
+        background-image: url('{{ asset('assets/image/bg.webp') }}');
+        background-size: cover;
+        padding-top:13rem; 
+        padding-bottom:13rem;
+
+
     }
     .btn-login {
         
@@ -290,11 +392,15 @@
         height: 100%;
         display: flex;
         flex-direction: column;
+        border: 1px solid #9b7d2d;
+        cursor: pointer;
     }
 
     .business-card:hover {
         box-shadow: 0 8px 20px rgba(0,0,0,0.12);
         transform: translateY(-3px);
+        border: 1px solid #9b7d2d;
+        cursor: pointer;
     }
 
     .business-image {
@@ -400,7 +506,7 @@
         margin-bottom: 1rem;
     }
 
-    .footer a {
+    /* .footer a {
         color: rgba(255,255,255,0.7);
         text-decoration: none;
         transition: color 0.3s;
@@ -415,7 +521,7 @@
         border-radius: 12px;
         padding: 2rem;
         margin-bottom: 3rem;
-    }
+    } */
     .grow-business{
         text-align: left;
     }
@@ -486,6 +592,270 @@
         width: 100%;
         height: 100%;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* =========================
+   FOOTER BASE
+========================= */
+
+.footer {
+    position: relative;
+    color: #fff;
+    padding: 90px 0 40px;
+    overflow: hidden;
+
+    /* Dark gold gradient base */
+    background:
+        radial-gradient(circle at center,
+            rgba(180, 150, 60, 0.12),
+            rgba(0, 0, 0, 0.9) 65%
+        ),
+        linear-gradient(
+            180deg,
+            #2a240f 0%,
+            #0f0d06 100%
+        );
+}
+
+/* =========================
+   ISLAMIC PATTERN OVERLAY
+========================= */
+
+.footer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url('/assets/image/islamic-arch.png') center/cover no-repeat;
+    opacity: 0.15;
+    z-index: 0;
+}
+
+/* =========================
+   FOOTER CONTENT ABOVE
+========================= */
+
+.footer .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* =========================
+   CTA BAR
+========================= */
+
+.footer-cta {
+    background: rgba(180, 150, 60, 0.15);
+    border-radius: 20px;
+    padding: 28px 32px;
+    border: 1px solid rgba(180, 150, 60, 0.25);
+}
+
+.footer-cta h2 {
+    color: #f3e7b0;
+}
+
+.footer-cta p {
+    color: rgba(255,255,255,0.75);
+}
+
+/* CTA Button */
+.join-network {
+    background: linear-gradient(135deg, #c9a23a, #9c7d2d);
+    color: #191970 !important;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 12px 26px;
+}
+.join-network-white {
+    background: linear-gradient(135deg, #fff, #fff);
+    color: #191970 !important;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 12px 26px;
+}
+/* =========================
+   FOOTER HEADINGS
+========================= */
+
+.footer h3 {
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+    color: #e6d48a;
+    letter-spacing: 0.5px;
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.footer a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #e6d48a;
+}
+
+/* =========================
+   SOCIAL ICONS
+========================= */
+
+.footer .fab {
+    color: #c9a23a;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.footer .fab:hover {
+    transform: translateY(-2px);
+    color: #fff;
+}
+
+/* =========================
+   COPYRIGHT
+========================= */
+
+.footer .text-center {
+    color: rgba(255,255,255,0.5);
+}
+
+
+
+/* HEADER BASE */
+.gme-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    background: #fdfaf2;
+    transition: all 0.3s ease;
+
+}
+/* .gme-header {
+    transition: all 0.3s ease;
+}
+
+#mainNavbar.scrolled {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background-color: rgba(240, 235, 223, 0.6);
+} */
+
+/* INNER GRID */
+.gme-header-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 18px 0;
+}
+
+/* STICKY EFFECT */
+.gme-header.scrolled {
+    padding: 0;
+    background: #f9f6ef;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.gme-header.scrolled .gme-header-inner {
+    padding: 12px 0;
+}
+
+/* LOGO */
+.gme-logo img {
+    height: 42px;
+    display: block;
+    margin: auto;
+}
+
+/* NAV */
+.gme-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+}
+
+.gme-nav-left {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 2.5rem;
+}
+
+.gme-nav-right {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 2.5rem;
+}
+
+.gme-nav a {
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    color: #1c1c1c;
+    position: relative;
+}
+
+.gme-nav a:hover,
+.gme-nav a.active {
+    color: #b08d2f;
+}
+
+/* DROPDOWN */
+.has-dropdown {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 130%;
+    left: 0;
+    background: #fff;
+    min-width: 220px;
+    border-radius: 8px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: 0.25s ease;
+    padding: 10px 0;
+}
+
+.dropdown li {
+    padding: 0;
+}
+
+.dropdown a {
+    display: block;
+    padding: 10px 18px;
+    font-size: 14px;
+    color: #333;
+}
+
+.dropdown a:hover {
+    background: #f5f2ea;
+}
+
+/* SHOW DROPDOWN */
+.has-dropdown:hover .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+
     @media (max-width: 768px) {
         .hero-section h1 {
             font-size: 2rem;
@@ -586,17 +956,113 @@
     .join-network:hover {
         color: #fff;
     }
+    .join-network-white:hover {
+        color: #fff !important;
+    }
+
+
+    .gme-btn {
+    background-color: #EDEDED;
+    font-family: "SF Ui Display", Sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    fill: #9C7D2D;
+    color: #9C7D2D;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    border-radius: 30px 30px 30px 30px;
+    padding: 14px 10px 14px 22px;
+
+}
+
+.gme-btn:hover, .gme-btn:focus {
+    background-color: #414141;
+    color: #FFFFFF;
+    border-color: #9C7D2D;
+}
+
+.gme-btn-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gme-btn-icon  {
+    /* font-size: 14px; */
+    transition: transform 0.25s ease;
+}
+
+/* Hover effect (Elementor-like) */
+/* .gme-btn:hover {
+    background-color: #9c7a24;
+    color: #fff;
+} */
+
+.gme-btn:hover .gme-btn-icon i {
+    transform: translateX(4px);
+}
+
 </style>
 </head>
 
 <body class="bg-light">
+<header id="mainHeader" class="gme-header">
+    <div class="container gme-header-inner">
+
+        <!-- LEFT MENU -->
+        <nav class="gme-nav gme-nav-left">
+            <ul>
+                <li><a class="active" href="#">Home</a></li>
+                <li><a href="#">About GME</a></li>
+                <li class="has-dropdown">
+                    <a href="#">Get Involved</a>
+                    <ul class="dropdown" style="display: inline-block;">
+                        <li><a href="#">Become a Member</a></li>
+                        <li><a href="#">Become a Partner</a></li>
+                        <li><a href="#">Become a Volunteer</a></li>
+                        <li><a href="#">Country Convenor</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Business</a></li>
+            </ul>
+        </nav>
+
+        <!-- CENTER LOGO -->
+        <div class="gme-logo">
+            <a href="/">
+                <img src="{{ asset('assets/image/logo.webp') }}" alt="GME">
+            </a>
+        </div>
+
+        <!-- RIGHT MENU -->
+        <nav class="gme-nav gme-nav-right">
+            <ul>
+                <li class="has-dropdown">
+                    <a href="#">Events</a>
+                    <ul class="dropdown" style="display: inline-block;">
+                        <li><a href="#">Upcoming Events</a></li>
+                        <li><a href="#">Previous Events</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+    </div>
+</header>
+
 
     <!-- Main Content -->
     <main class="main-content" style="">
         
         <div class="container-fluid py-0 px-0">
             <section class="hero-section text-center text-white islamic-bg"
-                style="background:linear-gradient(135deg,#1E2A78,#283593); ">
+                {{-- style="background:linear-gradient(135deg,#1E2A78,#283593); " --}}
+                >
+                <div class="hero-ornament">
+                    <img src="{{ asset('assets/image/round.webp') }}" alt="Islamic Pattern">
+                </div>
                 <div class="container">
                     <h1 class="fw-bold mb-3">Find a Muslim Entrepreneur Near You</h1>
                     <p class="mb-4">Discover Muslim entrepreneurs in your area</p>
@@ -612,9 +1078,20 @@
                                     class="form-control"
                                     placeholder="Search by business name ...">
                                 <button class="btn btn-warning" id="heroSearchBtn">
-                                    Search
+                                    <span style="font-weight: 400;color: #191970; font-size: 18px;"> Search
                                 </button>
                             </div>
+                            <a href="{{ route('guest.form') }}" class="btn btn-login join-network-white" style=" color: #191970; margin-top: 3rem;;">
+                                Join the Network
+                            </a>
+                            {{-- <a href="{{ route('guest.form') }}" class="gme-btn">
+                                <span class="gme-btn-inner">
+                                    <span class="gme-btn-icon">
+                                        <i class="icon icon-arrow-right"></i>
+                                    </span>
+                                    <span class="gme-btn-text">Join the Network</span>
+                                </span>
+                            </a> --}}
 
                             <!-- 🔽 Live Search Results Dropdown -->
                             <div id="heroSearchResults"
@@ -1288,6 +1765,31 @@
     </script>
 
     {{-- @stack('scripts') --}}
+{{-- <script>
+    window.addEventListener('scroll', function () {
+        const navbar = document.getElementById('mainNavbar');
+
+        if (window.scrollY > 80) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+</script> --}}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const navbar = document.getElementById('mainNavbar');
+
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 80) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+});
+</script>
+
 
 </body>
 </html>

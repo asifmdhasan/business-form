@@ -14,40 +14,16 @@
     }
 </style>
 
-
-{{-- HERO SECTION --}}
-{{-- <section class="hero-section text-center text-white islamic-bg"
-    style="background:linear-gradient(135deg,#1E2A78,#283593); padding-top:10rem; padding-bottom:10rem;">
-    <div class="container">
-        <h1 class="fw-bold mb-3">Find a Muslim Entrepreneur Near You</h1>
-        <p class="mb-4">Search by business name, keyword...</p>
-
-        <div class="d-flex justify-content-center">
-            
-
-            <div class="input-group input-group-lg" style="max-width:600px">
-                <input type="text" id="heroSearchInput" class="form-control"
-                       placeholder="Search by business name, keyword...">
-                <button class="btn btn-warning" id="heroSearchBtn">Search</button>
-            </div>
-        </div>
-    </div>
-</section> --}}
-
-
-{{-- BROWSE BY CATEGORY --}}
-{{-- <section class="py-5 bg-light">
-    <div class="container text-center">
-        <h4 class="fw-bold mb-4">Browse by Category</h4>
-
-        <div class="row g-4 justify-content-center" id="categoryBrowse">
-        </div>
-    </div>
-</section> --}}
-
 <section class="py-5 bg-white">
     <div class="container">
-        <h4 class="fw-bold mb-4 featured-business">Browse by Category</h4>
+        <h4 class="fw-bold mb-4 featured-business "
+            style="
+                font-size: 34px;
+                text-transform: uppercase;
+                line-height: 1.3em;">
+            <span style=" font-weight: 300;">Browse by </span>
+            <span style="color:#9b7d2d;font-weight: 900;">Category </span> 
+        </h4>
         <div class="row g-4 pt-4" id="categoryBrowse">
             {{-- Dynamically populated --}}
         </div>
@@ -59,7 +35,15 @@
 {{-- FEATURED BUSINESSES --}}
 <section class="py-5">
     <div class="container">
-        <h4 class="fw-bold mb-4 featured-business">Featured Businesses</h4>
+        {{-- <h4 class="fw-bold mb-4 featured-business">Featured Businesses</h4> --}}
+        <h4 class="fw-bold mb-4 featured-business "
+            style="
+                font-size: 34px;
+                text-transform: uppercase;
+                line-height: 1.3em;">
+            <span style=" font-weight: 300;">Featured </span>
+            <span style="color:#9b7d2d;font-weight: 900;">Businesses </span> 
+        </h4>
         <div class="row" id="featuredGrid"></div>
     </div>
 </section>
@@ -71,7 +55,15 @@
             <div class="filter-sidebar">
                 <div class="filter-header">
                     <i class="fas fa-filter filter-icon"></i>
-                    Filter Businesses
+                    {{-- Filter Businesses --}}
+                    <h4 class="fw-bold mb-4 featured-business "
+                        style="
+                            font-size: 34px;
+                            text-transform: uppercase;
+                            line-height: 1.3em;">
+                        <span style=" font-weight: 300;"> Filter </span>
+                        <span style="color:#9b7d2d;font-weight: 900;">Businesses </span> 
+                    </h4>
                 </div>
 
                 <!-- Search Box -->

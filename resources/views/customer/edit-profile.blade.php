@@ -1,11 +1,20 @@
 @extends('layouts.frontend-master')
 
 @section('content')
+<style>
+.bg-primary,.btn-primary{
+background-color:  #9b7d2d !important;
+}
+.btn-primary{
+    border: none;
+}
+</style>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-7 col-md-9 col-12">
             <div class="card shadow-sm mt-4">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header bg-primary text-white" style="">
                     <h4 class="mb-0">Edit Profile</h4>
                 </div>
                 <div class="card-body">

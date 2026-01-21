@@ -189,11 +189,15 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            border: 1px solid #9b7d2d;
+            cursor: pointer;
         }
 
         .business-card:hover {
             box-shadow: 0 8px 20px rgba(0,0,0,0.12);
             transform: translateY(-3px);
+            border: 1px solid #9b7d2d;
+            cursor: pointer;
         }
 
         .business-image {
