@@ -85,7 +85,7 @@
         }
 
         .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);
         }
 
         .input-focus:focus {
@@ -179,7 +179,7 @@
                     </div>
 
                     <button type="submit"
-                            class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">
+                            class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700"style="background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);">
                         Register
                     </button>
 

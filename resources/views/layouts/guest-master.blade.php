@@ -1084,7 +1084,7 @@
                                     <span style="font-weight: 400;color: #191970; font-size: 18px;"> Search
                                 </button>
                             </div>
-                            <a href="{{ route('guest.form') }}" class="btn btn-login join-network-white" style=" color: #191970; margin-top: 3rem;;">
+                            <a href="{{ route('customer.login') }}" class="btn btn-login join-network-white" style=" color: #191970; margin-top: 3rem;;">
                                 Join the Network
                             </a>
                             {{-- <a href="{{ route('guest.form') }}" class="gme-btn">
@@ -1119,7 +1119,7 @@
                                 Join our network of talented Muslim entrepreneurs.
                             </p>
                         </div>
-                        <a href="{{ route('guest.form') }}" class="btn btn-login join-network" style=" color: #191970;">
+                        <a href="{{ route('customer.login') }}" class="btn btn-login join-network" style=" color: #191970;">
                             Join the Network
                         </a>
                     </div>

@@ -5,7 +5,7 @@
     <title>Verify OTP</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gray-100">
+<body class="min-h-screen flex items-center justify-center bg-gray-100"style="background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);">
 
 <div class="bg-white p-6 rounded-lg shadow w-full max-w-md">
 
@@ -38,7 +38,7 @@
         </div>
 
         <button type="submit"
-                class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
+                class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"style="background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);">
             Verify OTP
         </button>
     </form>
