@@ -68,7 +68,7 @@
 }
 
 .hero-ornament img {
-    width: 500px;
+    width: 600px;
     max-width: 90vw;
     animation: rotatePattern 60s linear infinite;
 }
