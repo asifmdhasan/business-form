@@ -59,7 +59,7 @@
 
 .hero-ornament {
     position: absolute;
-    top: 50%;
+    top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0.8;
@@ -69,7 +69,7 @@
 
 .hero-ornament img {
     width: 600px;
-    max-width: 90vw;
+    max-width: 100vw;
     animation: rotatePattern 60s linear infinite;
 }
 
