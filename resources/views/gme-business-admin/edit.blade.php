@@ -566,7 +566,16 @@
             <div class="card-header bg-info text-white">Step 5: Status - for Admin only</div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-12 form-group">
+                    {{-- is_verified need checkbox--}}
+                    <div class="col-md-3 form-group pt-4">
+                        <div class="form-check">
+                            <input type="checkbox" name="is_verified" value="1" class="form-check-input"
+                                {{ old('is_verified', $business->is_verified) ? 'checked' : '' }}>
+                            <label class="form-check-label">Verified (Yes/No)</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 form-group">
                         <label>Status</label>
                         <select name="status" class="form-control" required>
                             <option value="pending" {{ old('status', $business->status) == 'pending' ? 'selected' : '' }}>Pending</option>
@@ -575,11 +584,13 @@
                             <option value="banned" {{ old('status', $business->status) == 'banned' ? 'selected' : '' }}>Banned</option>
                         </select>
                     </div>
+                    <div class="col-md-5 form-group">
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="text-right mb-5 mt-5">
+        <div class="text-right mb-5 mt-5" style="margin-left: 1rem;"> 
             <button type="submit" class="btn btn-primary">Update Business</button>
             <a href="{{ route('gme-business-admin.index') }}" class="btn btn-secondary">Cancel</a>
         </div>

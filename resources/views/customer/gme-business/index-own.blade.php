@@ -581,7 +581,7 @@
                 //     // ? `{{ asset('storage') }}/${business.photos[0]}`
                 //     : 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=300&fit=crop';
 
-                const verifiedBadge = business.status === 'approved' ? `
+                const verifiedBadge = (business.status === 'approved' && business.is_verified === 1) ? `
                     <div class="verified-badge">
                         <i class="fas fa-check-circle verified-icon"></i>
                         GME Verified

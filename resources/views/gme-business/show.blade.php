@@ -322,7 +322,7 @@
                 <div class="col p-8">
                     <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
                         <h1 class="section-title mb-0">{{ $business->business_name }}</h1>
-                        @if($business->status === 'approved')
+                        @if($business->status === 'approved' && $business->is_verified === 1)
                             <span class="verified-badge">
                                 <i class="fas fa-check-circle"></i>
                                 GME Verified

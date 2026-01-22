@@ -584,7 +584,7 @@ $(document).ready(function () {
             ? `{{ asset('assets') }}/${business.photos[0]}`
             : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
 
-        const verified = business.status === 'approved'
+        const verified =(business.status === 'approved' && business.is_verified === 1)
             ? `<div class="verified-badge">
                     <i class="fas fa-check-circle"></i> GME Verified
                </div>`

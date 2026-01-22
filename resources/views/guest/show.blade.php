@@ -340,6 +340,9 @@
     .islamic-bg {
         border-radius: 0rem;
     }
+    .text-success{
+        color: green !important;
+    }
 </style>
 
 <div class="container my-4">
@@ -357,7 +360,7 @@
                 <div class="col p-8">
                     <div class="d-flex align-items-center flex-wrap gap-2 mb-1 justi-center">
                         <h1 class="section-title mb-0">{{ $business->business_name }}</h1>
-                        @if($business->status === 'approved')
+                        @if($business->status === 'approved' && $business->is_verified === 1)
                             <span class="verified-badge">
                                 <i class="fas fa-check-circle"></i>
                                 GME Verified
@@ -365,7 +368,7 @@
                         @else
                             <span class="unverified-badge">
                                 
-                                ({{ $business->status }})
+                                {{-- ({{ $business->status }}) --}}
                             </span>
                         @endif
                     </div>

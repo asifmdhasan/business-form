@@ -502,7 +502,7 @@
                     <h1>{{ $business->business_name }}</h1>
                     <p class="business-tagline">{{ $business->tagline ?? 'Empowering ethical entrepreneurship globally.' }}</p>
                     
-                    @if($business->status === 'approved')
+                    @if($business->status === 'approved' && $business->is_verified === 1)
                     <span class="verified-badge-large">
                         <i class="fas fa-check-circle"></i>
                         GME Verified

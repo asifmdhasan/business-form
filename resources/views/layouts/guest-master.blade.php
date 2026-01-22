@@ -612,25 +612,21 @@
     /* =========================
    FOOTER BASE
 ========================= */
-
 .footer {
     position: relative;
     color: #fff;
     padding: 90px 0 40px;
     overflow: hidden;
 
-    /* Dark gold gradient base */
-    background:
-        radial-gradient(circle at center,
-            rgba(180, 150, 60, 0.12),
-            rgba(0, 0, 0, 0.9) 65%
-        ),
-        linear-gradient(
-            180deg,
-            #2a240f 0%,
-            #0f0d06 100%
-        );
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)), /* super dark overlay */
+        url('/assets/image/foo.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
+
+
 
 /* =========================
    ISLAMIC PATTERN OVERLAY
@@ -1156,9 +1152,9 @@
                         </div>
                     </div>
 
-                    <div class="text-center pt-4" style="color: rgba(255,255,255,0.5); font-size: 0.875rem;">
+                    {{-- <div class="text-center pt-4" style="color: rgba(255,255,255,0.5); font-size: 0.875rem;">
                         © 2024 GME Business Directory. All Rights Reserved.
-                    </div>
+                    </div> --}}
                 </div>
             </footer>
         </div>
@@ -1475,8 +1471,7 @@
             const photo = business.photos?.length
                 ? `{{ asset('assets') }}/${business.photos[0]}`
                 : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
-
-            const verified = business.status === 'approved'
+            const verified = (business.status === 'approved' && business.is_verified === 1)
                 ? `<div class="verified-badge">
                         <i class="fas fa-check-circle"></i> GME Verified
                 </div>`
@@ -1504,7 +1499,7 @@
 
 
                             <div>
-                                <div class="business-name">${business.business_name} - (${capitalizeFirstLetter(business.status)})</div>
+                                <div class="business-name">${business.business_name}</div>
                                 <div class="business-category">${category}</div>
                             </div>
                         </div>

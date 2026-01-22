@@ -431,6 +431,7 @@ class GuestController extends Controller
                 'logo',
                 'photos',
                 'status',
+                'is_verified',
                 'created_at',
             ])
             ->with('category:id,name')
