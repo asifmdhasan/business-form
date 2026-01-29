@@ -13,7 +13,8 @@ class GmeBusinessAdminController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $businesses = GmeBusinessForm::select(
+
+            $query = GmeBusinessForm::select(
                 'id',
                 'business_name',
                 'business_category_id',
@@ -21,13 +22,14 @@ class GmeBusinessAdminController extends Controller
                 'logo',
                 'countries_of_operation',
                 'created_at'
-            )
-            ->with('category:id,name')
-            ->orderBy('id', 'desc')
-            ->get();
+            )->with('category:id,name');
+
+            if ($request->status) {
+                $query->where('status', $request->status);
+            }
 
             return response()->json([
-                'businesses' => $businesses
+                'businesses' => $query->orderBy('id', 'desc')->get()
             ]);
         }
 
@@ -54,7 +56,7 @@ class GmeBusinessAdminController extends Controller
 
     public function update(Request $request, $id)
     {
- 
+
         $business = GmeBusinessForm::findOrFail($id);
 
         $validated = $request->validate([
@@ -124,7 +126,7 @@ class GmeBusinessAdminController extends Controller
             $business->logo = $request->file('logo')
                 ->store('uploads/business/logos', 'public_folder');
         }
-        
+
         // Handle COVER PHOTO upload
         if ($request->hasFile('cover_photo')) {
             if ($business->cover_photo && file_exists(public_path('assets/' . $business->cover_photo))) {
@@ -136,15 +138,15 @@ class GmeBusinessAdminController extends Controller
 
         // FIX: Handle MULTIPLE PHOTOS (Gallery) - Improved logic
         $existingPhotos = $request->input('existing_photos', []);
-        
+
         // Decode current photos from database if they exist
         $currentPhotos = [];
         if ($business->photos) {
-            $currentPhotos = is_array($business->photos) 
-                ? $business->photos 
+            $currentPhotos = is_array($business->photos)
+                ? $business->photos
                 : json_decode($business->photos, true) ?? [];
         }
-        
+
         // Only keep photos that are in the existing_photos array (user didn't delete them)
         $keptPhotos = [];
         foreach ($currentPhotos as $photo) {
@@ -157,7 +159,7 @@ class GmeBusinessAdminController extends Controller
                 }
             }
         }
-        
+
         // Add new photos
         $newPhotos = [];
         if ($request->hasFile('photos')) {
@@ -165,7 +167,7 @@ class GmeBusinessAdminController extends Controller
                 $newPhotos[] = $photo->store('uploads/business/gallery', 'public_folder');
             }
         }
-        
+
         // Merge kept and new photos
         $allPhotos = array_merge($keptPhotos, $newPhotos);
         $business->photos = !empty($allPhotos) ? json_encode($allPhotos) : null;
@@ -179,7 +181,7 @@ class GmeBusinessAdminController extends Controller
             $business->registration_document = $request->file('registration_document')
                 ->store('uploads/business/documents', 'public_folder');
         }
-        
+
         // Handle BUSINESS PROFILE upload
         if ($request->hasFile('business_profile')) {
             if ($business->business_profile && file_exists(public_path('assets/' . $business->business_profile))) {
@@ -188,7 +190,7 @@ class GmeBusinessAdminController extends Controller
             $business->business_profile = $request->file('business_profile')
                 ->store('uploads/business/profiles', 'public_folder');
         }
-        
+
         // Handle PRODUCT CATALOGUE upload
         if ($request->hasFile('product_catalogue')) {
             if ($business->product_catalogue && file_exists(public_path('assets/' . $business->product_catalogue))) {
@@ -218,7 +220,7 @@ class GmeBusinessAdminController extends Controller
                     ->send(new BusinessStatusUpdated($mailData));
             }
         }
-        
+
 
         return redirect()
             ->route('gme-business-admin.index')
@@ -287,5 +289,17 @@ class GmeBusinessAdminController extends Controller
             'Yemen', 'Zambia', 'Zimbabwe'
         ];
     }
+
+    public function print($id)
+    {
+        $business = GmeBusinessForm::with('businessPhotos')->findOrFail($id);
+
+        $html = view('gme-business-admin.print', compact('business'))->render();
+
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->WriteHTML($html);
+        return $mpdf->Output('business-profile.pdf', 'I');
+    }
+
 
 }

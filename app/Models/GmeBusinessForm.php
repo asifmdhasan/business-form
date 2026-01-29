@@ -16,13 +16,14 @@ class GmeBusinessForm extends Model
         'info_accuracy' => 'boolean',
         'allow_publish' => 'boolean',
         'allow_contact' => 'boolean',
+        // 'is_verified' => 'boolean',
     ];
 
     public function businessPhotos()
     {
         return $this->hasMany(BusinessPhoto::class, 'gme_business_form_id');
     }
-    
+
     public function category()
     {
         return $this->belongsTo(BusinessCategory::class, 'business_category_id');

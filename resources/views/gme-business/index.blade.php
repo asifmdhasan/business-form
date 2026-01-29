@@ -302,7 +302,7 @@
                             text-transform: uppercase;
                             line-height: 1.3em;">
                         <span style=" font-weight: 300;"> Filter </span>
-                        <span style="color:#9b7d2d;font-weight: 900;">Businesses </span> 
+                        <span style="color:#9b7d2d;font-weight: 900;">Businesses </span>
                     </h4>
                     </div>
 
@@ -338,7 +338,7 @@
                             <label for="statusAll">All Businesses</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" name="status" id="statusVerified" value="approved">
+                            <input type="radio" name="status" id="statusVerified" value="1">
                             <label for="statusVerified">GME Verified</label>
                         </div>
                         {{-- <div class="radio-option">
@@ -389,7 +389,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    
+
 
 
 
@@ -491,6 +491,7 @@ $(document).ready(function () {
         const selectedCategory = $('#categoryFilter').val();
         const selectedLocations = $('#locationFilter').val() || [];
         const status = $('input[name="status"]:checked').val();
+        // console.log('Selected Status:', status);
 
         filteredBusinesses = allBusinesses.filter(business => {
 
@@ -517,10 +518,15 @@ $(document).ready(function () {
                 if (!match) return false;
             }
 
+            if (status !== "") {
+                    if (Number(business.is_verified) !== Number(status)) {
+                        return false;
+                    }
+                }
             // Status
-            if (status && business.status !== status) {
-                return false;
-            }
+            // if (status && business.is_verified !== status) {
+            //     return false;
+            // }
 
             return true;
         });
