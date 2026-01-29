@@ -1,6 +1,8 @@
 @extends('layouts.frontend-master')
 
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/css/intlTelInput.min.css"/>
+
 <style>
     /* Fixed width for labels so all buttons align */
     .question-label {
@@ -34,6 +36,125 @@
     .existing-photo.marked-for-deletion .photo-overlay {
         opacity: 1 !important;
         background: rgba(220, 53, 69, 0.8) !important;
+    }
+
+
+    .whatsapp-wrapper {
+        display: flex;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .prefix-dropdown {
+        padding: 10px 12px;
+        background: #f8f9fa;
+        cursor: pointer;
+        min-width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .whatsapp-input {
+        border: none;
+        flex: 1;
+    }
+    .whatsapp-input:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .prefix-list {
+        border: 1px solid #ced4da;
+        max-height: 240px;
+        overflow-y: auto;
+        margin-top: 5px;
+        border-radius: 6px;
+        background: #fff;
+    }
+
+    .prefix-list input {
+        width: 100%;
+        padding: 8px;
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .prefix-list ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .prefix-list li {
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+    .prefix-list li:hover {
+        background: #f1f1f1;
+    }
+
+    .d-none {
+        display: none;
+    }
+
+    #gallery-container {
+        align-items: center;
+    }
+
+    .gallery-item,
+    .gallery-upload {
+        width: 10rem;
+        height: 10rem;
+        border-radius: 8px;
+        border: 1px dashed #ccc;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    .gallery-upload {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .gallery-upload i {
+        font-size: 2rem;
+        color: rgba(0,0,0,0.5);
+    }
+
+    .gallery-upload input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        background: rgba(0,0,0,0.7);
+        color: #fff;
+        border: none;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        font-size: 18px;
+        display: none;
+        cursor: pointer;
+    }
+
+    .gallery-item:hover .remove-btn {
+        display: block;
+    }
+
+    .btn-outline{
+        min-width: 100px;
+        text-align: left;
     }
 </style>
 
@@ -138,7 +259,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Year Established</label>
-                                    <input type="date" name="year_established" class="form-control"
+                                    <input type="text" name="year_established" class="form-control"
                                         value="{{ old('year_established', $business->year_established ?? '') }}">
                                 </div>
 
@@ -188,11 +309,37 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                {{-- <div class="col-md-6 mb-3">
                                     <label class="form-label">WhatsApp Number</label>
                                     <input type="text" name="whatsapp_number" class="form-control"
                                         value="{{ old('whatsapp_number', $business->whatsapp_number ?? '') }}">
+                                </div> --}}
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">WhatsApp Number</label>
+
+                                    <div class="whatsapp-wrapper">
+                                        <div class="prefix-dropdown" id="prefixDropdown">
+                                            <span id="selectedPrefix">+880</span>
+                                            <span class="arrow">▼</span>
+                                        </div>
+
+                                        <input type="text"
+                                            name="whatsapp_number"
+                                            class="form-control whatsapp-input"
+                                            placeholder="Enter number">
+                                    </div>
+
+                                    <!-- dropdown list -->
+                                    <div class="prefix-list d-none" id="prefixList">
+                                        <input type="text" id="prefixSearch" placeholder="Search country...">
+
+                                        <ul id="prefixItems">
+                                            <!-- JS will inject -->
+                                        </ul>
+                                    </div>
                                 </div>
+
+
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Website</label>
                                     <input type="website" name="website" class="form-control"
@@ -443,7 +590,7 @@
                                 <!-- Business Photos Gallery -->
 
 
-                                <div class="col-md-8 mb-3">
+                                {{-- <div class="col-md-8 mb-3">
                                     <label class="form-label">Business Photos Gallery</label>
                                     <div class="d-flex flex-wrap gap-2" id="gallery-container">
 
@@ -504,44 +651,46 @@
                                     @error('photos.*')
                                         <small class="text-danger d-block">{{ $message }}</small>
                                     @enderror
-                                </div>
-                                {{-- <div class="col-md-8 mb-3">
+                                </div> --}}
+                                <div class="col-md-12 mb-3">
                                     <label class="form-label">Business Photos Gallery</label>
+
                                     <div class="d-flex flex-wrap gap-2" id="gallery-container">
 
-                                        <!-- Existing Images Preview (if editing) -->
-                                        @if(!empty($business->photos))
-                                            @php
-                                                $existingPhotos = is_array($business->photos) 
-                                                    ? $business->photos 
-                                                    : json_decode($business->photos ?? '[]', true);
-                                            @endphp
-                                            @foreach($existingPhotos as $index => $photo)
-                                            <div class="position-relative rounded existing-photo" style="width: 10rem; height: 10rem; border: 1px dashed #ccc; overflow: hidden;">
-                                                <img src="{{ asset('assets/' . $photo) }}" class="img-fluid w-100 h-100" style="object-fit: cover;">
-                                                <button type="button" onclick="removeGalleryImage(this)" class="position-absolute top-0 end-0 btn btn-sm btn-danger" style="padding:0.2rem 0.4rem;">&times;</button>
-                                                <input type="hidden" name="existing_photos[]" value="{{ $photo }}">
-                                            </div>
-                                            @endforeach
-                                        @endif
+                                        <!-- Existing Images -->
+                                        @foreach($business->businessPhotos ?? [] as $photo)
+                                            <div class="gallery-item existing-photo"
+                                                data-photo-id="{{ $photo->id }}"
+                                                style="background-image:url('{{ asset('assets/'.$photo->image_url) }}')">
 
-                                        <!-- New Upload Placeholder -->
-                                        <div class="rounded text-center position-relative gallery-upload @error('photos') border-danger @enderror @error('photos.*') border-danger @enderror" 
-                                            style="width: 10rem; height: 10rem; border: 1px dashed #ccc; cursor: pointer; display:flex; align-items:center; justify-content:center;">
-                                            <i class="fa fa-plus" style="font-size:2rem; color: rgba(0,0,0,0.5); pointer-events:none;"></i>
-                                            <input type="file" name="photos[]" accept="image/*" multiple 
-                                                style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;"
-                                                onchange="previewGallery(this)">
+                                                <button type="button"
+                                                        class="remove-btn"
+                                                        onclick="removeExistingPhoto(this, {{ $photo->id }})">
+                                                    &times;
+                                                </button>
+
+                                                <input type="checkbox"
+                                                    name="delete_photos[]"
+                                                    value="{{ $photo->id }}"
+                                                    class="d-none">
+                                            </div>
+                                        @endforeach
+
+                                        <!-- Upload Button -->
+                                        <div class="gallery-upload" id="upload-box">
+                                            <i class="fa fa-plus"></i>
+                                            <input type="file"
+                                                id="photo-input"
+                                                name="photos[]"
+                                                accept="image/*"
+                                                multiple
+                                                onchange="addNewPhotos(this)">
                                         </div>
+
                                     </div>
-                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 5 images)</small>
-                                    @error('photos')
-                                        <small class="text-danger d-block">{{ $message }}</small>
-                                    @enderror
-                                    @error('photos.*')
-                                        <small class="text-danger d-block">{{ $message }}</small>
-                                    @enderror
-                                </div> --}}
+
+                                    <small class="text-muted">Max 6 images (PNG, JPG, JPEG | 5MB each)</small>
+                                </div>
                             </div>
                             
                             <div class="row">
@@ -624,7 +773,7 @@
                                         'partially_transitioning' => 'Partially Transitioning',
                                         'prefer_not_to_say' => 'Prefer Not to Say'
                                     ] as $key => $label)
-                                        <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
+                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
                                             <input type="radio" name="avoid_riba" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
                                         </label>
                                     @endforeach
@@ -644,7 +793,7 @@
                                         'no' => 'No',
                                         'partially_compliant' => 'Partially Compliant',
                                     ] as $key => $label)
-                                        <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
+                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
                                             <input type="radio" name="avoid_haram_products" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
                                         </label>
                                     @endforeach
@@ -664,7 +813,7 @@
                                         'mostly' => 'Mostly',
                                         'needs_improvement' => 'Needs Improvement'
                                     ] as $key => $label)
-                                        <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
+                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
                                             <input type="radio" name="fair_pricing" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
                                         </label>
                                     @endforeach
@@ -684,7 +833,7 @@
                                         'no' => 'No',
                                         'maybe' => 'Maybe'
                                     ] as $key => $label)
-                                        <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
+                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
                                             <input type="radio" name="open_for_guidance" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
                                         </label>
                                     @endforeach
@@ -704,7 +853,7 @@
                                         'no' => 'No',
                                         'maybe' => 'Maybe'
                                     ] as $key => $label)
-                                        <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
+                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
                                             <input type="radio" name="collaboration_open" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
                                         </label>
                                     @endforeach
@@ -860,6 +1009,8 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js"></script>
 <script>
 let founderIndex = {{ count($founders ?? []) }};
 
@@ -1011,99 +1162,7 @@ function addFounder() {
             }
         }
 
-    /* ================= GALLERY ================= */
 
-    // Preview newly selected photos before upload
-    function previewNewPhotos(input) {
-        const container = document.getElementById('new-photos-preview');
-        container.innerHTML = ''; // Clear previous previews
-        
-        if (input.files && input.files.length > 0) {
-            // Check total count including existing photos
-            const existingCount = document.querySelectorAll('.existing-photo:not(.marked-for-deletion)').length;
-            const totalCount = existingCount + input.files.length;
-            
-            if (totalCount > 5) {
-                alert('Maximum 5 photos allowed. You currently have ' + existingCount + ' photos.');
-                input.value = '';
-                return;
-            }
-            
-            Array.from(input.files).forEach((file, index) => {
-                // Validate file size
-                if (file.size > 5 * 1024 * 1024) {
-                    alert(`File "${file.name}" is too large. Maximum size is 5MB.`);
-                    return;
-                }
-                
-                // Validate file type
-                if (!file.type.match('image.*')) {
-                    alert(`File "${file.name}" is not an image.`);
-                    return;
-                }
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const wrapper = document.createElement('div');
-                    wrapper.className = 'position-relative rounded';
-                    wrapper.style.cssText = 'width: 10rem; height: 10rem; border: 1px dashed #28a745; overflow: hidden;';
-                    wrapper.innerHTML = `
-                        <img src="${e.target.result}" 
-                             class="img-fluid w-100 h-100" 
-                             style="object-fit: cover;">
-                        <div class="position-absolute top-0 end-0 m-1">
-                            <span class="badge bg-success">New</span>
-                        </div>
-                    `;
-                    container.appendChild(wrapper);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-    }
-    
-    function markPhotoForDeletion(photoId) {
-        const wrapper = document.querySelector(`[data-photo-id="${photoId}"]`);
-        const checkbox = wrapper.querySelector('.delete-photo-checkbox');
-        
-        if (checkbox.checked) {
-            // Unmark for deletion
-            checkbox.checked = false;
-            wrapper.classList.remove('marked-for-deletion');
-            wrapper.querySelector('.photo-overlay').innerHTML = `
-                <a href="${wrapper.querySelector('img').src}" 
-                   target="_blank" 
-                   class="btn btn-sm btn-light me-1">
-                    <i class="fa fa-eye"></i> View
-                </a>
-                <button type="button" 
-                        onclick="markPhotoForDeletion(${photoId})" 
-                        class="btn btn-sm btn-danger">
-                    <i class="fa fa-trash"></i> Delete
-                </button>
-            `;
-        } else {
-            // Mark for deletion
-            if (confirm('Are you sure you want to delete this photo?')) {
-                checkbox.checked = true;
-                wrapper.classList.add('marked-for-deletion');
-                wrapper.querySelector('.photo-overlay').innerHTML = `
-                    <div class="text-center">
-                        <span class="badge bg-danger mb-2">Will be deleted</span>
-                        <br>
-                        <button type="button" 
-                                onclick="markPhotoForDeletion(${photoId})" 
-                                class="btn btn-sm btn-light">
-                            <i class="fa fa-undo"></i> Undo
-                        </button>
-                    </div>
-                `;
-            }
-        }
-    }
-    
-    // Remove old previewGallery function if it exists
-    // function removeGalleryImage is no longer needed
 
     </script>
 @endif
@@ -1120,63 +1179,350 @@ $(document).ready(function () {
 
 });
 </script>
+
 {{-- <script>
-            let galleryFiles = new DataTransfer();
+    const MAX_IMAGES = 6;
 
-        function previewGallery(input) {
-            const container = document.getElementById('gallery-container');
-            const uploadBox = container.querySelector('.gallery-upload');
-            const existingPhotos = container.querySelectorAll('.existing-photo').length;
+    function getTotalImages() {
+        return document.querySelectorAll('.gallery-item').length;
+    }
 
-            Array.from(input.files).forEach(file => {
+    function toggleUploadBox() {
+        const uploadBox = document.getElementById('upload-box');
+        uploadBox.style.display = getTotalImages() >= MAX_IMAGES ? 'none' : 'flex';
+    }
 
-                if (galleryFiles.files.length + existingPhotos >= 5) {
-                    alert('Maximum 5 photos allowed');
-                    return;
+    // Add new images
+    function addNewPhotos(input) {
+        const files = Array.from(input.files);
+        const container = document.getElementById('gallery-container');
+
+        files.forEach(file => {
+            if (getTotalImages() >= MAX_IMAGES) return;
+
+            if (file.size > 5 * 1024 * 1024 || !file.type.startsWith('image/')) return;
+
+            const reader = new FileReader();
+            reader.onload = e => {
+                const div = document.createElement('div');
+                div.className = 'gallery-item new-photo';
+                div.style.backgroundImage = `url(${e.target.result})`;
+
+                div.innerHTML = `
+                    <button type="button" class="remove-btn" onclick="removeNewPhoto(this)">
+                        &times;
+                    </button>
+                `;
+
+                container.insertBefore(div, document.getElementById('upload-box'));
+                toggleUploadBox();
+            };
+            reader.readAsDataURL(file);
+        });
+
+        input.value = '';
+    }
+
+    // Remove newly added image
+    function removeNewPhoto(btn) {
+        btn.closest('.gallery-item').remove();
+        toggleUploadBox();
+    }
+
+    // Remove existing image (mark for delete)
+    function removeExistingPhoto(btn, photoId) {
+        const item = btn.closest('.gallery-item');
+        item.querySelector('input[type="checkbox"]').checked = true;
+        item.remove();
+        toggleUploadBox();
+    }
+
+    // Init
+    toggleUploadBox();
+</script> --}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{-- <script>
+    const MAX_IMAGES = 6;
+    const input = document.getElementById('photo-input');
+    const container = document.getElementById('gallery-container');
+    const uploadBox = document.getElementById('upload-box');
+
+    let fileStore = new DataTransfer();
+
+    function getTotalImages() {
+        return document.querySelectorAll('.gallery-item').length;
+    }
+
+    function toggleUploadBox() {
+        uploadBox.style.display = getTotalImages() >= MAX_IMAGES ? 'none' : 'flex';
+    }
+
+    function addNewPhotos(el) {
+        Array.from(el.files).forEach(file => {
+            if (getTotalImages() >= MAX_IMAGES) return;
+
+            if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) return;
+
+            fileStore.items.add(file);
+            input.files = fileStore.files;
+
+            const reader = new FileReader();
+            reader.onload = e => {
+                const div = document.createElement('div');
+                div.className = 'gallery-item new-photo';
+                div.style.backgroundImage = `url(${e.target.result})`;
+
+                div.innerHTML = `
+                    <button type="button"
+                            class="remove-btn"
+                            onclick="removeNewPhoto(this, '${file.name}')">
+                        &times;
+                    </button>
+                `;
+
+                container.insertBefore(div, uploadBox);
+                toggleUploadBox();
+            };
+            reader.readAsDataURL(file);
+        });
+
+        el.value = '';
+    }
+
+    function removeNewPhoto(btn, fileName) {
+        btn.closest('.gallery-item').remove();
+
+        fileStore = new DataTransfer();
+        Array.from(input.files).forEach(file => {
+            if (file.name !== fileName) {
+                fileStore.items.add(file);
+            }
+        });
+
+        input.files = fileStore.files;
+        toggleUploadBox();
+    }
+
+    function removeExistingPhoto(btn, photoId) {
+        const item = btn.closest('.gallery-item');
+        item.querySelector('input[type="checkbox"]').checked = true;
+        item.remove();
+        toggleUploadBox();
+    }
+
+    toggleUploadBox();
+</script> --}}
+
+
+<script>
+const MAX_IMAGES = 6;
+const input = document.getElementById('photo-input');
+const container = document.getElementById('gallery-container');
+const uploadBox = document.getElementById('upload-box');
+
+// Keep track of files to send to Laravel
+let fileStore = new DataTransfer();
+
+// Toggle + button visibility
+function toggleUploadBox() {
+    uploadBox.style.display = document.querySelectorAll('.gallery-item').length >= MAX_IMAGES ? 'none' : 'flex';
+}
+
+// Add new files
+input.addEventListener('change', function(e) {
+    const files = Array.from(e.target.files);
+
+    files.forEach(file => {
+        if (document.querySelectorAll('.gallery-item').length >= MAX_IMAGES) return;
+
+        if (!file.type.startsWith('image/')) {
+            alert(file.name + ' is not an image.');
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            alert(file.name + ' is larger than 5MB.');
+            return;
+        }
+
+        fileStore.items.add(file);
+        input.files = fileStore.files;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const div = document.createElement('div');
+            div.className = 'gallery-item new-photo';
+            div.style.backgroundImage = `url(${event.target.result})`;
+            div.innerHTML = `<button type="button" class="remove-btn" onclick="removeNewPhoto(this, '${file.name}')">&times;</button>`;
+            container.insertBefore(div, uploadBox);
+            toggleUploadBox();
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Do NOT clear input.value
+});
+
+// Remove new photo
+function removeNewPhoto(btn, fileName) {
+    btn.closest('.gallery-item').remove();
+
+    const newStore = new DataTransfer();
+    Array.from(fileStore.files).forEach(f => {
+        if (f.name !== fileName) newStore.items.add(f);
+    });
+    fileStore = newStore;
+    input.files = fileStore.files;
+
+    toggleUploadBox();
+}
+
+// Remove existing photo
+function removeExistingPhoto(btn, photoId) {
+    const item = btn.closest('.gallery-item');
+    item.querySelector('input[type="checkbox"]').checked = true;
+    item.remove();
+    toggleUploadBox();
+}
+
+// Init
+toggleUploadBox();
+</script>
+
+
+    <script>
+        const topCountries = [
+            { name: "Bangladesh", code: "+880" },
+            { name: "India", code: "+91" },
+            { name: "United States", code: "+1" },
+            { name: "United Kingdom", code: "+44" },
+            { name: "Saudi Arabia", code: "+966" }
+        ];
+
+        const allCountries = [
+            { name: "Afghanistan", code: "+93" },
+            { name: "Albania", code: "+355" },
+            { name: "Algeria", code: "+213" },
+            { name: "Argentina", code: "+54" },
+            { name: "Australia", code: "+61" },
+            { name: "Austria", code: "+43" },
+            { name: "Bangladesh", code: "+880" },
+            { name: "Belgium", code: "+32" },
+            { name: "Brazil", code: "+55" },
+            { name: "Canada", code: "+1" },
+            { name: "China", code: "+86" },
+            { name: "Denmark", code: "+45" },
+            { name: "Egypt", code: "+20" },
+            { name: "France", code: "+33" },
+            { name: "Germany", code: "+49" },
+            { name: "India", code: "+91" },
+            { name: "Indonesia", code: "+62" },
+            { name: "Italy", code: "+39" },
+            { name: "Japan", code: "+81" },
+            { name: "Malaysia", code: "+60" },
+            { name: "Nepal", code: "+977" },
+            { name: "Netherlands", code: "+31" },
+            { name: "New Zealand", code: "+64" },
+            { name: "Norway", code: "+47" },
+            { name: "Pakistan", code: "+92" },
+            { name: "Philippines", code: "+63" },
+            { name: "Qatar", code: "+974" },
+            { name: "Russia", code: "+7" },
+            { name: "Singapore", code: "+65" },
+            { name: "South Africa", code: "+27" },
+            { name: "South Korea", code: "+82" },
+            { name: "Spain", code: "+34" },
+            { name: "Sri Lanka", code: "+94" },
+            { name: "Sweden", code: "+46" },
+            { name: "Switzerland", code: "+41" },
+            { name: "Thailand", code: "+66" },
+            { name: "Turkey", code: "+90" },
+            { name: "UAE", code: "+971" },
+            { name: "United Kingdom", code: "+44" },
+            { name: "United States", code: "+1" },
+            { name: "Vietnam", code: "+84" },
+            { name: "Zimbabwe", code: "+263" }
+            // 👉 You can keep adding, scroll will handle it
+        ];
+
+        const dropdown = document.getElementById("prefixDropdown");
+        const list = document.getElementById("prefixList");
+        const ul = document.getElementById("prefixItems");
+        const search = document.getElementById("prefixSearch");
+        const selected = document.getElementById("selectedPrefix");
+
+        function renderList(filter = "") {
+            ul.innerHTML = "";
+
+            // Always show top 5 first
+            topCountries.forEach(c => {
+                if (c.name.toLowerCase().includes(filter.toLowerCase())) {
+                    const li = document.createElement("li");
+                    li.textContent = `${c.name} (${c.code})`;
+                    li.style.fontWeight = "600";
+                    li.onclick = () => {
+                        selected.textContent = c.code;
+                        list.classList.add("d-none");
+                    };
+                    ul.appendChild(li);
                 }
-
-                if (file.size > 5120 * 1024) {
-                    alert('Each photo must be less than 5MB');
-                    return;
-                }
-
-                galleryFiles.items.add(file);
-
-                const reader = new FileReader();
-                reader.onload = e => {
-                    const div = document.createElement('div');
-                    div.className = 'position-relative rounded new-photo';
-                    div.style.cssText = 'width:10rem;height:10rem;border:1px dashed #ccc;overflow:hidden;';
-                    div.innerHTML = `
-                        <img src="${e.target.result}" class="w-100 h-100" style="object-fit:cover;">
-                        <button type="button"
-                            class="btn btn-sm btn-danger position-absolute top-0 end-0"
-                            onclick="removeNewPhoto(this)">×</button>
-                    `;
-                    container.insertBefore(div, uploadBox);
-                };
-                reader.readAsDataURL(file);
             });
 
-            input.files = galleryFiles.files;
+            // Divider
+            const divider = document.createElement("li");
+            divider.style.borderTop = "1px solid #ddd";
+            ul.appendChild(divider);
+
+            // All countries (FULL scroll)
+            allCountries
+                .filter(c => c.name.toLowerCase().includes(filter.toLowerCase()))
+                .forEach(c => {
+                    const li = document.createElement("li");
+                    li.textContent = `${c.name} (${c.code})`;
+                    li.onclick = () => {
+                        selected.textContent = c.code;
+                        list.classList.add("d-none");
+                    };
+                    ul.appendChild(li);
+                });
         }
 
-        function removeNewPhoto(btn) {
-            const photos = document.querySelectorAll('.new-photo');
-            const index = [...photos].indexOf(btn.parentElement);
+        dropdown.onclick = () => {
+            list.classList.toggle("d-none");
+            renderList();
+        };
 
-            if (index > -1) {
-                galleryFiles.items.remove(index);
-            }
+        search.onkeyup = () => {
+            renderList(search.value);
+        };
+    </script>
 
-            btn.parentElement.remove();
-            document.querySelector('input[name="photos[]"]').files = galleryFiles.files;
-        }
-
-        function removeGalleryImage(btn) {
-            if (confirm('Are you sure you want to remove this image?')) {
-                btn.closest('.existing-photo').remove();
-            }
-        }
-    </script> --}}
 @endsection

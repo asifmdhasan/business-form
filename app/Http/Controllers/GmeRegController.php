@@ -262,6 +262,9 @@ class GmeRegController extends Controller
      */
     private function saveStep1(Request $request, GmeBusinessForm $business)
     {
+        $prefix = $request->input('whatsapp_prefix');
+        $number = preg_replace('/\D/', '', $request->input('whatsapp_number'));
+        
         $business->business_name = $request->business_name;
         $business->short_introduction = $request->short_introduction;
         $business->year_established = $request->year_established;
@@ -269,7 +272,10 @@ class GmeRegController extends Controller
         $business->countries_of_operation = json_encode($request->countries_of_operation);
         $business->business_address = $request->business_address;
         $business->email = $request->email;
-        $business->whatsapp_number = $request->whatsapp_number;
+        // $business->whatsapp_number = $request->whatsapp_number;
+        // $business->whatsapp_number = request('whatsapp_prefix') . request('whatsapp_number');
+        $business->whatsapp_number = $prefix . $number;
+
         $business->website = $request->website;
         $business->facebook = $request->facebook;
         $business->instagram = $request->instagram;

@@ -1,4 +1,9 @@
 <!-- Sidebar -->
+<style>
+    .bg-dark{
+        background-color: #9C7D2D !important;
+    }
+</style>
 <nav class="bg-dark text-white position-fixed h-100" style="width:260px; top:0; left:0; overflow-y:auto;">
     <div class="p-3">
 
@@ -40,7 +45,7 @@
             </li> --}}
 
             <li class="nav-item">
-                <a href="{{ route('customer.gme-business-form.index') }}" class="nav-link text-white">
+                <a href="{{ route('customer.gme-business-form.index') }}" class="nav-link text-white" style="font-weight: 600; font-size:1.15rem;">
                     <i class="fa fa-users me-2"></i> My Business
                 </a>
             </li>
@@ -54,14 +59,14 @@
 
 
             <li class="nav-item">
-                <a href="{{ route('gme.business.register') }}" class="nav-link text-white">
-                    <i class="fa fa-plus-circle me-2"></i> Create Form
+                <a href="{{ route('gme.business.register') }}" class="nav-link text-white" style="font-weight: 600; font-size:1.15rem;">
+                    <i class="fa fa-plus-circle me-2"></i> Add New Business
                 </a>
             </li>
             
 
             <!-- Logout -->
-            <li class="nav-item mt-4">
+            {{-- <li class="nav-item mt-4">
                 <a href="#" class="nav-link text-danger fw-bold"
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fa fa-sign-out-alt me-2"></i> Logout
@@ -70,7 +75,7 @@
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
                     @csrf
                 </form>
-            </li>
+            </li> --}}
 
         </ul>
 

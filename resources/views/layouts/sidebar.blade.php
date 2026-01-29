@@ -27,33 +27,6 @@
 
                         
 
-            <!-- Admin Channel Dropdown -->
-            {{-- <li class="nav-item mt-3">
-                <a class="nav-link text-white d-flex justify-content-between align-items-center" 
-                   data-bs-toggle="collapse" 
-                   href="#adminChannelMenu" 
-                   role="button" 
-                   aria-expanded="{{ request()->routeIs('gme-business-admin.*') ? 'true' : 'false' }}" 
-                   aria-controls="adminChannelMenu"
-                   style="cursor: pointer;">
-                    <span>
-                        <i class="fa fa-user-shield me-2"></i>
-                        <span class="text-uppercase small fw-bold">Admin Channel</span>
-                    </span>
-                    <i class="fa fa-chevron-down"></i>
-                </a>
-                <div class="collapse {{ request()->routeIs('gme-business-admin.*') ? 'show' : '' }}" id="adminChannelMenu">
-                    <ul class="nav flex-column ms-3">
-                        <li class="nav-item">
-                            <a href="{{ route('gme-business-admin.index') }}" 
-                               class="nav-link text-white {{ request()->routeIs('gme-business-admin.index') ? 'active' : '' }}">
-                                <i class="fa fa-list me-2"></i> All Business
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li> --}}
-
             <!-- Categories Dropdown -->
             <li class="nav-item mt-3">
                 <a class="nav-link text-white d-flex justify-content-between align-items-center" 

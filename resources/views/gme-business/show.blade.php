@@ -687,7 +687,7 @@
                     <i class="fas fa-user"></i>
                     <div>
                         <p class="info-label mb-0">Primary Contact</p>
-                        <p class="info-value mb-0">{{ $business->contact_person ?? '——' }}</p>
+                        <p class="info-value mb-0">{{ $business->whatsapp_number ?? '——' }}</p>
                     </div>
                 </div>
             </div>
