@@ -33,14 +33,25 @@ class GmeBusinessAdminController extends Controller
 
         return view('gme-business-admin.index');
     }
+    // public function edit($id)
+    // {
+    //     $business = GmeBusinessForm::findOrFail($id);
+    //     $countries = $this->getCountries();
+    //     $categories = BusinessCategory::orderBy('name')->get();
+
+    //     return view('gme-business-admin.edit', compact('business', 'countries', 'categories'));
+    // }
     public function edit($id)
     {
-        $business = GmeBusinessForm::findOrFail($id);
+        $business = GmeBusinessForm::with('businessPhotos')->findOrFail($id);
         $countries = $this->getCountries();
         $categories = BusinessCategory::orderBy('name')->get();
 
         return view('gme-business-admin.edit', compact('business', 'countries', 'categories'));
     }
+
+
+
     public function update(Request $request, $id)
     {
  

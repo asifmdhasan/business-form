@@ -407,7 +407,7 @@
     }
 
     .business-image {
-        width: 15rem;
+        width: 100%;
         height: auto;
         object-fit: cover;
         display: block;
@@ -1237,7 +1237,7 @@
                 url: '{{ route("guest.gme-business.ajax") }}',
                 method: 'GET',
                 success: function (response) {
-                    console.log(response);
+                    // console.log(response);
                         allBusinesses = response.businesses;
 
                     // ✅ Parse countries_of_operation JSON
@@ -1458,25 +1458,84 @@
         /* =========================
         Card HTML
         ========================== */
+        // function createBusinessCard(business) {
+
+        //     const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+
+        //     const category = business.category?.name ?? '';
+        //     // const logo = `{{ asset('assets') }}/${business.logo}`;
+        //         const logo = business.logo
+        //         ? `{{ asset('assets') }}/${business.logo}`
+        //         : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}`;
+
+        //     const photo = business.photos?.length
+        //         ? `{{ asset('assets') }}/${business.photos[0]}`
+        //         : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
+        //     const verified = (business.status === 'approved' && business.is_verified === 1)
+        //         ? `<div class="verified-badge">
+        //                 <i class="fas fa-check-circle"></i> GME Verified
+        //         </div>`
+        //         : '';
+
+
+        //     const countries = business.countries_of_operation && business.countries_of_operation.length > 0
+        //         ? business.countries_of_operation.join(', ')
+        //         : 'Location not specified';
+
+        //     return `
+        //     <div class="col-md-4 col-lg-4 p-2">
+        //         <div class="business-card" onclick="location.href='{{ url('guest-gme-business-form') }}/${business.id}'">
+        //             <div style="position:relative">
+        //                 <img src="${photo}" class="business-image">
+        //                 ${verified}
+        //             </div>
+        //             <div class="business-content">
+        //                 <div class="business-header">
+                            
+
+        //                     <div class="logo-box">
+        //                         <img src="${logo}" alt="${business.business_name}">
+        //                     </div>
+
+
+        //                     <div>
+        //                         <div class="business-name">${business.business_name}</div>
+        //                         <div class="business-category">${category}</div>
+        //                     </div>
+        //                 </div>
+        //                 ${business.short_introduction ?? ''}
+        //                 <div class="business-location">
+        //                     <i class="fas fa-map-marker-alt location-icon"></i>
+        //                     <div>${countries}</div>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     </div>`;
+        // }
+
         function createBusinessCard(business) {
 
             const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
             const category = business.category?.name ?? '';
-            // const logo = `{{ asset('assets') }}/${business.logo}`;
-                const logo = business.logo
+            
+            // Logo - use avatar if not available
+            const logo = business.logo
                 ? `{{ asset('assets') }}/${business.logo}`
                 : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}`;
 
-            const photo = business.photos?.length
-                ? `{{ asset('assets') }}/${business.photos[0]}`
+                console.log(business.cover_photo);
+
+            // Cover Photo - use default if not available
+            const photo = business.cover_photo
+                ? `{{ asset('assets') }}/${business.cover_photo}`
                 : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
+            
             const verified = (business.status === 'approved' && business.is_verified === 1)
                 ? `<div class="verified-badge">
                         <i class="fas fa-check-circle"></i> GME Verified
-                </div>`
+                    </div>`
                 : '';
-
 
             const countries = business.countries_of_operation && business.countries_of_operation.length > 0
                 ? business.countries_of_operation.join(', ')
@@ -1491,13 +1550,9 @@
                     </div>
                     <div class="business-content">
                         <div class="business-header">
-                            
-
                             <div class="logo-box">
                                 <img src="${logo}" alt="${business.business_name}">
                             </div>
-
-
                             <div>
                                 <div class="business-name">${business.business_name}</div>
                                 <div class="business-category">${category}</div>
@@ -1574,7 +1629,7 @@
         //     });
         // }
         function renderFeatured(businesses) {
-            console.log(businesses);
+            // console.log(businesses);
             const $grid = $('#featuredGrid').empty();
 
             if (!Array.isArray(businesses) || !businesses.length) {

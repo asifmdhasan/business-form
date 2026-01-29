@@ -580,8 +580,8 @@ $(document).ready(function () {
         const category = business.category?.name ?? '';
         const logo = `{{ asset('assets') }}/${business.logo}`;
 
-        const photo = business.photos?.length
-            ? `{{ asset('assets') }}/${business.photos[0]}`
+        const photo = business.cover_photo
+            ? `{{ asset('assets') }}/${business.cover_photo}`
             : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
 
         const verified =(business.status === 'approved' && business.is_verified === 1)

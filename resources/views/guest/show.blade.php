@@ -1,7 +1,81 @@
 @extends('layouts.guest-master')
 
 @section('content')
-
+<style>
+        /* Gallery Card Hover Effects */
+    .gallery-card-wrapper .card {
+        transition: all 0.3s ease;
+    }
+    
+    .gallery-card-wrapper:hover .card {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* Image Zoom on Hover */
+    .gallery-img-container:hover .gallery-main-img {
+        transform: scale(1.05);
+    }
+    
+    .gallery-img-container:hover .gallery-gradient {
+        opacity: 1;
+    }
+    
+    .gallery-img-container:hover .gallery-icon {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) !important;
+    }
+    
+    /* Shadow Hover Effect */
+    .shadow-hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* Card body padding creates space around image */
+    .card-body {
+        transition: background-color 0.3s ease;
+    }
+    
+    .gallery-card-wrapper:hover .card-body {
+        background-color: #e9ecef !important;
+    }
+    
+    /* Modal backdrop */
+    .modal-backdrop.show {
+        opacity: 0.9;
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+        .gallery-img-container {
+            height: 200px !important;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .gallery-img-container {
+            height: 180px !important;
+        }
+        
+        .featured-business {
+            font-size: 26px !important;
+        }
+        
+        .card-body {
+            padding: 0.75rem !important;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .gallery-img-container {
+            height: 200px !important;
+        }
+        
+        .featured-business {
+            font-size: 22px !important;
+        }
+    }
+</style>
 
 @php
     $countries = is_string($business->countries_of_operation)
@@ -506,7 +580,7 @@
     </section>
 
     <!-- PRODUCTS & SERVICES -->
-    @if($services->count())
+
     <section class="contact-card  mt-4"> 
         <div class="text-start mb-4">
             {{-- <h2 class="section-title">Products & Services</h2> --}}
@@ -541,54 +615,98 @@
             <button class="btn btn-secondary">View All Products & Services</button>
         </div> --}}
     </section>
-    @endif
 
-    <!-- GALLERY -->
-    @if(count($photos))
-    <section class="mt-4">
-        {{-- <h2 class="section-title mb-3">Photos & Media</h2> --}}
-        <h4 class="fw-bold mb-4 featured-business "
-                    style="
-                        font-size: 34px;
-                        text-transform: uppercase;
-                        line-height: 1.3em;">
-                    <span style=" font-weight: 300;">Photos & </span>
-                    <span style="color:#9b7d2d;font-weight: 900;">Media </span> 
+    <!-- ELEGANT GALLERY with Centered Images in Cards -->
+    @if($business->businessPhotos && $business->businessPhotos->count() > 0)
+        <section class="mt-5 mb-5 contact-card">
+            <div class=" mb-4">
+                <h4 class="fw-bold featured-business"
+                    style="font-size: 34px; text-transform: uppercase; line-height: 1.3em;">
+                    <span style="font-weight: 300;">Photos & </span>
+                    <span style="color:#9b7d2d; font-weight: 900;">Media</span> 
                 </h4>
-        <div class="row g-3">
-            @foreach($photos as $photo)
-            <div class="col-md-4 col-6">
-                <img src="{{ asset('assets/'.$photo) }}" 
-                     class="gallery-img" 
-                     alt="Business photo">
+                <p class="text-muted">Click on any image to view in full size</p>
             </div>
-            @endforeach
-        </div>
-    </section>
+            
+            <div class="row g-3">
+                @foreach($business->businessPhotos as $index => $photo)
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="gallery-card-wrapper">
+                        <div class="card border-0 shadow-hover h-100" style="border-radius: 12px;">
+                            <div class="card-body p-3" style="background: #f8f9fa;">
+                                <div class="position-relative gallery-img-container" 
+                                    style="height: 220px; overflow: hidden; border-radius: 8px; cursor: pointer; background: white; display: flex; align-items: center; justify-content: center;"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#photoModal{{ $photo->id }}">
+                                    
+                                    <img src="{{ asset('assets/' . $photo->image_url) }}" 
+                                        class="gallery-main-img" 
+                                        alt="Business photo {{ $index + 1 }}"
+                                        style="max-width: 100%; max-height: 100%; object-fit: contain; transition: all 0.4s ease;"
+                                        loading="lazy">
+                                    
+                                    <!-- Gradient Overlay -->
+                                    <div class="gallery-gradient position-absolute top-0 start-0 w-100 h-100" 
+                                        style="background: linear-gradient(to top, rgba(0,0,0,0.6), transparent); opacity: 0; transition: opacity 0.4s ease; border-radius: 8px;">
+                                    </div>
+                                    
+                                    <!-- Icon Overlay -->
+                                    <div class="gallery-icon position-absolute top-50 start-50 translate-middle" 
+                                        style="opacity: 0; transition: all 0.4s ease; transform: translate(-50%, -50%) scale(0.5);">
+                                        <div class="text-center">
+                                            <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                                style="width: 50px; height: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                                                <i class="fa fa-search-plus" style="font-size: 20px; color: #9b7d2d;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Photo Number Badge -->
+                                    <div class="position-absolute top-0 end-0 m-2">
+                                        <span class="badge" style="background: rgba(155, 125, 45, 0.9); padding: 5px 10px; font-size: 11px; border-radius: 15px;">
+                                            {{ $index + 1 }} / {{ $business->businessPhotos->count() }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Optimized Modal -->
+                    <div class="modal fade" id="photoModal{{ $photo->id }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content" style="background: rgba(0,0,0,0.95); border: none;">
+                                <div class="modal-header border-0 py-2 px-3">
+                                    <h6 class="modal-title text-white mb-0">
+                                        <i class="fa fa-image me-2"></i>
+                                        Photo {{ $index + 1 }} of {{ $business->businessPhotos->count() }}
+                                    </h6>
+                                    <button type="button" 
+                                            class="btn-close btn-close-white" 
+                                            data-bs-dismiss="modal" 
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center p-2">
+                                    <img src="{{ asset('assets/' . $photo->image_url) }}" 
+                                        class="img-fluid rounded" 
+                                        alt="Business photo {{ $index + 1 }}"
+                                        style="max-height: 70vh; width: auto; object-fit: contain;">
+                                </div>
+                                <div class="modal-footer border-0 justify-content-between py-2 px-3">
+                                    <a href="{{ asset('assets/' . $photo->image_url) }}" 
+                                    target="_blank" 
+                                    class="btn btn-outline-light btn-sm">
+                                        <i class="fa fa-external-link-alt me-1"></i>Open Full Size
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </section>
     @endif
-@if(count($photos))
-<section class="mt-4 mb-4" style="padding-bottom: 2rem;">
-    <h4 class="fw-bold mb-4 featured-business "
-                    style="
-                        font-size: 34px;
-                        text-transform: uppercase;
-                        line-height: 1.3em;">
-                    <span style=" font-weight: 300;">Photos & </span>
-                    <span style="color:#9b7d2d;font-weight: 900;">Media </span> 
-                </h4>
-
-    <div class="gallery-grid">
-        @foreach($photos as $photo)
-        {{-- <a href="{{ asset('assets/'.$photo) }}" data-lightbox="business-gallery" data-title="Business Photo"> --}}
-            <img src="{{ asset('assets/'.$photo) }}" 
-                 class="gallery-img" 
-                 alt="Business photo">
-        {{-- </a> --}}
-        @endforeach
-    </div>
-</section>
-@endif
-
 
 
     <!-- CONTACT INFORMATION -->
@@ -610,7 +728,7 @@
                     <i class="fas fa-user"></i>
                     <div>
                         <p class="info-label mb-0">Primary Contact</p>
-                        <p class="info-value mb-0">{{ $business->contact_person ?? 'Business Owner' }}</p>
+                        <p class="info-value mb-0">{{ $business->whatsapp_number ?? '——' }}</p>
                     </div>
                 </div>
             </div>
@@ -635,7 +753,7 @@
                                 {{ $business->website }}
                             </a>
                         @else
-                            <p class="info-value mb-0">—</p>
+                            <p class="info-value mb-0">——</p>
                         @endif
                     </div>
                 </div>

@@ -122,7 +122,7 @@ class CustomerController extends Controller
                 'countries_of_operation',
                 'founders',
                 'logo',
-                'photos',
+                'cover_photo',
                 'status',
                 'created_at',
             ])
@@ -172,24 +172,44 @@ class CustomerController extends Controller
     //     $business = GmeBusinessForm::findOrFail($id);
     //     return view('gme-business.show', compact('business'));
     // }
-public function show($id)
-{
-    $business = GmeBusinessForm::with('category.services')->findOrFail($id);
+// public function show($id)
+// {
+//     $business = GmeBusinessForm::with('category.services')->findOrFail($id);
 
-    // Decode services_id JSON
-    $selectedServiceIds = $business->services_id ?? [];
-    if (is_string($selectedServiceIds)) {
-        $selectedServiceIds = json_decode($selectedServiceIds, true);
+//     // Decode services_id JSON
+//     $selectedServiceIds = $business->services_id ?? [];
+//     if (is_string($selectedServiceIds)) {
+//         $selectedServiceIds = json_decode($selectedServiceIds, true);
+//     }
+
+//     // Filter category services based on selected IDs
+//     $services = $business->category
+//         ? $business->category->services->whereIn('id', $selectedServiceIds)
+//         : collect();
+
+//     return view('gme-business.show', compact('business', 'services'));
+// }
+
+
+
+    public function show($id)
+    {
+        $business = GmeBusinessForm::with(['category.services', 'businessPhotos'])
+            ->findOrFail($id);
+
+        // Decode services_id JSON
+        $selectedServiceIds = $business->services_id ?? [];
+        if (is_string($selectedServiceIds)) {
+            $selectedServiceIds = json_decode($selectedServiceIds, true);
+        }
+
+        // Filter category services based on selected IDs
+        $services = $business->category
+            ? $business->category->services->whereIn('id', $selectedServiceIds)
+            : collect();
+
+        return view('gme-business.show', compact('business', 'services'));
     }
-
-    // Filter category services based on selected IDs
-    $services = $business->category
-        ? $business->category->services->whereIn('id', $selectedServiceIds)
-        : collect();
-
-    return view('gme-business.show', compact('business', 'services'));
-}
-
 
 
     private function getCountries()

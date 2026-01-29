@@ -7,20 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class GmeBusinessForm extends Model
 {
     protected $guarded = [];
+
     protected $casts = [
         'countries_of_operation' => 'array',
         'founders' => 'array',
         'services_id' => 'array',
-        'photos' => 'array',
         'collaboration_types' => 'array',
         'info_accuracy' => 'boolean',
         'allow_publish' => 'boolean',
         'allow_contact' => 'boolean',
     ];
 
-    /**
-     * Get the business category
-     */
+    public function businessPhotos()
+    {
+        return $this->hasMany(BusinessPhoto::class, 'gme_business_form_id');
+    }
+    
     public function category()
     {
         return $this->belongsTo(BusinessCategory::class, 'business_category_id');

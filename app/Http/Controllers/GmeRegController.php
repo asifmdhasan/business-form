@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 use App\Models\Service;
 use Illuminate\Http\Request;
-use App\Models\GmeBusinessForm;
+use App\Models\BusinessPhoto;
 
+use App\Models\GmeBusinessForm;
 use App\Models\BusinessCategory;
 use App\Mail\BusinessCreatedMail;
 use Illuminate\Support\Facades\Mail;
@@ -313,42 +314,37 @@ class GmeRegController extends Controller
                 ->store('uploads/business/covers', 'public_folder');
         }
         
-        // FIX: Handle MULTIPLE PHOTOS (Gallery) - Improved logic
-        $existingPhotos = $request->input('existing_photos', []);
-        
-        // Decode current photos from database if they exist
-        $currentPhotos = [];
-        if ($business->photos) {
-            $currentPhotos = is_array($business->photos) 
-                ? $business->photos 
-                : json_decode($business->photos, true) ?? [];
-        }
-        
-        // Only keep photos that are in the existing_photos array (user didn't delete them)
-        $keptPhotos = [];
-        foreach ($currentPhotos as $photo) {
-            if (in_array($photo, $existingPhotos)) {
-                $keptPhotos[] = $photo;
-            } else {
-                // Delete removed photos
-                if (file_exists(public_path('assets/' . $photo))) {
-                    unlink(public_path('assets/' . $photo));
+
+        // NEW: Handle BUSINESS PHOTOS using business_photos table
+        // Delete photos that were removed
+        if ($request->has('delete_photos')) {
+            $deleteIds = $request->input('delete_photos', []);
+            $photosToDelete = BusinessPhoto::whereIn('id', $deleteIds)
+                ->where('gme_business_form_id', $business->id)
+                ->get();
+            
+            foreach ($photosToDelete as $photo) {
+                // Delete file from storage
+                if ($photo->image_url && file_exists(public_path('assets/' . $photo->image_url))) {
+                    unlink(public_path('assets/' . $photo->image_url));
                 }
+                // Delete database record
+                $photo->delete();
             }
         }
         
         // Add new photos
-        $newPhotos = [];
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                $newPhotos[] = $photo->store('uploads/business/gallery', 'public_folder');
+                $path = $photo->store('uploads/business/gallery', 'public_folder');
+                
+                BusinessPhoto::create([
+                    'gme_business_form_id' => $business->id,
+                    'image_url' => $path
+                ]);
             }
         }
-        
-        // Merge kept and new photos
-        $allPhotos = array_merge($keptPhotos, $newPhotos);
-        $business->photos = !empty($allPhotos) ? json_encode($allPhotos) : null;
-        
+
         // Handle REGISTRATION DOCUMENT upload
         if ($request->hasFile('registration_document')) {
             if ($business->registration_document && file_exists(public_path('assets/' . $business->registration_document))) {

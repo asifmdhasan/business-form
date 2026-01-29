@@ -15,6 +15,63 @@
     #pageLoader {
         transition: opacity 0.2s ease;
     }
+
+
+
+
+
+
+
+
+
+    .question-label {
+        display: inline-block;
+        width: 220px;
+        margin-bottom: 0;
+    }
+    .btn-outline-secondary {
+        min-width: 140px;
+        text-align: center;
+    }
+    #pageLoader {
+        transition: opacity 0.2s ease;
+    }
+    
+    /* Image Preview Styles */
+    .image-preview-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border-radius: 0.25rem;
+    }
+    
+    .image-preview-wrapper:hover .image-overlay {
+        opacity: 1;
+    }
+    
+    .view-image-btn {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.875rem;
+        white-space: nowrap;
+    }
+    
+    .view-image-btn:hover {
+        transform: scale(1.05);
+    }
+
 </style>
 <div class="container-fluid">
     @if ($errors->any())
@@ -311,35 +368,119 @@
                                 {{-- Logo --}}
                                 <div class="col-md-6 form-group">
                                     <label>Logo</label>
-                                    <div class="mb-2">
-                                        <img id="logoPreview" src="{{ $business->logo ? asset('assets/' . $business->logo) : '' }}" class="img-thumbnail" style="max-width:100px;">
+                                    <div class="mb-2 position-relative image-preview-wrapper">
+                                        @php
+                                            $logoPath = $business->getRawOriginal('logo');
+                                            $logoPath = is_string($logoPath) ? str_replace(['\\/', '\\'], '/', $logoPath) : $logoPath;
+                                        @endphp
+                                        
+                                        @if($logoPath)
+                                            <img id="logoPreview" 
+                                                src="{{ asset('assets/' . $logoPath) }}" 
+                                                class="img-thumbnail" 
+                                                style="max-width:100px; max-height:100px; object-fit: cover;"
+                                                alt="Business Logo">
+                                            <div class="image-overlay">
+                                                <a href="{{ asset('assets/' . $logoPath) }}" 
+                                                target="_blank" 
+                                                class="btn btn-sm btn-primary view-image-btn">
+                                                    <i class="fa fa-eye"></i> View
+                                                </a>
+                                            </div>
+                                        @else
+                                            <img id="logoPreview" 
+                                                src="" 
+                                                class="img-thumbnail d-none" 
+                                                style="max-width:100px; max-height:100px; object-fit: cover;">
+                                            <div class="text-muted small">No logo uploaded</div>
+                                        @endif
                                     </div>
-                                    <input type="file" name="logo" class="form-control-file" onchange="previewImage(this, 'logoPreview')">
+                                    <input type="file" 
+                                        name="logo" 
+                                        class="form-control-file" 
+                                        accept="image/*"
+                                        onchange="previewImage(this, 'logoPreview')">
                                 </div>
 
                                 {{-- Cover Photo --}}
                                 <div class="col-md-6 form-group">
                                     <label>Cover Photo</label>
-                                    <div class="mb-2">
-                                        <img id="coverPreview" src="{{ $business->cover_photo ? asset('assets/' . $business->cover_photo) : '' }}" class="img-thumbnail" style="max-width:100px;">
+                                    <div class="mb-2 position-relative image-preview-wrapper">
+                                        @php
+                                            $coverPath = $business->getRawOriginal('cover_photo');
+                                            $coverPath = is_string($coverPath) ? str_replace(['\\/', '\\'], '/', $coverPath) : $coverPath;
+                                        @endphp
+                                        
+                                        @if($coverPath)
+                                            <img id="coverPreview" 
+                                                src="{{ asset('assets/' . $coverPath) }}" 
+                                                class="img-thumbnail" 
+                                                style="max-width:100px; max-height:100px; object-fit: cover;"
+                                                alt="Cover Photo">
+                                            <div class="image-overlay">
+                                                <a href="{{ asset('assets/' . $coverPath) }}" 
+                                                target="_blank" 
+                                                class="btn btn-sm btn-primary view-image-btn">
+                                                    <i class="fa fa-eye"></i> View
+                                                </a>
+                                            </div>
+                                        @else
+                                            <img id="coverPreview" 
+                                                src="" 
+                                                class="img-thumbnail d-none" 
+                                                style="max-width:100px; max-height:100px; object-fit: cover;">
+                                            <div class="text-muted small">No cover photo uploaded</div>
+                                        @endif
                                     </div>
-                                    <input type="file" name="cover_photo" class="form-control-file" onchange="previewImage(this, 'coverPreview')">
+                                    <input type="file" 
+                                        name="cover_photo" 
+                                        class="form-control-file" 
+                                        accept="image/*"
+                                        onchange="previewImage(this, 'coverPreview')">
                                 </div>
                             </div>
                             
-
                             {{-- Business Photos --}}
                             <div class="col-md-12 mt-3 form-group">
                                 <label>Business Photos</label>
-                                <div class="mb-2" id="photosPreview">
-                                    @if($business->photos)
-                                        @foreach(is_array($business->photos) ? $business->photos : json_decode($business->photos, true) as $photo)
-                                            <img src="{{ asset('assets/' . $photo) }}" class="img-thumbnail mb-1" style="max-width:100px;">
+
+                                {{-- Existing photos --}}
+                                <div class="mb-2 d-flex flex-wrap gap-2" id="photosPreview">
+                                    @if($business->businessPhotos->count())
+                                        @foreach($business->businessPhotos as $index => $photo)
+                                            @php
+                                                $fullPath = asset('assets/' . $photo->image_url);
+                                            @endphp
+
+                                            <div class="position-relative image-preview-wrapper">
+                                                <img src="{{ $fullPath }}"
+                                                    class="img-thumbnail"
+                                                    style="max-width:100px; max-height:100px; object-fit: cover;"
+                                                    alt="Business Photo {{ $index + 1 }}">
+
+                                                <div class="image-overlay">
+                                                    <a href="{{ $fullPath }}"
+                                                    target="_blank"
+                                                    class="btn btn-sm btn-primary view-image-btn">
+                                                        <i class="fa fa-eye"></i> View
+                                                    </a>
+                                                </div>
+                                            </div>
                                         @endforeach
+                                    @else
+                                        <div class="text-muted small">No photos uploaded</div>
                                     @endif
                                 </div>
-                                <input type="file" name="photos[]" class="form-control-file" multiple onchange="previewMultipleImages(this, 'photosPreview')">
+
+                                {{-- Upload new photos --}}
+                                <input type="file"
+                                    name="photos[]"
+                                    class="form-control-file"
+                                    multiple
+                                    accept="image/*"
+                                    onchange="previewMultipleImages(this, 'photosPreview')">
                             </div>
+
                         </div>
                         <div class="col-md-6">
                         {{-- Registration Document --}}
@@ -650,25 +791,73 @@
             }
         });
     </script>
+
     <script>
         function previewImage(input, previewId) {
             const preview = document.getElementById(previewId);
+            const wrapper = preview.closest('.image-preview-wrapper');
+            
             if (input.files && input.files[0]) {
-                preview.src = URL.createObjectURL(input.files[0]);
+                const file = input.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('d-none');
+                    
+                    // Create or update overlay
+                    let overlay = wrapper.querySelector('.image-overlay');
+                    if (!overlay) {
+                        overlay = document.createElement('div');
+                        overlay.className = 'image-overlay';
+                        wrapper.appendChild(overlay);
+                    }
+                    
+                    overlay.innerHTML = `
+                        <a href="${e.target.result}" 
+                        target="_blank" 
+                        class="btn btn-sm btn-primary view-image-btn">
+                            <i class="fa fa-eye"></i> View
+                        </a>
+                    `;
+                };
+                
+                reader.readAsDataURL(file);
             }
         }
 
         function previewMultipleImages(input, previewContainerId) {
             const container = document.getElementById(previewContainerId);
             container.innerHTML = '';
-            if(input.files){
+            
+            if(input.files && input.files.length > 0){
                 Array.from(input.files).forEach(file => {
-                    const img = document.createElement('img');
-                    img.src = URL.createObjectURL(file);
-                    img.className = 'img-thumbnail mb-1';
-                    img.style.maxWidth = '100px';
-                    container.appendChild(img);
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'position-relative image-preview-wrapper';
+                        
+                        wrapper.innerHTML = `
+                            <img src="${e.target.result}" 
+                                class="img-thumbnail" 
+                                style="max-width:100px; max-height:100px; object-fit: cover;">
+                            <div class="image-overlay">
+                                <a href="${e.target.result}" 
+                                target="_blank" 
+                                class="btn btn-sm btn-primary view-image-btn">
+                                    <i class="fa fa-eye"></i> View
+                                </a>
+                            </div>
+                        `;
+                        
+                        container.appendChild(wrapper);
+                    };
+                    
+                    reader.readAsDataURL(file);
                 });
+            } else {
+                container.innerHTML = '<div class="text-muted small">No photos uploaded</div>';
             }
         }
     </script>

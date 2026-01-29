@@ -14,7 +14,7 @@ class GuestController extends Controller
 {
     public function show($id)
     {
-        $business = GmeBusinessForm::with('category.services')->findOrFail($id);
+        $business = GmeBusinessForm::with(['category.services', 'businessPhotos'])->findOrFail($id);
 
         // Decode services_id JSON
         $selectedServiceIds = $business->services_id ?? [];
@@ -429,6 +429,7 @@ class GuestController extends Controller
                 'countries_of_operation',
                 'founders',
                 'logo',
+                'cover_photo',
                 'photos',
                 'status',
                 'is_verified',

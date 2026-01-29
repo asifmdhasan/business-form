@@ -15,6 +15,26 @@
     #pageLoader {
         transition: opacity 0.2s ease;
     }
+    .existing-photo:hover .photo-overlay {
+        opacity: 1 !important;
+    }
+    
+    .photo-overlay {
+        z-index: 10;
+    }
+    
+    .existing-photo.marked-for-deletion {
+        opacity: 0.4;
+    }
+    
+    .existing-photo.marked-for-deletion img {
+        filter: grayscale(100%);
+    }
+    
+    .existing-photo.marked-for-deletion .photo-overlay {
+        opacity: 1 !important;
+        background: rgba(220, 53, 69, 0.8) !important;
+    }
 </style>
 
 <div class="container-fluid">
@@ -335,37 +355,6 @@
                                     @enderror
                                 </div>
 
-                                {{-- <div class="col-md-6 mb-3">
-                                    <label class="form-label">Products / Services</label>
-                                    <select class="form-select search_select @error('services_id') is-invalid @enderror @error('services_id.*') is-invalid @enderror" 
-                                            multiple name="services_id[]" id="services">
-                                        @php
-                                            $savedServices = old('services_id', 
-                                                is_array($business->services_id ?? null) 
-                                                    ? $business->services_id 
-                                                    : json_decode($business->services_id ?? '[]', true)
-                                            );
-                                        @endphp
-                                        @if(!empty($savedServices) && is_array($savedServices))
-                                            @foreach($savedServices as $serviceId)
-                                                @php
-                                                    $service = \App\Models\Service::find($serviceId);
-                                                @endphp
-                                                @if($service)
-                                                    <option value="{{ $service->id }}" selected>{{ $service->name }}</option>
-                                                @endif
-                                            @endforeach
-                                        @else
-                                            <option value="">Select category first</option>
-                                        @endif
-                                    </select>
-                                    @error('services_id')
-                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                    @enderror
-                                    @error('services_id.*')
-                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                    @enderror
-                                </div> --}}
                                 {{-- DEBUG: Remove after testing --}}
                                 @php
                                     $savedServices = old('services_id', 
@@ -452,7 +441,71 @@
                             <div class="row">
 
                                 <!-- Business Photos Gallery -->
+
+
                                 <div class="col-md-8 mb-3">
+                                    <label class="form-label">Business Photos Gallery</label>
+                                    <div class="d-flex flex-wrap gap-2" id="gallery-container">
+
+                                        <!-- Existing Images Preview (from business_photos table) -->
+                                        @if($business->businessPhotos && $business->businessPhotos->count() > 0)
+                                            @foreach($business->businessPhotos as $photo)
+                                            <div class="position-relative rounded existing-photo" 
+                                                data-photo-id="{{ $photo->id }}" 
+                                                style="width: 10rem; height: 10rem; border: 1px dashed #ccc; overflow: hidden;">
+                                                <img src="{{ asset('assets/' . $photo->image_url) }}" 
+                                                    class="img-fluid w-100 h-100" 
+                                                    style="object-fit: cover;">
+                                                
+                                                <!-- View and Delete buttons on hover -->
+                                                <div class="photo-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
+                                                    style="background: rgba(0,0,0,0.6); opacity: 0; transition: opacity 0.3s;">
+                                                    <a href="{{ asset('assets/' . $photo->image_url) }}" 
+                                                    target="_blank" 
+                                                    class="btn btn-sm btn-light me-1">
+                                                        <i class="fa fa-eye"></i> View
+                                                    </a>
+                                                    <button type="button" 
+                                                            onclick="markPhotoForDeletion({{ $photo->id }})" 
+                                                            class="btn btn-sm btn-danger">
+                                                        <i class="fa fa-trash"></i> Delete
+                                                    </button>
+                                                </div>
+                                                
+                                                <!-- Hidden checkbox for deletion -->
+                                                <input type="checkbox" 
+                                                    name="delete_photos[]" 
+                                                    value="{{ $photo->id }}" 
+                                                    class="delete-photo-checkbox d-none">
+                                            </div>
+                                            @endforeach
+                                        @endif
+
+                                        <!-- Preview container for newly selected photos -->
+                                        <div id="new-photos-preview" class="d-flex flex-wrap gap-2"></div>
+
+                                        <!-- New Upload Placeholder -->
+                                        <div class="rounded text-center position-relative gallery-upload @error('photos') border-danger @enderror @error('photos.*') border-danger @enderror" 
+                                            style="width: 10rem; height: 10rem; border: 1px dashed #ccc; cursor: pointer; display:flex; align-items:center; justify-content:center;">
+                                            <i class="fa fa-plus" style="font-size:2rem; color: rgba(0,0,0,0.5); pointer-events:none;"></i>
+                                            <input type="file" 
+                                                name="photos[]" 
+                                                id="photo-upload-input"
+                                                accept="image/*" 
+                                                multiple 
+                                                style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;"
+                                                onchange="previewNewPhotos(this)">
+                                        </div>
+                                    </div>
+                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 5 images, 5MB each)</small>
+                                    @error('photos')
+                                        <small class="text-danger d-block">{{ $message }}</small>
+                                    @enderror
+                                    @error('photos.*')
+                                        <small class="text-danger d-block">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                {{-- <div class="col-md-8 mb-3">
                                     <label class="form-label">Business Photos Gallery</label>
                                     <div class="d-flex flex-wrap gap-2" id="gallery-container">
 
@@ -488,7 +541,7 @@
                                     @error('photos.*')
                                         <small class="text-danger d-block">{{ $message }}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
                             </div>
                             
                             <div class="row">
@@ -959,7 +1012,116 @@ function addFounder() {
         }
 
     /* ================= GALLERY ================= */
-        let galleryFiles = new DataTransfer();
+
+    // Preview newly selected photos before upload
+    function previewNewPhotos(input) {
+        const container = document.getElementById('new-photos-preview');
+        container.innerHTML = ''; // Clear previous previews
+        
+        if (input.files && input.files.length > 0) {
+            // Check total count including existing photos
+            const existingCount = document.querySelectorAll('.existing-photo:not(.marked-for-deletion)').length;
+            const totalCount = existingCount + input.files.length;
+            
+            if (totalCount > 5) {
+                alert('Maximum 5 photos allowed. You currently have ' + existingCount + ' photos.');
+                input.value = '';
+                return;
+            }
+            
+            Array.from(input.files).forEach((file, index) => {
+                // Validate file size
+                if (file.size > 5 * 1024 * 1024) {
+                    alert(`File "${file.name}" is too large. Maximum size is 5MB.`);
+                    return;
+                }
+                
+                // Validate file type
+                if (!file.type.match('image.*')) {
+                    alert(`File "${file.name}" is not an image.`);
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'position-relative rounded';
+                    wrapper.style.cssText = 'width: 10rem; height: 10rem; border: 1px dashed #28a745; overflow: hidden;';
+                    wrapper.innerHTML = `
+                        <img src="${e.target.result}" 
+                             class="img-fluid w-100 h-100" 
+                             style="object-fit: cover;">
+                        <div class="position-absolute top-0 end-0 m-1">
+                            <span class="badge bg-success">New</span>
+                        </div>
+                    `;
+                    container.appendChild(wrapper);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    }
+    
+    function markPhotoForDeletion(photoId) {
+        const wrapper = document.querySelector(`[data-photo-id="${photoId}"]`);
+        const checkbox = wrapper.querySelector('.delete-photo-checkbox');
+        
+        if (checkbox.checked) {
+            // Unmark for deletion
+            checkbox.checked = false;
+            wrapper.classList.remove('marked-for-deletion');
+            wrapper.querySelector('.photo-overlay').innerHTML = `
+                <a href="${wrapper.querySelector('img').src}" 
+                   target="_blank" 
+                   class="btn btn-sm btn-light me-1">
+                    <i class="fa fa-eye"></i> View
+                </a>
+                <button type="button" 
+                        onclick="markPhotoForDeletion(${photoId})" 
+                        class="btn btn-sm btn-danger">
+                    <i class="fa fa-trash"></i> Delete
+                </button>
+            `;
+        } else {
+            // Mark for deletion
+            if (confirm('Are you sure you want to delete this photo?')) {
+                checkbox.checked = true;
+                wrapper.classList.add('marked-for-deletion');
+                wrapper.querySelector('.photo-overlay').innerHTML = `
+                    <div class="text-center">
+                        <span class="badge bg-danger mb-2">Will be deleted</span>
+                        <br>
+                        <button type="button" 
+                                onclick="markPhotoForDeletion(${photoId})" 
+                                class="btn btn-sm btn-light">
+                            <i class="fa fa-undo"></i> Undo
+                        </button>
+                    </div>
+                `;
+            }
+        }
+    }
+    
+    // Remove old previewGallery function if it exists
+    // function removeGalleryImage is no longer needed
+
+    </script>
+@endif
+<script>
+$(document).ready(function () {
+
+    $('form').on('submit', function () {
+        // Show loader
+        $('#pageLoader').removeClass('d-none');
+
+        // Disable submit button to prevent double click
+        $(this).find('button[type="submit"]').prop('disabled', true);
+    });
+
+});
+</script>
+{{-- <script>
+            let galleryFiles = new DataTransfer();
 
         function previewGallery(input) {
             const container = document.getElementById('gallery-container');
@@ -1016,20 +1178,5 @@ function addFounder() {
                 btn.closest('.existing-photo').remove();
             }
         }
-    </script>
-@endif
-<script>
-$(document).ready(function () {
-
-    $('form').on('submit', function () {
-        // Show loader
-        $('#pageLoader').removeClass('d-none');
-
-        // Disable submit button to prevent double click
-        $(this).find('button[type="submit"]').prop('disabled', true);
-    });
-
-});
-</script>
-
+    </script> --}}
 @endsection
