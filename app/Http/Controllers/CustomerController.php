@@ -124,6 +124,7 @@ class CustomerController extends Controller
                 'logo',
                 'cover_photo',
                 'status',
+                'is_verified',
                 'created_at',
             ])
             ->with('category:id,name')

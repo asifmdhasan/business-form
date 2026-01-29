@@ -108,7 +108,7 @@
         display: inline-flex;
         align-items: center;
         gap: 0.25rem;
-        background: rgba(34, 197, 94, 0.9);
+        background: #9C7D2D;
         color: white;
         font-size: 0.75rem;
         font-weight: 600;
@@ -139,8 +139,8 @@
     }
 
     .btn-outline-custom:hover {
-        background-color: rgba(34, 206, 206, 0.3);
-        color: var(--primary-color);
+         background-color: #9C7D2D;
+        color: #fff;
         transform: scale(1.05);
     }
 
@@ -310,71 +310,71 @@
     .gallery-card-wrapper .card {
         transition: all 0.3s ease;
     }
-    
+
     .gallery-card-wrapper:hover .card {
         transform: translateY(-5px);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
     }
-    
+
     /* Image Zoom on Hover */
     .gallery-img-container:hover .gallery-main-img {
         transform: scale(1.05);
     }
-    
+
     .gallery-img-container:hover .gallery-gradient {
         opacity: 1;
     }
-    
+
     .gallery-img-container:hover .gallery-icon {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1) !important;
     }
-    
+
     /* Shadow Hover Effect */
     .shadow-hover {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
-    
+
     /* Card body padding creates space around image */
     .card-body {
         transition: background-color 0.3s ease;
     }
-    
+
     .gallery-card-wrapper:hover .card-body {
         background-color: #e9ecef !important;
     }
-    
+
     /* Modal backdrop */
     .modal-backdrop.show {
         opacity: 0.9;
     }
-    
+
     /* Responsive */
     @media (max-width: 992px) {
         .gallery-img-container {
             height: 200px !important;
         }
     }
-    
+
     @media (max-width: 768px) {
         .gallery-img-container {
             height: 180px !important;
         }
-        
+
         .featured-business {
             font-size: 26px !important;
         }
-        
+
         .card-body {
             padding: 0.75rem !important;
         }
     }
-    
+
     @media (max-width: 576px) {
         .gallery-img-container {
             height: 200px !important;
         }
-        
+
         .featured-business {
             font-size: 22px !important;
         }
@@ -389,7 +389,7 @@
             <div class="row align-items-center">
                 <div class="col-auto">
                     <div class="logo-box">
-                        <img src="{{ $business->logo ? asset('assets/'.$business->logo) : 'https://ui-avatars.com/api/?name='.urlencode($business->business_name) }}" 
+                        <img src="{{ $business->logo ? asset('assets/'.$business->logo) : 'https://ui-avatars.com/api/?name='.urlencode($business->business_name) }}"
                              alt="{{ $business->business_name }}">
                     </div>
                 </div>
@@ -403,7 +403,7 @@
                             </span>
                         @else
                             <span class="unverified-badge">
-                                
+
                                 ({{ $business->status }})
                             </span>
                         @endif
@@ -417,13 +417,13 @@
         <div class="hero-buttons">
             <div class="d-flex flex-wrap gap-2">
                 @if($business->business_profile)
-                    <a href="{{ asset('assets/'.$business->business_profile) }}" 
+                    <a href="{{ asset('assets/'.$business->business_profile) }}"
                        class="btn btn-primary-custom" target="_blank">
                         <i class="fas fa-download me-2"></i>Download Company Profile
                     </a>
                 @endif
                 @if($business->product_catalogue)
-                    <a href="{{ asset('assets/'.$business->product_catalogue) }}" 
+                    <a href="{{ asset('assets/'.$business->product_catalogue) }}"
                        class="btn btn-outline-custom" target="_blank">
                         <i class="fas fa-book me-2"></i>Download Product Catalogue
                     </a>
@@ -441,7 +441,7 @@
                 text-transform: uppercase;
                 line-height: 1.3em;">
             <span style=" font-weight: 300;">About the </span>
-            <span style="color:#9b7d2d;font-weight: 900;">Business </span> 
+            <span style="color:#9b7d2d;font-weight: 900;">{{ $business->business_name }}</span>
         </h4>
         <p class="mb-4">{{ $business->business_overview }}</p>
 
@@ -491,6 +491,136 @@
         @endif
     </section>
 
+
+    <!-- PRODUCTS & SERVICES -->
+    @if($services->count())
+        <section class="contact-card mt-4">
+            <div class="text-start mb-4">
+                <h4 class="fw-bold mb-4 featured-business "
+                style="
+                    font-size: 34px;
+                    text-transform: uppercase;
+                    line-height: 1.3em;">
+                <span style=" font-weight: 300;">Products & </span>
+                <span style="color:#9b7d2d;font-weight: 900;">Services </span>
+            </h4>
+                <p class="section-subtitle"style="color:#414141;font-weight: 600; font-size: 24px;">What They Offer</p>
+            </div>
+
+            <div class="row">
+                @foreach($services as $service)
+                <div class="col-md-4">
+                    <div class="product-card">
+                        {{-- <div class="product-icon">
+                            <i class="fas fa-star"></i>
+                        </div> --}}
+                        <h3 class="h5 fw-bold">{{ $service->name }}</h3>
+                        <p class="text-muted small mb-0">
+                            {{ $service->description ?? '' }}
+                        </p>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            {{-- <div class="text-center">
+                <button class="btn btn-secondary">View All Products & Services</button>
+            </div> --}}
+        </section>
+    @endif
+
+    <!-- ELEGANT GALLERY with Centered Images in Cards -->
+    @if($business->businessPhotos && $business->businessPhotos->count() > 0)
+        <section class="mt-5 mb-5 contact-card">
+            <div class=" mb-4">
+                <h4 class="fw-bold featured-business"
+                    style="font-size: 34px; text-transform: uppercase; line-height: 1.3em;">
+                    <span style="font-weight: 300;">Photos & </span>
+                    <span style="color:#9b7d2d; font-weight: 900;">Media</span>
+                </h4>
+                <p class="text-muted">Click on any image to view in full size</p>
+            </div>
+
+            <div class="row g-3">
+                @foreach($business->businessPhotos as $index => $photo)
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="gallery-card-wrapper">
+                        <div class="card border-0 shadow-hover h-100" style="border-radius: 12px;">
+                            <div class="card-body p-3" style="background: #f8f9fa;">
+                                <div class="position-relative gallery-img-container"
+                                    style="height: 220px; overflow: hidden; border-radius: 8px; cursor: pointer; background: white; display: flex; align-items: center; justify-content: center;"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#photoModal{{ $photo->id }}">
+
+                                    <img src="{{ asset('assets/' . $photo->image_url) }}"
+                                        class="gallery-main-img"
+                                        alt="Business photo {{ $index + 1 }}"
+                                        style="max-width: 100%; max-height: 100%; object-fit: contain; transition: all 0.4s ease;"
+                                        loading="lazy">
+
+                                    <!-- Gradient Overlay -->
+                                    <div class="gallery-gradient position-absolute top-0 start-0 w-100 h-100"
+                                        style="background: linear-gradient(to top, rgba(0,0,0,0.6), transparent); opacity: 0; transition: opacity 0.4s ease; border-radius: 8px;">
+                                    </div>
+
+                                    <!-- Icon Overlay -->
+                                    <div class="gallery-icon position-absolute top-50 start-50 translate-middle"
+                                        style="opacity: 0; transition: all 0.4s ease; transform: translate(-50%, -50%) scale(0.5);">
+                                        <div class="text-center">
+                                            <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center"
+                                                style="width: 50px; height: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                                                <i class="fa fa-search-plus" style="font-size: 20px; color: #9b7d2d;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Photo Number Badge -->
+                                    <div class="position-absolute top-0 end-0 m-2">
+                                        <span class="badge" style="background: rgba(155, 125, 45, 0.9); padding: 5px 10px; font-size: 11px; border-radius: 15px;">
+                                            {{ $index + 1 }} / {{ $business->businessPhotos->count() }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Optimized Modal -->
+                    <div class="modal fade" id="photoModal{{ $photo->id }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content" style="background: rgba(0,0,0,0.95); border: none;">
+                                <div class="modal-header border-0 py-2 px-3">
+                                    <h6 class="modal-title text-white mb-0">
+                                        <i class="fa fa-image me-2"></i>
+                                        Photo {{ $index + 1 }} of {{ $business->businessPhotos->count() }}
+                                    </h6>
+                                    <button type="button"
+                                            class="btn-close btn-close-white"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center p-2">
+                                    <img src="{{ asset('assets/' . $photo->image_url) }}"
+                                        class="img-fluid rounded"
+                                        alt="Business photo {{ $index + 1 }}"
+                                        style="max-height: 70vh; width: auto; object-fit: contain;">
+                                </div>
+                                <div class="modal-footer border-0 justify-content-between py-2 px-3">
+                                    <a href="{{ asset('assets/' . $photo->image_url) }}"
+                                    target="_blank"
+                                    class="btn btn-outline-light btn-sm">
+                                        <i class="fa fa-external-link-alt me-1"></i>Open Full Size
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </section>
+    @endif
+
     <!-- FAITH COMPLIANCE -->
     <section class="faith-section">
         <div class="faith-content text-center">
@@ -502,7 +632,7 @@
                     text-transform: uppercase;
                     line-height: 1.3em;">
                 <span style="color:#fff; font-weight: 300;">Faith-Compliant </span>
-                <span style="color:#fff;font-weight: 900;">Business </span> 
+                <span style="color:#fff;font-weight: 900;">Business </span>
             </h4>
             <p class="section-subtitle mx-auto" style="max-width: 600px;color:#fff;">
                 This business is verified to operate under Islamic ethical principles.
@@ -533,141 +663,12 @@
             </div>
 
             <p class="mt-4 mb-0 mx-auto" style="max-width: 700px;color:#fff;">
-                Our commitment is to uphold the highest standards of integrity. We ensure all operations, 
-                from financing to product development and marketing, are fully aligned with ethical principles, 
+                Our commitment is to uphold the highest standards of integrity. We ensure all operations,
+                from financing to product development and marketing, are fully aligned with ethical principles,
                 fostering trust and transparency with our valued customers and partners.
             </p>
         </div>
     </section>
-
-    <!-- PRODUCTS & SERVICES -->
-    @if($services->count())
-        <section class="contact-card mt-4">
-            <div class="text-start mb-4">
-                <h4 class="fw-bold mb-4 featured-business "
-                style="
-                    font-size: 34px;
-                    text-transform: uppercase;
-                    line-height: 1.3em;">
-                <span style=" font-weight: 300;">Products & </span>
-                <span style="color:#9b7d2d;font-weight: 900;">Services </span> 
-            </h4>
-                <p class="section-subtitle"style="color:#414141;font-weight: 600; font-size: 24px;">What They Offer</p>
-            </div>
-
-            <div class="row">
-                @foreach($services as $service)
-                <div class="col-md-4">
-                    <div class="product-card">
-                        {{-- <div class="product-icon">
-                            <i class="fas fa-star"></i>
-                        </div> --}}
-                        <h3 class="h5 fw-bold">{{ $service->name }}</h3>
-                        <p class="text-muted small mb-0">
-                            {{ $service->description ?? 'Shariah-compliant service offerings.' }}
-                        </p>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-
-            {{-- <div class="text-center">
-                <button class="btn btn-secondary">View All Products & Services</button>
-            </div> --}}
-        </section>
-    @endif
-
-    <!-- ELEGANT GALLERY with Centered Images in Cards -->
-    @if($business->businessPhotos && $business->businessPhotos->count() > 0)
-        <section class="mt-5 mb-5 contact-card">
-            <div class=" mb-4">
-                <h4 class="fw-bold featured-business"
-                    style="font-size: 34px; text-transform: uppercase; line-height: 1.3em;">
-                    <span style="font-weight: 300;">Photos & </span>
-                    <span style="color:#9b7d2d; font-weight: 900;">Media</span> 
-                </h4>
-                <p class="text-muted">Click on any image to view in full size</p>
-            </div>
-            
-            <div class="row g-3">
-                @foreach($business->businessPhotos as $index => $photo)
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="gallery-card-wrapper">
-                        <div class="card border-0 shadow-hover h-100" style="border-radius: 12px;">
-                            <div class="card-body p-3" style="background: #f8f9fa;">
-                                <div class="position-relative gallery-img-container" 
-                                    style="height: 220px; overflow: hidden; border-radius: 8px; cursor: pointer; background: white; display: flex; align-items: center; justify-content: center;"
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#photoModal{{ $photo->id }}">
-                                    
-                                    <img src="{{ asset('assets/' . $photo->image_url) }}" 
-                                        class="gallery-main-img" 
-                                        alt="Business photo {{ $index + 1 }}"
-                                        style="max-width: 100%; max-height: 100%; object-fit: contain; transition: all 0.4s ease;"
-                                        loading="lazy">
-                                    
-                                    <!-- Gradient Overlay -->
-                                    <div class="gallery-gradient position-absolute top-0 start-0 w-100 h-100" 
-                                        style="background: linear-gradient(to top, rgba(0,0,0,0.6), transparent); opacity: 0; transition: opacity 0.4s ease; border-radius: 8px;">
-                                    </div>
-                                    
-                                    <!-- Icon Overlay -->
-                                    <div class="gallery-icon position-absolute top-50 start-50 translate-middle" 
-                                        style="opacity: 0; transition: all 0.4s ease; transform: translate(-50%, -50%) scale(0.5);">
-                                        <div class="text-center">
-                                            <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center" 
-                                                style="width: 50px; height: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                                                <i class="fa fa-search-plus" style="font-size: 20px; color: #9b7d2d;"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Photo Number Badge -->
-                                    <div class="position-absolute top-0 end-0 m-2">
-                                        <span class="badge" style="background: rgba(155, 125, 45, 0.9); padding: 5px 10px; font-size: 11px; border-radius: 15px;">
-                                            {{ $index + 1 }} / {{ $business->businessPhotos->count() }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Optimized Modal -->
-                    <div class="modal fade" id="photoModal{{ $photo->id }}" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content" style="background: rgba(0,0,0,0.95); border: none;">
-                                <div class="modal-header border-0 py-2 px-3">
-                                    <h6 class="modal-title text-white mb-0">
-                                        <i class="fa fa-image me-2"></i>
-                                        Photo {{ $index + 1 }} of {{ $business->businessPhotos->count() }}
-                                    </h6>
-                                    <button type="button" 
-                                            class="btn-close btn-close-white" 
-                                            data-bs-dismiss="modal" 
-                                            aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body text-center p-2">
-                                    <img src="{{ asset('assets/' . $photo->image_url) }}" 
-                                        class="img-fluid rounded" 
-                                        alt="Business photo {{ $index + 1 }}"
-                                        style="max-height: 70vh; width: auto; object-fit: contain;">
-                                </div>
-                                <div class="modal-footer border-0 justify-content-between py-2 px-3">
-                                    <a href="{{ asset('assets/' . $photo->image_url) }}" 
-                                    target="_blank" 
-                                    class="btn btn-outline-light btn-sm">
-                                        <i class="fa fa-external-link-alt me-1"></i>Open Full Size
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </section>
-    @endif
 
     <!-- CONTACT INFORMATION -->
     <section class="contact-card mt-4">
@@ -677,10 +678,10 @@
                         text-transform: uppercase;
                         line-height: 1.3em;">
                     <span style=" font-weight: 300;">Contact </span>
-                    <span style="color:#9b7d2d;font-weight: 900;">Information </span> 
+                    <span style="color:#9b7d2d;font-weight: 900;">Information </span>
                 </h4>
                 <br>
-        
+
         <div class="row g-3 pt-3" style="border-top: 1px solid var(--border-light);">
             <div class="col-md-4">
                 <div class="info-item">
@@ -721,7 +722,7 @@
 
         <div class="d-flex flex-wrap gap-2 mt-4 pt-3" style="border-top: 1px solid var(--border-light);">
             @if($business->whatsapp_number)
-                <a href="https://wa.me/{{ $business->whatsapp_number }}" 
+                <a href="https://wa.me/{{ $business->whatsapp_number }}"
                    class="social-icon" target="_blank">
                     <i class="fab fa-whatsapp"></i>
                 </a>

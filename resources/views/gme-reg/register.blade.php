@@ -20,19 +20,19 @@
     .existing-photo:hover .photo-overlay {
         opacity: 1 !important;
     }
-    
+
     .photo-overlay {
         z-index: 10;
     }
-    
+
     .existing-photo.marked-for-deletion {
         opacity: 0.4;
     }
-    
+
     .existing-photo.marked-for-deletion img {
         filter: grayscale(100%);
     }
-    
+
     .existing-photo.marked-for-deletion .photo-overlay {
         opacity: 1 !important;
         background: rgba(220, 53, 69, 0.8) !important;
@@ -244,7 +244,7 @@
                                 <label class="form-label">Business Name <span class="text-danger">*</span></label>
                                 <input type="text" name="business_name" class="form-control"
                                     value="{{ old('business_name', $business->business_name ?? '') }}" required>
-                                
+
                                 <!-- Error Message -->
                                 @error('business_name')
                                     <div class="text-danger mt-1">{{ $message }}</div>
@@ -431,7 +431,7 @@
                                 <i class="fa fa-plus"></i> Add Founder
                             </button>
 
-                            
+
                         @endif
 
 
@@ -486,7 +486,7 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            
+
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Annual Revenue (Optional)</label>
                                     <select class="form-select @error('annual_revenue') is-invalid @enderror" name="annual_revenue">
@@ -504,9 +504,9 @@
 
                                 {{-- DEBUG: Remove after testing --}}
                                 @php
-                                    $savedServices = old('services_id', 
-                                        is_array($business->services_id ?? null) 
-                                            ? $business->services_id 
+                                    $savedServices = old('services_id',
+                                        is_array($business->services_id ?? null)
+                                            ? $business->services_id
                                             : json_decode($business->services_id ?? '[]', true)
                                     );
                                     // dd($savedServices, $business->services_id); // Uncomment to debug
@@ -514,7 +514,7 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Products / Services <span class="text-danger">*</span></label>
-                                    <select class="form-select search_select @error('services_id') is-invalid @enderror" 
+                                    <select class="form-select search_select @error('services_id') is-invalid @enderror"
                                             multiple name="services_id[]" id="services" required>
                                         <!-- Options will be loaded by JavaScript -->
                                     </select>
@@ -525,13 +525,13 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-2 mb-3">
+                                <div class="col-md-3 mb-3">
                                     <label class="form-label">Upload Business Logo</label>
 
                                     <!-- Upload Container -->
-                                    <div class="rounded p-2 text-center position-relative @error('logo') border-danger @enderror" 
+                                    <div class="rounded p-2 text-center position-relative @error('logo') border-danger @enderror"
                                         style="width: 10rem; height: 10rem; cursor: pointer; border: 1px dashed #ccc; overflow: hidden;">
-                                        
+
                                         <!-- Preview Image -->
                                         <img id="logoPreview"
                                             src="{{ !empty($business->logo) ? asset('assets/' . $business->logo) : asset('assets/uploads/placeholder.png') }}"
@@ -559,9 +559,9 @@
                                     <label class="form-label">Upload Cover Photo</label>
 
                                     <!-- Upload Container -->
-                                    <div class="rounded p-2 text-center position-relative @error('cover_photo') border-danger @enderror" 
+                                    <div class="rounded p-2 text-center position-relative @error('cover_photo') border-danger @enderror"
                                         style="width: 10rem; height: 10rem; cursor: pointer; border: 1px dashed #ccc; overflow: hidden;">
-                                        
+
                                         <!-- Cover Photo Preview -->
                                         <img id="coverPhotoPreview"
                                             src="{{ !empty($business->cover_photo) ? asset('assets/' . $business->cover_photo) : asset('assets/uploads/placeholder.png') }}"
@@ -597,32 +597,32 @@
                                         <!-- Existing Images Preview (from business_photos table) -->
                                         @if($business->businessPhotos && $business->businessPhotos->count() > 0)
                                             @foreach($business->businessPhotos as $photo)
-                                            <div class="position-relative rounded existing-photo" 
-                                                data-photo-id="{{ $photo->id }}" 
+                                            <div class="position-relative rounded existing-photo"
+                                                data-photo-id="{{ $photo->id }}"
                                                 style="width: 10rem; height: 10rem; border: 1px dashed #ccc; overflow: hidden;">
-                                                <img src="{{ asset('assets/' . $photo->image_url) }}" 
-                                                    class="img-fluid w-100 h-100" 
+                                                <img src="{{ asset('assets/' . $photo->image_url) }}"
+                                                    class="img-fluid w-100 h-100"
                                                     style="object-fit: cover;">
-                                                
+
                                                 <!-- View and Delete buttons on hover -->
-                                                <div class="photo-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
+                                                <div class="photo-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
                                                     style="background: rgba(0,0,0,0.6); opacity: 0; transition: opacity 0.3s;">
-                                                    <a href="{{ asset('assets/' . $photo->image_url) }}" 
-                                                    target="_blank" 
+                                                    <a href="{{ asset('assets/' . $photo->image_url) }}"
+                                                    target="_blank"
                                                     class="btn btn-sm btn-light me-1">
                                                         <i class="fa fa-eye"></i> View
                                                     </a>
-                                                    <button type="button" 
-                                                            onclick="markPhotoForDeletion({{ $photo->id }})" 
+                                                    <button type="button"
+                                                            onclick="markPhotoForDeletion({{ $photo->id }})"
                                                             class="btn btn-sm btn-danger">
                                                         <i class="fa fa-trash"></i> Delete
                                                     </button>
                                                 </div>
-                                                
+
                                                 <!-- Hidden checkbox for deletion -->
-                                                <input type="checkbox" 
-                                                    name="delete_photos[]" 
-                                                    value="{{ $photo->id }}" 
+                                                <input type="checkbox"
+                                                    name="delete_photos[]"
+                                                    value="{{ $photo->id }}"
                                                     class="delete-photo-checkbox d-none">
                                             </div>
                                             @endforeach
@@ -632,14 +632,14 @@
                                         <div id="new-photos-preview" class="d-flex flex-wrap gap-2"></div>
 
                                         <!-- New Upload Placeholder -->
-                                        <div class="rounded text-center position-relative gallery-upload @error('photos') border-danger @enderror @error('photos.*') border-danger @enderror" 
+                                        <div class="rounded text-center position-relative gallery-upload @error('photos') border-danger @enderror @error('photos.*') border-danger @enderror"
                                             style="width: 10rem; height: 10rem; border: 1px dashed #ccc; cursor: pointer; display:flex; align-items:center; justify-content:center;">
                                             <i class="fa fa-plus" style="font-size:2rem; color: rgba(0,0,0,0.5); pointer-events:none;"></i>
-                                            <input type="file" 
-                                                name="photos[]" 
+                                            <input type="file"
+                                                name="photos[]"
                                                 id="photo-upload-input"
-                                                accept="image/*" 
-                                                multiple 
+                                                accept="image/*"
+                                                multiple
                                                 style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;"
                                                 onchange="previewNewPhotos(this)">
                                         </div>
@@ -692,7 +692,7 @@
                                     <small class="text-muted">Max 6 images (PNG, JPG, JPEG | 5MB each)</small>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <!-- Registration Document -->
                                 <div class="col-md-4 mb-3">
@@ -701,7 +701,7 @@
                                     <!-- Document Links -->
                                     @if(!empty($business->registration_document))
                                         <small class="text-success d-block mt-1">
-                                            <i class="fa fa-check"></i> Document uploaded: 
+                                            <i class="fa fa-check"></i> Document uploaded:
                                             <a href="{{ asset('assets/' .$business->registration_document) }}" target="_blank">View</a>
                                         </small>
                                     @endif
@@ -716,7 +716,7 @@
                                     <input type="file" name="business_profile" class="form-control @error('business_profile') is-invalid @enderror">
                                     @if(!empty($business->business_profile))
                                         <small class="text-success d-block mt-1">
-                                            <i class="fa fa-check"></i> Profile uploaded: 
+                                            <i class="fa fa-check"></i> Profile uploaded:
                                             <a href="{{ asset('assets/' .$business->business_profile) }}" target="_blank">View</a>
                                         </small>
                                     @endif
@@ -731,7 +731,7 @@
                                     <input type="file" name="product_catalogue" class="form-control @error('product_catalogue') is-invalid @enderror">
                                     @if(!empty($business->product_catalogue))
                                         <small class="text-success d-block mt-1">
-                                            <i class="fa fa-check"></i> Catalogue uploaded: 
+                                            <i class="fa fa-check"></i> Catalogue uploaded:
                                             <a href="{{ asset('assets/' .$business->product_catalogue) }}" target="_blank">View</a>
                                         </small>
                                     @endif
@@ -744,9 +744,9 @@
                             <div class="row">
                                 <div class="col-md-12 mb-3">
                                     <label class="form-label">Business Overview</label>
-                                    <textarea class="form-control @error('business_overview') is-invalid @enderror" 
-                                            rows="6" 
-                                            name="business_overview" 
+                                    <textarea class="form-control @error('business_overview') is-invalid @enderror"
+                                            rows="6"
+                                            name="business_overview"
                                             placeholder="Describe your business, mission, vision, products/services in detail...">{{ old('business_overview', $business->business_overview ?? '') }}</textarea>
                                     @error('business_overview')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -868,8 +868,8 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Ethical Description</label>
-                                <textarea class="form-control @error('ethical_description') is-invalid @enderror" 
-                                        rows="4" 
+                                <textarea class="form-control @error('ethical_description') is-invalid @enderror"
+                                        rows="4"
                                         name="ethical_description"
                                         placeholder="Describe your business ethics and values...">{{ old('ethical_description', $business->ethical_description ?? '') }}</textarea>
                                 @error('ethical_description')
@@ -882,24 +882,24 @@
                             <h6 class="fw-bold">Collaboration Interest</h6>
 
                             @php
-                                $savedCollaborationTypes = old('collaboration_types', 
-                                    is_array($business->collaboration_types ?? null) 
-                                        ? $business->collaboration_types 
+                                $savedCollaborationTypes = old('collaboration_types',
+                                    is_array($business->collaboration_types ?? null)
+                                        ? $business->collaboration_types
                                         : json_decode($business->collaboration_types ?? '[]', true)
                                 );
                             @endphp
 
                             @foreach(['Partnerships','Investment Oportunities','Vendor Supply Chain','Marketing Promotion','Networking','Training Workshops','Community Charity Projects','Not Sure Yet'] as $type)
                             <div class="form-check">
-                                <input class="form-check-input" 
-                                    type="checkbox" 
-                                    name="collaboration_types[]" 
+                                <input class="form-check-input"
+                                    type="checkbox"
+                                    name="collaboration_types[]"
                                     value="{{ $type }}"
                                     {{ in_array($type, $savedCollaborationTypes) ? 'checked' : '' }}>
                                 <label class="form-check-label">{{ $type }}</label>
                             </div>
                             @endforeach
-                            
+
                             @error('collaboration_types')
                                 <div class="text-danger mt-2"><small>{{ $message }}</small></div>
                             @enderror
@@ -912,9 +912,9 @@
 
                             <div class="alert alert-warning">
                                 <div class="form-check">
-                                    <input class="form-check-input @error('info_accuracy') is-invalid @enderror" 
-                                        type="checkbox" 
-                                        name="info_accuracy" 
+                                    <input class="form-check-input @error('info_accuracy') is-invalid @enderror"
+                                        type="checkbox"
+                                        name="info_accuracy"
                                         value="1"
                                         {{ old('info_accuracy', $business->info_accuracy ?? false) ? 'checked' : '' }}
                                         required>
@@ -929,8 +929,8 @@
 
                             <div class="alert alert-warning">
                                 <div class="form-check">
-                                    <input class="form-check-input" 
-                                        type="checkbox" 
+                                    <input class="form-check-input"
+                                        type="checkbox"
                                         name="allow_publish"
                                         value="1"
                                         required
@@ -943,8 +943,8 @@
 
                             <div class="alert alert-warning">
                                 <div class="form-check">
-                                    <input class="form-check-input" 
-                                        type="checkbox" 
+                                    <input class="form-check-input"
+                                        type="checkbox"
                                         name="allow_contact"
                                         value="1"
                                         required
@@ -957,9 +957,9 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Digital Signature <span class="text-danger">*</span></label>
-                                <input type="text" 
-                                    class="form-control @error('digital_signature') is-invalid @enderror" 
-                                    name="digital_signature" 
+                                <input type="text"
+                                    class="form-control @error('digital_signature') is-invalid @enderror"
+                                    name="digital_signature"
                                     value="{{ old('digital_signature', $business->digital_signature ?? '') }}"
                                     placeholder="Type your full name as digital signature"
                                     required>
@@ -976,7 +976,7 @@
 
                         @endif
 
-                        <!-- Navigation --> 
+                        <!-- Navigation -->
                         <div class="d-flex justify-content-between mt-4">
                             @if($step > 1)
                                 <a href="{{ route('gme.business.register', ['step' => $step - 1, 'business_id' => $business->id ?? '']) }}"

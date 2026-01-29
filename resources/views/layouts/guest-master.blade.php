@@ -210,13 +210,13 @@
         /* background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23FFD700' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h16v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm-90-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm-90-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm-90-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9z'/%3E%3Cpath d='M6 5V0h1v5h94V0h1v5h-1v90h1v5H95v-5H6v5H5v-5H0V5h5V0h1v5h94V0h1v5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); */
         background-image: url('{{ asset('assets/image/bg.webp') }}');
         background-size: cover;
-        padding-top:10rem; 
+        padding-top:10rem;
         padding-bottom:8rem;
 
 
     }
     .btn-login {
-        
+
         background: var(--primary-color);
         color: var(--primary-navy);
         font-weight: 700;
@@ -618,7 +618,7 @@
     padding: 90px 0 40px;
     overflow: hidden;
 
-    background: 
+    background:
         linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)), /* super dark overlay */
         url('/assets/image/foo.webp');
     background-size: cover;
@@ -943,11 +943,11 @@
         text-align: center;
     }
     .islamic-bg {
-        padding-top:7rem; 
+        padding-top:7rem;
         padding-bottom:7rem;
     }
     .footer.islamic-bg {
-        padding-top:0rem; 
+        padding-top:0rem;
         padding-bottom:1.5rem;
     }
 }
@@ -1054,7 +1054,7 @@
 
     <!-- Main Content -->
     <main class="main-content" style="">
-        
+
         <div class="container-fluid py-0 px-0">
             <section class="hero-section text-center text-white islamic-bg"
                 {{-- style="background:linear-gradient(135deg,#1E2A78,#283593); " --}}
@@ -1316,6 +1316,7 @@
             const selectedCategory = $('#categoryFilter').val();
             const selectedLocations = $('#locationFilter').val() || [];
             const status = $('input[name="status"]:checked').val();
+            // console.log('Selected Status:', status);
 
             filteredBusinesses = allBusinesses.filter(business => {
 
@@ -1341,10 +1342,15 @@
                     const match = selectedLocations.some(loc => countries.includes(loc));
                     if (!match) return false;
                 }
-
+                // console.log('Business verified:', business.is_verified);
                 // Status
-                if (status && business.status !== status) {
-                    return false;
+                // if (business.is_verified !== status) {
+                //     return false;
+                // }
+                if (status !== "") {
+                    if (Number(business.is_verified) !== Number(status)) {
+                        return false;
+                    }
                 }
 
                 return true;
@@ -1491,7 +1497,7 @@
         //             </div>
         //             <div class="business-content">
         //                 <div class="business-header">
-                            
+
 
         //                     <div class="logo-box">
         //                         <img src="${logo}" alt="${business.business_name}">
@@ -1518,7 +1524,7 @@
             const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
             const category = business.category?.name ?? '';
-            
+
             // Logo - use avatar if not available
             const logo = business.logo
                 ? `{{ asset('assets') }}/${business.logo}`
@@ -1528,12 +1534,13 @@
             const photo = business.cover_photo
                 ? `{{ asset('assets') }}/${business.cover_photo}`
                 : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
-            
+
             const verified = (business.status === 'approved' && business.is_verified === 1)
                 ? `<div class="verified-badge">
                         <i class="fas fa-check-circle"></i> GME Verified
                     </div>`
                 : '';
+                console.log('verified:', verified);
 
             const countries = business.countries_of_operation && business.countries_of_operation.length > 0
                 ? business.countries_of_operation.join(', ')
@@ -1580,10 +1587,6 @@
                         <div class="card p-3 shadow-sm category-card text-center"
                             style="cursor:pointer"
                             onclick="filterByCategory(${cat.id})">
-
-                            <div class="category-image mb-2">
-                                <img src="${image}" alt="${cat.name}">
-                            </div>
 
                             <div class="fw-semibold">${cat.name}</div>
                         </div>
@@ -1750,7 +1753,7 @@
         });
 
 
-        
+
         /* =========================
         Init
         ========================== */
@@ -1761,7 +1764,7 @@
     });
 </script>
 
-    
+
     <!-- DataTable Language -->
     <script>
         window.dataTableLanguage = {

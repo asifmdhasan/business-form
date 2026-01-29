@@ -1,15 +1,31 @@
 @extends('layouts.master')
 
 @section('content')
+<style>
+#businessTabs .nav-link{
+    color: #9C7D2D;
+    width: 10rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+    color: #fff !important;
+    background-color: #9C7D2D;
+    border-color: #9C7D2D;
+    width: 10rem;
+}
+
+#businessTabs{
+    padding-bottom: 1rem;
+    justify-content: center;
+}
+</style>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-
-            @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
 
             <div class="card">
                 <div class="card-header">
@@ -17,6 +33,32 @@
                 </div>
 
                 <div class="card-body">
+
+                    {{-- Tabs --}}
+                    <ul class="nav nav-tabs" id="businessTabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-status="" href="#">
+                                All - {{ \App\Models\GmeBusinessForm::count() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-status="pending" href="#">
+                                Pending - {{ \App\Models\GmeBusinessForm::where('status','pending')->count() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-status="approved" href="#">
+                                Approved - {{ \App\Models\GmeBusinessForm::where('status','approved')->count() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-status="rejected" href="#">
+                                Rejected - {{ \App\Models\GmeBusinessForm::where('status','rejected')->count() }}
+                            </a>
+                        </li>
+                    </ul>
+
+                    {{-- Table --}}
                     <table id="businessesTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -31,9 +73,10 @@
                             </tr>
                         </thead>
                     </table>
-                </div>
 
+                </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -46,23 +89,25 @@
 <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
 
 <script>
-$(document).ready(function () {
+$(function () {
 
-    $('#businessesTable').DataTable({
+    let selectedStatus = '';
+
+    let table = $('#businessesTable').DataTable({
         processing: true,
         serverSide: false,
         ajax: {
             url: "{{ route('gme-business-admin.index') }}",
-            type: "GET",
+            data: function (d) {
+                d.status = selectedStatus;
+            },
             dataSrc: 'businesses'
         },
         columns: [
 
             {
                 data: null,
-                render: function (data, type, row, meta) {
-                    return meta.row + 1;
-                }
+                render: (d, t, r, m) => m.row + 1
             },
 
             {
@@ -71,51 +116,32 @@ $(document).ready(function () {
                 searchable: false,
                 render: function (data, type, row) {
                     if (data) {
-                        return `
-                            <img src="{{ asset('assets') }}/${data}"
-                                class="img-thumbnail"
-                                style="width:50px;height:50px;object-fit:cover;">
-                        `;
+                        return `<img src="{{ asset('assets') }}/${data}"
+                                     class="img-thumbnail"
+                                     style="width:50px;height:50px;object-fit:cover;">`;
                     }
-
-                    return `
-                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
-                            style="width:50px;height:50px;">
-                            ${row.business_name ? row.business_name.charAt(0).toUpperCase() : '?'}
-                        </div>
-                    `;
+                    return `<div class="bg-secondary text-white d-flex align-items-center justify-content-center"
+                                style="width:50px;height:50px;">
+                                ${row.business_name?.charAt(0).toUpperCase() ?? '?'}
+                            </div>`;
                 }
             },
 
-            {
-                data: 'business_name',
-                render: function (data) {
-                    return data ?? '-';
-                }
-            },
+            { data: 'business_name', defaultContent: '-' },
 
             {
                 data: 'category',
-                render: function (data, type, row) {
-                    return row.category?.name ?? '-';
-                }
+                render: (d, t, row) => row.category?.name ?? '-'
             },
 
             {
                 data: 'countries_of_operation',
                 render: function (data) {
                     if (!data) return '-';
-
-                    // If already array
-                    if (Array.isArray(data)) {
-                        return data.join(', ');
-                    }
-
-                    // If JSON string
                     try {
-                        let parsed = JSON.parse(data);
+                        let parsed = typeof data === 'string' ? JSON.parse(data) : data;
                         return Array.isArray(parsed) ? parsed.join(', ') : '-';
-                    } catch (e) {
+                    } catch {
                         return '-';
                     }
                 }
@@ -124,27 +150,19 @@ $(document).ready(function () {
             {
                 data: 'status',
                 render: function (data) {
-
-                    let cls = 'bg-secondary';
-
-                    if (data === 'approved') cls = 'bg-success';
-                    else if (data === 'pending') cls = 'bg-info';
-                    else if (data === 'draft') cls = 'bg-warning';
-                    else if (data === 'rejected') cls = 'bg-danger';
-
-                    return `<span class="badge ${cls}">${data.toUpperCase()}</span>`;
+                    const map = {
+                        approved: 'bg-success',
+                        pending: 'bg-info',
+                        draft: 'bg-warning',
+                        rejected: 'bg-danger'
+                    };
+                    return `<span class="badge ${map[data] ?? 'bg-secondary'}">${data.toUpperCase()}</span>`;
                 }
             },
 
             {
                 data: 'created_at',
-                render: function (data) {
-                    return new Date(data).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                    });
-                }
+                render: d => new Date(d).toLocaleDateString()
             },
 
             {
@@ -152,31 +170,66 @@ $(document).ready(function () {
                 orderable: false,
                 searchable: false,
                 render: function (data, type, row) {
-                    return `
-                        
 
-                        <a href="{{ url('gme-business-admin') }}/${row.id}/edit" 
+                    let editBtn = `
+                        <a href="{{ url('gme-business-admin') }}/${row.id}/edit"
                            class="btn btn-sm btn-primary">
                             <i class="fas fa-edit"></i>
-                        </a>
-                    `;
+                        </a>`;
+
+                    let showBtn = `
+                        <a href="{{ url('gme-business-admin') }}/${row.id}/show"
+                           class="btn btn-sm btn-info">
+                            <i class="fas fa-eye"></i>
+                        </a>`;
+
+                    let deleteBtn = '';
+
+                    // ✅ DELETE ONLY IN REJECTED TAB
+                    if (selectedStatus === 'rejected' && row.status === 'rejected') {
+                        deleteBtn = `
+                            <button class="btn btn-sm btn-danger delete-btn"
+                                    data-id="${row.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>`;
+                    }
+
+                    return editBtn + ' ' + deleteBtn + ' ' + showBtn;
                 }
             }
-
         ],
-        // order: [[0, 'desc']],
-        pageLength: 25,
-        responsive: true,
-        language: {
-            emptyTable: "No businesses found",
-            zeroRecords: "No matching records"
-        }
+        pageLength: 25
+    });
+
+    // Tabs click
+    $('#businessTabs a').on('click', function (e) {
+        e.preventDefault();
+        $('#businessTabs a').removeClass('active');
+        $(this).addClass('active');
+
+        selectedStatus = $(this).data('status');
+        table.ajax.reload();
+    });
+
+    // Delete action
+    $(document).on('click', '.delete-btn', function () {
+
+        if (!confirm('Are you sure you want to delete this business?')) return;
+
+        let id = $(this).data('id');
+
+        $.ajax({
+            url: "{{ url('gme-business-admin') }}/" + id,
+            type: "DELETE",
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            success: function () {
+                table.ajax.reload();
+            }
+        });
     });
 
 });
 </script>
-{{-- <a href="{{ url('gme-business-admin') }}/${row.id}" 
-                           class="btn btn-sm btn-info">
-                            <i class="fas fa-eye"></i>
-                        </a> --}}
 @endsection

@@ -493,15 +493,15 @@
     <div class="hero-section">
         <div class="container">
             <div class="business-header">
-                <img src="{{ $business->logo ? asset('assets/logo/' . $business->logo) : 'https://ui-avatars.com/api/?name=' . urlencode($business->business_name) . '&background=1DD1A1&color=fff&size=120' }}" 
-                     alt="{{ $business->business_name }}" 
+                <img src="{{ $business->logo ? asset('assets/logo/' . $business->logo) : 'https://ui-avatars.com/api/?name=' . urlencode($business->business_name) . '&background=1DD1A1&color=fff&size=120' }}"
+                     alt="{{ $business->business_name }}"
                      class="business-logo-large"
                      onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($business->business_name) }}&background=1DD1A1&color=fff&size=120'">
-                
+
                 <div class="business-title-section flex-grow-1">
                     <h1>{{ $business->business_name }}</h1>
                     <p class="business-tagline">{{ $business->tagline ?? 'Empowering ethical entrepreneurship globally.' }}</p>
-                    
+
                     @if($business->status === 'approved' && $business->is_verified === 1)
                     <span class="verified-badge-large">
                         <i class="fas fa-check-circle"></i>
@@ -518,7 +518,7 @@
                     Download Company Profile
                 </a>
                 @endif
-                
+
                 @if($business->products)
                 <a href="#products" class="btn-download btn-download-outline">
                     <i class="fas fa-box"></i>
@@ -565,7 +565,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row about-business-info">
                     @if($business->business_category)
                         <div class="info-item">
@@ -591,7 +591,7 @@
                         </div>
                     @endif
                 </div>
-                
+
             </div>
             <hr>
 
@@ -602,81 +602,6 @@
             @endif
         </div>
 
-        <!-- Faith-Compliant Section -->
-        @if($business->avoid_riba || $business->avoid_haram_products || $business->fair_pricing)
-        <div class="faith-section">
-            <div class="faith-icon">
-                <i class="fas fa-shield-alt"></i>
-            </div>
-            <h3 class="faith-title">Faith-Compliant Business</h3>
-            <p class="faith-subtitle">This business is verified to operate under Islamic ethical principles.</p>
-
-            <div class="row faith-badges">
-                <div class="col-md-4">
-                    @if($business->avoid_riba === 'Yes')
-                        <div class="faith-badge">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Riba-free Financing</span>
-                        </div>
-                    @elseif($business->avoid_riba === 'Partially compliant')
-                        <div class="faith-badge">
-                            <i class="fas fa-times-circle text-warning"></i>
-                            <span>Partially Compliant Riba-free Financing</span>
-                        </div>
-                    @else
-                        <div class="faith-badge">
-                            <i class="fas fa-times-circle text-danger"></i>
-                            <span>No Riba Financing</span>
-                        </div>
-                    @endif
-                </div>
-
-                <div class="col-md-4">
-                    @if($business->avoid_haram_products === 'yes')
-                        <div class="faith-badge">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Ethical & Halal Conduct</span>
-                        </div>
-                    @elseif($business->avoid_haram_products === 'Partially compliant')
-                        <div class="faith-badge">
-                            <i class="fas fa-times-circle text-warning"></i>
-                            <span>Partially Compliant Ethical & Halal Conduct</span>
-                        </div>
-                    @else
-                        <div class="faith-badge">
-                            <i class="fas fa-times-circle text-danger"></i>
-                            <span>No Riba Financing</span>
-                        </div>
-                    @endif
-                </div>
-
-                <div class="col-md-4">
-                    @if($business->fair_pricing === 'yes')
-                        <div class="faith-badge">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Honest Pricing & Marketing</span>
-                        </div>
-                    @elseif($business->fair_pricing === 'Partially compliant')
-                        <div class="faith-badge">
-                            <i class="fas fa-times-circle text-warning"></i>
-                            <span>Partially Compliant Honest Pricing & Marketing</span>
-                        </div>
-                    @else
-                        <div class="faith-badge">
-                            <i class="fas fa-times-circle text-danger"></i>
-                            <span>No Honest Pricing & Marketing</span>
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            @if($business->ethical_description)
-            <div class="faith-description">
-                <p style="color: #555; margin: 0;">{{ $business->ethical_description }}</p>
-            </div>
-            @endif
-        </div>
-        @endif
 
         <!-- Products & Services -->
         @php
@@ -731,7 +656,7 @@
                         text-transform: uppercase;
                         line-height: 1.3em;">
                     <span style=" font-weight: 300;">Photos & </span>
-                    <span style="color:#9b7d2d;font-weight: 900;">Media </span> 
+                    <span style="color:#9b7d2d;font-weight: 900;">Media </span>
                 </h4>
 
                 <div class="row justify-content-center photo-grid">
@@ -749,6 +674,83 @@
 
         @endif
 
+
+        <!-- Faith-Compliant Section -->
+        @if($business->avoid_riba || $business->avoid_haram_products || $business->fair_pricing)
+            <div class="faith-section">
+                <div class="faith-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="faith-title">Faith-Compliant Business</h3>
+                <p class="faith-subtitle">This business is verified to operate under Islamic ethical principles.</p>
+
+                <div class="row faith-badges">
+                    <div class="col-md-4">
+                        @if($business->avoid_riba === 'Yes')
+                            <div class="faith-badge">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Riba-free Financing</span>
+                            </div>
+                        @elseif($business->avoid_riba === 'Partially compliant')
+                            <div class="faith-badge">
+                                <i class="fas fa-times-circle text-warning"></i>
+                                <span>Partially Compliant Riba-free Financing</span>
+                            </div>
+                        @else
+                            <div class="faith-badge">
+                                <i class="fas fa-times-circle text-danger"></i>
+                                <span>No Riba Financing</span>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="col-md-4">
+                        @if($business->avoid_haram_products === 'yes')
+                            <div class="faith-badge">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Ethical & Halal Conduct</span>
+                            </div>
+                        @elseif($business->avoid_haram_products === 'Partially compliant')
+                            <div class="faith-badge">
+                                <i class="fas fa-times-circle text-warning"></i>
+                                <span>Partially Compliant Ethical & Halal Conduct</span>
+                            </div>
+                        @else
+                            <div class="faith-badge">
+                                <i class="fas fa-times-circle text-danger"></i>
+                                <span>No Riba Financing</span>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="col-md-4">
+                        @if($business->fair_pricing === 'yes')
+                            <div class="faith-badge">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Honest Pricing & Marketing</span>
+                            </div>
+                        @elseif($business->fair_pricing === 'Partially compliant')
+                            <div class="faith-badge">
+                                <i class="fas fa-times-circle text-warning"></i>
+                                <span>Partially Compliant Honest Pricing & Marketing</span>
+                            </div>
+                        @else
+                            <div class="faith-badge">
+                                <i class="fas fa-times-circle text-danger"></i>
+                                <span>No Honest Pricing & Marketing</span>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                @if($business->ethical_description)
+                <div class="faith-description">
+                    <p style="color: #555; margin: 0;">{{ $business->ethical_description }}</p>
+                </div>
+                @endif
+            </div>
+        @endif
+
         <!-- Contact Information -->
         <div class="content-card">
             <h4 class="fw-bold mb-4 featured-business "
@@ -757,11 +759,11 @@
                         text-transform: uppercase;
                         line-height: 1.3em;">
                     <span style=" font-weight: 300;">Contact </span>
-                    <span style="color:#9b7d2d;font-weight: 900;">Information </span> 
+                    <span style="color:#9b7d2d;font-weight: 900;">Information </span>
                 </h4>
                 <br>
             <hr>
-            
+
             <div class="contact-grid" style="margin-top: 2rem;">
                 @if($business->contact_person_name || $business->founder_name)
                 <div class="contact-item">

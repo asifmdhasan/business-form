@@ -61,17 +61,17 @@ Route::middleware(['web', 'setLocale'])->group(function () {
     Route::post('/business/register/save-step', [GuestController::class, 'guestSaveStep'])->name('guest.save-step');
     Route::get('/gme-guest/business/success', [GuestController::class, 'formSuccess'])->name('guest.success');
     Route::get('/gme-guest-get-services/{categoryId}', [GuestController::class, 'getServices']);
-    
+
     //Index
     Route::get('/', [GuestController::class, 'guestIndex'])->name('guest.index');
-    
+
     Route::get('/guest-gme-businesses', [GuestController::class, 'indexAjax'])->name('guest.gme-business.ajax');
         // get category ajax
     Route::get('/guest-get-category', [GuestController::class, 'getCategoryAjax'])->name('guest.get-category.ajax');
         //get Location Ajax
     Route::get('/guest-get-locations', [GuestController::class, 'getLocationAjax'])->name('guest.get-locations.ajax');
 
- 
+
 
     //View GME Business Details
     Route::get('/guest-gme-business-form/{business}', [GuestController::class, 'show'])->name('guest.gme-business-form.show');
@@ -103,13 +103,13 @@ Route::middleware(['setLocale'])->group(function () {
     Route::post('/gme-network-login', [CustomerAuthController::class, 'cusLogin'])->name('customer.login.submit');
     Route::get('/gme-network-register', function () { return view('customer.auth.register');})->name('customer.register');
     Route::post('/register', [CustomerAuthController::class, 'register']);
-    
+
     Route::get('/gme-network-verify-otp-form/{customer}', function ($customerId) {
         return view('customer.auth.verify-reg-otp', compact('customerId'));
     })->name('customer.reg.otp.form');
 
     Route::post('/verify-reg-otp', [CustomerAuthController::class, 'verifyRegOtp'])->name('customer.reg.otp.verify');
-        
+
 
     //customer.forget.password.post
     Route::get('/gme-network-forget-password', [CustomerAuthController::class, 'showForgetPasswordForm'])->name('customer.forget.password');
@@ -209,7 +209,13 @@ Route::middleware([
     Route::resource('business-categories', BusinessCategoryController::class);
     Route::resource('services', ServiceController::class);
 
+    Route::get('gme-business-admin/{id}/print', [GmeBusinessAdminController::class, 'print'])
+    ->name('gme-business-admin.print');
+
     Route::resource('gme-business', FrontendGmeBusinessController::class);
+    Route::get('gme-business-admin/{id}/show', [GmeBusinessAdminController::class, 'show'])
+    ->name('gme-business-admin.show');
+
 
     Route::resource('gme-business-admin', GmeBusinessAdminController::class);
 

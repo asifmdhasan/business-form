@@ -22,7 +22,7 @@
                 text-transform: uppercase;
                 line-height: 1.3em;">
             <span style=" font-weight: 300;">Browse by </span>
-            <span style="color:#9b7d2d;font-weight: 900;">Category </span> 
+            <span style="color:#9b7d2d;font-weight: 900;">Category </span>
         </h4>
         <div class="row g-4 pt-4" id="categoryBrowse">
             {{-- Dynamically populated --}}
@@ -42,7 +42,7 @@
                 text-transform: uppercase;
                 line-height: 1.3em;">
             <span style=" font-weight: 300;">Featured </span>
-            <span style="color:#9b7d2d;font-weight: 900;">Businesses </span> 
+            <span style="color:#9b7d2d;font-weight: 900;">Businesses </span>
         </h4>
         <div class="row" id="featuredGrid"></div>
     </div>
@@ -62,7 +62,7 @@
                             text-transform: uppercase;
                             line-height: 1.3em;">
                         <span style=" font-weight: 300;"> Filter </span>
-                        <span style="color:#9b7d2d;font-weight: 900;">Businesses </span> 
+                        <span style="color:#9b7d2d;font-weight: 900;">Businesses </span>
                     </h4>
                 </div>
 
@@ -98,7 +98,8 @@
                         <label for="statusAll">All Businesses</label>
                     </div>
                     <div class="radio-option">
-                        <input type="radio" name="status" id="statusVerified" value="approved">
+
+                        <input type="radio" name="status" id="statusVerified" value="1">
                         <label for="statusVerified">GME Verified</label>
                     </div>
                     {{-- <div class="radio-option">
