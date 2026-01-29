@@ -506,50 +506,98 @@
         <div class="card mb-3">
             <div class="card-header bg-success text-white">Step 3: Ethics & Collaboration</div>
             <div class="card-body">
-                <div class="form-group">
-                    <label>Ethics & Compliance</label>
-                    <textarea name="ethics_compliance" class="form-control" rows="3">{{ old('ethics_compliance', $business->ethics_compliance) }}</textarea>
-                </div>
-                <div class="form-group mt-2">
-                    <label>Collaboration Opportunities</label>
-                    <textarea name="collaboration_opportunities" class="form-control" rows="3">{{ old('collaboration_opportunities', $business->collaboration_opportunities) }}</textarea>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label>Avoid Riba?</label>
+                        <select name="avoid_riba" class="form-control">
+                            <option value="">Select</option>
+                            <option value="yes" {{ old('avoid_riba', $business->avoid_riba)=='yes'?'selected':'' }}>Yes</option>
+                            <option value="no" {{ old('avoid_riba', $business->avoid_riba)=='no'?'selected':'' }}>No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Avoid Haram Products?</label>
+                        <select name="avoid_haram_products" class="form-control">
+                            <option value="">Select</option>
+                            <option value="yes" {{ old('avoid_haram_products', $business->avoid_haram_products)=='yes'?'selected':'' }}>Yes</option>
+                            <option value="no" {{ old('avoid_haram_products', $business->avoid_haram_products)=='no'?'selected':'' }}>No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Fair Pricing?</label>
+                        <select name="fair_pricing" class="form-control">
+                            <option value="">Select</option>
+                            <option value="yes" {{ old('fair_pricing', $business->fair_pricing)=='yes'?'selected':'' }}>Yes</option>
+                            <option value="no" {{ old('fair_pricing', $business->fair_pricing)=='no'?'selected':'' }}>No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Ethical Description</label>
+                        <textarea name="ethical_description" class="form-control">{{ old('ethical_description', $business->ethical_description) }}</textarea>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Open for Guidance?</label>
+                        <select name="open_for_guidance" class="form-control">
+                            <option value="">Select</option>
+                            <option value="yes" {{ old('open_for_guidance', $business->open_for_guidance)=='yes'?'selected':'' }}>Yes</option>
+                            <option value="no" {{ old('open_for_guidance', $business->open_for_guidance)=='no'?'selected':'' }}>No</option>
+                        </select>
+                    </div>
+
+                    {{-- Collaboration --}}
+                    <div class="col-md-6 form-group">
+                        <label>Collaboration Open?</label>
+                        <select name="collaboration_open" class="form-control">
+                            <option value="">Select</option>
+                            <option value="yes" {{ old('collaboration_open', $business->collaboration_open)=='yes'?'selected':'' }}>Yes</option>
+                            <option value="no" {{ old('collaboration_open', $business->collaboration_open)=='no'?'selected':'' }}>No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label>Collaboration Types</label>
+                        <textarea name="collaboration_types" class="form-control">{{ old('collaboration_types', is_array($business->collaboration_types)?implode(', ',$business->collaboration_types):$business->collaboration_types) }}</textarea>
+                    </div>
                 </div>
             </div>
         </div>
 
         {{-- ================= Step 4: Consent & Approval ================= --}}
-        <div class="card mb-3">
+        {{-- <div class="card mb-3">
             <div class="card-header bg-success text-white">Step 4: Consent & Approval</div>
             <div class="card-body">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="1" id="consent" name="consent" {{ old('consent', $business->consent) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="consent">
-                        I consent to share my business information.
-                    </label>
-                </div>
-                <div class="form-check mt-2">
-                    <input class="form-check-input" type="checkbox" value="1" id="approved" name="approved" {{ old('approved', $business->approved) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="approved">
-                        My business information has been approved.
-                    </label>
+                    <input type="checkbox" class="form-check-input" name="is_verified" value="1" id="is_verified" {{ old('is_verified', $business->is_verified) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="is_verified">GME Verified</label>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         {{-- ================= Step 5: Status ================= --}}
         <div class="card mb-3">
-            <div class="card-header bg-success text-white">Step 5: Status</div>
+            <div class="card-header bg-info text-white">Step 5: Status - for Admin only</div>
             <div class="card-body">
-                <div class="form-group">
-                    <label>Status</label>
-                    <select name="status" class="form-control">
-                        @php
-                            $statuses = ['Active'=>'Active','Inactive'=>'Inactive','Pending'=>'Pending'];
-                        @endphp
-                        @foreach($statuses as $key => $label)
-                            <option value="{{ $key }}" {{ old('status', $business->status) == $key ? 'selected' : '' }}>{{ $label }}</option>
-                        @endforeach
-                    </select>
+                <div class="row">
+                    {{-- is_verified checkbox --}}
+                    <div class="col-md-3 form-group pt-4">
+                        <div class="form-check">
+                            <input type="checkbox" name="is_verified" value="0" class="form-check-input" id="is_verified"
+                                {{ old('is_verified', $business->is_verified) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="is_verified">Verified (Yes/No)</label>
+                        </div>
+                    </div>
+
+                    {{-- Status select --}}
+                    <div class="col-md-4 form-group">
+                        <label>Status</label>
+                        <select name="status" class="form-control" required>
+                            <option value="pending" {{ old('status', $business->status) == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="approved" {{ old('status', $business->status) == 'approved' ? 'selected' : '' }}>Approved</option>
+                            <option value="rejected" {{ old('status', $business->status) == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                            <option value="banned" {{ old('status', $business->status) == 'banned' ? 'selected' : '' }}>Banned</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-5"></div>
                 </div>
             </div>
         </div>
