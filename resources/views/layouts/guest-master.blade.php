@@ -1524,8 +1524,6 @@
                 ? `{{ asset('assets') }}/${business.logo}`
                 : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}`;
 
-                console.log(business.cover_photo);
-
             // Cover Photo - use default if not available
             const photo = business.cover_photo
                 ? `{{ asset('assets') }}/${business.cover_photo}`
@@ -1576,8 +1574,6 @@
                 const image = cat.image
                     ? `{{ asset('assets') }}/${cat.image}`
                     : `https://ui-avatars.com/api/?name=${encodeURIComponent(cat.name)}&background=1E2A78&color=ffffff`;
-
-                    console.log(cat);
 
                 $wrap.append(`
                     <div class="col-6 col-md-3">
@@ -1817,19 +1813,7 @@
         }
     </script>
 
-    {{-- @stack('scripts') --}}
 {{-- <script>
-    window.addEventListener('scroll', function () {
-        const navbar = document.getElementById('mainNavbar');
-
-        if (window.scrollY > 80) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-</script> --}}
-<script>
 document.addEventListener('DOMContentLoaded', function () {
     const navbar = document.getElementById('mainNavbar');
 
@@ -1841,7 +1825,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-</script>
+</script> --}}
 
 
 </body>
