@@ -90,7 +90,7 @@ class GmeBusinessAdminController extends Controller
             'collaboration_types'      => 'nullable|array',
 
             // Admin
-            'is_verified'              => 'required|in:0,1',
+            'is_verified'              => 'nullable|in:0,1',
             'status'                   => 'required|in:draft,pending,approved,rejected',
 
             // Files
