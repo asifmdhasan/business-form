@@ -72,7 +72,7 @@ class AdminController extends Controller
     {
 
         // $totalCustomers = Customer::where('status', 1)->where('is_otp_verified', 1)->count();
-        $totalBusinesses = GmeBusinessForm::count();
+        $totalBusinesses = GmeBusinessForm::where('status', '!=', 'draft')->count();
         $totalPendingBusinesses = GmeBusinessForm::where('status', 'pending')->count();
         $approvedBusinesses = GmeBusinessForm::where('status', 'approved')->count();
 

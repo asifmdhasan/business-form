@@ -14,21 +14,7 @@
     }
 </style>
 
-<section class="py-5 bg-white">
-    <div class="container">
-        <h4 class="fw-bold mb-4 featured-business "
-            style="
-                font-size: 34px;
-                text-transform: uppercase;
-                line-height: 1.3em;">
-            <span style=" font-weight: 300;">Browse by </span>
-            <span style="color:#9b7d2d;font-weight: 900;">Category </span>
-        </h4>
-        <div class="row g-4 pt-4" id="categoryBrowse">
-            {{-- Dynamically populated --}}
-        </div>
-    </div>
-</section>
+
 
 
 
@@ -155,7 +141,21 @@
     </div>
 </div>
 
-
+<section class="py-5 bg-white">
+    <div class="container">
+        <h4 class="fw-bold mb-4 featured-business "
+            style="
+                font-size: 34px;
+                text-transform: uppercase;
+                line-height: 1.3em;">
+            <span style=" font-weight: 300;">Browse by </span>
+            <span style="color:#9b7d2d;font-weight: 900;">Category </span>
+        </h4>
+        <div class="row g-4 pt-4" id="categoryBrowse">
+            {{-- Dynamically populated --}}
+        </div>
+    </div>
+</section>
 
 
 @endsection

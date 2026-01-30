@@ -1,16 +1,21 @@
 <!-- Sidebar -->
 <style>
     .bg-dark{
-        background-color: #9C7D2D !important;
+        background-color: #03045E !important;
     }
 </style>
 <nav class="bg-dark text-white position-fixed h-100" style="width:260px; top:0; left:0; overflow-y:auto;">
     <div class="p-3">
-
-        <!-- Branding -->
+        <!-- Logo and Title -->
+        <img src="{{ asset('assets/image/logo.webp') }}" alt="Gme Network Logo" class="img-fluid mb-2" style="max-width: 100%; height: auto;">
         <h4 class="text-center py-3 border-bottom">
             Gme Network
         </h4>
+
+        <!-- Branding -->
+        {{-- <h4 class="text-center py-3 border-bottom">
+            Gme Network
+        </h4> --}}
 
         <!-- Menu -->
         <ul class="nav flex-column mt-3">
@@ -45,7 +50,7 @@
             </li> --}}
 
             <li class="nav-item">
-                <a href="{{ route('customer.gme-business-form.index') }}" class="nav-link text-white" style="font-weight: 600; font-size:1.15rem;">
+                <a href="{{ route('customer.gme-business-form.index') }}" class="nav-link text-white" style="font-weight: 600; font-size:1rem;">
                     <i class="fa fa-users me-2"></i> My Business
                 </a>
             </li>
@@ -59,11 +64,11 @@
 
 
             <li class="nav-item">
-                <a href="{{ route('gme.business.register') }}" class="nav-link text-white" style="font-weight: 600; font-size:1.15rem;">
+                <a href="{{ route('gme.business.register') }}" class="nav-link text-white" style="font-weight: 600; font-size:1rem;">
                     <i class="fa fa-plus-circle me-2"></i> Add New Business
                 </a>
             </li>
-            
+
 
             <!-- Logout -->
             {{-- <li class="nav-item mt-4">

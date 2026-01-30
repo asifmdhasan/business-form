@@ -22,7 +22,8 @@ class GmeBusinessAdminController extends Controller
                 'logo',
                 'countries_of_operation',
                 'created_at'
-            )->with('category:id,name');
+            )->with('category:id,name')
+            ->where('status', '!=', 'draft'); ;
 
             if ($request->status) {
                 $query->where('status', $request->status);

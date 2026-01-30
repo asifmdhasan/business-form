@@ -31,6 +31,19 @@
                     <ul class="dropdown-menu dropdown-menu-end">
                         {{-- <li><a class="dropdown-item" href="{{ route('user.profile') }}">Profile</a></li> --}}
                         {{-- <li><a class="dropdown-item text-danger" href="{{ route('logout') }}">Logout</a></li> --}}
+
+                        <li class="nav-item">
+                            <a href="{{ route('business-categories.index') }}"
+                               class="nav-link text-black {{ request()->routeIs('business-categories.index') ? 'active' : '' }}">
+                                <i class="fa fa-list me-2"></i> Category Index
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('services.index') }}"
+                               class="nav-link text-black {{ request()->routeIs('services.index') ? 'active' : '' }}">
+                                <i class="fa fa-list me-2"></i> Services Index
+                            </a>
+                        </li>
                         <li class="">
                             <a href="#" class="nav-link text-danger fw-bold"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

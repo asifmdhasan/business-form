@@ -1572,16 +1572,65 @@
                 </div>
             </div>`;
         }
+        function createBusinessCardFeature(business) {
+
+            const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+
+            const category = business.category?.name ?? '';
+
+            // Logo - use avatar if not available
+            const logo = business.logo
+                ? `{{ asset('assets') }}/${business.logo}`
+                : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}`;
+
+            // Cover Photo - use default if not available
+            const photo = business.cover_photo
+                ? `{{ asset('assets') }}/${business.cover_photo}`
+                : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
+
+            const verified = (business.status === 'approved' && business.is_verified === 1)
+                ? `<div class="verified-badge">
+                        <i class="fas fa-check-circle"></i> GME Verified
+                    </div>`
+                : '';
+                console.log('verified:', verified);
+
+            const countries = business.countries_of_operation && business.countries_of_operation.length > 0
+                ? business.countries_of_operation.join(', ')
+                : 'Location not specified';
+
+            return `
+            <div class="col-md-3 col-lg-3 ">
+                <div class="business-card" onclick="location.href='{{ url('guest-gme-business-form') }}/${business.id}'">
+                    <div style="position:relative">
+                        <img src="${photo}" class="business-image"style="height:150px; object-fit:cover;">
+                        ${verified}
+                    </div>
+                    <div class="business-content" style="display: flex; justify-content: center; align-items: center;">
+                        <div class="business-header">
+                            <div class="logo-box" style="width:60px; height:60px; ">
+                                <img src="${logo}" alt="${business.business_name}">
+                            </div>
+
+                        </div>
+                        <div style="text-align: center;">
+                                <div class="business-name">${business.business_name}</div>
+                                <div class="business-category">${category}</div>
+                            </div>
+                        ${business.short_introduction ?? ''}
+                        <div class="business-location">
+                            <i class="fas fa-map-marker-alt location-icon"></i>
+                            <div>${countries}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
 
         function renderBrowseCategories(categories) {
             const $wrap = $('#categoryBrowse').empty();
 
-            categories.slice(0, 5).forEach(cat => {
-
-                const image = cat.image
-                    ? `{{ asset('assets') }}/${cat.image}`
-                    : `https://ui-avatars.com/api/?name=${encodeURIComponent(cat.name)}&background=1E2A78&color=ffffff`;
-
+            categories.slice(1, 9).forEach(cat => {
                 $wrap.append(`
                     <div class="col-6 col-md-3">
                         <div class="card p-3 shadow-sm category-card text-center"
@@ -1620,13 +1669,7 @@
             }, 400);
         }
 
-        // function renderFeatured(businesses) {
-        //     const $grid = $('#featuredGrid').empty();
 
-        //     businesses.forEach(business => {
-        //         $grid.append(createBusinessCard(business));
-        //     });
-        // }
         function renderFeatured(businesses) {
             // console.log(businesses);
             const $grid = $('#featuredGrid').empty();
@@ -1641,7 +1684,7 @@
             }
 
             businesses.forEach(business => {
-                $grid.append(createBusinessCard(business));
+                $grid.append(createBusinessCardFeature(business));
             });
         }
 
@@ -1674,8 +1717,8 @@
 
             matches.forEach(business => {
 
-                const image = business.photos?.length
-                    ? `{{ asset('assets') }}/${business.photos[0]}`
+                const image = business.cover_photo
+                    ? `{{ asset('assets') }}/${business.cover_photo}`
                     : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp';
 
                 $results.append(`
