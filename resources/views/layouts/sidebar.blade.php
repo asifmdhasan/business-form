@@ -3,9 +3,11 @@
     <div class="p-3">
 
         <!-- Branding -->
-        <h4 class="text-center py-3 border-bottom">
+        <img src="{{ asset('assets/image/logo.webp') }}" alt="Gme Network Logo" class="img-fluid mb-2" style="max-width: 100%; height: auto;">
+
+        {{-- <h4 class="text-center py-3 border-bottom">
             Gme Network
-        </h4>
+        </h4> --}}
 
         <!-- Menu -->
         <ul class="nav flex-column mt-3">
