@@ -2,6 +2,9 @@
 
 @section('content')
 <style>
+    .hero-section.text-center.text-white.islamic-bg {
+        display: none;
+    }
         /* Gallery Card Hover Effects */
     .gallery-card-wrapper .card {
         transition: all 0.3s ease;
@@ -117,10 +120,11 @@
 
     /* Hero Section */
     .hero-section-2 {
+        margin-top: 5rem;
         background-size: cover;
         background-position: center;
         border-radius: 1rem;
-        padding: 5rem 4rem;
+        padding: 6rem 5rem;
         margin-bottom: 2rem;
         position: relative;
         overflow: hidden;
@@ -164,10 +168,12 @@
         right: 1rem;
         z-index: 3;
     }
-
+    .section-title.mb-0{
+        font-size: 2.5rem;
+    }
     .logo-box {
-        width: 96px;
-        height: 96px;
+        width: 150px;
+        height: 150px;
         background: white;
         padding: 0.5rem;
         border-radius: 0.5rem;
@@ -181,17 +187,17 @@
     }
 
     .verified-badge {
-        top: 38px !important;
-        left: 185px !important;
+        top: 17px !important;
+        left: 170px !important;
         display: inline-flex;
         align-items: center;
-        gap: 0.25rem;
+        gap: .7rem;
         background: #9C7D2D;
         color: white;
-        font-size: 0.75rem;
-        font-weight: 600;
+        font-size: 1rem;
+        font-weight: 500;
         padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
+        border-radius: 8px;
     }
 
 

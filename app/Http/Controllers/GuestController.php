@@ -35,29 +35,29 @@ class GuestController extends Controller
     public function guestForm(Request $request)
     {
         $step = $request->get('step', 1);
-        
+
         // Generate unique guest session ID if not exists
         if (!session()->has('guest_business_id')) {
             session(['guest_business_id' => 'guest_' . uniqid() . '_' . time()]);
         }
-        
+
         $guestId = session('guest_business_id');
-        
+
         // Check if draft exists for this guest
         $business = GmeBusinessForm::where('guest_session_id', $guestId)
             ->where('status', 'draft')
             ->first();
-        
+
         // If no draft exists, create a blank object (not saved yet)
         if (!$business) {
             $business = new GmeBusinessForm();
             $business->guest_session_id = $guestId;
             $business->status = 'draft';
         }
-        
+
         $categories = BusinessCategory::all();
         $countries = $this->getCountries();
-        
+
         return view('guest.register', compact('step', 'business', 'categories', 'countries'));
     }
 
@@ -80,33 +80,33 @@ class GuestController extends Controller
     {
         $step = $request->input('step');
         $guestId = session('guest_business_id');
-        
+
         if (!$guestId) {
             return redirect()->route('guest.form')
                 ->with('error', 'Session expired. Please start again.');
         }
-        
+
         // Validation
         $validator = $this->validateStep($request, $step);
-        
+
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-        
+
         // Find existing draft or create new
         $business = GmeBusinessForm::where('guest_session_id', $guestId)
             ->where('status', 'draft')
             ->first();
-        
+
         if (!$business) {
             $business = new GmeBusinessForm();
             $business->guest_session_id = $guestId;
             $business->status = 'draft';
             $business->customer_id = null; // Guest submission
         }
-        
+
         // Save data based on step
         switch ($step) {
             case 1:
@@ -122,10 +122,10 @@ class GuestController extends Controller
                 $this->saveStep4($request, $business);
                 break;
         }
-        
+
         $business->last_updated_step = $step;
         $business->save();
-        
+
         // If final step, change status to pending
         if ($step == 4) {
             $business->status = 'pending';
@@ -141,11 +141,11 @@ class GuestController extends Controller
 
             // Clear guest session
             session()->forget('guest_business_id');
-            
+
             return redirect()->route('guest.success')
                 ->with('success', 'Your business has been successfully registered!');
         }
-        
+
         // Move to next step
         $nextStep = $step + 1;
         return redirect()->route('guest.form', ['step' => $nextStep])
@@ -158,7 +158,7 @@ class GuestController extends Controller
     private function validateStep(Request $request, $step)
     {
         $rules = [];
-        
+
         switch ($step) {
             case 1:
                 $rules = [
@@ -183,7 +183,7 @@ class GuestController extends Controller
                     'founders.*.linkedin' => 'nullable|string|max:255',
                 ];
                 break;
-                
+
             case 2:
                 $rules = [
                     'registration_status' => 'required|in:registered_company,sole_proprietorship,partnership,startup_early_stage,home_based,not_registered_yet',
@@ -201,7 +201,7 @@ class GuestController extends Controller
                     'photos.*' => 'nullable|image|max:5120',
                 ];
                 break;
-                
+
             case 3:
                 $rules = [
                     'avoid_riba' => 'required|in:yes,partially_transitioning,no,prefer_not_to_say',
@@ -214,7 +214,7 @@ class GuestController extends Controller
                     'collaboration_types.*' => 'in:Partnerships,Investment Oportunities,Vendor Supply Chain,Marketing Promotion,Networking,Training Workshops,Community Charity Projects,Not Sure Yet',
                 ];
                 break;
-                
+
             case 4:
                 $rules = [
                     'info_accuracy' => 'required|accepted',
@@ -224,7 +224,7 @@ class GuestController extends Controller
                 ];
                 break;
         }
-        
+
         return Validator::make($request->all(), $rules);
     }
 
@@ -261,7 +261,7 @@ class GuestController extends Controller
         $business->annual_revenue = $request->annual_revenue;
         $business->business_overview = $request->business_overview;
         $business->services_id = $request->services_id ? json_encode($request->services_id) : null;
-        
+
         // Handle LOGO upload
         if ($request->hasFile('logo')) {
             if ($business->logo && file_exists(public_path('assets/' . $business->logo))) {
@@ -270,7 +270,7 @@ class GuestController extends Controller
             $business->logo = $request->file('logo')
                 ->store('uploads/business/logos', 'public_folder');
         }
-        
+
         // Handle COVER PHOTO upload
         if ($request->hasFile('cover_photo')) {
             if ($business->cover_photo && file_exists(public_path('assets/' . $business->cover_photo))) {
@@ -279,17 +279,17 @@ class GuestController extends Controller
             $business->cover_photo = $request->file('cover_photo')
                 ->store('uploads/business/covers', 'public_folder');
         }
-        
+
         // Handle MULTIPLE PHOTOS (Gallery)
         $existingPhotos = $request->input('existing_photos', []);
         $currentPhotos = [];
-        
+
         if ($business->photos) {
-            $currentPhotos = is_array($business->photos) 
-                ? $business->photos 
+            $currentPhotos = is_array($business->photos)
+                ? $business->photos
                 : json_decode($business->photos, true) ?? [];
         }
-        
+
         // Keep only photos that weren't deleted
         $keptPhotos = [];
         foreach ($currentPhotos as $photo) {
@@ -301,7 +301,7 @@ class GuestController extends Controller
                 }
             }
         }
-        
+
         // Add new photos
         $newPhotos = [];
         if ($request->hasFile('photos')) {
@@ -309,10 +309,10 @@ class GuestController extends Controller
                 $newPhotos[] = $photo->store('uploads/business/gallery', 'public_folder');
             }
         }
-        
+
         $allPhotos = array_merge($keptPhotos, $newPhotos);
         $business->photos = !empty($allPhotos) ? json_encode($allPhotos) : null;
-        
+
         // Handle REGISTRATION DOCUMENT upload
         if ($request->hasFile('registration_document')) {
             if ($business->registration_document && file_exists(public_path('assets/' . $business->registration_document))) {
@@ -321,7 +321,7 @@ class GuestController extends Controller
             $business->registration_document = $request->file('registration_document')
                 ->store('uploads/business/documents', 'public_folder');
         }
-        
+
         // Handle BUSINESS PROFILE upload
         if ($request->hasFile('business_profile')) {
             if ($business->business_profile && file_exists(public_path('assets/' . $business->business_profile))) {
@@ -330,7 +330,7 @@ class GuestController extends Controller
             $business->business_profile = $request->file('business_profile')
                 ->store('uploads/business/profiles', 'public_folder');
         }
-        
+
         // Handle PRODUCT CATALOGUE upload
         if ($request->hasFile('product_catalogue')) {
             if ($business->product_catalogue && file_exists(public_path('assets/' . $business->product_catalogue))) {
@@ -466,7 +466,6 @@ class GuestController extends Controller
         $categories = BusinessCategory::select('id', 'name', 'image')
             ->orderBy('name')
             ->where('status', 1)
-            ->take(4)
             ->get();
 
         return response()->json([

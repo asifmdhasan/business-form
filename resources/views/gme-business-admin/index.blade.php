@@ -21,6 +21,9 @@
     padding-bottom: 1rem;
     justify-content: center;
 }
+.bg-dark{
+    background: #121212 !important;
+}
 </style>
 
 <div class="container-fluid">
@@ -38,7 +41,7 @@
                     <ul class="nav nav-tabs" id="businessTabs">
                         <li class="nav-item">
                             <a class="nav-link active" data-status="" href="#">
-                                All - {{ \App\Models\GmeBusinessForm::count() }}
+                                All - {{ \App\Models\GmeBusinessForm::where('status','!=','draft')->count() }}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -91,8 +94,14 @@
 <script>
 $(function () {
 
-    let selectedStatus = '';
+    /* ----------------------------------------
+     * 1. Read status from URL (?status=pending)
+     * ---------------------------------------- */
+    let selectedStatus = new URLSearchParams(window.location.search).get('status') || '';
 
+    /* ----------------------------------------
+     * 2. Initialize DataTable
+     * ---------------------------------------- */
     let table = $('#businessesTable').DataTable({
         processing: true,
         serverSide: false,
@@ -117,13 +126,13 @@ $(function () {
                 render: function (data, type, row) {
                     if (data) {
                         return `<img src="{{ asset('assets') }}/${data}"
-                                     class="img-thumbnail"
-                                     style="width:50px;height:50px;object-fit:cover;">`;
+                            class="img-thumbnail"
+                            style="width:50px;height:50px;object-fit:cover;">`;
                     }
                     return `<div class="bg-secondary text-white d-flex align-items-center justify-content-center"
-                                style="width:50px;height:50px;">
-                                ${row.business_name?.charAt(0).toUpperCase() ?? '?'}
-                            </div>`;
+                        style="width:50px;height:50px;">
+                        ${row.business_name?.charAt(0).toUpperCase() ?? '?'}
+                    </div>`;
                 }
             },
 
@@ -156,7 +165,9 @@ $(function () {
                         draft: 'bg-warning',
                         rejected: 'bg-danger'
                     };
-                    return `<span class="badge ${map[data] ?? 'bg-secondary'}">${data.toUpperCase()}</span>`;
+                    return `<span class="badge ${map[data] ?? 'bg-secondary'}">
+                        ${data.toUpperCase()}
+                    </span>`;
                 }
             },
 
@@ -185,11 +196,10 @@ $(function () {
 
                     let deleteBtn = '';
 
-                    // ✅ DELETE ONLY IN REJECTED TAB
                     if (selectedStatus === 'rejected' && row.status === 'rejected') {
                         deleteBtn = `
                             <button class="btn btn-sm btn-danger delete-btn"
-                                    data-id="${row.id}">
+                                data-id="${row.id}">
                                 <i class="fas fa-trash"></i>
                             </button>`;
                     }
@@ -201,17 +211,43 @@ $(function () {
         pageLength: 25
     });
 
-    // Tabs click
+    /* ----------------------------------------
+     * 3. Activate tab on PAGE LOAD
+     * ---------------------------------------- */
+    $('#businessTabs a').removeClass('active');
+
+    if (selectedStatus) {
+        $('#businessTabs a[data-status="' + selectedStatus + '"]').addClass('active');
+    } else {
+        $('#businessTabs a[data-status=""]').addClass('active');
+    }
+
+    /* ----------------------------------------
+     * 4. Handle tab click
+     * ---------------------------------------- */
     $('#businessTabs a').on('click', function (e) {
         e.preventDefault();
+
         $('#businessTabs a').removeClass('active');
         $(this).addClass('active');
 
-        selectedStatus = $(this).data('status');
+        selectedStatus = $(this).data('status') ?? '';
+
+        // Update URL (no reload)
+        let url = new URL(window.location);
+        if (selectedStatus) {
+            url.searchParams.set('status', selectedStatus);
+        } else {
+            url.searchParams.delete('status');
+        }
+        window.history.pushState({}, '', url);
+
         table.ajax.reload();
     });
 
-    // Delete action
+    /* ----------------------------------------
+     * 5. Delete (Rejected only)
+     * ---------------------------------------- */
     $(document).on('click', '.delete-btn', function () {
 
         if (!confirm('Are you sure you want to delete this business?')) return;
@@ -232,4 +268,6 @@ $(function () {
 
 });
 </script>
+
+
 @endsection

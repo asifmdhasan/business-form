@@ -524,6 +524,71 @@
                                 </div>
                             </div>
 
+
+
+                            {{-- Collaboration Open --}}
+                            <div class="mb-3 d-flex align-items-center">
+                                <label class="form-label question-label">Collaboration Open <span class="text-danger">*</span></label>
+                                @php $value = old('collaboration_open', $business->collaboration_open ?? ''); @endphp
+                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
+                                    @foreach ([
+                                        'yes' => 'Yes',
+                                        'no' => 'No',
+                                        'maybe' => 'Maybe'
+                                    ] as $key => $label)
+                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
+                                            <input type="radio" name="collaboration_open" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @error('collaboration_open')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+
+                            <hr>
+
+                            <div id="collaborationTypesWrapper">
+                                <h6 class="fw-bold">Collaboration Interest</h6>
+
+                                @php
+                                    $savedCollaborationTypes = old('collaboration_types',
+                                        is_array($business->collaboration_types ?? null)
+                                            ? $business->collaboration_types
+                                            : json_decode($business->collaboration_types ?? '[]', true)
+                                    );
+                                @endphp
+
+                                @foreach([
+                                    'Partnerships',
+                                    'Investment Oportunities',
+                                    'Vendor Supply Chain',
+                                    'Marketing Promotion',
+                                    'Networking',
+                                    'Training Workshops',
+                                    'Community Charity Projects',
+                                    'Not Sure Yet'
+                                ] as $type)
+                                    <div class="form-check">
+                                        <input class="form-check-input"
+                                            type="checkbox"
+                                            name="collaboration_types[]"
+                                            value="{{ $type }}"
+                                            {{ in_array($type, $savedCollaborationTypes) ? 'checked' : '' }}>
+                                        <label class="form-check-label">{{ $type }}</label>
+                                    </div>
+                                @endforeach
+
+                                @error('collaboration_types')
+                                    <div class="text-danger mt-2"><small>{{ $message }}</small></div>
+                                @enderror
+                            </div>
+
+
+
+
+
+                            <h5 class="fw-bold mt-4 mb-3">Business Media Uploads</h5>
                             <div class="row">
                                 <div class="col-md-3 mb-3">
                                     <label class="form-label">Upload Business Logo</label>
@@ -587,71 +652,6 @@
                             </div>
                             <div class="row">
 
-                                <!-- Business Photos Gallery -->
-
-
-                                {{-- <div class="col-md-8 mb-3">
-                                    <label class="form-label">Business Photos Gallery</label>
-                                    <div class="d-flex flex-wrap gap-2" id="gallery-container">
-
-                                        <!-- Existing Images Preview (from business_photos table) -->
-                                        @if($business->businessPhotos && $business->businessPhotos->count() > 0)
-                                            @foreach($business->businessPhotos as $photo)
-                                            <div class="position-relative rounded existing-photo"
-                                                data-photo-id="{{ $photo->id }}"
-                                                style="width: 10rem; height: 10rem; border: 1px dashed #ccc; overflow: hidden;">
-                                                <img src="{{ asset('assets/' . $photo->image_url) }}"
-                                                    class="img-fluid w-100 h-100"
-                                                    style="object-fit: cover;">
-
-                                                <!-- View and Delete buttons on hover -->
-                                                <div class="photo-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                                                    style="background: rgba(0,0,0,0.6); opacity: 0; transition: opacity 0.3s;">
-                                                    <a href="{{ asset('assets/' . $photo->image_url) }}"
-                                                    target="_blank"
-                                                    class="btn btn-sm btn-light me-1">
-                                                        <i class="fa fa-eye"></i> View
-                                                    </a>
-                                                    <button type="button"
-                                                            onclick="markPhotoForDeletion({{ $photo->id }})"
-                                                            class="btn btn-sm btn-danger">
-                                                        <i class="fa fa-trash"></i> Delete
-                                                    </button>
-                                                </div>
-
-                                                <!-- Hidden checkbox for deletion -->
-                                                <input type="checkbox"
-                                                    name="delete_photos[]"
-                                                    value="{{ $photo->id }}"
-                                                    class="delete-photo-checkbox d-none">
-                                            </div>
-                                            @endforeach
-                                        @endif
-
-                                        <!-- Preview container for newly selected photos -->
-                                        <div id="new-photos-preview" class="d-flex flex-wrap gap-2"></div>
-
-                                        <!-- New Upload Placeholder -->
-                                        <div class="rounded text-center position-relative gallery-upload @error('photos') border-danger @enderror @error('photos.*') border-danger @enderror"
-                                            style="width: 10rem; height: 10rem; border: 1px dashed #ccc; cursor: pointer; display:flex; align-items:center; justify-content:center;">
-                                            <i class="fa fa-plus" style="font-size:2rem; color: rgba(0,0,0,0.5); pointer-events:none;"></i>
-                                            <input type="file"
-                                                name="photos[]"
-                                                id="photo-upload-input"
-                                                accept="image/*"
-                                                multiple
-                                                style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;"
-                                                onchange="previewNewPhotos(this)">
-                                        </div>
-                                    </div>
-                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 5 images, 5MB each)</small>
-                                    @error('photos')
-                                        <small class="text-danger d-block">{{ $message }}</small>
-                                    @enderror
-                                    @error('photos.*')
-                                        <small class="text-danger d-block">{{ $message }}</small>
-                                    @enderror
-                                </div> --}}
                                 <div class="col-md-12 mb-3">
                                     <label class="form-label">Business Photos Gallery</label>
 
@@ -843,25 +843,7 @@
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
 
-                            {{-- Collaboration Open --}}
-                            <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Collaboration Open <span class="text-danger">*</span></label>
-                                @php $value = old('collaboration_open', $business->collaboration_open ?? ''); @endphp
-                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                    @foreach ([
-                                        'yes' => 'Yes',
-                                        'no' => 'No',
-                                        'maybe' => 'Maybe'
-                                    ] as $key => $label)
-                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
-                                            <input type="radio" name="collaboration_open" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @error('collaboration_open')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
+
 
 
 
@@ -878,31 +860,7 @@
                                 <small class="text-muted">Maximum 1200 characters</small>
                             </div>
 
-                            <hr>
-                            <h6 class="fw-bold">Collaboration Interest</h6>
 
-                            @php
-                                $savedCollaborationTypes = old('collaboration_types',
-                                    is_array($business->collaboration_types ?? null)
-                                        ? $business->collaboration_types
-                                        : json_decode($business->collaboration_types ?? '[]', true)
-                                );
-                            @endphp
-
-                            @foreach(['Partnerships','Investment Oportunities','Vendor Supply Chain','Marketing Promotion','Networking','Training Workshops','Community Charity Projects','Not Sure Yet'] as $type)
-                            <div class="form-check">
-                                <input class="form-check-input"
-                                    type="checkbox"
-                                    name="collaboration_types[]"
-                                    value="{{ $type }}"
-                                    {{ in_array($type, $savedCollaborationTypes) ? 'checked' : '' }}>
-                                <label class="form-check-label">{{ $type }}</label>
-                            </div>
-                            @endforeach
-
-                            @error('collaboration_types')
-                                <div class="text-danger mt-2"><small>{{ $message }}</small></div>
-                            @enderror
                         @endif
 
                         {{-- ================= STEP 4 ================= --}}
@@ -1524,5 +1482,32 @@ toggleUploadBox();
             renderList(search.value);
         };
     </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const radios = document.querySelectorAll('input[name="collaboration_open"]');
+    const wrapper = document.getElementById('collaborationTypesWrapper');
+
+    function toggleCollaborationTypes() {
+        const selected = document.querySelector('input[name="collaboration_open"]:checked')?.value;
+
+        if (selected === 'yes' || selected === 'maybe') {
+            wrapper.style.display = 'block';
+        } else {
+            wrapper.style.display = 'none';
+
+            // clear checked checkboxes when "No"
+            wrapper.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+        }
+    }
+
+    radios.forEach(radio => {
+        radio.addEventListener('change', toggleCollaborationTypes);
+    });
+
+    // run on page load (edit + validation error case)
+    toggleCollaborationTypes();
+});
+</script>
+
 
 @endsection

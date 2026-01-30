@@ -67,27 +67,27 @@ class GmeRegController extends Controller
     {
         $step = $request->get('step', 1);
         // $customer = session('customer');
-        $customer = auth()->guard('customer')->user(); 
-        
+        $customer = auth()->guard('customer')->user();
+
         if (!$customer) {
             return redirect()->route('customer.login')->with('error', 'Please login first');
         }
-        
+
         // Check if draft exists
         $business = GmeBusinessForm::where('customer_id', $customer->id)
             ->where('status', 'draft')
             ->first();
-        
+
         // If no draft exists, create a blank object (not saved yet)
         if (!$business) {
             $business = new GmeBusinessForm();
             $business->customer_id = $customer->id;
             $business->status = 'draft';
         }
-        
+
         $categories = BusinessCategory::all();
         $countries = $this->getCountries();
-        
+
         return view('gme-reg.register', compact('step', 'business', 'categories', 'countries'));
     }
 
@@ -104,31 +104,31 @@ class GmeRegController extends Controller
     {
         $step = $request->input('step');
         $customer = auth()->guard('customer')->user();
-        
+
         if (!$customer) {
             return redirect()->route('customer.login')->with('error', 'Session expired. Please login again.');
         }
-        
+
         // Validation
         $validator = $this->validateStep($request, $step);
-        
+
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-        
+
         // Find existing draft or create new
         $business = GmeBusinessForm::where('customer_id', $customer->id)
             ->where('status', 'draft')
             ->first();
-        
+
         if (!$business) {
             $business = new GmeBusinessForm();
             $business->customer_id = $customer->id;
             $business->status = 'draft';
         }
-        
+
         // Save data based on step
         switch ($step) {
             case 1:
@@ -144,24 +144,24 @@ class GmeRegController extends Controller
                 $this->saveStep4($request, $business);
                 break;
         }
-        
+
         $business->last_updated_step = $step;
         $business->save();
-        
+
         // If final step, change status to pending
         if ($step == 4) {
             $business->status = 'pending';
             $business->save();
 
-            // Send email to customer for creation of business  
+            // Send email to customer for creation of business
             // BusinessCreatedMail::dispatch($business);
             Mail::to($customer->email)->send(new BusinessCreatedMail($business));
 
-            
+
             return redirect()->route('gme.business.success')
                 ->with('success', 'Your business has been successfully registered!');
         }
-        
+
         // Move to next step
         $nextStep = $step + 1;
         return redirect()->route('gme.business.register', ['step' => $nextStep])
@@ -174,7 +174,7 @@ class GmeRegController extends Controller
     private function validateStep(Request $request, $step)
     {
         $rules = [];
-        
+
         switch ($step) {
             case 1:
                 $rules = [
@@ -199,7 +199,7 @@ class GmeRegController extends Controller
                     'founders.*.linkedin' => 'nullable|string|max:255',
                 ];
                 break;
-                
+
             case 2:
                 $rules = [
                     'registration_status' => 'required|in:registered_company,sole_proprietorship,partnership,startup_early_stage,home_based,not_registered_yet',
@@ -210,6 +210,10 @@ class GmeRegController extends Controller
                     'services_id' => 'required|array|max:10',
                     'services_id.*' => 'exists:services,id',
 
+                    'collaboration_open' => 'required|in:yes,no,maybe',
+                    'collaboration_types' => 'nullable|array',
+                    'collaboration_types.*' => 'in:Partnerships,Investment Oportunities,Vendor Supply Chain,Marketing Promotion,Networking,Training Workshops,Community Charity Projects,Not Sure Yet',
+
                     // Documents + Images
                     'registration_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
                     'business_profile'      => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
@@ -219,7 +223,7 @@ class GmeRegController extends Controller
                     'logo'                  => 'nullable|image|max:2048',
                     'cover_photo'           => 'nullable|image|max:5120',
                     'photos.*'              => 'nullable|image|max:5120',
-    
+
                     // 'registration_document' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
                     // 'logo' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
                     // 'cover_photo' => 'nullable|image|max:5120',
@@ -228,7 +232,7 @@ class GmeRegController extends Controller
                     // 'product_catalogue' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
                 ];
                 break;
-                
+
             case 3:
                 $rules = [
                     'avoid_riba' => 'required|in:yes,partially_transitioning,no,prefer_not_to_say',
@@ -236,14 +240,10 @@ class GmeRegController extends Controller
                     'fair_pricing' => 'required|in:yes,mostly,needs_improvement',
                     'ethical_description' => 'nullable|string|max:1200',
                     'open_for_guidance' => 'required|in:yes,no,maybe',
-                    'collaboration_open' => 'required|in:yes,no,maybe',
-                    'collaboration_types' => 'nullable|array',
-                    // 'collaboration_types.*' => 'in:Partnerships,Investment Opportunities,Marketing,Supply Chain,Training', // Updated values
 
-                    'collaboration_types.*' => 'in:Partnerships,Investment Oportunities,Vendor Supply Chain,Marketing Promotion,Networking,Training Workshops,Community Charity Projects,Not Sure Yet',
                 ];
                 break;
-                
+
             case 4:
                 $rules = [
                     'info_accuracy' => 'required|accepted',
@@ -253,7 +253,7 @@ class GmeRegController extends Controller
                 ];
                 break;
         }
-        
+
         return Validator::make($request->all(), $rules);
     }
 
@@ -264,7 +264,7 @@ class GmeRegController extends Controller
     {
         $prefix = $request->input('whatsapp_prefix');
         $number = preg_replace('/\D/', '', $request->input('whatsapp_number'));
-        
+
         $business->business_name = $request->business_name;
         $business->short_introduction = $request->short_introduction;
         $business->year_established = $request->year_established;
@@ -282,7 +282,7 @@ class GmeRegController extends Controller
         $business->linkedin = $request->linkedin;
         $business->youtube = $request->youtube;
         $business->online_store = $request->online_store;
-        
+
         // Save founders as JSON
         $business->founders = json_encode($request->founders);
     }
@@ -298,10 +298,13 @@ class GmeRegController extends Controller
         $business->operational_scale = $request->operational_scale;
         $business->annual_revenue = $request->annual_revenue;
         $business->business_overview = $request->business_overview;
-        
+
         // FIX: Save services_id properly
         $business->services_id = $request->services_id ? json_encode($request->services_id) : null;
-        
+
+        $business->collaboration_open = $request->collaboration_open;
+        $business->collaboration_types = json_encode($request->collaboration_types ?? []);
+
         // Handle LOGO upload
         if ($request->hasFile('logo')) {
             if ($business->logo && file_exists(public_path('assets/' . $business->logo))) {
@@ -310,7 +313,7 @@ class GmeRegController extends Controller
             $business->logo = $request->file('logo')
                 ->store('uploads/business/logos', 'public_folder');
         }
-        
+
         // Handle COVER PHOTO upload
         if ($request->hasFile('cover_photo')) {
             if ($business->cover_photo && file_exists(public_path('assets/' . $business->cover_photo))) {
@@ -319,7 +322,7 @@ class GmeRegController extends Controller
             $business->cover_photo = $request->file('cover_photo')
                 ->store('uploads/business/covers', 'public_folder');
         }
-        
+
 
         // NEW: Handle BUSINESS PHOTOS using business_photos table
         // Delete photos that were removed
@@ -328,7 +331,7 @@ class GmeRegController extends Controller
             $photosToDelete = BusinessPhoto::whereIn('id', $deleteIds)
                 ->where('gme_business_form_id', $business->id)
                 ->get();
-            
+
             foreach ($photosToDelete as $photo) {
                 // Delete file from storage
                 if ($photo->image_url && file_exists(public_path('assets/' . $photo->image_url))) {
@@ -338,12 +341,12 @@ class GmeRegController extends Controller
                 $photo->delete();
             }
         }
-        
+
         // Add new photos
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
                 $path = $photo->store('uploads/business/gallery', 'public_folder');
-                
+
                 BusinessPhoto::create([
                     'gme_business_form_id' => $business->id,
                     'image_url' => $path
@@ -359,7 +362,7 @@ class GmeRegController extends Controller
             $business->registration_document = $request->file('registration_document')
                 ->store('uploads/business/documents', 'public_folder');
         }
-        
+
         // Handle BUSINESS PROFILE upload
         if ($request->hasFile('business_profile')) {
             if ($business->business_profile && file_exists(public_path('assets/' . $business->business_profile))) {
@@ -368,7 +371,7 @@ class GmeRegController extends Controller
             $business->business_profile = $request->file('business_profile')
                 ->store('uploads/business/profiles', 'public_folder');
         }
-        
+
         // Handle PRODUCT CATALOGUE upload
         if ($request->hasFile('product_catalogue')) {
             if ($business->product_catalogue && file_exists(public_path('assets/' . $business->product_catalogue))) {
@@ -389,8 +392,7 @@ class GmeRegController extends Controller
         $business->fair_pricing = $request->fair_pricing;
         $business->ethical_description = $request->ethical_description;
         $business->open_for_guidance = $request->open_for_guidance;
-        $business->collaboration_open = $request->collaboration_open;
-        $business->collaboration_types = json_encode($request->collaboration_types ?? []);
+
     }
 
     /**
