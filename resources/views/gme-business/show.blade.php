@@ -482,6 +482,38 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <i class="fas fa-user-tie"></i>
+                    <div>
+                        <p class="info-label mb-0">Founder Name</p>
+                            {{-- "founders" => "[{"name": "Shuchi Farheen", "linkedin": null, "whatsapp": null, "designation": "CTO"}]" --}}
+                            @php
+                                $founders = is_string($business->founders)
+                                    ? json_decode($business->founders, true)
+                                    : ($business->founders ?? []);
+                                $founderNames = collect($founders)->pluck('name')->filter()->implode(', ');
+                            @endphp
+                            {{ $founderNames ?: '—' }}
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            {{-- FOunder Degination --}}
+            <div class="col-md-6">
+                <div class="info-item">
+                    <i class="fas fa-briefcase"></i>
+                    <div>
+                        <p class="info-label mb-0">Founder Designation</p>
+                        @php
+                            $founderDesignations = collect($founders)->pluck('designation')->filter()->implode(', ');
+                        @endphp
+                        <p class="info-value mb-0">{{ $founderDesignations ?: '—' }}
+                    </div>
+                </div>
+            </div>
         </div>
 
         @if($business->ethical_description)
