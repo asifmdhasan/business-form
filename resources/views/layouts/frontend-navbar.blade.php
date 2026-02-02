@@ -1,3 +1,11 @@
+<style>
+
+    .home-btn a:hover {
+        background-color: #9C7D2D;
+        text-decoration: none;
+        color: #fff;
+    }
+</style>
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom px-4">
     <div class="container-fluid">
 
@@ -12,6 +20,11 @@
 
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
+                <li class="nav-item home-btn" style="border: 2px solid #9C7D2D;border-radius: 6px;">
+                    <a href="{{ route('guest.index') }}" class="nav-link" target="_blank">
+                        <i class="fa fa-home me-2"></i> Home
+                    </a>
+                </li>
 
                 <!-- User Menu -->
                 <li class="nav-item dropdown ms-3">

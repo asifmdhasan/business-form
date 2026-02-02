@@ -1,139 +1,59 @@
 <!-- Sidebar -->
 <style>
     .bg-dark{
-        background-color: #EEF1E7 !important;
+        background-color: #9C7D2D !important;
+    }
+    .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.15);
+        border-left: 3px solid #576829;
+        padding-left: calc(0.5rem - 3px);
+        border-radius: 5px;
+        font-weight: 600;
     }
 </style>
-<nav class="bg-dark text-white position-fixed h-100" style="width:260px; top:0; left:0; overflow-y:auto;">
+<nav class="bg-dark text-white position-fixed h-100 d-flex flex-column" style="width:260px; top:0; left:0; overflow-y:auto;">
     <div class="p-3">
-        <!-- Logo and Title -->
-        <img src="{{ asset('assets/image/logo.webp') }}" alt="Gme Network Logo" class="img-fluid mb-2" style="max-width: 100%; height: auto;">
-        {{-- <h4 class="text-center py-3 border-bottom" style="color: #000">
-            Gme Network
-        </h4> --}}
-
-        <!-- Branding -->
-        {{-- <h4 class="text-center py-3 border-bottom">
-            Gme Network
-        </h4> --}}
+        <div class="p-3 text-center">
+            <!-- Logo -->
+            <a href="{{ route('customer.gme-business-form.index') }}">
+                <img src="{{ asset('assets/image/front-logo.png') }}" 
+                    alt="Gme Network Logo" 
+                    class="img-fluid mb-2" 
+                    style="max-width: 60%; height: auto;">
+            </a>
+        </div>
 
         <!-- Menu -->
         <ul class="nav flex-column mt-3">
 
-            <!-- Dashboard -->
+            
             {{-- <li class="nav-item mb-2">
-                <a href="{{ route('customer.dashboard') }}" class="nav-link text-white fw-bold">
-                    <i class="fa fa-home me-2"></i> All Business
-                </a>
-            </li> --}}
-
-            <!-- Admin Channel -->
-            {{-- <li class="nav-item mt-3">
-                <span class="text-uppercase text-secondary small fw-bold">Admin Channel</span>
-            </li>
-
-            <li class="nav-item">
-                <a href="{{ route('gme-business-admin.index') }}" class="nav-link text-white">
-                    <i class="fa fa-list me-2"></i> Admin Index
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="{{ route('gme-business-admin.create') }}" class="nav-link text-white">
-                    <i class="fa fa-edit me-2"></i> Edit
-                </a>
-            </li> --}}
-
-            <!-- Customer Channel -->
-            {{-- <li class="nav-item mt-4">
-                <span class="text-uppercase text-secondary small fw-bold">User Channel</span>
-            </li> --}}
-
-            <li class="nav-item">
-                <a href="{{ route('customer.gme-business-form.index') }}" class="nav-link text-white" style="font-weight: 600; font-size:1rem;color:#000">
-                    <i class="fa fa-users me-2"style="color:#000"></i> <span style="color:#000">My Business</span>
-                </a>
-            </li>
-
-            {{-- <li class="nav-item">
-                <a href="{{ route('customer.gme-business-form.create') }}" class="nav-link text-white">
-                    <i class="fa fa-plus-circle me-2"></i> Create
-                </a>
-            </li> --}}
-
-
-
-            <li class="nav-item">
-                <a href="{{ route('gme.business.register') }}" class="nav-link text-white" style="font-weight: 600; font-size:1rem;color:#000">
-                    <i class="fa fa-plus-circle me-2" style="color:#000"></i> <span style="color:#000">Add New Business</span>
-                </a>
-            </li>
-
-
-            <!-- Logout -->
-            {{-- <li class="nav-item mt-4">
-                <a href="#" class="nav-link text-danger fw-bold"
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="fa fa-sign-out-alt me-2"></i> Logout
-                </a>
-
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
-                    @csrf
-                </form>
-            </li> --}}
-
-        </ul>
-
-        {{-- <ul class="nav flex-column mt-3">
-
-            <li class="nav-item">
-                <a href="{{ route('admin.dashboard') }}" class="nav-link text-white">
+                <a href="{{ route('admin.dashboard') }}"
+                    class="nav-link text-white fw-bold {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <i class="fa fa-home me-2"></i> Dashboard
                 </a>
-            </li>
+            </li> --}}
 
             <li class="nav-item">
-                <a href="{{ route('user.index') }}" class="nav-link text-white">
-                    <i class="fa fa-users me-2"></i> Users
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="{{ route('gme-business.index') }}" class="nav-link text-white">
-                    <i class="fa fa-box me-2"></i> Index
+                <a href="{{ route('customer.gme-business-form.index') }}" 
+                    class="nav-link text-white {{ request()->routeIs('customer.gme-business-form.index') ? 'active' : '' }}" style="font-weight: 600; font-size:1rem">
+                    <i class="fa fa-users me-2"></i> My Business
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="{{ route('gme-business.create') }}" class="nav-link text-white">
-                    <i class="fa fa-shopping-basket me-2"></i> Create
+                <a href="{{ route('gme.business.register') }}" 
+                class="nav-link text-white {{ request()->routeIs('gme.business.register') ? 'active' : '' }}" style="font-weight: 600; font-size:1rem">
+                    <i class="fa fa-plus-circle me-2"></i> Add New Business
                 </a>
             </li>
-
-            <li class="nav-item">
-                <a href="{{ route('gme-business-admin.index') }}" class="nav-link text-white">
-                    <i class="fa fa-shopping-basket me-2"></i> Admin Index
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="{{ route('gme-business-admin.create') }}" class="nav-link text-white">
-                    <i class="fa fa-shopping-basket me-2"></i> Edit
-                </a>
-            </li>
-
-            <li class="nav-item mt-3">
-                <a href="#" class="nav-link text-danger"
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="fa fa-sign-out-alt me-2"></i> Logout
-                </a>
-
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
-                    @csrf
-                </form>
-            </li>
-
-
-        </ul> --}}
+        </ul>
     </div>
+    <!-- Logout at bottom -->
+    <div class="mt-auto p-3">
+        <a class="d-flex align-items-center" style="font-weight: 600; font-size:1rem; color: #fff;" href="{{ route('customer.logout') }}">
+            <i class="fa fa-sign-out-alt me-2"></i> Logout
+        </a>
+    </div>
+    
 </nav>

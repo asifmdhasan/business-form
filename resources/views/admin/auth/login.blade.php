@@ -21,7 +21,8 @@
         }
 
         .gradient-bg {
-            background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);
+            /* background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%); */
+            background: linear-gradient(135deg, #576829 0%, #758c39 100%);
         }
 
 
@@ -75,10 +76,10 @@
                     </ul>
                 </div>
             @endif
-            <h2 class="text-center text-2xl font-bold text-white mb-2">
-                {{-- {{ __('layouts.projectName') }} --}}
-                GME Network
-            </h2>
+            <img src="{{ asset('assets/image/front-logo.png') }}" 
+                alt="Gme Network Logo" 
+                class="img-fluid mb-2 mx-auto" 
+                style="    max-width: 65%;height: auto;padding-right: 4rem;">
             {{-- <p class="text-center text-indigo-100 text-sm">
                 Access your inventory management dashboard
             </p> --}}
@@ -103,12 +104,13 @@
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="glass-effect py-10 px-8 shadow-2xl sm:rounded-3xl relative overflow-hidden">
                 <!-- Decorative elements -->
-                <div
-                    class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full opacity-10 transform translate-x-16 -translate-y-16">
+                {{-- <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full opacity-10 transform translate-x-16 -translate-y-16"
+                    >
                 </div>
                 <div
                     class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-400 to-indigo-500 rounded-full opacity-10 transform -translate-x-12 translate-y-12">
-                </div>
+                </div> --}}
 
                 <form action="{{ route('login') }}" method="POST" class="relative z-10">
                     @csrf

@@ -1,7 +1,8 @@
 @extends('layouts.guest-master')
 
 @section('content')
-
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
 <style>
     .featured-business{
@@ -12,6 +13,19 @@
             text-align: center;
         }
     }
+    .featuredSwiper {
+    padding-bottom: 40px;
+}
+
+.swiper-slide {
+    height: auto;
+    display: flex;
+}
+
+.business-card {
+    width: 100%;
+    height: 100%;
+}
 </style>
 
 
@@ -19,9 +33,8 @@
 
 
 {{-- FEATURED BUSINESSES --}}
-<section class="py-5">
+{{-- <section class="py-5">
     <div class="container">
-        {{-- <h4 class="fw-bold mb-4 featured-business">Featured Businesses</h4> --}}
         <h4 class="fw-bold mb-4 featured-business "
             style="
                 font-size: 34px;
@@ -31,6 +44,26 @@
             <span style="color:#9b7d2d;font-weight: 900;">Businesses </span>
         </h4>
         <div class="row" id="featuredGrid"></div>
+    </div>
+</section> --}}
+<section class="py-5">
+    <div class="container">
+        <h4 class="fw-bold mb-4 featured-business"
+            style="font-size:34px;text-transform:uppercase;line-height:1.3em;">
+            <span style="font-weight:300;">Featured </span>
+            <span style="color:#9b7d2d;font-weight:900;">Businesses</span>
+        </h4>
+
+        <div class="swiper featuredSwiper" dir="ltr">
+            <div class="swiper-wrapper" id="featuredGrid"></div>
+
+            <!-- Navigation -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+
+            <!-- Pagination (optional) -->
+            <div class="swiper-pagination"></div>
+        </div>
     </div>
 </section>
 
@@ -141,7 +174,7 @@
     </div>
 </div>
 
-<section class="py-5 bg-white">
+{{-- <section class="py-5 bg-white">
     <div class="container">
         <h4 class="fw-bold mb-4 featured-business "
             style="
@@ -152,11 +185,41 @@
             <span style="color:#9b7d2d;font-weight: 900;">Category </span>
         </h4>
         <div class="row g-4 pt-4" id="categoryBrowse">
-            {{-- Dynamically populated --}}
         </div>
     </div>
-</section>
+</section> --}}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+const swiper = new Swiper('.featuredSwiper', {
+    direction: 'horizontal',   // left ↔ right
+    slidesPerView: 4,
+    spaceBetween: 20,
+    loop: true,
+    speed: 800,                // smooth left movement
 
+    autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+        reverseDirection: false, // 🔴 IMPORTANT → slide LEFT
+    },
 
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+
+    pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+    },
+
+    breakpoints: {
+        320:  { slidesPerView: 1 },
+        576:  { slidesPerView: 2 },
+        768:  { slidesPerView: 3 },
+        992:  { slidesPerView: 4 },
+    }
+});
+</script>
 @endsection
 

@@ -1,9 +1,27 @@
 <!-- Sidebar -->
-<nav class="bg-dark text-white position-fixed h-100" style="width:260px; top:0; left:0; overflow-y:auto; z-index:1000;">
+
+<style>
+
+    .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.15);
+        border-left: 3px solid #9C7D2D !important;
+        padding-left: calc(0.5rem - 3px);
+        border-radius: 5px;
+        font-weight: 600;
+    }
+</style>
+<nav class="text-white position-fixed h-100" style="width:260px; top:0; left:0; overflow-y:auto; z-index:1000;background-color: #576829">
     <div class="p-3">
 
         <!-- Branding -->
-        <img src="{{ asset('assets/image/logo.webp') }}" alt="Gme Network Logo" class="img-fluid mb-2" style="max-width: 100%; height: auto;">
+        {{-- <img src="{{ asset('assets/image/logo.webp') }}" alt="Gme Network Logo" class="img-fluid mb-2" style="max-width: 100%; height: auto;"> --}}
+        <div class="p-3 text-center">
+        <!-- Logo and Title -->
+            <img src="{{ asset('assets/image/front-logo.png') }}" 
+                alt="Gme Network Logo" 
+                class="img-fluid mb-2" 
+                style="max-width: 60%; height: auto;">
+        </div>
 
         {{-- <h4 class="text-center py-3 border-bottom">
             Gme Network
@@ -128,7 +146,7 @@
 
             <!-- Logout -->
             <li class="nav-item mt-4">
-                <a href="#" class="nav-link text-danger fw-bold"
+                <a href="#" class="nav-link fw-bold" style="color: #fff"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fa fa-sign-out-alt me-2"></i> Logout
                 </a>

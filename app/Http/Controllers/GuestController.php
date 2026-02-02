@@ -457,7 +457,7 @@ class GuestController extends Controller
 
         return response()->json([
             'businesses' => $businesses,
-            'featured'   => $businesses->take(4)->values()
+            'featured'   => $businesses->take(12)->values()
         ]);
     }
 

@@ -66,6 +66,7 @@ Route::middleware(['web', 'setLocale'])->group(function () {
     Route::get('/', [GuestController::class, 'guestIndex'])->name('guest.index');
 
     Route::get('/guest-gme-businesses', [GuestController::class, 'indexAjax'])->name('guest.gme-business.ajax');
+    // Route::get('/guest-gme-featured-businesses', [GuestController::class, 'featuredBusinessAjax'])->name('guest.gme-featured-business.ajax');
         // get category ajax
     Route::get('/guest-get-category', [GuestController::class, 'getCategoryAjax'])->name('guest.get-category.ajax');
         //get Location Ajax

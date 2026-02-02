@@ -58,6 +58,7 @@ class GmeBusinessAdminController extends Controller
     public function update(Request $request, $id)
     {
 
+    // dd($request->all());
         $business = GmeBusinessForm::findOrFail($id);
 
         $validated = $request->validate([
@@ -104,7 +105,8 @@ class GmeBusinessAdminController extends Controller
             'collaboration_types'      => 'nullable|array',
 
             // Admin
-            'is_verified'              => 'nullable|in:0,1',
+            'is_verified'              => 'nullable|boolean',
+            'is_featured'              => 'nullable|boolean',
             'status'                   => 'required|in:draft,pending,approved,rejected',
 
             // Files
@@ -137,41 +139,29 @@ class GmeBusinessAdminController extends Controller
                 ->store('uploads/business/covers', 'public_folder');
         }
 
-        // FIX: Handle MULTIPLE PHOTOS (Gallery) - Improved logic
-        $existingPhotos = $request->input('existing_photos', []);
 
-        // Decode current photos from database if they exist
-        $currentPhotos = [];
-        if ($business->photos) {
-            $currentPhotos = is_array($business->photos)
-                ? $business->photos
-                : json_decode($business->photos, true) ?? [];
-        }
+        $existingPhotoIds = $request->input('existing_photos', []);
 
-        // Only keep photos that are in the existing_photos array (user didn't delete them)
-        $keptPhotos = [];
-        foreach ($currentPhotos as $photo) {
-            if (in_array($photo, $existingPhotos)) {
-                $keptPhotos[] = $photo;
-            } else {
-                // Delete removed photos
-                if (file_exists(public_path('assets/' . $photo))) {
-                    unlink(public_path('assets/' . $photo));
+        $business->businessPhotos()
+            ->whereNotIn('id', $existingPhotoIds)
+            ->get()
+            ->each(function ($photo) {
+                $path = public_path('assets/' . $photo->image_url);
+                if (file_exists($path)) {
+                    unlink($path);
                 }
-            }
-        }
+                $photo->delete();
+            });
 
-        // Add new photos
-        $newPhotos = [];
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                $newPhotos[] = $photo->store('uploads/business/gallery', 'public_folder');
+                $path = $photo->store('uploads/business/gallery', 'public_folder');
+
+                $business->businessPhotos()->create([
+                    'image_url' => $path,
+                ]);
             }
         }
-
-        // Merge kept and new photos
-        $allPhotos = array_merge($keptPhotos, $newPhotos);
-        $business->photos = !empty($allPhotos) ? json_encode($allPhotos) : null;
 
 
         // Handle REGISTRATION DOCUMENT upload
@@ -201,7 +191,9 @@ class GmeBusinessAdminController extends Controller
                 ->store('uploads/business/catalogues', 'public_folder');
         }
 
-
+        $validated['is_verified'] = $request->input('is_verified') ? 1 : 0;
+        $validated['is_featured'] = $request->input('is_featured') ? 1 : 0;
+        // dd($validated['is_verified'] , $validated['is_featured']);
         $business->update($validated);
 
         // Check status and send mail
@@ -229,36 +221,40 @@ class GmeBusinessAdminController extends Controller
     }
     public function show($id)
     {
-        $business = GmeBusinessForm::findOrFail($id);
-        return view('gme-business-admin.show', compact('business'));
+        $business = GmeBusinessForm::with('businessPhotos')->findOrFail($id);
+        $countries = $this->getCountries();
+        $categories = BusinessCategory::orderBy('name')->get();
+        // $business = GmeBusinessForm::findOrFail($id);
+        return view('gme-business-admin.show', compact('business', 'countries', 'categories'));
     }
     public function destroy($id)
     {
         $business = GmeBusinessForm::findOrFail($id);
 
-        if ($business->logo && file_exists(public_path($business->logo))) {
-            unlink(public_path($business->logo));
+        if ($business->logo && file_exists(public_path('assets/'.$business->logo))) {
+            unlink(public_path('assets/'.$business->logo));
         }
 
         if ($business->photos) {
             foreach ($business->photos as $photo) {
-                if (file_exists(public_path($photo))) {
-                    unlink(public_path($photo));
+                if (file_exists(public_path('assets/'.$photo))) {
+                    unlink(public_path('assets/'.$photo));
                 }
             }
         }
 
-        if ($business->registration_document && file_exists(public_path($business->registration_document))) {
-            unlink(public_path($business->registration_document));
+        if ($business->registration_document && file_exists(public_path('assets/'.$business->registration_document))) {
+            unlink(public_path('assets/'.$business->registration_document));
         }
 
         $business->delete();
 
-        return redirect()
-            ->route('gme-business-admin.index')
-            ->with('success', 'Business deleted successfully!');
+        // ✅ Return JSON for AJAX
+        return response()->json([
+            'success' => true,
+            'message' => 'Business deleted successfully!'
+        ]);
     }
-
     private function getCountries()
     {
         return [

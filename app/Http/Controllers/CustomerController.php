@@ -130,8 +130,8 @@ class CustomerController extends Controller
             ->with('category:id,name')
             ->where('customer_id', $customer->id)
             ->orderByDesc('id')
-            ->get()
-            ->transform(function ($business) {
+            ->paginate(8);
+            $businesses->getCollection()->transform(function ($business) {
                 $business->photos = is_string($business->photos)
                     ? json_decode($business->photos, true)
                     : ($business->photos ?? []);

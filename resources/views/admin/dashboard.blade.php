@@ -3,7 +3,7 @@
 @section('content')
 <style>
     .font-color {
-        color: #9C7D2D;
+        color: #576829;
         /* background-color: ; */
     }
 </style>

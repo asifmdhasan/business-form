@@ -3,7 +3,7 @@
 @section('content')
 <style>
 #businessTabs .nav-link{
-    color: #9C7D2D;
+    color: #576829;
     width: 10rem;
     text-align: center;
     font-weight: bold;
@@ -12,9 +12,11 @@
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
     color: #fff !important;
-    background-color: #9C7D2D;
-    border-color: #9C7D2D;
+    background-color: #576829;
+    border-color: #576829;
     width: 10rem;
+    border-left: 3px solid #576829 !important;
+
 }
 
 #businessTabs{
@@ -249,7 +251,6 @@ $(function () {
      * 5. Delete (Rejected only)
      * ---------------------------------------- */
     $(document).on('click', '.delete-btn', function () {
-
         if (!confirm('Are you sure you want to delete this business?')) return;
 
         let id = $(this).data('id');
@@ -260,8 +261,14 @@ $(function () {
             data: {
                 _token: "{{ csrf_token() }}"
             },
-            success: function () {
-                table.ajax.reload();
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message); // ✅ Show success message
+                    table.ajax.reload();    // ✅ Reload the DataTable
+                }
+            },
+            error: function () {
+                alert('Something went wrong while deleting the business!');
             }
         });
     });
