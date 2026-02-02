@@ -309,12 +309,8 @@
                             </div>
 
                             <div class="row">
+                       
                                 {{-- <div class="col-md-6 mb-3">
-                                    <label class="form-label">WhatsApp Number</label>
-                                    <input type="text" name="whatsapp_number" class="form-control"
-                                        value="{{ old('whatsapp_number', $business->whatsapp_number ?? '') }}">
-                                </div> --}}
-                                <div class="col-md-6 mb-3">
                                     <label class="form-label">WhatsApp Number</label>
 
                                     <div class="whatsapp-wrapper">
@@ -337,7 +333,59 @@
                                             <!-- JS will inject -->
                                         </ul>
                                     </div>
-                                </div>
+                                </div> --}}
+
+                                <div class="col-md-6 mb-3">
+    <label class="form-label">Provide WhatsApp Number</label>
+
+    @php
+        // Split the stored business WhatsApp number
+        $storedBusinessWhatsApp = $business->whatsapp_number ?? '';
+        $businessWhatsappPrefix = '+880';
+        $businessWhatsappNumber = '';
+        
+        // Check if we have old input (from validation error)
+        if (old('whatsapp_number')) {
+            $businessWhatsappPrefix = old('whatsapp_prefix', '+880');
+            $businessWhatsappNumber = old('whatsapp_number', '');
+        } elseif ($storedBusinessWhatsApp) {
+            // Split from database
+            if (preg_match('/^(\+\d{1,4})(.*)$/', $storedBusinessWhatsApp, $matches)) {
+                $businessWhatsappPrefix = $matches[1];
+                $businessWhatsappNumber = $matches[2];
+            } else {
+                $businessWhatsappNumber = $storedBusinessWhatsApp;
+            }
+        }
+    @endphp
+
+    <div class="whatsapp-wrapper">
+        <div class="prefix-dropdown" id="prefixDropdown">
+            <span id="selectedPrefix">{{ $businessWhatsappPrefix }}</span>
+            <span class="arrow">▼</span>
+        </div>
+
+        <!-- Add hidden prefix input -->
+        <input type="hidden"
+            name="whatsapp_prefix"
+            id="whatsappPrefix"
+            value="{{ $businessWhatsappPrefix }}">
+
+        <input type="text"
+            name="whatsapp_number"
+            class="form-control whatsapp-input"
+            placeholder="Enter number"
+            value="{{ $businessWhatsappNumber }}">
+    </div>
+
+    <!-- dropdown list -->
+    <div class="prefix-list d-none" id="prefixList">
+        <input type="text" id="prefixSearch" placeholder="Search country...">
+        <ul id="prefixItems">
+            <!-- JS will inject -->
+        </ul>
+    </div>
+</div>
 
 
                                 <div class="col-md-6 mb-3">
@@ -388,48 +436,96 @@
                             </div>
 
                             <hr>
-                            <h6 class="fw-bold mb-3">Founder Information</h6>
+<h6 class="fw-bold mb-3">Founder Information</h6>
 
-                            <div id="founders-container">
-                                @php
-                                    $founders = old('founders', json_decode($business->founders ?? '[]', true)) ?: [['name'=>'','designation'=>'']];
-                                @endphp
+<div id="founders-container">
+    @php
+        $founders = old('founders', json_decode($business->founders ?? '[]', true)) ?: [['name'=>'','designation'=>'']];
+    @endphp
 
-                                @foreach($founders as $index => $founder)
-                                <div class="border rounded p-3 mb-3">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-2">
-                                            <label class="form-label"> Founder / Owner Full Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control"
-                                                name="founders[{{ $index }}][name]"
-                                                value="{{ $founder['name'] ?? '' }}" required>
-                                        </div>
-                                        <div class="col-md-6 mb-2">
-                                            <label class="form-label">Designation <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control"
-                                                name="founders[{{ $index }}][designation]"
-                                                value="{{ $founder['designation'] ?? '' }}" required>
-                                        </div>
-                                        <div class="col-md-6 mb-2">
-                                            <label class="form-label">WhatsApp Number </label>
-                                            <input type="text" class="form-control"
-                                                name="founders[{{ $index }}][whatsapp_number]"
-                                                value="{{ $founder['whatsapp_number'] ?? '' }}">
-                                        </div>
-                                        <div class="col-md-6 mb-2">
-                                            <label class="form-label">Linkedin URL </label>
-                                            <input type="text" class="form-control"
-                                                name="founders[{{ $index }}][linkedin]"
-                                                value="{{ $founder['linkedin'] ?? '' }}">
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
+    @foreach($founders as $index => $founder)
+    @php
+        // Split the stored WhatsApp number into prefix and number
+        $storedWhatsApp = $founder['whatsapp_number'] ?? '';
+        $whatsappPrefix = '+880'; // default
+        $whatsappNumber = '';
+        
+        if ($storedWhatsApp) {
+            // Extract prefix (matches +880, +1, +44, etc.)
+            if (preg_match('/^(\+\d{1,4})(.*)$/', $storedWhatsApp, $matches)) {
+                $whatsappPrefix = $matches[1]; // e.g., +880
+                $whatsappNumber = $matches[2]; // e.g., 1925272409
+            } else {
+                // If no prefix found, treat entire string as number
+                $whatsappNumber = $storedWhatsApp;
+            }
+        }
+    @endphp
+    
+    <div class="border rounded p-3 mb-3 founder-item">
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Founder / Owner Full Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control"
+                    name="founders[{{ $index }}][name]"
+                    value="{{ $founder['name'] ?? '' }}" required>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Designation <span class="text-danger">*</span></label>
+                <input type="text" class="form-control"
+                    name="founders[{{ $index }}][designation]"
+                    value="{{ $founder['designation'] ?? '' }}" required>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label">WhatsApp Number</label>
 
-                            <button type="button" class="btn btn-success btn-sm" onclick="addFounder()">
-                                <i class="fa fa-plus"></i> Add Founder
-                            </button>
+                <div class="whatsapp-wrapper" data-index="{{ $index }}">
+                    <div class="prefix-dropdown">
+                        <span class="selectedPrefix">{{ $whatsappPrefix }}</span>
+                        <span class="arrow">▼</span>
+                    </div>
+
+                    <!-- hidden prefix -->
+                    <input type="hidden"
+                        name="founders[{{ $index }}][whatsapp_prefix]"
+                        class="whatsapp-prefix"
+                        value="{{ $whatsappPrefix }}">
+
+                    <!-- number -->
+                    <input type="text"
+                        name="founders[{{ $index }}][whatsapp_number]"
+                        class="form-control whatsapp-input"
+                        placeholder="Enter number"
+                        value="{{ $whatsappNumber }}">
+                </div>
+
+                <!-- dropdown list -->
+                <div class="prefix-list d-none">
+                    <input type="text" class="prefixSearch" placeholder="Search country...">
+                    <ul class="prefixItems"></ul>
+                </div>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Linkedin URL</label>
+                <input type="text" class="form-control"
+                    name="founders[{{ $index }}][linkedin]"
+                    value="{{ $founder['linkedin'] ?? '' }}">
+            </div>
+            @if($index > 0)
+            <div class="col-12 mb-2">
+                <button type="button" class="btn btn-danger btn-sm remove-founder">
+                    <i class="fa fa-trash"></i> Remove Founder
+                </button>
+            </div>
+            @endif
+        </div>
+    </div>
+    @endforeach
+</div>
+
+<button type="button" class="btn btn-success btn-sm" id="addFounderBtn">
+    <i class="fa fa-plus"></i> Add Founder
+</button>
 
 
                         @endif
@@ -966,40 +1062,416 @@
     </div>
 </div>
 
+
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js"></script>
-<script>
-let founderIndex = {{ count($founders ?? []) }};
 
-function addFounder() {
-    $('#founders-container').append(`
-        <div class="border rounded p-3 mb-3">
-            <div class="row">
-                <div class="col-md-6 mb-2">
-                    <label class="form-label">Full Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="founders[${founderIndex}][name]" required>
-                </div>
-                <div class="col-md-6 mb-2">
-                    <label class="form-label">Designation <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="founders[${founderIndex}][designation]" required>
-                </div>
-                <div class="col-md-6 mb-2">
-                    <label class="form-label">Whatsapp Number</label>
-                    <input type="text" class="form-control" name="founders[${founderIndex}][whatsapp_number]" >
-                </div>
-                <div class="col-md-6 mb-2">
-                    <label class="form-label">Linkedin</label>
-                    <input type="text" class="form-control" name="founders[${founderIndex}][linkedin]" >
-                </div>
-            </div>
-        </div>
-    `);
-    founderIndex++;
-}
+<script>
+$(document).ready(function () {
+    $('form').on('submit', function () {
+        // Show loader
+        $('#pageLoader').removeClass('d-none');
+
+        // Disable submit button to prevent double click
+        $(this).find('button[type="submit"]').prop('disabled', true);
+    });
+
+    // Initialize WhatsApp dropdowns on page load
+    initializeWhatsAppDropdowns();
+});
 </script>
 
+<script>
+    const MAX_IMAGES = 6;
+    const input = document.getElementById('photo-input');
+    const container = document.getElementById('gallery-container');
+    const uploadBox = document.getElementById('upload-box');
 
+    // Keep track of files to send to Laravel
+    let fileStore = new DataTransfer();
+
+    // Toggle + button visibility
+    function toggleUploadBox() {
+        uploadBox.style.display = document.querySelectorAll('.gallery-item').length >= MAX_IMAGES ? 'none' : 'flex';
+    }
+
+    // Add new files
+    input.addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+
+        files.forEach(file => {
+            if (document.querySelectorAll('.gallery-item').length >= MAX_IMAGES) return;
+
+            if (!file.type.startsWith('image/')) {
+                alert(file.name + ' is not an image.');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert(file.name + ' is larger than 5MB.');
+                return;
+            }
+
+            fileStore.items.add(file);
+            input.files = fileStore.files;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const div = document.createElement('div');
+                div.className = 'gallery-item new-photo';
+                div.style.backgroundImage = `url(${event.target.result})`;
+                div.innerHTML = `<button type="button" class="remove-btn" onclick="removeNewPhoto(this, '${file.name}')">&times;</button>`;
+                container.insertBefore(div, uploadBox);
+                toggleUploadBox();
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
+    // Remove new photo
+    function removeNewPhoto(btn, fileName) {
+        btn.closest('.gallery-item').remove();
+
+        const newStore = new DataTransfer();
+        Array.from(fileStore.files).forEach(f => {
+            if (f.name !== fileName) newStore.items.add(f);
+        });
+        fileStore = newStore;
+        input.files = fileStore.files;
+
+        toggleUploadBox();
+    }
+
+    // Remove existing photo
+    function removeExistingPhoto(btn, photoId) {
+        const item = btn.closest('.gallery-item');
+        item.querySelector('input[type="checkbox"]').checked = true;
+        item.remove();
+        toggleUploadBox();
+    }
+
+    // Init
+    toggleUploadBox();
+</script>
+
+<script>
+    // Country codes data
+    const topCountries = [
+        { name: "Bangladesh", code: "+880" },
+        { name: "India", code: "+91" },
+        { name: "United States", code: "+1" },
+        { name: "United Kingdom", code: "+44" },
+        { name: "Saudi Arabia", code: "+966" }
+    ];
+
+    const allCountries = [
+        { name: "Afghanistan", code: "+93" },
+        { name: "Albania", code: "+355" },
+        { name: "Algeria", code: "+213" },
+        { name: "Argentina", code: "+54" },
+        { name: "Australia", code: "+61" },
+        { name: "Austria", code: "+43" },
+        { name: "Bangladesh", code: "+880" },
+        { name: "Belgium", code: "+32" },
+        { name: "Brazil", code: "+55" },
+        { name: "Canada", code: "+1" },
+        { name: "China", code: "+86" },
+        { name: "Denmark", code: "+45" },
+        { name: "Egypt", code: "+20" },
+        { name: "France", code: "+33" },
+        { name: "Germany", code: "+49" },
+        { name: "India", code: "+91" },
+        { name: "Indonesia", code: "+62" },
+        { name: "Italy", code: "+39" },
+        { name: "Japan", code: "+81" },
+        { name: "Malaysia", code: "+60" },
+        { name: "Nepal", code: "+977" },
+        { name: "Netherlands", code: "+31" },
+        { name: "New Zealand", code: "+64" },
+        { name: "Norway", code: "+47" },
+        { name: "Pakistan", code: "+92" },
+        { name: "Philippines", code: "+63" },
+        { name: "Qatar", code: "+974" },
+        { name: "Russia", code: "+7" },
+        { name: "Singapore", code: "+65" },
+        { name: "South Africa", code: "+27" },
+        { name: "South Korea", code: "+82" },
+        { name: "Spain", code: "+34" },
+        { name: "Sri Lanka", code: "+94" },
+        { name: "Sweden", code: "+46" },
+        { name: "Switzerland", code: "+41" },
+        { name: "Thailand", code: "+66" },
+        { name: "Turkey", code: "+90" },
+        { name: "UAE", code: "+971" },
+        { name: "United Kingdom", code: "+44" },
+        { name: "United States", code: "+1" },
+        { name: "Vietnam", code: "+84" },
+        { name: "Zimbabwe", code: "+263" }
+    ];
+
+    // Business WhatsApp dropdown (single instance)
+    const dropdown = document.getElementById("prefixDropdown");
+    const list = document.getElementById("prefixList");
+    const ul = document.getElementById("prefixItems");
+    const search = document.getElementById("prefixSearch");
+    const selected = document.getElementById("selectedPrefix");
+    const hiddenPrefix = document.getElementById("whatsappPrefix");
+
+    function renderList(filter = "") {
+        if (!ul) return;
+        
+        ul.innerHTML = "";
+
+        // Always show top 5 first
+        topCountries.forEach(c => {
+            if (c.name.toLowerCase().includes(filter.toLowerCase())) {
+                const li = document.createElement("li");
+                li.textContent = `${c.name} (${c.code})`;
+                li.style.fontWeight = "600";
+                li.onclick = () => {
+                    selected.textContent = c.code;
+                    hiddenPrefix.value = c.code;
+                    list.classList.add("d-none");
+                };
+                ul.appendChild(li);
+            }
+        });
+
+        // Divider
+        const divider = document.createElement("li");
+        divider.style.borderTop = "1px solid #ddd";
+        ul.appendChild(divider);
+
+        // All countries (FULL scroll)
+        allCountries
+            .filter(c => c.name.toLowerCase().includes(filter.toLowerCase()))
+            .forEach(c => {
+                const li = document.createElement("li");
+                li.textContent = `${c.name} (${c.code})`;
+                li.onclick = () => {
+                    selected.textContent = c.code;
+                    hiddenPrefix.value = c.code;
+                    list.classList.add("d-none");
+                };
+                ul.appendChild(li);
+            });
+    }
+
+    if (dropdown) {
+        dropdown.onclick = () => {
+            list.classList.toggle("d-none");
+            renderList();
+        };
+    }
+
+    if (search) {
+        search.onkeyup = () => {
+            renderList(search.value);
+        };
+    }
+
+    // Close business WhatsApp dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (list && dropdown && !dropdown.contains(e.target) && !list.contains(e.target)) {
+            list.classList.add('d-none');
+        }
+    });
+</script>
+
+<script>
+    // Initialize WhatsApp Dropdowns for Founders (works for existing and new founders)
+    function initializeWhatsAppDropdowns() {
+        $('.whatsapp-wrapper').each(function() {
+            const $wrapper = $(this);
+            const $dropdown = $wrapper.find('.prefix-dropdown');
+            const $prefixList = $wrapper.next('.prefix-list');
+            const $selectedPrefix = $wrapper.find('.selectedPrefix');
+            const $hiddenInput = $wrapper.find('.whatsapp-prefix');
+            const $searchInput = $prefixList.find('.prefixSearch');
+            const $itemsList = $prefixList.find('.prefixItems');
+
+            // Skip if already initialized
+            if ($wrapper.data('initialized')) return;
+            $wrapper.data('initialized', true);
+
+            // Populate country codes if not already done
+            if ($itemsList.children().length === 0) {
+                // Top countries first
+                topCountries.forEach(country => {
+                    $itemsList.append(`
+                        <li data-code="${country.code}" style="font-weight: 600;">
+                            ${country.name} (${country.code})
+                        </li>
+                    `);
+                });
+
+                // Divider
+                $itemsList.append('<li style="border-top: 1px solid #ddd;"></li>');
+
+                // All countries
+                allCountries.forEach(country => {
+                    $itemsList.append(`
+                        <li data-code="${country.code}">
+                            ${country.name} (${country.code})
+                        </li>
+                    `);
+                });
+            }
+
+            // Toggle dropdown
+            $dropdown.off('click').on('click', function(e) {
+                e.stopPropagation();
+                
+                // Close other dropdowns
+                $('.prefix-list').not($prefixList).addClass('d-none');
+                
+                // Toggle current
+                $prefixList.toggleClass('d-none');
+            });
+
+            // Search functionality
+            $searchInput.off('input').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                $itemsList.find('li').each(function() {
+                    const text = $(this).text().toLowerCase();
+                    const hasBorder = $(this).css('border-top') !== '0px none rgb(0, 0, 0)';
+                    
+                    if (hasBorder) {
+                        $(this).hide(); // Hide divider during search
+                    } else {
+                        $(this).toggle(text.includes(searchTerm));
+                    }
+                });
+
+                // Show divider only if search is empty
+                if (searchTerm === '') {
+                    $itemsList.find('li[style*="border-top"]').show();
+                }
+            });
+
+            // Select country code
+            $itemsList.off('click').on('click', 'li', function() {
+                const selectedCode = $(this).data('code');
+                if (!selectedCode) return; // Skip if clicking on divider
+                
+                $selectedPrefix.text(selectedCode);
+                $hiddenInput.val(selectedCode);
+                $prefixList.addClass('d-none');
+                $searchInput.val('');
+                $itemsList.find('li').show();
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        $(document).off('click.whatsappFounder').on('click.whatsappFounder', function(e) {
+            if (!$(e.target).closest('.whatsapp-wrapper, .prefix-list').length) {
+                $('.whatsapp-wrapper').next('.prefix-list').addClass('d-none');
+            }
+        });
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const radios = document.querySelectorAll('input[name="collaboration_open"]');
+        const wrapper = document.getElementById('collaborationTypesWrapper');
+
+        function toggleCollaborationTypes() {
+            const selected = document.querySelector('input[name="collaboration_open"]:checked')?.value;
+
+            if (selected === 'yes' || selected === 'maybe') {
+                wrapper.style.display = 'block';
+            } else {
+                wrapper.style.display = 'none';
+
+                // clear checked checkboxes when "No"
+                wrapper.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            }
+        }
+
+        radios.forEach(radio => {
+            radio.addEventListener('change', toggleCollaborationTypes);
+        });
+
+        // run on page load (edit + validation error case)
+        toggleCollaborationTypes();
+    });
+</script>
+
+<script>
+    // Founder Management
+        const founderIndex = $('#founders-container .border.rounded').length;
+
+
+    function addFounder() {
+        const newFounderHtml = `
+            <div class="border rounded p-3 mb-3 founder-item">
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">Founder / Owner Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="founders[${founderIndex}][name]" required>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">Designation <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="founders[${founderIndex}][designation]" required>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">WhatsApp Number</label>
+
+                        <div class="whatsapp-wrapper" data-index="${founderIndex}">
+                            <div class="prefix-dropdown">
+                                <span class="selectedPrefix">+880</span>
+                                <span class="arrow">▼</span>
+                            </div>
+
+                            <input type="hidden"
+                                name="founders[${founderIndex}][whatsapp_prefix]"
+                                class="whatsapp-prefix"
+                                value="+880">
+
+                            <input type="text"
+                                name="founders[${founderIndex}][whatsapp_number]"
+                                class="form-control whatsapp-input"
+                                placeholder="Enter number"
+                                value="">
+                        </div>
+
+                        <div class="prefix-list d-none">
+                            <input type="text" class="prefixSearch" placeholder="Search country...">
+                            <ul class="prefixItems"></ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">Linkedin URL</label>
+                        <input type="text" class="form-control" name="founders[${founderIndex}][linkedin]">
+                    </div>
+                    <div class="col-12 mb-2">
+                        <button type="button" class="btn btn-danger btn-sm remove-founder">
+                            <i class="fa fa-trash"></i> Remove Founder
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        $('#founders-container').append(newFounderHtml);
+        founderIndex++;
+        
+        // Re-initialize WhatsApp dropdowns for the new founder
+        initializeWhatsAppDropdowns();
+    }
+
+    // Remove Founder
+    $(document).on('click', '.remove-founder', function() {
+        $(this).closest('.founder-item').remove();
+    });
+
+    // Add Founder button click
+    $(document).on('click', '#addFounderBtn', function() {
+        addFounder();
+    });
+</script>
 @if($step == 2)
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script>
@@ -1124,390 +1596,7 @@ function addFounder() {
 
     </script>
 @endif
-<script>
-$(document).ready(function () {
 
-    $('form').on('submit', function () {
-        // Show loader
-        $('#pageLoader').removeClass('d-none');
-
-        // Disable submit button to prevent double click
-        $(this).find('button[type="submit"]').prop('disabled', true);
-    });
-
-});
-</script>
-
-{{-- <script>
-    const MAX_IMAGES = 6;
-
-    function getTotalImages() {
-        return document.querySelectorAll('.gallery-item').length;
-    }
-
-    function toggleUploadBox() {
-        const uploadBox = document.getElementById('upload-box');
-        uploadBox.style.display = getTotalImages() >= MAX_IMAGES ? 'none' : 'flex';
-    }
-
-    // Add new images
-    function addNewPhotos(input) {
-        const files = Array.from(input.files);
-        const container = document.getElementById('gallery-container');
-
-        files.forEach(file => {
-            if (getTotalImages() >= MAX_IMAGES) return;
-
-            if (file.size > 5 * 1024 * 1024 || !file.type.startsWith('image/')) return;
-
-            const reader = new FileReader();
-            reader.onload = e => {
-                const div = document.createElement('div');
-                div.className = 'gallery-item new-photo';
-                div.style.backgroundImage = `url(${e.target.result})`;
-
-                div.innerHTML = `
-                    <button type="button" class="remove-btn" onclick="removeNewPhoto(this)">
-                        &times;
-                    </button>
-                `;
-
-                container.insertBefore(div, document.getElementById('upload-box'));
-                toggleUploadBox();
-            };
-            reader.readAsDataURL(file);
-        });
-
-        input.value = '';
-    }
-
-    // Remove newly added image
-    function removeNewPhoto(btn) {
-        btn.closest('.gallery-item').remove();
-        toggleUploadBox();
-    }
-
-    // Remove existing image (mark for delete)
-    function removeExistingPhoto(btn, photoId) {
-        const item = btn.closest('.gallery-item');
-        item.querySelector('input[type="checkbox"]').checked = true;
-        item.remove();
-        toggleUploadBox();
-    }
-
-    // Init
-    toggleUploadBox();
-</script> --}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{{-- <script>
-    const MAX_IMAGES = 6;
-    const input = document.getElementById('photo-input');
-    const container = document.getElementById('gallery-container');
-    const uploadBox = document.getElementById('upload-box');
-
-    let fileStore = new DataTransfer();
-
-    function getTotalImages() {
-        return document.querySelectorAll('.gallery-item').length;
-    }
-
-    function toggleUploadBox() {
-        uploadBox.style.display = getTotalImages() >= MAX_IMAGES ? 'none' : 'flex';
-    }
-
-    function addNewPhotos(el) {
-        Array.from(el.files).forEach(file => {
-            if (getTotalImages() >= MAX_IMAGES) return;
-
-            if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) return;
-
-            fileStore.items.add(file);
-            input.files = fileStore.files;
-
-            const reader = new FileReader();
-            reader.onload = e => {
-                const div = document.createElement('div');
-                div.className = 'gallery-item new-photo';
-                div.style.backgroundImage = `url(${e.target.result})`;
-
-                div.innerHTML = `
-                    <button type="button"
-                            class="remove-btn"
-                            onclick="removeNewPhoto(this, '${file.name}')">
-                        &times;
-                    </button>
-                `;
-
-                container.insertBefore(div, uploadBox);
-                toggleUploadBox();
-            };
-            reader.readAsDataURL(file);
-        });
-
-        el.value = '';
-    }
-
-    function removeNewPhoto(btn, fileName) {
-        btn.closest('.gallery-item').remove();
-
-        fileStore = new DataTransfer();
-        Array.from(input.files).forEach(file => {
-            if (file.name !== fileName) {
-                fileStore.items.add(file);
-            }
-        });
-
-        input.files = fileStore.files;
-        toggleUploadBox();
-    }
-
-    function removeExistingPhoto(btn, photoId) {
-        const item = btn.closest('.gallery-item');
-        item.querySelector('input[type="checkbox"]').checked = true;
-        item.remove();
-        toggleUploadBox();
-    }
-
-    toggleUploadBox();
-</script> --}}
-
-
-<script>
-const MAX_IMAGES = 6;
-const input = document.getElementById('photo-input');
-const container = document.getElementById('gallery-container');
-const uploadBox = document.getElementById('upload-box');
-
-// Keep track of files to send to Laravel
-let fileStore = new DataTransfer();
-
-// Toggle + button visibility
-function toggleUploadBox() {
-    uploadBox.style.display = document.querySelectorAll('.gallery-item').length >= MAX_IMAGES ? 'none' : 'flex';
-}
-
-// Add new files
-input.addEventListener('change', function(e) {
-    const files = Array.from(e.target.files);
-
-    files.forEach(file => {
-        if (document.querySelectorAll('.gallery-item').length >= MAX_IMAGES) return;
-
-        if (!file.type.startsWith('image/')) {
-            alert(file.name + ' is not an image.');
-            return;
-        }
-
-        if (file.size > 5 * 1024 * 1024) {
-            alert(file.name + ' is larger than 5MB.');
-            return;
-        }
-
-        fileStore.items.add(file);
-        input.files = fileStore.files;
-
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const div = document.createElement('div');
-            div.className = 'gallery-item new-photo';
-            div.style.backgroundImage = `url(${event.target.result})`;
-            div.innerHTML = `<button type="button" class="remove-btn" onclick="removeNewPhoto(this, '${file.name}')">&times;</button>`;
-            container.insertBefore(div, uploadBox);
-            toggleUploadBox();
-        };
-        reader.readAsDataURL(file);
-    });
-
-    // Do NOT clear input.value
-});
-
-// Remove new photo
-function removeNewPhoto(btn, fileName) {
-    btn.closest('.gallery-item').remove();
-
-    const newStore = new DataTransfer();
-    Array.from(fileStore.files).forEach(f => {
-        if (f.name !== fileName) newStore.items.add(f);
-    });
-    fileStore = newStore;
-    input.files = fileStore.files;
-
-    toggleUploadBox();
-}
-
-// Remove existing photo
-function removeExistingPhoto(btn, photoId) {
-    const item = btn.closest('.gallery-item');
-    item.querySelector('input[type="checkbox"]').checked = true;
-    item.remove();
-    toggleUploadBox();
-}
-
-// Init
-toggleUploadBox();
-</script>
-
-
-    <script>
-        const topCountries = [
-            { name: "Bangladesh", code: "+880" },
-            { name: "India", code: "+91" },
-            { name: "United States", code: "+1" },
-            { name: "United Kingdom", code: "+44" },
-            { name: "Saudi Arabia", code: "+966" }
-        ];
-
-        const allCountries = [
-            { name: "Afghanistan", code: "+93" },
-            { name: "Albania", code: "+355" },
-            { name: "Algeria", code: "+213" },
-            { name: "Argentina", code: "+54" },
-            { name: "Australia", code: "+61" },
-            { name: "Austria", code: "+43" },
-            { name: "Bangladesh", code: "+880" },
-            { name: "Belgium", code: "+32" },
-            { name: "Brazil", code: "+55" },
-            { name: "Canada", code: "+1" },
-            { name: "China", code: "+86" },
-            { name: "Denmark", code: "+45" },
-            { name: "Egypt", code: "+20" },
-            { name: "France", code: "+33" },
-            { name: "Germany", code: "+49" },
-            { name: "India", code: "+91" },
-            { name: "Indonesia", code: "+62" },
-            { name: "Italy", code: "+39" },
-            { name: "Japan", code: "+81" },
-            { name: "Malaysia", code: "+60" },
-            { name: "Nepal", code: "+977" },
-            { name: "Netherlands", code: "+31" },
-            { name: "New Zealand", code: "+64" },
-            { name: "Norway", code: "+47" },
-            { name: "Pakistan", code: "+92" },
-            { name: "Philippines", code: "+63" },
-            { name: "Qatar", code: "+974" },
-            { name: "Russia", code: "+7" },
-            { name: "Singapore", code: "+65" },
-            { name: "South Africa", code: "+27" },
-            { name: "South Korea", code: "+82" },
-            { name: "Spain", code: "+34" },
-            { name: "Sri Lanka", code: "+94" },
-            { name: "Sweden", code: "+46" },
-            { name: "Switzerland", code: "+41" },
-            { name: "Thailand", code: "+66" },
-            { name: "Turkey", code: "+90" },
-            { name: "UAE", code: "+971" },
-            { name: "United Kingdom", code: "+44" },
-            { name: "United States", code: "+1" },
-            { name: "Vietnam", code: "+84" },
-            { name: "Zimbabwe", code: "+263" }
-            // 👉 You can keep adding, scroll will handle it
-        ];
-
-        const dropdown = document.getElementById("prefixDropdown");
-        const list = document.getElementById("prefixList");
-        const ul = document.getElementById("prefixItems");
-        const search = document.getElementById("prefixSearch");
-        const selected = document.getElementById("selectedPrefix");
-
-        function renderList(filter = "") {
-            ul.innerHTML = "";
-
-            // Always show top 5 first
-            topCountries.forEach(c => {
-                if (c.name.toLowerCase().includes(filter.toLowerCase())) {
-                    const li = document.createElement("li");
-                    li.textContent = `${c.name} (${c.code})`;
-                    li.style.fontWeight = "600";
-                    li.onclick = () => {
-                        selected.textContent = c.code;
-                        list.classList.add("d-none");
-                    };
-                    ul.appendChild(li);
-                }
-            });
-
-            // Divider
-            const divider = document.createElement("li");
-            divider.style.borderTop = "1px solid #ddd";
-            ul.appendChild(divider);
-
-            // All countries (FULL scroll)
-            allCountries
-                .filter(c => c.name.toLowerCase().includes(filter.toLowerCase()))
-                .forEach(c => {
-                    const li = document.createElement("li");
-                    li.textContent = `${c.name} (${c.code})`;
-                    li.onclick = () => {
-                        selected.textContent = c.code;
-                        list.classList.add("d-none");
-                    };
-                    ul.appendChild(li);
-                });
-        }
-
-        dropdown.onclick = () => {
-            list.classList.toggle("d-none");
-            renderList();
-        };
-
-        search.onkeyup = () => {
-            renderList(search.value);
-        };
-    </script>
-    <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const radios = document.querySelectorAll('input[name="collaboration_open"]');
-    const wrapper = document.getElementById('collaborationTypesWrapper');
-
-    function toggleCollaborationTypes() {
-        const selected = document.querySelector('input[name="collaboration_open"]:checked')?.value;
-
-        if (selected === 'yes' || selected === 'maybe') {
-            wrapper.style.display = 'block';
-        } else {
-            wrapper.style.display = 'none';
-
-            // clear checked checkboxes when "No"
-            wrapper.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-        }
-    }
-
-    radios.forEach(radio => {
-        radio.addEventListener('change', toggleCollaborationTypes);
-    });
-
-    // run on page load (edit + validation error case)
-    toggleCollaborationTypes();
-});
-</script>
 
 
 @endsection

@@ -1013,7 +1013,7 @@
             <ul>
                 <li><a class="active" href="#">Home</a></li>
                 <li><a href="#">About GME</a></li>
-                <li class="has-dropdown">
+                {{-- <li class="has-dropdown">
                     <a href="#">Get Involved</a>
                     <ul class="dropdown" style="display: inline-block;">
                         <li><a href="#">Become a Member</a></li>
@@ -1021,8 +1021,8 @@
                         <li><a href="#">Become a Volunteer</a></li>
                         <li><a href="#">Country Convenor</a></li>
                     </ul>
-                </li>
-                <li><a href="#">Business</a></li>
+                </li> --}}
+                {{-- <li><a href="#">Business</a></li> --}}
             </ul>
         </nav>
 
@@ -1036,14 +1036,14 @@
         <!-- RIGHT MENU -->
         <nav class="gme-nav gme-nav-right">
             <ul>
-                <li class="has-dropdown">
+                {{-- <li class="has-dropdown">
                     <a href="#">Events</a>
                     <ul class="dropdown" style="display: inline-block;">
                         <li><a href="#">Upcoming Events</a></li>
                         <li><a href="#">Previous Events</a></li>
                     </ul>
                 </li>
-                <li><a href="#">News</a></li>
+                <li><a href="#">News</a></li> --}}
                 <li><a href="#">Contact</a></li>
             </ul>
         </nav>

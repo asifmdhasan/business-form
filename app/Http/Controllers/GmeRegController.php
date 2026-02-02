@@ -185,6 +185,7 @@ class GmeRegController extends Controller
                     'countries_of_operation' => 'required|array|min:1',
                     'business_address' => 'nullable|string',
                     'email' => 'required|email',
+                    'whatsapp_prefix' => 'nullable|string|max:10',
                     'whatsapp_number' => 'nullable|string|max:20',
                     'website' => 'nullable|string|max:255',
                     'facebook' => 'nullable|string|max:255',
@@ -260,32 +261,83 @@ class GmeRegController extends Controller
     /**
      * Save Step 1 data
      */
-    private function saveStep1(Request $request, GmeBusinessForm $business)
-    {
-        $prefix = $request->input('whatsapp_prefix');
-        $number = preg_replace('/\D/', '', $request->input('whatsapp_number'));
+    // private function saveStep1(Request $request, GmeBusinessForm $business)
+    // {
+    //     // $prefix = $request->input('whatsapp_prefix');
+    //     // $number = preg_replace('/\D/', '', $request->input('whatsapp_number'));
+    //     // dd($prefix, $number);
 
-        $business->business_name = $request->business_name;
-        $business->short_introduction = $request->short_introduction;
-        $business->year_established = $request->year_established;
-        $business->business_category_id = $request->business_category_id;
-        $business->countries_of_operation = json_encode($request->countries_of_operation);
-        $business->business_address = $request->business_address;
-        $business->email = $request->email;
-        // $business->whatsapp_number = $request->whatsapp_number;
-        // $business->whatsapp_number = request('whatsapp_prefix') . request('whatsapp_number');
-        $business->whatsapp_number = $prefix . $number;
+    //     $founders = $request->input('founders', []);
 
-        $business->website = $request->website;
-        $business->facebook = $request->facebook;
-        $business->instagram = $request->instagram;
-        $business->linkedin = $request->linkedin;
-        $business->youtube = $request->youtube;
-        $business->online_store = $request->online_store;
+    //     foreach ($founders as $index => $founder) {
+    //         $prefix = $founder['whatsapp_prefix'] ?? null;
+    //         $number = preg_replace('/\D/', '', $founder['whatsapp_number'] ?? '');
 
-        // Save founders as JSON
-        $business->founders = json_encode($request->founders);
+    //         dd($prefix, $number); // test
+    //     }
+
+
+    //     $business->business_name = $request->business_name;
+    //     $business->short_introduction = $request->short_introduction;
+    //     $business->year_established = $request->year_established;
+    //     $business->business_category_id = $request->business_category_id;
+    //     $business->countries_of_operation = json_encode($request->countries_of_operation);
+    //     $business->business_address = $request->business_address;
+    //     $business->email = $request->email;
+    //     // $business->whatsapp_number = $request->whatsapp_number;
+    //     // $business->whatsapp_number = request('whatsapp_prefix') . request('whatsapp_number');
+    //     $business->whatsapp_number = $prefix . $number;
+
+    //     $business->website = $request->website;
+    //     $business->facebook = $request->facebook;
+    //     $business->instagram = $request->instagram;
+    //     $business->linkedin = $request->linkedin;
+    //     $business->youtube = $request->youtube;
+    //     $business->online_store = $request->online_store;
+
+    //     // Save founders as JSON
+    //     $business->founders = json_encode($request->founders);
+    // }
+private function saveStep1(Request $request, GmeBusinessForm $business)
+{
+    // Save business WhatsApp
+    $businessPrefix = $request->input('whatsapp_prefix', '+880');
+    $businessNumber = preg_replace('/\D/', '', $request->input('whatsapp_number', ''));
+    
+    $business->business_name = $request->business_name;
+    $business->short_introduction = $request->short_introduction;
+    $business->year_established = $request->year_established;
+    $business->business_category_id = $request->business_category_id;
+    $business->countries_of_operation = json_encode($request->countries_of_operation);
+    $business->business_address = $request->business_address;
+    $business->email = $request->email;
+    
+    // Combine prefix and number for business WhatsApp
+    $business->whatsapp_number = $businessNumber ? $businessPrefix . $businessNumber : null;
+    
+    $business->website = $request->website;
+    $business->facebook = $request->facebook;
+    $business->instagram = $request->instagram;
+    $business->linkedin = $request->linkedin;
+    $business->youtube = $request->youtube;
+    $business->online_store = $request->online_store;
+
+    // Process founders and combine their WhatsApp numbers
+    $founders = $request->input('founders', []);
+    foreach ($founders as $index => &$founder) {
+        $founderPrefix = $founder['whatsapp_prefix'] ?? '+880';
+        $founderNumber = preg_replace('/\D/', '', $founder['whatsapp_number'] ?? '');
+        
+        // Combine prefix and number, or set to null if no number
+        $founder['whatsapp_number'] = $founderNumber ? $founderPrefix . $founderNumber : null;
+        
+        // Remove the separate prefix field since we've combined it
+        unset($founder['whatsapp_prefix']);
     }
+    
+    // Save founders as JSON
+    $business->founders = json_encode($founders);
+}
 
     /**
      * Save Step 2 data
