@@ -2,30 +2,55 @@
 
 @section('content')
 <style>
-#businessTabs .nav-link{
-    color: #576829;
-    width: 10rem;
-    text-align: center;
-    font-weight: bold;
-}
+    #businessTabs .nav-link{
+        color: #576829;
+        width: 10rem;
+        text-align: center;
+        font-weight: bold;
+    }
 
-.nav-tabs .nav-item.show .nav-link,
-.nav-tabs .nav-link.active {
-    color: #fff !important;
-    background-color: #576829;
-    border-color: #576829;
-    width: 10rem;
-    border-left: 3px solid #576829 !important;
+    .nav-tabs .nav-item.show .nav-link,
+    .nav-tabs .nav-link.active {
+        color: #fff !important;
+        background-color: #576829;
+        border-color: #576829;
+        width: 10rem;
+        border-left: 3px solid #576829 !important;
+    }
 
-}
+    #businessTabs{
+        padding-bottom: 1rem;
+        justify-content: center;
+    }
+    .bg-dark{
+        background: #121212 !important;
+    }
 
-#businessTabs{
-    padding-bottom: 1rem;
-    justify-content: center;
-}
-.bg-dark{
-    background: #121212 !important;
-}
+    /* Export buttons styling */
+    .export-section {
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+    }
+
+    .export-section h5 {
+        margin-bottom: 0.75rem;
+        color: #576829;
+        font-weight: bold;
+    }
+
+    .export-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .export-buttons .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
 </style>
 
 <div class="container-fluid">
@@ -38,6 +63,8 @@
                 </div>
 
                 <div class="card-body">
+
+                   
 
                     {{-- Tabs --}}
                     <ul class="nav nav-tabs" id="businessTabs">
@@ -263,8 +290,8 @@ $(function () {
             },
             success: function (response) {
                 if (response.success) {
-                    alert(response.message); // ✅ Show success message
-                    table.ajax.reload();    // ✅ Reload the DataTable
+                    alert(response.message);
+                    table.ajax.reload();
                 }
             },
             error: function () {
@@ -275,6 +302,5 @@ $(function () {
 
 });
 </script>
-
 
 @endsection

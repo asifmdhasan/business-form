@@ -483,12 +483,11 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            {{-- <div class="col-md-6">
                 <div class="info-item">
                     <i class="fas fa-user-tie"></i>
                     <div>
                         <p class="info-label mb-0">Founder Name</p>
-                            {{-- "founders" => "[{"name": "Shuchi Farheen", "linkedin": null, "whatsapp": null, "designation": "CTO"}]" --}}
                             @php
                                 $founders = is_string($business->founders)
                                     ? json_decode($business->founders, true)
@@ -501,7 +500,7 @@
                     </div>
                 </div>
             </div>
-            {{-- FOunder Degination --}}
+
             <div class="col-md-6">
                 <div class="info-item">
                     <i class="fas fa-briefcase"></i>
@@ -513,7 +512,39 @@
                         <p class="info-value mb-0">{{ $founderDesignations ?: '—' }}
                     </div>
                 </div>
-            </div>
+            </div> --}}
+
+
+
+            @php
+                $founders = is_string($business->founders)
+                    ? json_decode($business->founders, true)
+                    : ($business->founders ?? []);
+            @endphp
+            @forelse($founders as $founder)
+                <div class="col-md-6 mb-3">
+                    <div class="info-item">
+                        <i class="fas fa-user-tie"></i>
+                        <div>
+                            <p class="info-label mb-1 fw-bold">Founder Information</p>
+
+                            <p class=" mb-0">
+                                {{-- <span>Name:</span> --}}
+                                <span class="info-value">  {{ $founder['name'] ?? '—' }}</span>
+                            </p>
+
+                            <p class=" mb-0">
+                                {{-- <span>Designation:</span> --}}
+                                <span class="info-value">{{ $founder['designation'] ?? '—' }}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-md-6">
+                    <p>—</p>
+                </div>
+            @endforelse
         </div>
 
         @if($business->ethical_description)
@@ -561,6 +592,34 @@
         </section>
     @endif
 
+    {{-- Collaboration Open --}}
+    @if($business->collaboration_open === 'yes' || $business->collaboration_open === 'maybe')
+        {{-- collaboration_types --}}
+        <section class="about-card mt-4">
+            <h4 class="fw-bold mb-4 featured-business "
+                style="
+                    font-size: 34px;
+                    text-transform: uppercase;
+                    line-height: 1.3em;">
+                
+                <span style="color:#9b7d2d;font-weight: 900;">{{ $business->business_name }}  </span>
+                <span style=" font-weight: 300;"> Open for Collaboration </span>
+            </h4>
+            <p class="mb-3">This business is open to collaboration opportunities in the following areas:</p>
+            @php
+                $collaborationTypes = is_string($business->collaboration_types)
+                    ? json_decode($business->collaboration_types, true)
+                    : ($business->collaboration_types ?? []);
+            @endphp
+            <ul>
+                @foreach($collaborationTypes as $type)
+                    <li>{{ ucfirst(str_replace('_', ' ', $type)) }}</li>
+                @endforeach
+            </ul>
+        </section>
+    @endif
+
+    
     <!-- ELEGANT GALLERY with Centered Images in Cards -->
     @if($business->businessPhotos && $business->businessPhotos->count() > 0)
         <section class="mt-5 mb-5 contact-card">
@@ -702,6 +761,7 @@
         </div>
     </section>
 
+    
     <!-- CONTACT INFORMATION -->
     <section class="contact-card mt-4">
         <h4 class="fw-bold mb-4 featured-business "

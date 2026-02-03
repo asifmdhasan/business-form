@@ -1,22 +1,23 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AnalyticsController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BusinessCategoryController;
-use App\Http\Controllers\CustomerAuthController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\FrontendGmeBusinessController;
-use App\Http\Controllers\GmeBusinessAdminController;
-use App\Http\Controllers\GmeBusinessController;
-use App\Http\Controllers\GmeRegController;
-use App\Http\Controllers\GuestController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\UserController;
 use App\Http\Middleware\CustomerAuth;
-use App\Http\Middleware\LoginAuthMiddleware;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\GmeRegController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Middleware\LoginAuthMiddleware;
+use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\GmeBusinessController;
+use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\BusinessCategoryController;
+use App\Http\Controllers\GmeBusinessAdminController;
+use App\Http\Controllers\GmeBusinessExportController;
+use App\Http\Controllers\FrontendGmeBusinessController;
 
 
 
@@ -219,6 +220,40 @@ Route::middleware([
 
 
     Route::resource('gme-business-admin', GmeBusinessAdminController::class);
+
+    // Route::get('/gme-business-admin/export-all', [GmeBusinessExportController::class, 'exportAll'])
+    //     ->name('gme-business-admin.export-all');
+    
+    // Route::get('/gme-business-admin/export-pending', [GmeBusinessExportController::class, 'exportPending'])
+    //     ->name('gme-business-admin.export-pending');
+    
+    // Route::get('/gme-business-admin/export-approved', [GmeBusinessExportController::class, 'exportApproved'])
+    //     ->name('gme-business-admin.export-approved');
+    // Route::get('export-data', [AdminController::class, 'exportAllPage'])->name('admin.dashboard.export-data');
+
+        // Export Page Views
+    Route::get('gme/export-all-page', [GmeBusinessExportController::class, 'exportAllPage'])
+        ->name('exportAllPage');
+    
+    Route::get('gme/export-pending-page', [GmeBusinessExportController::class, 'exportPendingPage'])
+        ->name('exportPendingPage');
+    
+    Route::get('gme/export-approved-page', [GmeBusinessExportController::class, 'exportApprovedPage'])
+        ->name('exportApprovedPage');
+    
+    // Export Download Routes
+    Route::get('gme/export-all', [GmeBusinessExportController::class, 'exportAll'])
+        ->name('exportAll');
+    
+    Route::get('gme/export-pending', [GmeBusinessExportController::class, 'exportPending'])
+        ->name('exportPending');
+    
+    Route::get('gme/export-approved', [GmeBusinessExportController::class, 'exportApproved'])
+        ->name('exportApproved');
+
+
+
+        
 
     Route::group(['prefix' => 'user'], function () {
 

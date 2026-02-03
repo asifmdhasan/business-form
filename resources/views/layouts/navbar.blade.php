@@ -44,6 +44,36 @@
                                 <i class="fa fa-list me-2"></i> Services Index
                             </a>
                         </li>
+                        {{-- <li class="nav-item">
+                            <a href="{{ route('gme-business-admin.index') }}"
+                               class="nav-link text-black {{ request()->routeIs('gme-business-admin.index') ? 'active' : '' }}">
+                                <i class="fa fa-briefcase me-2"></i> Business Admin
+                            </a>
+                        </li> --}}
+                         {{-- Export Section - Above Tabs --}}
+                    {{-- <div class="export-section">
+                        <h5><i class="fas fa-file-export"></i> Export Data</h5>
+                        <div class="export-buttons"> --}}
+                            <li class="nav-item">
+                            <a href="{{ route('exportAll') }}" 
+                                class="nav-link text-black {{ request()->routeIs('exportAll') ? 'active' : '' }}">
+                                <i class="fas fa-file-export"></i> Export All
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a href="{{ route('exportPending') }}" 
+                                class="nav-link text-black {{ request()->routeIs('exportPending') ? 'active' : '' }}">
+                                <i class="fas fa-clock"></i> Export Pending
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a href="{{ route('exportApproved') }}" 
+                               class="nav-link text-black {{ request()->routeIs('exportApproved') ? 'active' : '' }}">
+                                <i class="fas fa-check-circle"></i> Export Approved
+                            </a>
+                            </li>
+      
+
                         <li class="">
                             <a href="#" class="nav-link text-danger fw-bold"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -54,6 +84,7 @@
                                 @csrf
                             </form>
                         </li>
+
                     </ul>
                 </li>
 

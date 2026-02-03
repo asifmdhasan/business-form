@@ -36,14 +36,6 @@ class GmeBusinessAdminController extends Controller
 
         return view('gme-business-admin.index');
     }
-    // public function edit($id)
-    // {
-    //     $business = GmeBusinessForm::findOrFail($id);
-    //     $countries = $this->getCountries();
-    //     $categories = BusinessCategory::orderBy('name')->get();
-
-    //     return view('gme-business-admin.edit', compact('business', 'countries', 'categories'));
-    // }
     public function edit($id)
     {
         $business = GmeBusinessForm::with('businessPhotos')->findOrFail($id);
@@ -205,13 +197,13 @@ class GmeBusinessAdminController extends Controller
             ];
 
             // Send mail (example using a Mailable class)
-            if ($business->customer && $business->customer->email) {
-                Mail::to($business->customer->email)
-                    ->send(new BusinessStatusUpdated($mailData));
-            } elseif ($business->email) {
-                Mail::to($business->email)
-                    ->send(new BusinessStatusUpdated($mailData));
-            }
+            // if ($business->customer && $business->customer->email) {
+            //     Mail::to($business->customer->email)
+            //         ->send(new BusinessStatusUpdated($mailData));
+            // } elseif ($business->email) {
+            //     Mail::to($business->email)
+            //         ->send(new BusinessStatusUpdated($mailData));
+            // }
         }
 
 

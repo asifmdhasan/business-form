@@ -244,7 +244,7 @@
 
             .btn-login:hover {
                 transform: scale(1.05);
-                background: var(--primary-color);
+                background: #576829;
             }
 
             .filter-sidebar {
@@ -687,9 +687,9 @@
 
         /* CTA Button */
         .join-network {
-            background: #D4AF37;
+            background: #576829;
             /* background: linear-gradient( #c9a23a, #9c7d2d); */
-            color: #576829 !important;
+            color: #fff !important;
             font-weight: 600;
             border-radius: 999px;
             padding: 12px 26px;
@@ -1021,6 +1021,11 @@
         .gme-btn:hover .gme-btn-icon i {
             transform: translateX(4px);
         }
+        #heroSearchBtn{
+            border: 1px solid #576829;
+            background: #576829;
+            color: white !important;
+        }
 
     </style>
 </head>
@@ -1097,8 +1102,8 @@
                                     id="heroSearchInput"
                                     class="form-control"
                                     placeholder="Search by business name ...">
-                                <button class="btn btn-warning" id="heroSearchBtn">
-                                    <span style="font-weight: 400;color: #576829; font-size: 18px;"> Search
+                                <button class="btn" id="heroSearchBtn">
+                                    <span style="font-weight: 400;color: #fff; font-size: 18px;"> Search
                                 </button>
                             </div>
                             <a href="{{ route('customer.login') }}" class="btn btn-login join-network-white" style=" color: #576829; margin-top: 3rem;;">
@@ -1280,33 +1285,7 @@
                 }
             });
         }
-        // function fetchFeaturedBusinesses() {
-        //     $.ajax({
-        //         url: '{{ route("guest.gme-featured-business.ajax") }}',
-        //         method: 'GET',
-        //         success: function (response) {
-        //             // console.log(response);
-        //                 allBusinesses = response.businesses;
-
-        //             // ✅ Parse countries_of_operation JSON
-        //             // allBusinesses = response.businesses.map(business => {
-        //             //     try {
-        //             //         business.countries_of_operation = Array.isArray(business.countries_of_operation)
-        //             //             ? business.countries_of_operation
-        //             //             : JSON.parse(business.countries_of_operation || '[]');
-        //             //     } catch(e) {
-        //             //         business.countries_of_operation = [];
-        //             //     }
-        //             //     return business;
-        //             // });
-
-        //             filteredBusinesses = [...allBusinesses];
-        //             renderFeatured(response.featured);
-
-        //             renderBusinesses();
-        //         }
-        //     });
-        // }
+       
 
         /* =========================
         Fetch Categories
@@ -1628,6 +1607,9 @@
             </div>`;
         }
         function createBusinessCardFeature(business) {
+            if (business.is_featured !== 1) {
+                return '';
+            }
 
             const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
@@ -1674,7 +1656,7 @@
                     <div class="business-content text-center p-3">
 
                         <div class="logo-box mx-auto mb-2"
-                            style="width:80px;height:80px;">
+                            style="width:150px;height:150px;">
                             <img src="${logo}" alt="${business.business_name}">
                         </div>
 

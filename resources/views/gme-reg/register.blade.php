@@ -309,83 +309,70 @@
                             </div>
 
                             <div class="row">
-                       
-                                {{-- <div class="col-md-6 mb-3">
-                                    <label class="form-label">WhatsApp Number</label>
+                                {{-- add business_contact_person_name --}}
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Business Contact Person Name</label>
+                                    <input type="text" name="business_contact_person_name" class="form-control"
+                                        value="{{ old('business_contact_person_name', $business->business_contact_person_name ?? '') }}">
+                                    <!-- Error Message -->
+                                    @error('business_contact_person_name')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Provide Number</label>
+
+                                    @php
+                                        // Split the stored business WhatsApp number
+                                        $storedBusinessWhatsApp = $business->whatsapp_number ?? '';
+                                        $businessWhatsappPrefix = '+880';
+                                        $businessWhatsappNumber = '';
+                                        
+                                        // Check if we have old input (from validation error)
+                                        if (old('whatsapp_number')) {
+                                            $businessWhatsappPrefix = old('whatsapp_prefix', '+880');
+                                            $businessWhatsappNumber = old('whatsapp_number', '');
+                                        } elseif ($storedBusinessWhatsApp) {
+                                            // Split from database
+                                            if (preg_match('/^(\+\d{1,4})(.*)$/', $storedBusinessWhatsApp, $matches)) {
+                                                $businessWhatsappPrefix = $matches[1];
+                                                $businessWhatsappNumber = $matches[2];
+                                            } else {
+                                                $businessWhatsappNumber = $storedBusinessWhatsApp;
+                                            }
+                                        }
+                                    @endphp
 
                                     <div class="whatsapp-wrapper">
                                         <div class="prefix-dropdown" id="prefixDropdown">
-                                            <span id="selectedPrefix">+880</span>
+                                            <span id="selectedPrefix">{{ $businessWhatsappPrefix }}</span>
                                             <span class="arrow">▼</span>
                                         </div>
+
+                                        <!-- Add hidden prefix input -->
+                                        <input type="hidden"
+                                            name="whatsapp_prefix"
+                                            id="whatsappPrefix"
+                                            value="{{ $businessWhatsappPrefix }}">
 
                                         <input type="text"
                                             name="whatsapp_number"
                                             class="form-control whatsapp-input"
-                                            placeholder="Enter number">
+                                            placeholder="Enter number"
+                                            value="{{ $businessWhatsappNumber }}">
                                     </div>
 
                                     <!-- dropdown list -->
                                     <div class="prefix-list d-none" id="prefixList">
                                         <input type="text" id="prefixSearch" placeholder="Search country...">
-
                                         <ul id="prefixItems">
                                             <!-- JS will inject -->
                                         </ul>
                                     </div>
-                                </div> --}}
-
-                                <div class="col-md-6 mb-3">
-    <label class="form-label">Provide WhatsApp Number</label>
-
-    @php
-        // Split the stored business WhatsApp number
-        $storedBusinessWhatsApp = $business->whatsapp_number ?? '';
-        $businessWhatsappPrefix = '+880';
-        $businessWhatsappNumber = '';
-        
-        // Check if we have old input (from validation error)
-        if (old('whatsapp_number')) {
-            $businessWhatsappPrefix = old('whatsapp_prefix', '+880');
-            $businessWhatsappNumber = old('whatsapp_number', '');
-        } elseif ($storedBusinessWhatsApp) {
-            // Split from database
-            if (preg_match('/^(\+\d{1,4})(.*)$/', $storedBusinessWhatsApp, $matches)) {
-                $businessWhatsappPrefix = $matches[1];
-                $businessWhatsappNumber = $matches[2];
-            } else {
-                $businessWhatsappNumber = $storedBusinessWhatsApp;
-            }
-        }
-    @endphp
-
-    <div class="whatsapp-wrapper">
-        <div class="prefix-dropdown" id="prefixDropdown">
-            <span id="selectedPrefix">{{ $businessWhatsappPrefix }}</span>
-            <span class="arrow">▼</span>
-        </div>
-
-        <!-- Add hidden prefix input -->
-        <input type="hidden"
-            name="whatsapp_prefix"
-            id="whatsappPrefix"
-            value="{{ $businessWhatsappPrefix }}">
-
-        <input type="text"
-            name="whatsapp_number"
-            class="form-control whatsapp-input"
-            placeholder="Enter number"
-            value="{{ $businessWhatsappNumber }}">
-    </div>
-
-    <!-- dropdown list -->
-    <div class="prefix-list d-none" id="prefixList">
-        <input type="text" id="prefixSearch" placeholder="Search country...">
-        <ul id="prefixItems">
-            <!-- JS will inject -->
-        </ul>
-    </div>
-</div>
+                                </div>
+                                
 
 
                                 <div class="col-md-6 mb-3">
@@ -436,96 +423,96 @@
                             </div>
 
                             <hr>
-<h6 class="fw-bold mb-3">Founder Information</h6>
+                            <h6 class="fw-bold mb-3">Founder Information</h6>
 
-<div id="founders-container">
-    @php
-        $founders = old('founders', json_decode($business->founders ?? '[]', true)) ?: [['name'=>'','designation'=>'']];
-    @endphp
+                            <div id="founders-container">
+                                @php
+                                    $founders = old('founders', json_decode($business->founders ?? '[]', true)) ?: [['name'=>'','designation'=>'']];
+                                @endphp
 
-    @foreach($founders as $index => $founder)
-    @php
-        // Split the stored WhatsApp number into prefix and number
-        $storedWhatsApp = $founder['whatsapp_number'] ?? '';
-        $whatsappPrefix = '+880'; // default
-        $whatsappNumber = '';
-        
-        if ($storedWhatsApp) {
-            // Extract prefix (matches +880, +1, +44, etc.)
-            if (preg_match('/^(\+\d{1,4})(.*)$/', $storedWhatsApp, $matches)) {
-                $whatsappPrefix = $matches[1]; // e.g., +880
-                $whatsappNumber = $matches[2]; // e.g., 1925272409
-            } else {
-                // If no prefix found, treat entire string as number
-                $whatsappNumber = $storedWhatsApp;
-            }
-        }
-    @endphp
-    
-    <div class="border rounded p-3 mb-3 founder-item">
-        <div class="row">
-            <div class="col-md-6 mb-2">
-                <label class="form-label">Founder / Owner Full Name <span class="text-danger">*</span></label>
-                <input type="text" class="form-control"
-                    name="founders[{{ $index }}][name]"
-                    value="{{ $founder['name'] ?? '' }}" required>
-            </div>
-            <div class="col-md-6 mb-2">
-                <label class="form-label">Designation <span class="text-danger">*</span></label>
-                <input type="text" class="form-control"
-                    name="founders[{{ $index }}][designation]"
-                    value="{{ $founder['designation'] ?? '' }}" required>
-            </div>
-            <div class="col-md-6 mb-2">
-                <label class="form-label">WhatsApp Number</label>
+                                @foreach($founders as $index => $founder)
+                                @php
+                                    // Split the stored WhatsApp number into prefix and number
+                                    $storedWhatsApp = $founder['whatsapp_number'] ?? '';
+                                    $whatsappPrefix = '+880'; // default
+                                    $whatsappNumber = '';
+                                    
+                                    if ($storedWhatsApp) {
+                                        // Extract prefix (matches +880, +1, +44, etc.)
+                                        if (preg_match('/^(\+\d{1,4})(.*)$/', $storedWhatsApp, $matches)) {
+                                            $whatsappPrefix = $matches[1]; // e.g., +880
+                                            $whatsappNumber = $matches[2]; // e.g., 1925272409
+                                        } else {
+                                            // If no prefix found, treat entire string as number
+                                            $whatsappNumber = $storedWhatsApp;
+                                        }
+                                    }
+                                @endphp
+                                
+                                <div class="border rounded p-3 mb-3 founder-item">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">Founder / Owner Full Name <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control"
+                                                name="founders[{{ $index }}][name]"
+                                                value="{{ $founder['name'] ?? '' }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">Designation <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control"
+                                                name="founders[{{ $index }}][designation]"
+                                                value="{{ $founder['designation'] ?? '' }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">WhatsApp Number</label>
 
-                <div class="whatsapp-wrapper" data-index="{{ $index }}">
-                    <div class="prefix-dropdown">
-                        <span class="selectedPrefix">{{ $whatsappPrefix }}</span>
-                        <span class="arrow">▼</span>
-                    </div>
+                                            <div class="whatsapp-wrapper" data-index="{{ $index }}">
+                                                <div class="prefix-dropdown">
+                                                    <span class="selectedPrefix">{{ $whatsappPrefix }}</span>
+                                                    <span class="arrow">▼</span>
+                                                </div>
 
-                    <!-- hidden prefix -->
-                    <input type="hidden"
-                        name="founders[{{ $index }}][whatsapp_prefix]"
-                        class="whatsapp-prefix"
-                        value="{{ $whatsappPrefix }}">
+                                                <!-- hidden prefix -->
+                                                <input type="hidden"
+                                                    name="founders[{{ $index }}][whatsapp_prefix]"
+                                                    class="whatsapp-prefix"
+                                                    value="{{ $whatsappPrefix }}">
 
-                    <!-- number -->
-                    <input type="text"
-                        name="founders[{{ $index }}][whatsapp_number]"
-                        class="form-control whatsapp-input"
-                        placeholder="Enter number"
-                        value="{{ $whatsappNumber }}">
-                </div>
+                                                <!-- number -->
+                                                <input type="text"
+                                                    name="founders[{{ $index }}][whatsapp_number]"
+                                                    class="form-control whatsapp-input"
+                                                    placeholder="Enter number"
+                                                    value="{{ $whatsappNumber }}">
+                                            </div>
 
-                <!-- dropdown list -->
-                <div class="prefix-list d-none">
-                    <input type="text" class="prefixSearch" placeholder="Search country...">
-                    <ul class="prefixItems"></ul>
-                </div>
-            </div>
-            <div class="col-md-6 mb-2">
-                <label class="form-label">Linkedin URL</label>
-                <input type="text" class="form-control"
-                    name="founders[{{ $index }}][linkedin]"
-                    value="{{ $founder['linkedin'] ?? '' }}">
-            </div>
-            @if($index > 0)
-            <div class="col-12 mb-2">
-                <button type="button" class="btn btn-danger btn-sm remove-founder">
-                    <i class="fa fa-trash"></i> Remove Founder
-                </button>
-            </div>
-            @endif
-        </div>
-    </div>
-    @endforeach
-</div>
+                                            <!-- dropdown list -->
+                                            <div class="prefix-list d-none">
+                                                <input type="text" class="prefixSearch" placeholder="Search country...">
+                                                <ul class="prefixItems"></ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">Linkedin URL</label>
+                                            <input type="text" class="form-control"
+                                                name="founders[{{ $index }}][linkedin]"
+                                                value="{{ $founder['linkedin'] ?? '' }}">
+                                        </div>
+                                        @if($index > 0)
+                                        <div class="col-12 mb-2">
+                                            <button type="button" class="btn btn-danger btn-sm remove-founder">
+                                                <i class="fa fa-trash"></i> Remove Founder
+                                            </button>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
 
-<button type="button" class="btn btn-success btn-sm" id="addFounderBtn">
-    <i class="fa fa-plus"></i> Add Founder
-</button>
+                            <button type="button" class="btn btn-success btn-sm" id="addFounderBtn">
+                                <i class="fa fa-plus"></i> Add Founder
+                            </button>
 
 
                         @endif
@@ -1154,8 +1141,239 @@ $(document).ready(function () {
     // Init
     toggleUploadBox();
 </script>
-
 <script>
+    // Country codes data
+    const topCountries = [
+        { name: "Bangladesh", code: "+880" },
+        { name: "India", code: "+91" },
+        { name: "United States", code: "+1" },
+        { name: "United Kingdom", code: "+44" },
+        { name: "Saudi Arabia", code: "+966" }
+    ];
+
+    const allCountries = [
+        { name: "Afghanistan", code: "+93" },
+        { name: "Albania", code: "+355" },
+        { name: "Algeria", code: "+213" },
+        { name: "Argentina", code: "+54" },
+        { name: "Australia", code: "+61" },
+        { name: "Austria", code: "+43" },
+        { name: "Bangladesh", code: "+880" },
+        { name: "Belgium", code: "+32" },
+        { name: "Brazil", code: "+55" },
+        { name: "Canada", code: "+1" },
+        { name: "China", code: "+86" },
+        { name: "Denmark", code: "+45" },
+        { name: "Egypt", code: "+20" },
+        { name: "France", code: "+33" },
+        { name: "Germany", code: "+49" },
+        { name: "India", code: "+91" },
+        { name: "Indonesia", code: "+62" },
+        { name: "Italy", code: "+39" },
+        { name: "Japan", code: "+81" },
+        { name: "Malaysia", code: "+60" },
+        { name: "Nepal", code: "+977" },
+        { name: "Netherlands", code: "+31" },
+        { name: "New Zealand", code: "+64" },
+        { name: "Norway", code: "+47" },
+        { name: "Pakistan", code: "+92" },
+        { name: "Philippines", code: "+63" },
+        { name: "Qatar", code: "+974" },
+        { name: "Russia", code: "+7" },
+        { name: "Singapore", code: "+65" },
+        { name: "South Africa", code: "+27" },
+        { name: "South Korea", code: "+82" },
+        { name: "Spain", code: "+34" },
+        { name: "Sri Lanka", code: "+94" },
+        { name: "Sweden", code: "+46" },
+        { name: "Switzerland", code: "+41" },
+        { name: "Thailand", code: "+66" },
+        { name: "Turkey", code: "+90" },
+        { name: "UAE", code: "+971" },
+        { name: "United Kingdom", code: "+44" },
+        { name: "United States", code: "+1" },
+        { name: "Vietnam", code: "+84" },
+        { name: "Zimbabwe", code: "+263" }
+    ];
+
+    // Global founder index counter
+    let founderIndex = $('#founders-container .founder-item').length;
+
+    // Initialize WhatsApp Dropdowns for ALL instances (Business + Founders)
+    function initializeWhatsAppDropdowns() {
+        $('.whatsapp-wrapper').each(function() {
+            const $wrapper = $(this);
+            const $dropdown = $wrapper.find('.prefix-dropdown');
+            const $prefixList = $wrapper.next('.prefix-list');
+            const $selectedPrefix = $wrapper.find('.selectedPrefix, #selectedPrefix');
+            const $hiddenInput = $wrapper.find('.whatsapp-prefix, #whatsappPrefix');
+            const $searchInput = $prefixList.find('.prefixSearch, #prefixSearch');
+            const $itemsList = $prefixList.find('.prefixItems, #prefixItems');
+
+            // Skip if already initialized
+            if ($wrapper.data('initialized')) return;
+            $wrapper.data('initialized', true);
+
+            // Populate country codes if not already done
+            if ($itemsList.children().length === 0) {
+                // Top countries first
+                topCountries.forEach(country => {
+                    $itemsList.append(`
+                        <li data-code="${country.code}" style="font-weight: 600; cursor: pointer; padding: 8px 12px;">
+                            ${country.name} (${country.code})
+                        </li>
+                    `);
+                });
+
+                // Divider
+                $itemsList.append('<li class="divider" style="border-top: 1px solid #ddd; padding: 0; cursor: default;"></li>');
+
+                // All countries
+                allCountries.forEach(country => {
+                    $itemsList.append(`
+                        <li data-code="${country.code}" style="cursor: pointer; padding: 8px 12px;">
+                            ${country.name} (${country.code})
+                        </li>
+                    `);
+                });
+            }
+
+            // Toggle dropdown
+            $dropdown.off('click').on('click', function(e) {
+                e.stopPropagation();
+                
+                // Close other dropdowns
+                $('.prefix-list').not($prefixList).addClass('d-none');
+                
+                // Toggle current
+                $prefixList.toggleClass('d-none');
+                
+                // Clear search when opening
+                if (!$prefixList.hasClass('d-none')) {
+                    $searchInput.val('');
+                    $itemsList.find('li').show();
+                }
+            });
+
+            // Search functionality
+            $searchInput.off('input').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                
+                $itemsList.find('li').each(function() {
+                    const $li = $(this);
+                    
+                    // Skip divider
+                    if ($li.hasClass('divider')) {
+                        $li.toggle(searchTerm === '');
+                        return;
+                    }
+                    
+                    const text = $li.text().toLowerCase();
+                    $li.toggle(text.includes(searchTerm));
+                });
+            });
+
+            // Select country code
+            $itemsList.off('click', 'li').on('click', 'li', function(e) {
+                e.stopPropagation();
+                
+                const $li = $(this);
+                const selectedCode = $li.data('code');
+                
+                // Skip if clicking on divider
+                if (!selectedCode || $li.hasClass('divider')) return;
+                
+                $selectedPrefix.text(selectedCode);
+                $hiddenInput.val(selectedCode);
+                $prefixList.addClass('d-none');
+                $searchInput.val('');
+                $itemsList.find('li').show();
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        $(document).off('click.whatsappDropdown').on('click.whatsappDropdown', function(e) {
+            if (!$(e.target).closest('.whatsapp-wrapper, .prefix-list').length) {
+                $('.prefix-list').addClass('d-none');
+            }
+        });
+    }
+
+    // Add Founder Function
+    function addFounder() {
+        const newFounderHtml = `
+            <div class="border rounded p-3 mb-3 founder-item">
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">Founder / Owner Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="founders[${founderIndex}][name]" required>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">Designation <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="founders[${founderIndex}][designation]" required>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">WhatsApp Number</label>
+
+                        <div class="whatsapp-wrapper" data-index="${founderIndex}">
+                            <div class="prefix-dropdown">
+                                <span class="selectedPrefix">+880</span>
+                                <span class="arrow">▼</span>
+                            </div>
+
+                            <input type="hidden"
+                                name="founders[${founderIndex}][whatsapp_prefix]"
+                                class="whatsapp-prefix"
+                                value="+880">
+
+                            <input type="text"
+                                name="founders[${founderIndex}][whatsapp_number]"
+                                class="form-control whatsapp-input"
+                                placeholder="Enter number">
+                        </div>
+
+                        <div class="prefix-list d-none">
+                            <input type="text" class="prefixSearch" placeholder="Search country...">
+                            <ul class="prefixItems"></ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">Linkedin URL</label>
+                        <input type="text" class="form-control" name="founders[${founderIndex}][linkedin]">
+                    </div>
+                    <div class="col-12 mb-2">
+                        <button type="button" class="btn btn-danger btn-sm remove-founder">
+                            <i class="fa fa-trash"></i> Remove Founder
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        $('#founders-container').append(newFounderHtml);
+        founderIndex++;
+        
+        // Re-initialize WhatsApp dropdowns for the new founder
+        initializeWhatsAppDropdowns();
+    }
+
+    // Document Ready
+    $(document).ready(function() {
+        // Initialize all existing WhatsApp dropdowns on page load
+        initializeWhatsAppDropdowns();
+
+        // Add Founder button click
+        $('#addFounderBtn').off('click').on('click', function() {
+            addFounder();
+        });
+
+        // Remove Founder
+        $(document).on('click', '.remove-founder', function() {
+            $(this).closest('.founder-item').remove();
+        });
+    });
+</script>
+{{-- <script>
     // Country codes data
     const topCountries = [
         { name: "Bangladesh", code: "+880" },
@@ -1277,9 +1495,9 @@ $(document).ready(function () {
             list.classList.add('d-none');
         }
     });
-</script>
+</script> --}}
 
-<script>
+{{-- <script>
     // Initialize WhatsApp Dropdowns for Founders (works for existing and new founders)
     function initializeWhatsAppDropdowns() {
         $('.whatsapp-wrapper').each(function() {
@@ -1370,36 +1588,9 @@ $(document).ready(function () {
             }
         });
     }
-</script>
+</script> --}}
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const radios = document.querySelectorAll('input[name="collaboration_open"]');
-        const wrapper = document.getElementById('collaborationTypesWrapper');
-
-        function toggleCollaborationTypes() {
-            const selected = document.querySelector('input[name="collaboration_open"]:checked')?.value;
-
-            if (selected === 'yes' || selected === 'maybe') {
-                wrapper.style.display = 'block';
-            } else {
-                wrapper.style.display = 'none';
-
-                // clear checked checkboxes when "No"
-                wrapper.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-            }
-        }
-
-        radios.forEach(radio => {
-            radio.addEventListener('change', toggleCollaborationTypes);
-        });
-
-        // run on page load (edit + validation error case)
-        toggleCollaborationTypes();
-    });
-</script>
-
-<script>
+{{-- <script>
     // Founder Management
         const founderIndex = $('#founders-container .border.rounded').length;
 
@@ -1471,7 +1662,34 @@ $(document).ready(function () {
     $(document).on('click', '#addFounderBtn', function() {
         addFounder();
     });
+</script> --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const radios = document.querySelectorAll('input[name="collaboration_open"]');
+        const wrapper = document.getElementById('collaborationTypesWrapper');
+
+        function toggleCollaborationTypes() {
+            const selected = document.querySelector('input[name="collaboration_open"]:checked')?.value;
+
+            if (selected === 'yes' || selected === 'maybe') {
+                wrapper.style.display = 'block';
+            } else {
+                wrapper.style.display = 'none';
+
+                // clear checked checkboxes when "No"
+                wrapper.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            }
+        }
+
+        radios.forEach(radio => {
+            radio.addEventListener('change', toggleCollaborationTypes);
+        });
+
+        // run on page load (edit + validation error case)
+        toggleCollaborationTypes();
+    });
 </script>
+
 @if($step == 2)
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script>

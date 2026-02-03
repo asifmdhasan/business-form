@@ -32,10 +32,46 @@ class GmeBusinessForm extends Model
     /**
      * Get the services
      */
-    public function services()
-    {
-        return $this->belongsToMany(Service::class, 'business_service', 'business_id', 'service_id');
+    // public function services()
+    // {
+    //     return $this->belongsToMany(Service::class, 'service_id');
+    // }
+    // $casts থেকে 'services_id' => 'array' remove করুন
+
+    public function getServicesAttribute()
+{
+    // Raw value নিন
+    $rawServicesId = $this->attributes['services_id'] ?? null;
+
+    if (empty($rawServicesId)) {
+        return collect([]);
     }
+
+    // যদি string হয়, তাহলে decode করুন
+    if (is_string($rawServicesId)) {
+        $serviceIds = json_decode($rawServicesId, true);
+    } else {
+        $serviceIds = $rawServicesId;
+    }
+
+    // আবার check করুন যদি এখনো string থাকে (double encoded এর জন্য)
+    if (is_string($serviceIds)) {
+        $serviceIds = json_decode($serviceIds, true);
+    }
+
+    if (empty($serviceIds) || !is_array($serviceIds)) {
+        return collect([]);
+    }
+
+    // String IDs কে integer এ convert করুন
+    $serviceIds = array_map('intval', array_filter($serviceIds));
+
+    if (empty($serviceIds)) {
+        return collect([]);
+    }
+
+    return \App\Models\Service::whereIn('id', $serviceIds)->get();
+}
 
     public function customer()
     {
