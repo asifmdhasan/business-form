@@ -168,6 +168,20 @@ Route::middleware([
         Route::get('/get-locations', [CustomerController::class, 'getLocationAjax'])->name('customer.get-locations.ajax');
 
 
+        // Auto-upload routes
+        Route::post('/gme-business/upload-file', [GmeRegController::class, 'uploadFile'])
+            ->name('gme.business.upload-file');
+
+        Route::post('/gme-business/delete-file', [GmeRegController::class, 'deleteFile'])
+            ->name('gme.business.delete-file');
+
+        Route::post('/gme-business/upload-gallery', [GmeRegController::class, 'uploadGallery'])
+            ->name('gme.business.upload-gallery');
+
+        Route::post('/gme-business/delete-gallery-photo', [GmeRegController::class, 'deleteGalleryPhoto'])
+            ->name('gme.business.delete-gallery-photo');
+
+
 
     ///////////////////////////////////////////////////
 

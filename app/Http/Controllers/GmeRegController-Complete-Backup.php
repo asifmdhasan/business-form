@@ -277,81 +277,81 @@ class GmeRegController extends Controller
         $business->collaboration_open = $request->collaboration_open;
         $business->collaboration_types = json_encode($request->collaboration_types ?? []);
 
-        // // Handle LOGO upload
-        // if ($request->hasFile('logo')) {
-        //     if ($business->logo && file_exists(public_path('assets/' . $business->logo))) {
-        //         unlink(public_path('assets/' . $business->logo));
-        //     }
-        //     $business->logo = $request->file('logo')
-        //         ->store('uploads/business/logos', 'public_folder');
-        // }
+        // Handle LOGO upload
+        if ($request->hasFile('logo')) {
+            if ($business->logo && file_exists(public_path('assets/' . $business->logo))) {
+                unlink(public_path('assets/' . $business->logo));
+            }
+            $business->logo = $request->file('logo')
+                ->store('uploads/business/logos', 'public_folder');
+        }
 
-        // // Handle COVER PHOTO upload
-        // if ($request->hasFile('cover_photo')) {
-        //     if ($business->cover_photo && file_exists(public_path('assets/' . $business->cover_photo))) {
-        //         unlink(public_path('assets/' . $business->cover_photo));
-        //     }
-        //     $business->cover_photo = $request->file('cover_photo')
-        //         ->store('uploads/business/covers', 'public_folder');
-        // }
+        // Handle COVER PHOTO upload
+        if ($request->hasFile('cover_photo')) {
+            if ($business->cover_photo && file_exists(public_path('assets/' . $business->cover_photo))) {
+                unlink(public_path('assets/' . $business->cover_photo));
+            }
+            $business->cover_photo = $request->file('cover_photo')
+                ->store('uploads/business/covers', 'public_folder');
+        }
 
 
-        // // NEW: Handle BUSINESS PHOTOS using business_photos table
-        // // Delete photos that were removed
-        // if ($request->has('delete_photos')) {
-        //     $deleteIds = $request->input('delete_photos', []);
-        //     $photosToDelete = BusinessPhoto::whereIn('id', $deleteIds)
-        //         ->where('gme_business_form_id', $business->id)
-        //         ->get();
+        // NEW: Handle BUSINESS PHOTOS using business_photos table
+        // Delete photos that were removed
+        if ($request->has('delete_photos')) {
+            $deleteIds = $request->input('delete_photos', []);
+            $photosToDelete = BusinessPhoto::whereIn('id', $deleteIds)
+                ->where('gme_business_form_id', $business->id)
+                ->get();
 
-        //     foreach ($photosToDelete as $photo) {
-        //         // Delete file from storage
-        //         if ($photo->image_url && file_exists(public_path('assets/' . $photo->image_url))) {
-        //             unlink(public_path('assets/' . $photo->image_url));
-        //         }
-        //         // Delete database record
-        //         $photo->delete();
-        //     }
-        // }
+            foreach ($photosToDelete as $photo) {
+                // Delete file from storage
+                if ($photo->image_url && file_exists(public_path('assets/' . $photo->image_url))) {
+                    unlink(public_path('assets/' . $photo->image_url));
+                }
+                // Delete database record
+                $photo->delete();
+            }
+        }
 
-        // // Add new photos
-        // if ($request->hasFile('photos')) {
-        //     foreach ($request->file('photos') as $photo) {
-        //         $path = $photo->store('uploads/business/gallery', 'public_folder');
+        // Add new photos
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                $path = $photo->store('uploads/business/gallery', 'public_folder');
 
-        //         BusinessPhoto::create([
-        //             'gme_business_form_id' => $business->id,
-        //             'image_url' => $path
-        //         ]);
-        //     }
-        // }
+                BusinessPhoto::create([
+                    'gme_business_form_id' => $business->id,
+                    'image_url' => $path
+                ]);
+            }
+        }
 
-        // // Handle REGISTRATION DOCUMENT upload
-        // if ($request->hasFile('registration_document')) {
-        //     if ($business->registration_document && file_exists(public_path('assets/' . $business->registration_document))) {
-        //         unlink(public_path('assets/' . $business->registration_document));
-        //     }
-        //     $business->registration_document = $request->file('registration_document')
-        //         ->store('uploads/business/documents', 'public_folder');
-        // }
+        // Handle REGISTRATION DOCUMENT upload
+        if ($request->hasFile('registration_document')) {
+            if ($business->registration_document && file_exists(public_path('assets/' . $business->registration_document))) {
+                unlink(public_path('assets/' . $business->registration_document));
+            }
+            $business->registration_document = $request->file('registration_document')
+                ->store('uploads/business/documents', 'public_folder');
+        }
 
-        // // Handle BUSINESS PROFILE upload
-        // if ($request->hasFile('business_profile')) {
-        //     if ($business->business_profile && file_exists(public_path('assets/' . $business->business_profile))) {
-        //         unlink(public_path('assets/' . $business->business_profile));
-        //     }
-        //     $business->business_profile = $request->file('business_profile')
-        //         ->store('uploads/business/profiles', 'public_folder');
-        // }
+        // Handle BUSINESS PROFILE upload
+        if ($request->hasFile('business_profile')) {
+            if ($business->business_profile && file_exists(public_path('assets/' . $business->business_profile))) {
+                unlink(public_path('assets/' . $business->business_profile));
+            }
+            $business->business_profile = $request->file('business_profile')
+                ->store('uploads/business/profiles', 'public_folder');
+        }
 
-        // // Handle PRODUCT CATALOGUE upload
-        // if ($request->hasFile('product_catalogue')) {
-        //     if ($business->product_catalogue && file_exists(public_path('assets/' . $business->product_catalogue))) {
-        //         unlink(public_path('assets/' . $business->product_catalogue));
-        //     }
-        //     $business->product_catalogue = $request->file('product_catalogue')
-        //         ->store('uploads/business/catalogues', 'public_folder');
-        // }
+        // Handle PRODUCT CATALOGUE upload
+        if ($request->hasFile('product_catalogue')) {
+            if ($business->product_catalogue && file_exists(public_path('assets/' . $business->product_catalogue))) {
+                unlink(public_path('assets/' . $business->product_catalogue));
+            }
+            $business->product_catalogue = $request->file('product_catalogue')
+                ->store('uploads/business/catalogues', 'public_folder');
+        }
     }
 
     /**
@@ -420,225 +420,5 @@ class GmeRegController extends Controller
             'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam',
             'Yemen', 'Zambia', 'Zimbabwe'
         ];
-    }
-    ///////////////////////////
-    // Auto-upload single file
-    //////////////////////////
-    public function uploadFile(Request $request)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'file' => 'required|file|max:5120',
-                'field_name' => 'required|string',
-                'business_id' => 'required|exists:gme_business_forms,id'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => $validator->errors()->first()
-                ], 422);
-            }
-
-            $fieldName = $request->field_name;
-            $business = GmeBusinessForm::findOrFail($request->business_id);
-
-            // Validate file type based on field
-            $allowedMimes = [
-                'logo' => 'image',
-                'cover_photo' => 'image',
-                'registration_document' => 'mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif',
-                'business_profile' => 'mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif',
-                'product_catalogue' => 'mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif'
-            ];
-
-            $maxSizes = [
-                'logo' => 2048,
-                'cover_photo' => 2048,
-                'registration_document' => 2048,
-                'business_profile' => 2048,
-                'product_catalogue' => 2048
-            ];
-
-            $fileValidator = Validator::make($request->all(), [
-                'file' => ($allowedMimes[$fieldName] ?? 'file') . '|max:' . ($maxSizes[$fieldName] ?? 5120)
-            ]);
-
-            if ($fileValidator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => $fileValidator->errors()->first()
-                ], 422);
-            }
-
-            // Delete old file if exists
-            if ($business->$fieldName && file_exists(public_path('assets/' . $business->$fieldName))) {
-                unlink(public_path('assets/' . $business->$fieldName));
-            }
-
-            // Upload new file
-            $folderMap = [
-                'logo' => 'uploads/business/logos',
-                'cover_photo' => 'uploads/business/covers',
-                'registration_document' => 'uploads/business/documents',
-                'business_profile' => 'uploads/business/profiles',
-                'product_catalogue' => 'uploads/business/catalogues'
-            ];
-
-            $path = $request->file('file')->store($folderMap[$fieldName] ?? 'uploads/business', 'public_folder');
-            
-            $business->$fieldName = $path;
-            $business->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'File uploaded successfully',
-                'file_url' => asset('assets/' . $path)
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Upload failed: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    // Delete single file
-    public function deleteFile(Request $request)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'business_id' => 'required|exists:gme_business_forms,id',
-                'field_name' => 'required|string'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => $validator->errors()->first()
-                ], 422);
-            }
-
-            $business = GmeBusinessForm::findOrFail($request->business_id);
-            $fieldName = $request->field_name;
-
-            // Delete file from storage
-            if ($business->$fieldName && file_exists(public_path('assets/' . $business->$fieldName))) {
-                unlink(public_path('assets/' . $business->$fieldName));
-            }
-
-            // Clear database field
-            $business->$fieldName = null;
-            $business->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'File deleted successfully'
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Delete failed: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    // Upload gallery photos
-    public function uploadGallery(Request $request)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'photos.*' => 'required|image|max:2048',
-                'business_id' => 'required|exists:gme_business_forms,id'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => $validator->errors()->first()
-                ], 422);
-            }
-
-            $business = GmeBusinessForm::findOrFail($request->business_id);
-            
-            // Check max limit
-            $existingCount = $business->businessPhotos()->count();
-            $newCount = count($request->file('photos'));
-            
-            if ($existingCount + $newCount > 6) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Maximum 6 photos allowed. You have ' . $existingCount . ' photos already.'
-                ], 422);
-            }
-
-            $uploadedPhotos = [];
-
-            foreach ($request->file('photos') as $photo) {
-                $path = $photo->store('uploads/business/gallery', 'public_folder');
-
-                $businessPhoto = BusinessPhoto::create([
-                    'gme_business_form_id' => $business->id,
-                    'image_url' => $path
-                ]);
-
-                $uploadedPhotos[] = [
-                    'id' => $businessPhoto->id,
-                    'url' => asset('assets/' . $path)
-                ];
-            }
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Photos uploaded successfully',
-                'photos' => $uploadedPhotos
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Upload failed: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    // Delete gallery photo
-    public function deleteGalleryPhoto(Request $request)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'photo_id' => 'required|exists:business_photos,id'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => $validator->errors()->first()
-                ], 422);
-            }
-
-            $photo = BusinessPhoto::findOrFail($request->photo_id);
-
-            // Delete file from storage
-            if ($photo->image_url && file_exists(public_path('assets/' . $photo->image_url))) {
-                unlink(public_path('assets/' . $photo->image_url));
-            }
-
-            // Delete database record
-            $photo->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Photo deleted successfully'
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Delete failed: ' . $e->getMessage()
-            ], 500);
-        }
     }
 }

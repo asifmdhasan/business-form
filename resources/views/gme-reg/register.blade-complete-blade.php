@@ -757,14 +757,14 @@
 
                                                 <button type="button"
                                                         class="remove-btn"
-                                                        onclick="deleteGalleryPhoto(this, {{ $photo->id }})">
+                                                        onclick="removeExistingPhoto(this, {{ $photo->id }})">
                                                     &times;
                                                 </button>
 
-                                                {{-- <input type="checkbox"
+                                                <input type="checkbox"
                                                     name="delete_photos[]"
                                                     value="{{ $photo->id }}"
-                                                    class="d-none"> --}}
+                                                    class="d-none">
                                             </div>
                                         @endforeach
 
@@ -1093,37 +1093,37 @@ $(document).ready(function () {
     }
 
     // Add new files
-    // input.addEventListener('change', function(e) {
-    //     const files = Array.from(e.target.files);
+    input.addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
 
-    //     files.forEach(file => {
-    //         if (document.querySelectorAll('.gallery-item').length >= MAX_IMAGES) return;
+        files.forEach(file => {
+            if (document.querySelectorAll('.gallery-item').length >= MAX_IMAGES) return;
 
-    //         if (!file.type.startsWith('image/')) {
-    //             alert(file.name + ' is not an image.');
-    //             return;
-    //         }
+            if (!file.type.startsWith('image/')) {
+                alert(file.name + ' is not an image.');
+                return;
+            }
 
-    //         if (file.size > 5 * 1024 * 1024) {
-    //             alert(file.name + ' is larger than 5MB.');
-    //             return;
-    //         }
+            if (file.size > 5 * 1024 * 1024) {
+                alert(file.name + ' is larger than 5MB.');
+                return;
+            }
 
-    //         fileStore.items.add(file);
-    //         input.files = fileStore.files;
+            fileStore.items.add(file);
+            input.files = fileStore.files;
 
-    //         const reader = new FileReader();
-    //         reader.onload = function(event) {
-    //             const div = document.createElement('div');
-    //             div.className = 'gallery-item new-photo';
-    //             div.style.backgroundImage = `url(${event.target.result})`;
-    //             div.innerHTML = `<button type="button" class="remove-btn" onclick="removeNewPhoto(this, '${file.name}')">&times;</button>`;
-    //             container.insertBefore(div, uploadBox);
-    //             toggleUploadBox();
-    //         };
-    //         reader.readAsDataURL(file);
-    //     });
-    // });
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const div = document.createElement('div');
+                div.className = 'gallery-item new-photo';
+                div.style.backgroundImage = `url(${event.target.result})`;
+                div.innerHTML = `<button type="button" class="remove-btn" onclick="removeNewPhoto(this, '${file.name}')">&times;</button>`;
+                container.insertBefore(div, uploadBox);
+                toggleUploadBox();
+            };
+            reader.readAsDataURL(file);
+        });
+    });
 
     // Remove new photo
     function removeNewPhoto(btn, fileName) {
@@ -1140,12 +1140,12 @@ $(document).ready(function () {
     }
 
     // Remove existing photo
-    // function removeExistingPhoto(btn, photoId) {
-    //     const item = btn.closest('.gallery-item');
-    //     item.querySelector('input[type="checkbox"]').checked = true;
-    //     item.remove();
-    //     toggleUploadBox();
-    // }
+    function removeExistingPhoto(btn, photoId) {
+        const item = btn.closest('.gallery-item');
+        item.querySelector('input[type="checkbox"]').checked = true;
+        item.remove();
+        toggleUploadBox();
+    }
 
     // Init
     toggleUploadBox();
@@ -2047,7 +2047,7 @@ $(document).ready(function () {
                         $btn.siblings('.text-success').remove();
                         $btn.remove();
                         
-                        // alert('File deleted successfully!');
+                        alert('File deleted successfully!');
                     } else {
                         alert('Delete failed: ' + (response.message || 'Unknown error'));
                     }
