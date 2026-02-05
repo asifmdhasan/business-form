@@ -781,14 +781,14 @@
 
                                     </div>
 
-                                    <small class="text-muted">Max 6 images (PNG, JPG, JPEG | 5MB each)</small>
+                                    <small class="text-muted">Max 6 images (PNG, JPG, JPEG | 2MB each)</small>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <!-- Registration Document -->
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Upload Registration Document</label>
+                                    <label class="form-label">Upload Registration Document  <small class="text-muted">(Max 2MB)</small></label>
                                     <input type="file" name="registration_document" class="form-control @error('registration_document') is-invalid @enderror">
                                     <!-- Document Links -->
                                     @if(!empty($business->registration_document))
@@ -804,7 +804,7 @@
 
                                 <!-- Business Profile -->
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Business Profile</label>
+                                    <label class="form-label">Business Profile <small class="text-muted">(Max 2MB)</small></label>
                                     <input type="file" name="business_profile" class="form-control @error('business_profile') is-invalid @enderror">
                                     @if(!empty($business->business_profile))
                                         <small class="text-success d-block mt-1">
@@ -819,7 +819,7 @@
 
                                 <!-- Product Catalogue -->
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Product Catalogue</label>
+                                    <label class="form-label">Product Catalogue <small class="text-muted">(Max 2MB)</small></label>
                                     <input type="file" name="product_catalogue" class="form-control @error('product_catalogue') is-invalid @enderror">
                                     @if(!empty($business->product_catalogue))
                                         <small class="text-success d-block mt-1">
