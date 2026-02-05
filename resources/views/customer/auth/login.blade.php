@@ -112,15 +112,7 @@
     <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
         <!-- Header Section -->
         <div class="sm:mx-auto sm:w-full sm:max-w-md flex items-center justify-center">
-            @if ($errors->any())
-                <div class="mb-6 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-                    <ul class="list-disc pl-5">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            
 
             
             <img src="{{ asset('assets/image/front-logo.png') }}" 
@@ -142,6 +134,15 @@
                     >
                 </div>
 
+                @if ($errors->any())
+                    <div class="mb-6 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
+                        <ul class="list-disc pl-5">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form action="{{ route('customer.login.submit') }}" method="POST">
 
                     @csrf
