@@ -378,6 +378,23 @@
                         <p class="mt-3">Loading businesses...</p>
                     </div>
                 </div>
+
+
+                <div id="businessContainer"></div>
+
+                <div id="emptyState" class="text-center d-none" style="margin-top: 60px; height: 50vh;">
+                    <h4 class="mb-3">You haven’t added any business yet</h4>
+
+                    <a href="{{ route('gme.business.register') }}"
+                    class="btn text-white px-4 py-2"
+                    style="background-color:#9C7D2D;">
+                        + Add Your Business
+                    </a>
+                </div>
+
+
+
+
                 <div class="row mt-4">
                     <div class="col-12 d-flex justify-content-center">
                         <nav>
@@ -426,6 +443,19 @@
                 method: 'GET',
                 data: { page: page }, // ✅ Send page number
                 success: function (response) {
+                    const businesses = response.businesses.data;
+                    // ✅ If no data
+                    if (!businesses || businesses.length === 0) {
+                        
+                        $('#businessGrid').addClass('d-none');
+                        $('#businessContainer').empty();
+                        $('#emptyState').removeClass('d-none');
+                        return;
+                    }
+                    // ✅ If data exists
+                    $('#emptyState').addClass('d-none');
+
+                    // console.log(response);
                     // ✅ Access the data array from paginated response
                     allBusinesses = response.businesses.data.map(business => {
                         try {

@@ -263,15 +263,12 @@
 
     /* Faith Compliance Section */
     .faith-section {
-        /* background: linear-gradient(135deg, #9b7d2d 0%, #9b7d2d 100%); */
+        background: linear-gradient(135deg, #9b7d2d 0%, #9b7d2d 100%);
         border-radius: 1rem;
         padding: 2rem;
         margin-bottom: 2rem;
         position: relative;
         overflow: hidden;
-        background-image: url('{{ asset('assets/image/bg.webp') }}');
-        background-size: cover;
-        background-position: center;
     }
 
     .faith-section::before {
@@ -530,12 +527,11 @@
             </div>
             {{-- @dd($business) --}}
             {{-- // Founder Name --}}
-            <div class="col-md-6">
+            {{-- <div class="col-md-6">
                 <div class="info-item">
                     <i class="fas fa-user-tie"></i>
                     <div>
                         <p class="info-label mb-0">Founder Name</p>
-                            {{-- "founders" => "[{"name": "Shuchi Farheen", "linkedin": null, "whatsapp": null, "designation": "CTO"}]" --}}
                             @php
                                 $founders = is_string($business->founders)
                                     ? json_decode($business->founders, true)
@@ -547,21 +543,36 @@
 
                     </div>
                 </div>
-            </div>
-            {{-- FOunder Degination --}}
-            <div class="col-md-6">
-                <div class="info-item">
-                    <i class="fas fa-briefcase"></i>
-                    <div>
-                        <p class="info-label mb-0">Founder Designation</p>
-                        @php
-                            $founderDesignations = collect($founders)->pluck('designation')->filter()->implode(', ');
-                        @endphp
-                        <p class="info-value mb-0">{{ $founderDesignations ?: '—' }}
+            </div> --}}
+            @php
+                $founders = is_string($business->founders)
+                    ? json_decode($business->founders, true)
+                    : ($business->founders ?? []);
+            @endphp
+            @forelse($founders as $founder)
+                <div class="col-md-6 mb-3">
+                    <div class="info-item">
+                        <i class="fas fa-user-tie"></i>
+                        <div>
+                            <p class="info-label mb-1 fw-bold">Founder Information</p>
+
+                            <p class=" mb-0">
+                                {{-- <span>Name:</span> --}}
+                                <span class="info-value">  {{ $founder['name'] ?? '—' }}</span>
+                            </p>
+
+                            <p class=" mb-0">
+                                {{-- <span>Designation:</span> --}}
+                                <span class="info-value">{{ $founder['designation'] ?? '—' }}</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
+            @empty
+                <div class="col-md-6">
+                    <p>—</p>
+                </div>
+            @endforelse
 
         </div>
 
@@ -608,6 +619,33 @@
             <button class="btn btn-secondary">View All Products & Services</button>
         </div> --}}
     </section>
+
+    {{-- Collaboration Open --}}
+    @if($business->collaboration_open === 'yes' || $business->collaboration_open === 'maybe')
+        {{-- collaboration_types --}}
+        <section class="about-card mt-4">
+            <h4 class="fw-bold mb-4 featured-business "
+                style="
+                    font-size: 34px;
+                    text-transform: uppercase;
+                    line-height: 1.3em;">
+                
+                <span style="color:#9b7d2d;font-weight: 900;">{{ $business->business_name }}  </span>
+                <span style=" font-weight: 300;"> Open for Collaboration </span>
+            </h4>
+            <p class="mb-3">This business is open to collaboration opportunities in the following areas:</p>
+            @php
+                $collaborationTypes = is_string($business->collaboration_types)
+                    ? json_decode($business->collaboration_types, true)
+                    : ($business->collaboration_types ?? []);
+            @endphp
+            <ul>
+                @foreach($collaborationTypes as $type)
+                    <li>{{ ucfirst(str_replace('_', ' ', $type)) }}</li>
+                @endforeach
+            </ul>
+        </section>
+    @endif
 
     <!-- ELEGANT GALLERY with Centered Images in Cards -->
     @if($business->businessPhotos && $business->businessPhotos->count() > 0)
@@ -705,8 +743,6 @@
     <!-- FAITH COMPLIANCE -->
     <section class="faith-section">
         <div class="faith-content text-center">
-            {{-- <i class="fas fa-shield-alt text-primary-custom" style="font-size: 2.5rem;"></i> --}}
-            {{-- <h2 class="section-title mt-2"> </h2> --}}
             <h4 class="fw-bold mb-4 featured-business "
                 style="
                     font-size: 34px;
@@ -754,7 +790,7 @@
 
 
     <!-- CONTACT INFORMATION -->
-    <section class="contact-card mt-4 pt-4">
+    {{-- <section class="contact-card mt-4 pt-4">
         <h4 class="fw-bold mb-4 featured-business "
                     style="
                         font-size: 34px;
@@ -827,6 +863,82 @@
                 </a>
             @endif
         </div>
+    </section> --}}
+    <section class="contact-card mt-4">
+        <h4 class="fw-bold mb-4 featured-business "
+                    style="
+                        font-size: 34px;
+                        text-transform: uppercase;
+                        line-height: 1.3em;">
+                    <span style=" font-weight: 300;">Contact </span>
+                    <span style="color:#9b7d2d;font-weight: 900;">Information </span>
+                </h4>
+                <br>
+
+        <div class="row g-3 pt-3" style="border-top: 1px solid var(--border-light);">
+            <div class="col-md-4">
+                <div class="info-item">
+                    <i class="fas fa-user"></i>
+                    <div>
+                        <p class="info-label">Primary Contact</p>
+                        <p class="mb-0" style="font-size: .9rem"> Name: <span class=""> {{ $business->business_contact_person_name ?? '——' }}</span></p>
+                        <p class="mb-0" style="font-size: .9rem"> Contact: {{ $business->whatsapp_number ?? '——' }}</p>
+                        <p class="mb-0" style="font-size: .9rem"> Email: {{ $business->email ?? '——' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <p class="info-label mb-0">Social Media</p>
+                        <div class="d-flex flex-wrap gap-2 pt-3" style="margin-left: -1rem;">
+                            @if($business->whatsapp_number)
+                                <a href="https://wa.me/{{ $business->whatsapp_number }}"
+                                class="social-icon" target="_blank">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                            @endif
+                            @if($business->facebook)
+                                <a href="{{ $business->facebook }}" class="social-icon" target="_blank">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            @endif
+                            @if($business->instagram)
+                                <a href="{{ $business->instagram }}" class="social-icon" target="_blank">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            @endif
+                            @if($business->linkedin)
+                                <a href="{{ $business->linkedin }}" class="social-icon" target="_blank">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            @endif
+                        </div>
+                        {{-- <a href="mailto:{{ $business->email }}" class="info-value text-decoration-none">
+                            {{ $business->email }}
+                        </a> --}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-item">
+                    <i class="fas fa-globe"></i>
+                    <div>
+                        <p class="info-label mb-0">Website</p>
+                        @if($business->website)
+                            <a href="{{ $business->website }}" target="_blank" class="info-value text-decoration-none">
+                                {{ $business->website }}
+                            </a>
+                        @else
+                            <p class="info-value mb-0">——</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
     </section>
 </div>
 @endsection

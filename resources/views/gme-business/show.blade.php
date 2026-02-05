@@ -162,7 +162,8 @@
 
     .info-item i {
         color: #9b7d2d;
-        margin-top: 0.25rem;
+        font-size: 1.5rem;
+        /* margin-top: 0.25rem; */
     }
 
     .info-label {
@@ -262,8 +263,8 @@
     }
 
     .social-icon {
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         background: #f3f4f6;
         display: inline-flex;
@@ -779,8 +780,10 @@
                 <div class="info-item">
                     <i class="fas fa-user"></i>
                     <div>
-                        <p class="info-label mb-0">Primary Contact</p>
-                        <p class="info-value mb-0">{{ $business->whatsapp_number ?? '——' }}</p>
+                        <p class="info-label">Primary Contact</p>
+                        <p class="mb-0" style="font-size: .9rem"> Name: <span class=""> {{ $business->business_contact_person_name ?? '——' }}</span></p>
+                        <p class="mb-0" style="font-size: .9rem"> Contact: {{ $business->whatsapp_number ?? '——' }}</p>
+                        <p class="mb-0" style="font-size: .9rem"> Email: {{ $business->email ?? '——' }}</p>
                     </div>
                 </div>
             </div>
@@ -788,10 +791,33 @@
                 <div class="info-item">
                     <i class="fas fa-envelope"></i>
                     <div>
-                        <p class="info-label mb-0">Email</p>
-                        <a href="mailto:{{ $business->email }}" class="info-value text-decoration-none">
+                        <p class="info-label mb-0">Social Media</p>
+                        <div class="d-flex flex-wrap gap-2 pt-3" style="margin-left: -1rem;">
+                            @if($business->whatsapp_number)
+                                <a href="https://wa.me/{{ $business->whatsapp_number }}"
+                                class="social-icon" target="_blank">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                            @endif
+                            @if($business->facebook)
+                                <a href="{{ $business->facebook }}" class="social-icon" target="_blank">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            @endif
+                            @if($business->instagram)
+                                <a href="{{ $business->instagram }}" class="social-icon" target="_blank">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            @endif
+                            @if($business->linkedin)
+                                <a href="{{ $business->linkedin }}" class="social-icon" target="_blank">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            @endif
+                        </div>
+                        {{-- <a href="mailto:{{ $business->email }}" class="info-value text-decoration-none">
                             {{ $business->email }}
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>
@@ -812,29 +838,7 @@
             </div>
         </div>
 
-        <div class="d-flex flex-wrap gap-2 mt-4 pt-3" style="border-top: 1px solid var(--border-light);">
-            @if($business->whatsapp_number)
-                <a href="https://wa.me/{{ $business->whatsapp_number }}"
-                   class="social-icon" target="_blank">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-            @endif
-            @if($business->facebook)
-                <a href="{{ $business->facebook }}" class="social-icon" target="_blank">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-            @endif
-            @if($business->instagram)
-                <a href="{{ $business->instagram }}" class="social-icon" target="_blank">
-                    <i class="fab fa-instagram"></i>
-                </a>
-            @endif
-            @if($business->linkedin)
-                <a href="{{ $business->linkedin }}" class="social-icon" target="_blank">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-            @endif
-        </div>
+        
     </section>
 </div>
 @endsection

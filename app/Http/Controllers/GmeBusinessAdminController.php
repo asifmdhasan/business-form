@@ -50,7 +50,7 @@ class GmeBusinessAdminController extends Controller
     public function update(Request $request, $id)
     {
 
-    // dd($request->all());
+        // dd($request->all());
         $business = GmeBusinessForm::findOrFail($id);
 
         $validated = $request->validate([
@@ -134,6 +134,7 @@ class GmeBusinessAdminController extends Controller
 
         $existingPhotoIds = $request->input('existing_photos', []);
 
+        if (!empty($existingPhotoIds)) {
         $business->businessPhotos()
             ->whereNotIn('id', $existingPhotoIds)
             ->get()
@@ -144,6 +145,7 @@ class GmeBusinessAdminController extends Controller
                 }
                 $photo->delete();
             });
+        }
 
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {

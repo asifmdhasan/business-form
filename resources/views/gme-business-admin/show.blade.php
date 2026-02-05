@@ -101,7 +101,13 @@
 
     .info-value a:hover {
         text-decoration: underline;
-        color: #3a4a1b;
+        color: #fff;
+    }
+
+    .info-value a:active {
+        text-decoration: underline;
+        color: #fff;
+        background-color: #576829 !important;
     }
 
     .two-column-grid {
@@ -717,7 +723,7 @@
                                 @if($business->registration_document)
                                     <a href="{{ asset('assets/' . $business->registration_document) }}" 
                                        target="_blank" class="btn btn-sm btn-primary">
-                                        <i class="fa fa-file-pdf"></i> View Document
+                                        <i class="fa fa-file"></i> View Document
                                     </a>
                                 @else
                                     <span class="text-empty">Not uploaded</span>
@@ -758,18 +764,19 @@
                 </div>
 
                 @if($business->businessPhotos->count() > 0)
-                <div class="section-divider">
-                    <i class="fa fa-images"></i> Business Photos Gallery
-                </div>
-                <div class="image-gallery">
-                    @foreach($business->businessPhotos as $photo)
-                        <div class="image-preview">
-                            <a href="{{ asset('assets/' . $photo->image_url) }}" target="_blank">
-                                <img src="{{ asset('assets/' . $photo->image_url) }}" alt="Business Photo">
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
+                    <div class="section-divider">
+                        <i class="fa fa-images"></i> Business Photos Gallery
+                    </div>
+                    <div class="image-gallery">
+                        @foreach($business->businessPhotos as $photo)
+                            <div class="image-preview">
+                                <a href="{{ asset('assets/' . $photo->image_url) }}" target="_blank">
+                                    <img src="{{ asset('assets/' . $photo->image_url) }}" alt="Business Photo">
+                                </a>
+                                <input type="hidden" name="existing_photos[]" value="{{ $photo->id }}">
+                            </div>
+                        @endforeach
+                    </div>
                 @endif
             </div>
         </div>
