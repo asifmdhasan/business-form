@@ -403,10 +403,10 @@
                                 GME Verified
                             </span>
                         @else
-                            <span class="unverified-badge">
+                            {{-- <span class="unverified-badge">
 
                                 ({{ $business->status }})
-                            </span>
+                            </span> --}}
                         @endif
                     </div>
                     <p class="text-muted mb-0" style="color: rgba(255,255,255,0.9) !important;">{{ $business->short_introduction }}</p>
