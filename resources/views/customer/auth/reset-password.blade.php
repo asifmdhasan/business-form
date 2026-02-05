@@ -73,7 +73,7 @@
             <button type="submit"
                 class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow 
                        hover:bg-indigo-700 transform hover:-translate-y-0.5 transition"
-                        style="background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);">
+                        style="background: linear-gradient(135deg, #576829 0%, #758c39 100%);">
                 Reset Password
             </button>
 

@@ -10,8 +10,11 @@
         font-weight: 600;
     }
 </style>
-<nav class="text-white position-fixed h-100" style="width:260px; top:0; left:0; overflow-y:auto; z-index:1000;background-color: #576829">
-    <div class="p-3">
+{{-- <nav class="text-white position-fixed h-100" style="width:260px; top:0; left:0; overflow-y:auto; z-index:1000;background-color: #576829"> --}}
+    <nav class="text-white position-fixed h-100 d-flex flex-column"
+     style="width:260px; top:0; left:0; overflow-y:auto; z-index:1000; background-color:#576829">
+
+    <div class="p-3  d-flex flex-column h-100">
 
         <!-- Branding -->
         {{-- <img src="{{ asset('assets/image/logo.webp') }}" alt="Gme Network Logo" class="img-fluid mb-2" style="max-width: 100%; height: auto;"> --}}
@@ -145,7 +148,7 @@
             </li> --}}
 
             <!-- Logout -->
-            <li class="nav-item mt-4">
+            {{-- <li class="nav-item mt-4">
                 <a href="#" class="nav-link fw-bold" style="color: #fff"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fa fa-sign-out-alt me-2"></i> Logout
@@ -154,9 +157,20 @@
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
                     @csrf
                 </form>
-            </li>
+            </li> --}}
+            </ul>
+            <div class="mt-auto" style="margin-left: 1rem; margin-bottom:3rem;">
+                <a href="#" class="nav-link fw-bold text-white"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fa fa-sign-out-alt me-2"></i> Logout
+                </a>
 
-        </ul>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </div>
+
+        
     </div>
 </nav>
 

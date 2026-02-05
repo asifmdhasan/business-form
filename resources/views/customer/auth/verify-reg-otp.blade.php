@@ -38,7 +38,7 @@
         </div>
 
         <button type="submit"
-                class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"style="background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);">
+                class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"style="background: linear-gradient(135deg, #576829 0%, #758c39 100%);">
             Verify OTP
         </button>
     </form>

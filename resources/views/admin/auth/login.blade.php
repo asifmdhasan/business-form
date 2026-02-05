@@ -27,8 +27,8 @@
 
 
         .input-focus:focus {
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(87, 104, 41, 0.1);
+            border-color: #576829;
         }
 
         .btn-hover:hover {
@@ -42,7 +42,11 @@
 
         .floating-label.active {
             transform: translateY(-1.5rem) scale(0.85);
-            color: #667eea;
+            color: #576829;
+        }
+        .peer:not(:placeholder-shown) ~ .peer-\[\:not\(\:placeholder-shown\)\]\:text-indigo-600 {
+            --tw-text-opacity: 1;
+            color: #576829 !important;
         }
     </style>
 </head>

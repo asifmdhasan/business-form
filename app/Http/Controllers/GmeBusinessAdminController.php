@@ -199,13 +199,13 @@ class GmeBusinessAdminController extends Controller
             ];
 
             // Send mail (example using a Mailable class)
-            // if ($business->customer && $business->customer->email) {
-            //     Mail::to($business->customer->email)
-            //         ->send(new BusinessStatusUpdated($mailData));
-            // } elseif ($business->email) {
-            //     Mail::to($business->email)
-            //         ->send(new BusinessStatusUpdated($mailData));
-            // }
+            if ($business->customer && $business->customer->email) {
+                Mail::to($business->customer->email)
+                    ->send(new BusinessStatusUpdated($mailData));
+            } elseif ($business->email) {
+                Mail::to($business->email)
+                    ->send(new BusinessStatusUpdated($mailData));
+            }
         }
 
 

@@ -24,9 +24,10 @@
                 </div>
             @endif
 
-            <h2 class="text-center text-2xl font-bold text-white mb-2">
-                GME Network
-            </h2>
+            <img src="{{ asset('assets/image/front-logo.png') }}" 
+                alt="Gme Network Logo" 
+                class="img-fluid mb-2 mx-auto" 
+                style="    max-width: 65%;height: auto;padding-right: 3rem;">
 
         </div>
 
@@ -49,7 +50,8 @@
                     </div>
 
                     <button type="submit"
-                        class="w-full px-3 py-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-md">
+                        class="w-full px-3 py-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-md"
+                        style="background: linear-gradient(135deg, #576829 0%, #758c39 100%);">
                         Verify OTP
                     </button>
                 </form>
