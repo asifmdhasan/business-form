@@ -321,7 +321,7 @@
                 cursor: pointer;
                 width: 18px;
                 height: 18px;
-                accent-color: var(--primary-color);
+                accent-color: #9C7D2D;
             }
 
             .radio-option label {
@@ -332,7 +332,7 @@
             }
 
             .btn-apply-filter {
-                background: var(--primary-color);
+                background: #9C7D2D;
                 color: white;
                 border: none;
                 border-radius: 8px;
@@ -597,8 +597,8 @@
             .active>.page-link, .page-link.active {
                 z-index: 3;
                 color: var(--bs-pagination-active-color);
-                background-color: var(--primary-color);
-                border-color: var(--primary-color);
+                background-color: #9C7D2D;
+                border-color: #9C7D2D;
             }
             .category-image{
                 width: 10rem;
@@ -671,10 +671,10 @@
         ========================= */
 
         .footer-cta {
-            background: rgba(180, 150, 60, 0.15);
+            /* background: rgba(180, 150, 60, 0.15); */
             border-radius: 20px;
             padding: 28px 32px;
-            border: 1px solid rgba(180, 150, 60, 0.25);
+            border: 1px solid #9C7D2D;
         }
 
         .footer-cta h2 {
@@ -734,7 +734,7 @@
         ========================= */
 
         .footer .fab {
-            color: #c9a23a;
+            color: #fff;
             transition: transform 0.3s ease, color 0.3s ease;
         }
 
@@ -1026,6 +1026,9 @@
             background: #576829;
             color: white !important;
         }
+        .border-bottom {
+            border-bottom: 1px solid #9C7D2D !important;   
+        }
 
     </style>
 </head>
@@ -1038,7 +1041,7 @@
         <nav class="gme-nav gme-nav-left">
             <ul>
                 <li><a class="active" href="#">Home</a></li>
-                <li><a href="#">About GME</a></li>
+                {{-- <li><a href="#">About GME</a></li> --}}
                 {{-- <li class="has-dropdown">
                     <a href="#">Get Involved</a>
                     <ul class="dropdown" style="display: inline-block;">
@@ -1136,7 +1139,7 @@
                 <div class="container">
                     <div class="footer-cta text-center mb-4 d-md-flex justify-content-between align-items-center">
                         <div class="mb-3 mb-md-0">
-                            <h2 class="h4 mb-1 grow-business">Grow Your Business</h2>
+                            <h2 class="h4 mb-1 grow-business" style="color: #fff;">Grow Your Business</h2>
                             <p class="mb-0" style="color: rgba(255,255,255,0.8);">
                                 Join our network of talented Muslim entrepreneurs.
                             </p>
@@ -1146,34 +1149,42 @@
                         </a>
                     </div>
 
-                    <div class="row g-4 pb-4 border-bottom border-white border-opacity-25 pt-4">
+                    <div class="row g-4 pb-4 border-bottom border-opacity-25 pt-4">
                         <div class="col-md-3">
-                            <h3>GME Directory</h3>
-                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">Connecting communities, one business at a time.</p>
+                            {{-- <h3>GME Directory</h3> --}}
+                            <img src="{{ asset('assets/image/front-logo.png') }}" 
+                                alt="Gme Network Logo" 
+                                class="img-fluid mb-2 mx-auto" 
+                                style="max-width: 65%;height: auto;padding-right: 4rem;">
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">Connecting communities, <br>one business at a time.</p>
                         </div>
                         <div class="col-md-3">
-                            <h3>Quick Links</h3>
+                            <h3 style="color: #fff;">Explore</h3>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="#">About Us</a></li>
-                                <li class="mb-2"><a href="#">Blog</a></li>
+                                <li class="mb-2"><a href="#">About GME </a></li>
+                                <li class="mb-2"><a href="#">Get Involved</a></li>
+                                <li class="mb-2"><a href="#">Events</a></li>
+                                <li class="mb-2"><a href="#">News</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h3 style="color: #fff;">Legal</h3>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="#">Privacy Policy</a></li>
+                                <li class="mb-2"><a href="#">Terms of Use</a></li>
                                 <li class="mb-2"><a href="#">Contact</a></li>
-                                <li class="mb-2"><a href="#">FAQ</a></li>
+                                <li class="mb-2"><a href="#">Members Charter</a></li>
                             </ul>
                         </div>
                         <div class="col-md-3">
-                            <h3>Categories</h3>
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><a href="#">Food & Drink</a></li>
-                                <li class="mb-2"><a href="#">Retail</a></li>
-                                <li class="mb-2"><a href="#">Services</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-3">
-                            <h3>Follow Us</h3>
+                            <h3 style="color: #fff;">Connect us</h3>
                             <div class="d-flex gap-3">
-                                <a href="#"><i class="fab fa-facebook fa-lg"></i></a>
-                                <a href="#"><i class="fab fa-twitter fa-lg"></i></a>
-                                <a href="#"><i class="fab fa-instagram fa-lg"></i></a>
+                                <a href="https://www.facebook.com/gme.network/" target="_blank"><i class="fab fa-facebook fa-lg"></i></a>
+                                <a href="https://www.linkedin.com/company/gmenetwork/" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a>
+                                <a href="https://www.instagram.com/gme.network" target="_blank"><i class="fab fa-instagram fa-lg"></i></a>
+                                <a href="https://www.youtube.com/@gmenetwork" target="_blank"><i class="fab fa-youtube fa-lg"></i></a>
+                                <a href="https://x.com/GmeNetwork50551" target="_blank"><i class="fab fa-twitter fa-lg"></i></a>
+                                
                             </div>
                         </div>
                     </div>
@@ -1403,30 +1414,7 @@
             renderBusinesses();
         }
 
-        /* =========================
-        Render Cards
-        ========================== */
-        // function renderBusinesses() {
 
-        //     const $grid = $('#businessGrid').empty();
-
-        //     if (!filteredBusinesses.length) {
-        //         $grid.html(`
-        //             <div class="col-12 no-results">
-        //                 <i class="fas fa-search"></i>
-        //                 <p>No businesses found.</p>
-        //             </div>
-        //         `);
-        //         updateResultsCount(0);
-        //         return;
-        //     }
-
-        //     filteredBusinesses.forEach(business => {
-        //         $grid.append(createBusinessCard(business));
-        //     });
-
-        //     updateResultsCount(filteredBusinesses.length);
-        // }
 
         function renderBusinesses() {
 
@@ -1488,63 +1476,6 @@
 
 
 
-        /* =========================
-        Card HTML
-        ========================== */
-        // function createBusinessCard(business) {
-
-        //     const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
-
-        //     const category = business.category?.name ?? '';
-        //     // const logo = `{{ asset('assets') }}/${business.logo}`;
-        //         const logo = business.logo
-        //         ? `{{ asset('assets') }}/${business.logo}`
-        //         : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}`;
-
-        //     const photo = business.photos?.length
-        //         ? `{{ asset('assets') }}/${business.photos[0]}`
-        //         : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
-        //     const verified = (business.status === 'approved' && business.is_verified === 1)
-        //         ? `<div class="verified-badge">
-        //                 <i class="fas fa-check-circle"></i> GME Verified
-        //         </div>`
-        //         : '';
-
-
-        //     const countries = business.countries_of_operation && business.countries_of_operation.length > 0
-        //         ? business.countries_of_operation.join(', ')
-        //         : 'Location not specified';
-
-        //     return `
-        //     <div class="col-md-4 col-lg-4 p-2">
-        //         <div class="business-card" onclick="location.href='{{ url('guest-gme-business-form') }}/${business.id}'">
-        //             <div style="position:relative">
-        //                 <img src="${photo}" class="business-image">
-        //                 ${verified}
-        //             </div>
-        //             <div class="business-content">
-        //                 <div class="business-header">
-
-
-        //                     <div class="logo-box">
-        //                         <img src="${logo}" alt="${business.business_name}">
-        //                     </div>
-
-
-        //                     <div>
-        //                         <div class="business-name">${business.business_name}</div>
-        //                         <div class="business-category">${category}</div>
-        //                     </div>
-        //                 </div>
-        //                 ${business.short_introduction ?? ''}
-        //                 <div class="business-location">
-        //                     <i class="fas fa-map-marker-alt location-icon"></i>
-        //                     <div>${countries}</div>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     </div>`;
-        // }
 
         function createBusinessCard(business) {
 
