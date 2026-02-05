@@ -51,7 +51,7 @@
     </div>
     <!-- Logout at bottom -->
     <div class="mt-auto p-3">
-        <a class="d-flex align-items-center" style="font-weight: 600; font-size:1rem; color: #fff;" href="{{ route('customer.logout') }}">
+        <a class="d-flex align-items-center" style="font-weight: 600; font-size:1rem; color: #fff; margin-bottom:3rem; margin-left: 1rem" href="{{ route('customer.logout') }}">
             <i class="fa fa-sign-out-alt me-2"></i> Logout
         </a>
     </div>

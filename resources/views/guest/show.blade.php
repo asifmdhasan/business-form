@@ -187,17 +187,16 @@
     }
 
     .verified-badge {
-        top: 17px !important;
-        left: 170px !important;
+        position: unset;
         display: inline-flex;
         align-items: center;
-        gap: .7rem;
+        gap: 0.25rem;
         background: #9C7D2D;
         color: white;
-        font-size: 1rem;
-        font-weight: 500;
+        font-size: 0.75rem;
+        font-weight: 600;
         padding: 0.25rem 0.75rem;
-        border-radius: 8px;
+        border-radius: 9999px;
     }
 
 
@@ -428,7 +427,7 @@
     <section class="hero-section-2" style="background-image: url('{{ $business->cover_photo ? asset('assets/'.$business->cover_photo) : 'https://images.unsplash.com/photo-1497366216548-37526070297c' }}');">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <div class="row align-items-center justify-content-center g-3">
+            <div class="row align-items-center">
                 <div class="col-auto">
                     <div class="logo-box">
                         <img src="{{ $business->logo ? asset('assets/'.$business->logo) : 'https://ui-avatars.com/api/?name='.urlencode($business->business_name) }}"
@@ -436,7 +435,7 @@
                     </div>
                 </div>
                 <div class="col p-8">
-                    <div class="d-flex align-items-center flex-wrap gap-2 mb-1 justi-center">
+                    <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
                         <h1 class="section-title mb-0">{{ $business->business_name }}</h1>
                         @if($business->status === 'approved' && $business->is_verified === 1)
                             <span class="verified-badge">
@@ -446,7 +445,7 @@
                         @else
                             <span class="unverified-badge">
 
-                                {{-- ({{ $business->status }}) --}}
+                                ({{ $business->status }})
                             </span>
                         @endif
                     </div>
