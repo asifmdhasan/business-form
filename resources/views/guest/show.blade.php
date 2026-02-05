@@ -246,7 +246,8 @@
 
     .info-item i {
         color: #9b7d2d;
-        margin-top: 0.25rem;
+        font-size: 1.5rem;
+        /* margin-top: 0.25rem; */
     }
 
     .info-label {
@@ -354,8 +355,8 @@
     }
 
     .social-icon {
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         background: #f3f4f6;
         display: inline-flex;
