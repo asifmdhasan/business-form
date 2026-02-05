@@ -44,6 +44,19 @@
         background: #f39c12 !important;
     }
 
+    .card-header-ad {
+        background: #9C7D2D  !important;
+        color: white !important;
+        font-weight: 600;
+        font-size: 1.15rem;
+        padding: 1rem 1.5rem;
+        border: none;
+    }
+
+    .card-header-ad.bg-warning {
+        background: #f39c12 !important;
+    }
+
     .card-body {
         padding: 2rem;
         background: white;
@@ -235,6 +248,14 @@
         border-radius: 10px;
         padding: 1.5rem;
     }
+
+    .editable-section-ad {
+        background: #fff9e6; 
+        border: 2px dashed #9C7D2D;
+        border-radius: 10px;
+        padding: 1.5rem;
+    }
+
 
     .readonly-badge {
         display: inline-block;
@@ -933,10 +954,10 @@
 
         {{-- EDITABLE SECTION - Admin Controls --}}
         <div class="card">
-            <div class="card-header bg-warning">
+            <div class="card-header-ad">
                 <i class="fa fa-edit"></i> Admin Controls - EDITABLE SECTION
             </div>
-            <div class="card-body editable-section">
+            <div class="card-body editable-section-ad">
                 <div class="alert alert-warning">
                     <i class="fa fa-exclamation-triangle"></i> <strong>Note:</strong> Only the fields in this section can be modified. All other information is read-only.
                 </div>

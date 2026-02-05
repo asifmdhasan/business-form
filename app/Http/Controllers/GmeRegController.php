@@ -186,6 +186,7 @@ class GmeRegController extends Controller
                     'business_address' => 'nullable|string',
                     'email' => 'required|email',
                     'whatsapp_prefix' => 'nullable|string|max:10',
+                    'business_contact_person_name' => 'nullable|string|max:255',
                     'whatsapp_number' => 'nullable|string|max:20',
                     'website' => 'nullable|string|max:255',
                     'facebook' => 'nullable|string|max:255',
@@ -305,6 +306,7 @@ private function saveStep1(Request $request, GmeBusinessForm $business)
     $businessNumber = preg_replace('/\D/', '', $request->input('whatsapp_number', ''));
     
     $business->business_name = $request->business_name;
+    $business->business_contact_person_name = $request->business_contact_person_name;
     $business->short_introduction = $request->short_introduction;
     $business->year_established = $request->year_established;
     $business->business_category_id = $request->business_category_id;

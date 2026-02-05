@@ -308,73 +308,10 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                {{-- add business_contact_person_name --}}
-
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Business Contact Person Name</label>
-                                    <input type="text" name="business_contact_person_name" class="form-control"
-                                        value="{{ old('business_contact_person_name', $business->business_contact_person_name ?? '') }}">
-                                    <!-- Error Message -->
-                                    @error('business_contact_person_name')
-                                        <div class="text-danger mt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Provide Number</label>
-
-                                    @php
-                                        // Split the stored business WhatsApp number
-                                        $storedBusinessWhatsApp = $business->whatsapp_number ?? '';
-                                        $businessWhatsappPrefix = '+880';
-                                        $businessWhatsappNumber = '';
-                                        
-                                        // Check if we have old input (from validation error)
-                                        if (old('whatsapp_number')) {
-                                            $businessWhatsappPrefix = old('whatsapp_prefix', '+880');
-                                            $businessWhatsappNumber = old('whatsapp_number', '');
-                                        } elseif ($storedBusinessWhatsApp) {
-                                            // Split from database
-                                            if (preg_match('/^(\+\d{1,4})(.*)$/', $storedBusinessWhatsApp, $matches)) {
-                                                $businessWhatsappPrefix = $matches[1];
-                                                $businessWhatsappNumber = $matches[2];
-                                            } else {
-                                                $businessWhatsappNumber = $storedBusinessWhatsApp;
-                                            }
-                                        }
-                                    @endphp
-
-                                    <div class="whatsapp-wrapper">
-                                        <div class="prefix-dropdown" id="prefixDropdown">
-                                            <span id="selectedPrefix">{{ $businessWhatsappPrefix }}</span>
-                                            <span class="arrow">▼</span>
-                                        </div>
-
-                                        <!-- Add hidden prefix input -->
-                                        <input type="hidden"
-                                            name="whatsapp_prefix"
-                                            id="whatsappPrefix"
-                                            value="{{ $businessWhatsappPrefix }}">
-
-                                        <input type="text"
-                                            name="whatsapp_number"
-                                            class="form-control whatsapp-input"
-                                            placeholder="Enter number"
-                                            value="{{ $businessWhatsappNumber }}">
-                                    </div>
-
-                                    <!-- dropdown list -->
-                                    <div class="prefix-list d-none" id="prefixList">
-                                        <input type="text" id="prefixSearch" placeholder="Search country...">
-                                        <ul id="prefixItems">
-                                            <!-- JS will inject -->
-                                        </ul>
-                                    </div>
-                                </div>
+                            
                                 
 
-
+                            <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Website</label>
                                     <input type="website" name="website" class="form-control"
@@ -419,6 +356,78 @@
                                     <label class="form-label">Online Store URL</label>
                                     <input type="string" name="online_store" class="form-control"
                                         value="{{ old('online_store', $business->online_store ?? '') }}">
+                                </div>
+                            </div>
+
+                            <hr>
+                            <h6 class="fw-bold mb-3">Business Contact Person</h6>
+
+                            
+                            <div class="border rounded p-3 mb-3 founder-item">
+                                <div class="row">
+                                {{-- add business_contact_person_name --}}
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Contact Name</label>
+                                        <input type="text" name="business_contact_person_name" class="form-control"
+                                            value="{{ old('business_contact_person_name', $business->business_contact_person_name ?? '') }}">
+                                        <!-- Error Message -->
+                                        @error('business_contact_person_name')
+                                            <div class="text-danger mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Contact Number</label>
+
+                                        @php
+                                            // Split the stored business WhatsApp number
+                                            $storedBusinessWhatsApp = $business->whatsapp_number ?? '';
+                                            $businessWhatsappPrefix = '+880';
+                                            $businessWhatsappNumber = '';
+                                            
+                                            // Check if we have old input (from validation error)
+                                            if (old('whatsapp_number')) {
+                                                $businessWhatsappPrefix = old('whatsapp_prefix', '+880');
+                                                $businessWhatsappNumber = old('whatsapp_number', '');
+                                            } elseif ($storedBusinessWhatsApp) {
+                                                // Split from database
+                                                if (preg_match('/^(\+\d{1,4})(.*)$/', $storedBusinessWhatsApp, $matches)) {
+                                                    $businessWhatsappPrefix = $matches[1];
+                                                    $businessWhatsappNumber = $matches[2];
+                                                } else {
+                                                    $businessWhatsappNumber = $storedBusinessWhatsApp;
+                                                }
+                                            }
+                                        @endphp
+
+                                        <div class="whatsapp-wrapper">
+                                            <div class="prefix-dropdown" id="prefixDropdown">
+                                                <span id="selectedPrefix">{{ $businessWhatsappPrefix }}</span>
+                                                <span class="arrow">▼</span>
+                                            </div>
+
+                                            <!-- Add hidden prefix input -->
+                                            <input type="hidden"
+                                                name="whatsapp_prefix"
+                                                id="whatsappPrefix"
+                                                value="{{ $businessWhatsappPrefix }}">
+
+                                            <input type="text"
+                                                name="whatsapp_number"
+                                                class="form-control whatsapp-input"
+                                                placeholder="Enter number"
+                                                value="{{ $businessWhatsappNumber }}">
+                                        </div>
+
+                                        <!-- dropdown list -->
+                                        <div class="prefix-list d-none" id="prefixList">
+                                            <input type="text" id="prefixSearch" placeholder="Search country...">
+                                            <ul id="prefixItems">
+                                                <!-- JS will inject -->
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
