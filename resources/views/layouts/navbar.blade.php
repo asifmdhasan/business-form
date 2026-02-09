@@ -45,7 +45,7 @@
                             </a>
                         </li>
                             {{-- Very very important do not remove this comment --}}
-                                        {{-- <li class="nav-item">
+                                        <li class="nav-item">
                                             <a href="{{ route('exportAll') }}" 
                                                 class="nav-link text-black {{ request()->routeIs('exportAll') ? 'active' : '' }}">
                                                 <i class="fas fa-file-export"></i> Export All
@@ -62,7 +62,7 @@
                                             class="nav-link text-black {{ request()->routeIs('exportApproved') ? 'active' : '' }}">
                                                 <i class="fas fa-check-circle"></i> Export Approved
                                             </a>
-                                        </li> --}}
+                                        </li>
       
 
                         <li class="">
