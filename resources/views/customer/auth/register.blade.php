@@ -282,15 +282,7 @@
         <!-- Header Section -->
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
 
-            @if ($errors->any())
-                <div class="mb-6 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-                    <ul class="list-disc pl-5">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            
             <img src="{{ asset('assets/image/front-logo.png') }}" 
                 alt="Gme Network Logo" 
                 class="img-fluid mb-2 mx-auto" 
@@ -308,6 +300,15 @@
                 <div
                     class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-400 to-indigo-500 rounded-full opacity-10 transform -translate-x-12 translate-y-12">
                 </div> --}}
+                @if ($errors->any())
+                    <div class="mb-6 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
+                        <ul class="list-disc pl-5">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
                 <form action="{{ url('/register') }}" method="POST">
                     @csrf
