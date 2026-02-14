@@ -1743,7 +1743,7 @@
     <div class="modal fade" id="contactRequestModal" tabindex="-1" aria-labelledby="contactRequestModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header border-0" style="background: linear-gradient(135deg, #9C7D2D 0%, #7A6324 100%);">
+                <div class="modal-header border-0" style="margin-top:2.5rem;background: linear-gradient(135deg, #9C7D2D 0%, #7A6324 100%);">
                     <h5 class="modal-title text-white fw-bold" id="contactRequestModalLabel">
                         <i class="fas fa-user-check me-2"></i>
                         Request Contact Information
