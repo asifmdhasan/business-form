@@ -1225,11 +1225,11 @@
                         <div class="col-md-3">
                             <h3 style="color: #fff;">Connect us</h3>
                             <div class="d-flex gap-3">
-                                <a href="https://www.facebook.com/gme.network/" target="_blank"><i class="fab fa-facebook fa-lg"></i></a>
                                 <a href="https://www.linkedin.com/company/gmenetwork/" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a>
                                 <a href="https://www.instagram.com/gme.network" target="_blank"><i class="fab fa-instagram fa-lg"></i></a>
+                                <a href="https://www.facebook.com/gme.network/" target="_blank"><i class="fab fa-facebook fa-lg"></i></a>
                                 <a href="https://www.youtube.com/@gmenetwork" target="_blank"><i class="fab fa-youtube fa-lg"></i></a>
-                                <a href="https://x.com/GmeNetwork50551" target="_blank"><i class="fab fa-twitter fa-lg"></i></a>
+                                <a href="https://x.com/GmeNetwork50551" target="_blank"><i class="fab fa-x fa-lg"></i></a>
                                 
                             </div>
                         </div>
