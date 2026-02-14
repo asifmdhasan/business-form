@@ -1274,11 +1274,11 @@
 
                 <div class="mt-4">
                     
-                    <a href="#" 
+                    {{-- <a href="#" 
                     class="btn btn-collaboration-cta">
                         <i class="fas fa-envelope me-2"></i>
                         Get in Touch
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </section>
