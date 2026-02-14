@@ -90,8 +90,8 @@
     }
 
     .logo-box {
-        width: 96px;
-        height: 96px;
+        width: 140px;
+        height: 140px;
         background: white;
         padding: 0.5rem;
         border-radius: 0.5rem;
@@ -380,6 +380,588 @@
             font-size: 22px !important;
         }
     }
+    /* Collaboration Section Styles */
+    .collaboration-section {
+        background:  #9C7D2D;
+        padding: 60px 30px;
+        margin: 40px 0;
+        border-radius: 15px;
+        /* box-shadow: 0 10px 40px rgba(156, 125, 45, 0.2); */
+        /* position: relative; */
+        /* overflow: hidden; */
+    }
+
+    /* Decorative Pattern Overlay */
+    .collaboration-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /* background-image: 
+            repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,.03) 20px, rgba(255,255,255,.03) 40px); */
+        pointer-events: none;
+    }
+
+    .collaboration-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Collaboration Card */
+    .collaboration-card {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 25px 15px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .collaboration-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        background: rgba(255, 255, 255, 1);
+    }
+
+    /* Collaboration Icon */
+    .collaboration-icon {
+        font-size: 2.5rem;
+        color: #9C7D2D;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .collaboration-card:hover .collaboration-icon {
+        transform: scale(1.1);
+        color: #7A6324;
+    }
+
+    /* Card Text */
+    .collaboration-card .fw-semibold {
+        color: #333;
+        font-size: 0.95rem;
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    /* CTA Button */
+    .btn-collaboration-cta {
+        background-color: #fff;
+        color: #9C7D2D;
+        border: 2px solid #fff;
+        padding: 12px 30px;
+        font-weight: 600;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.95rem;
+    }
+
+    .btn-collaboration-cta:hover {
+        background-color: transparent;
+        color: #fff;
+        border-color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Section Subtitle */
+    .section-subtitle {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        opacity: 0.95;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .collaboration-section {
+            padding: 40px 20px;
+            margin: 30px 0;
+        }
+
+        .featured-business {
+            font-size: 28px !important;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+        }
+
+        .collaboration-card {
+            padding: 20px 10px;
+        }
+
+        .collaboration-icon {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .featured-business {
+            font-size: 24px !important;
+        }
+
+        .collaboration-icon {
+            font-size: 1.8rem;
+        }
+    }
+
+
+    /* Privacy Notice Box */
+    .privacy-notice {
+        background: linear-gradient(135deg, #F5EFE0 0%, #FDF8EC 100%);
+        border-left: 4px solid #9C7D2D;
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+
+    /* Request Contact Button */
+    .btn-request-contact {
+        background-color: #9C7D2D;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-request-contact:hover {
+        background-color: #7A6324;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(156, 125, 45, 0.3);
+        color: white;
+    }
+
+    /* Submit Button in Modal */
+    .btn-submit-request {
+        background-color: #9C7D2D;
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit-request:hover {
+        background-color: #7A6324;
+        color: white;
+    }
+
+    /* Modal Form Styling */
+    .modal-body .form-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .modal-body .form-control,
+    .modal-body .form-select {
+        border: 1px solid #ddd;
+        padding: 0.6rem 0.75rem;
+        border-radius: 6px;
+    }
+
+    .modal-body .form-control:focus,
+    .modal-body .form-select:focus {
+        border-color: #9C7D2D;
+        box-shadow: 0 0 0 0.2rem rgba(156, 125, 45, 0.15);
+    }
+
+    /* Form Check Styling */
+    .form-check-input:checked {
+        background-color: #9C7D2D;
+        border-color: #9C7D2D;
+    }
+
+    .form-check-input:focus {
+        border-color: #9C7D2D;
+        box-shadow: 0 0 0 0.2rem rgba(156, 125, 45, 0.15);
+    }
+
+    .form-check-label {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    /* Section Headers in Modal */
+    .modal-body h6 {
+        border-bottom: 2px solid #9C7D2D;
+        padding-bottom: 0.5rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .privacy-notice {
+            padding: 1rem;
+        }
+        
+        .btn-request-contact {
+            width: 100%;
+            margin-top: 1rem;
+        }
+    }
+
+
+
+    /* Privacy Notice Box */
+    .privacy-notice {
+        background: linear-gradient(135deg, #F5EFE0 0%, #FDF8EC 100%);
+        border-left: 4px solid #9C7D2D;
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+
+    /* Request Contact Button */
+    .btn-request-contact {
+        background-color: #9C7D2D;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-request-contact:hover {
+        background-color: #7A6324;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(156, 125, 45, 0.3);
+        color: white;
+    }
+
+    /* Submit Button in Modal */
+    .btn-submit-request {
+        background-color: #9C7D2D;
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit-request:hover {
+        background-color: #7A6324;
+        color: white;
+    }
+
+    /* Modal Scrollable Body */
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    /* Modal Form Styling */
+    .modal-body .form-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .modal-body .form-control,
+    .modal-body .form-select {
+        border: 1px solid #ddd;
+        padding: 0.6rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.95rem;
+    }
+
+    .modal-body .form-control:focus,
+    .modal-body .form-select:focus {
+        border-color: #9C7D2D;
+        box-shadow: 0 0 0 0.2rem rgba(156, 125, 45, 0.15);
+    }
+
+    /* Form Check Styling */
+    .form-check-input:checked {
+        background-color: #9C7D2D;
+        border-color: #9C7D2D;
+    }
+
+    .form-check-input:focus {
+        border-color: #9C7D2D;
+        box-shadow: 0 0 0 0.2rem rgba(156, 125, 45, 0.15);
+    }
+
+    .form-check-label {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    /* Section Headers in Modal */
+    .modal-body h6 {
+        border-bottom: 2px solid #9C7D2D;
+        padding-bottom: 0.5rem;
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+        padding: 1rem 1.5rem;
+    }
+
+    /* Responsive Modal */
+    @media (max-width: 768px) {
+        .modal-dialog {
+            margin: 0.5rem;
+        }
+        
+        .modal-body {
+            max-height: 60vh !important;
+            padding: 1rem;
+        }
+        
+        .privacy-notice {
+            padding: 1rem;
+        }
+        
+        .btn-request-contact {
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .modal-footer {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .modal-footer .btn {
+            width: 100%;
+        }
+    }
+
+    /* Ensure Modal Shows Properly */
+    .modal-dialog-scrollable .modal-body {
+        overflow-y: auto;
+    }
+
+    .modal-dialog-scrollable .modal-footer {
+        flex-shrink: 0;
+    }
+
+
+
+
+
+
+
+    /* Faith Section */
+    .faith-section {
+        background: linear-gradient(135deg, #9C7D2D 0%, #7A6324 100%);
+        padding: 60px 30px;
+        margin: 40px 0;
+        border-radius: 15px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .faith-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,.03) 20px, rgba(255,255,255,.03) 40px);
+        pointer-events: none;
+    }
+
+    .faith-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Faith Card - Center Aligned */
+    .faith-card {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 8px 10px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        /* min-height: 150px; */
+    }
+
+    .faith-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Primary Color Icon */
+    .icon-primary {
+        color: #9C7D2D !important;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+    }
+
+    .faith-card .fw-semibold {
+        color: #333;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        margin-bottom: 0;
+    }
+
+    .faith-section h6 {
+        border-bottom: 2px solid rgba(255,255,255,0.3);
+        padding-bottom: 0.5rem;
+        display: inline-block;
+    }
+
+    /* Row Centering - ensures cards stay centered */
+    .row.justify-content-center {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .faith-card {
+            min-height: 130px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .faith-section {
+            padding: 40px 20px;
+        }
+
+        .icon-primary {
+            font-size: 2rem;
+        }
+
+        .faith-card {
+            min-height: 120px;
+            padding: 20px 10px;
+        }
+
+        .faith-card .fw-semibold {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .faith-card .fw-semibold {
+            font-size: 0.85rem;
+        }
+    }
+    .margin-top-1rem{
+        padding-top: 2rem;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    /* Contact Section Styling */
+    .contact-section {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 10px;
+        height: 100%;
+        border-left: 4px solid #9C7D2D;
+    }
+
+    .contact-heading {
+        color: #9C7D2D;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e0e0e0;
+    }
+
+    .contact-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .contact-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .contact-label {
+        font-weight: 600;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .contact-value {
+        color: #333;
+        font-size: 1rem;
+        word-break: break-word;
+    }
+
+    /* Social Links */
+    .social-links {
+        margin-top: 0.5rem;
+    }
+
+    .social-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        border-radius: 10px;
+        background: white;
+        color: #9C7D2D;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .social-icon:hover {
+        background: #9C7D2D;
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 10px rgba(156, 125, 45, 0.3);
+    }
+
+    /* Website Link */
+    .website-link {
+        color: #9C7D2D;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        word-break: break-all;
+    }
+
+    .website-link:hover {
+        color: #7A6324;
+        text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .contact-section {
+            margin-bottom: 1rem;
+        }
+    }
 </style>
 
 <div class="container my-4">
@@ -594,31 +1176,69 @@
     @endif
 
     {{-- Collaboration Open --}}
-    @if($business->collaboration_open === 'yes' || $business->collaboration_open === 'maybe')
-        {{-- collaboration_types --}}
-        <section class="about-card mt-4">
-            <h4 class="fw-bold mb-4 featured-business "
-                style="
-                    font-size: 34px;
-                    text-transform: uppercase;
-                    line-height: 1.3em;">
-                
-                <span style="color:#9b7d2d;font-weight: 900;">{{ $business->business_name }}  </span>
-                <span style=" font-weight: 300;"> Open for Collaboration </span>
-            </h4>
-            <p class="mb-3">This business is open to collaboration opportunities in the following areas:</p>
-            @php
-                $collaborationTypes = is_string($business->collaboration_types)
-                    ? json_decode($business->collaboration_types, true)
-                    : ($business->collaboration_types ?? []);
-            @endphp
-            <ul>
-                @foreach($collaborationTypes as $type)
-                    <li>{{ ucfirst(str_replace('_', ' ', $type)) }}</li>
-                @endforeach
-            </ul>
+    @if($business->collaboration_open === 'yes')
+        <section class="collaboration-section">
+            <div class="collaboration-content text-center">
+                <h4 class="fw-bold mb-4 featured-business"
+                    style="
+                        font-size: 34px;
+                        text-transform: uppercase;
+                        line-height: 1.3em;">
+                    <span style="color:#fff; font-weight: 300;">{{ $business->business_name }}</span>
+                    <span style="color:#fff; font-weight: 900;"> Open for Collaboration</span>
+                </h4>
+                <p class="section-subtitle mx-auto" style="max-width: 600px; color:#fff;">
+                    {{ $business->business_name }} is actively seeking partnership opportunities in the following areas.
+                </p>
+
+                @php
+                    $collaborationTypes = is_string($business->collaboration_types)
+                        ? json_decode($business->collaboration_types, true)
+                        : ($business->collaboration_types ?? []);
+                    
+                    // Collaboration type icons mapping
+                    $collaborationIcons = [
+                        'Partnerships' => 'fa-handshake',
+                        'Investment Oportunities' => 'fa-chart-line',
+                        'Vendor Supply Chain' => 'fa-truck',
+                        'Marketing Promotion' => 'fa-bullhorn',
+                        'Networking' => 'fa-users',
+                        'Training Workshops' => 'fa-graduation-cap',
+                        'Community Charity Projects' => 'fa-heart',
+                        'Not Sure Yet' => 'fa-question-circle'
+                    ];
+                @endphp
+
+                <div class="row g-3 mt-4 justify-content-center">
+                    @foreach($collaborationTypes as $type)
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="collaboration-card">
+                                <i class="fas {{ $collaborationIcons[$type] ?? 'fa-handshake' }} collaboration-icon"></i>
+                                <div class="fw-semibold mt-2">{{ $type }}</div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <p class="mt-4 mb-0 mx-auto" style="max-width: 700px; color:#fff;">
+                    We believe in the power of collaboration to drive growth and create meaningful impact. 
+                    Whether you're looking to partner, invest, or network, we're open to exploring opportunities 
+                    that align with our values and vision for mutual success.
+                </p>
+
+                <div class="mt-4">
+                    
+                    <a href="#" 
+                    class="btn btn-collaboration-cta">
+                        <i class="fas fa-envelope me-2"></i>
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
         </section>
     @endif
+                {{-- <a href="{{ route('gme.business.contact', $business->id) }}"  --}}
+
 
     
     <!-- ELEGANT GALLERY with Centered Images in Cards -->
@@ -667,11 +1287,11 @@
                                     </div>
 
                                     <!-- Photo Number Badge -->
-                                    <div class="position-absolute top-0 end-0 m-2">
+                                    {{-- <div class="position-absolute top-0 end-0 m-2">
                                         <span class="badge" style="background: rgba(155, 125, 45, 0.9); padding: 5px 10px; font-size: 11px; border-radius: 15px;">
                                             {{ $index + 1 }} / {{ $business->businessPhotos->count() }}
                                         </span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -716,55 +1336,134 @@
     <!-- FAITH COMPLIANCE -->
     <section class="faith-section">
         <div class="faith-content text-center">
-            {{-- <i class="fas fa-shield-alt text-primary-custom" style="font-size: 2.5rem;"></i> --}}
-            {{-- <h2 class="section-title mt-2">Faith-Compliant Business</h2> --}}
-             <h4 class="fw-bold mb-4 featured-business "
-                style="
-                    font-size: 34px;
-                    text-transform: uppercase;
-                    line-height: 1.3em;">
+            <h4 class="fw-bold mb-4 featured-business"
+                style="font-size: 34px; text-transform: uppercase; line-height: 1.3em;">
                 <span style="color:#fff; font-weight: 300;">Faith-Compliant </span>
-                <span style="color:#fff;font-weight: 900;">Business </span>
+                <span style="color:#fff;font-weight: 900;">Business</span>
             </h4>
             <p class="section-subtitle mx-auto" style="max-width: 600px;color:#fff;">
-                This business is verified to operate under Islamic ethical principles.
+                This business commits to Islamic ethical principles and community responsibility.
             </p>
 
-            <div class="row g-3 mt-3">
-                <div class="col-md-4">
-                    <div class="faith-card">
-                        <i class="fas fa-check-circle {{ badgeColor($business->avoid_riba) }}"></i>
-                        <div class="fw-semibold">Riba-free Financing</div>
-                        <small class="text-muted">{{ ucfirst(str_replace('_',' ',$business->avoid_riba ?? 'n/a')) }}</small>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="faith-card">
-                        <i class="fas {{ badgeIcon($business->avoid_haram_products) }} {{ badgeColor($business->avoid_haram_products) }}"></i>
-                        <div class="fw-semibold">Ethical & Halal Conduct</div>
-                        <small class="text-muted">{{ ucfirst(str_replace('_',' ',$business->avoid_haram_products ?? 'n/a')) }}</small>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="faith-card">
-                        <i class="fas {{ badgeIcon($business->fair_pricing) }} {{ badgeColor($business->fair_pricing) }}"></i>
-                        <div class="fw-semibold">Honest Pricing & Marketing</div>
-                        <small class="text-muted">{{ ucfirst(str_replace('_',' ',$business->fair_pricing ?? 'n/a')) }}</small>
-                    </div>
-                </div>
-            </div>
+            @php
+                $financePractices = is_string($business->finance_practices)
+                    ? json_decode($business->finance_practices, true)
+                    : ($business->finance_practices ?? []);
+                    
+                $productPractices = is_string($business->product_practices)
+                    ? json_decode($business->product_practices, true)
+                    : ($business->product_practices ?? []);
+                    
+                $communityPractices = is_string($business->community_practices)
+                    ? json_decode($business->community_practices, true)
+                    : ($business->community_practices ?? []);
 
-            <p class="mt-4 mb-0 mx-auto" style="max-width: 700px;color:#fff;">
-                Our commitment is to uphold the highest standards of integrity. We ensure all operations,
-                from financing to product development and marketing, are fully aligned with ethical principles,
-                fostering trust and transparency with our valued customers and partners.
-            </p>
+                $hasPractices = !empty($financePractices) || !empty($productPractices) || !empty($communityPractices);
+
+                // Practice icons mapping - using full text as keys
+                $practiceIcons = [
+                    // Finance
+                    'I do not deal in riba or interest-based transactions' => 'fa-ban',
+                    'I do not engage in unethical or exploitative trade' => 'fa-shield-alt',
+                    'I follow Shariah-compliant financial practices' => 'fa-check-circle',
+                    'I am honest and transparent in all dealings' => 'fa-handshake',
+                    
+                    // Products
+                    'My products/services are halal' => 'fa-check-circle',
+                    'I avoid selling haram or prohibited items' => 'fa-ban',
+                    'I maintain high quality and honesty in offerings' => 'fa-star',
+                    'I provide accurate information of my products and services' => 'fa-info-circle',
+                    
+                    // Community
+                    'I pay fair wages and treat employees with respect' => 'fa-money-bill-wave',
+                    'I support local communities and charitable initiatives' => 'fa-heart',
+                    'I practice environmental responsibility in my operations' => 'fa-leaf',
+                    'I collaborate ethically with other Muslim businesses' => 'fa-handshake',
+                ];
+            @endphp
+
+            @if($hasPractices)
+                {{-- Finance & Business Practices --}}
+                @if(!empty($financePractices))
+                    <div class="mb-4">
+                        <h4 class="text-white fw-bold mb-3">
+                            <i class="fas fa-coins me-2"></i>Finance & Business Practices
+                        </h4>
+                        <div class="row g-3 justify-content-center">
+                            @foreach($financePractices as $practice)
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="faith-card">
+                                        <i class="fas {{ $practiceIcons[$practice] ?? 'fa-check' }} icon-primary"></i>
+                                        <div class="fw-semibold">{{ $practice }}</div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Product & Services Practices --}}
+                @if(!empty($productPractices))
+                    <div class="mb-4">
+                        <h4 class="text-white fw-bold mb-3">
+                            <i class="fas fa-box-open me-2"></i>Product & Services Practices
+                        </h4>
+                        <div class="row g-3 justify-content-center">
+                            @foreach($productPractices as $practice)
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="faith-card">
+                                        <i class="fas {{ $practiceIcons[$practice] ?? 'fa-check' }} icon-primary"></i>
+                                        <div class="fw-semibold">{{ $practice }}</div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Community & Responsibility Practices --}}
+                @if(!empty($communityPractices))
+                    <div class="mb-4">
+                        <h4 class="text-white fw-bold mb-3">
+                            <i class="fas fa-users me-2"></i>Community & Responsibility
+                        </h4>
+                        <div class="row g-3 justify-content-center">
+                            @foreach($communityPractices as $practice)
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="faith-card">
+                                        <i class="fas {{ $practiceIcons[$practice] ?? 'fa-check' }} icon-primary"></i>
+                                        <div class="fw-semibold">{{ $practice }}</div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Ethical Description --}}
+                @if($business->ethical_description)
+                    <div class="mt-4">
+                        <h4 class="text-white fw-bold mb-2">Ethical Description (Optional)</h4>
+                        <p class="mb-0 mx-auto text-white" style="max-width: 700px;">
+                            {{ $business->ethical_description }}
+                        </p>
+                    </div>
+                @endif
+
+            @else
+                <div class="alert alert-light d-inline-block mx-auto mt-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Ethics information not provided yet.
+                </div>
+            @endif
+
         </div>
     </section>
 
+
     
     <!-- CONTACT INFORMATION -->
-    <section class="contact-card mt-4">
+    {{-- <section class="contact-card mt-4">
         <h4 class="fw-bold mb-4 featured-business "
                     style="
                         font-size: 34px;
@@ -815,9 +1514,7 @@
                                 </a>
                             @endif
                         </div>
-                        {{-- <a href="mailto:{{ $business->email }}" class="info-value text-decoration-none">
-                            {{ $business->email }}
-                        </a> --}}
+
                     </div>
                 </div>
             </div>
@@ -839,6 +1536,173 @@
         </div>
 
         
+    </section> --}}
+    <!-- CONTACT INFORMATION -->
+    <section class="contact-card mt-4">
+        <h4 class="fw-bold mb-4 featured-business"
+            style="font-size: 34px; text-transform: uppercase; line-height: 1.3em;">
+            <span style="font-weight: 300;">Contact </span>
+            <span style="color:#9b7d2d; font-weight: 900;">Information</span>
+        </h4>
+
+        <div class="pt-3" style="border-top: 1px solid var(--border-light);">
+            
+            <!-- Row 1: Primary Contact - Name, Contact, Email in 3 columns -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-user me-2"></i>
+                            Primary Contact
+                        </h5>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                {{-- <span class="contact-label">Name:</span> --}}
+                                <span class="contact-value">{{ $business->business_contact_person_name ?? '——' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-phone me-2"></i>
+                            Contact
+                        </h5>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <span class="contact-value">{{ $business->whatsapp_number ?? '——' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-envelope me-2"></i>
+                            Email
+                        </h5>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <span class="contact-value">{{ $business->email ?? '——' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Social Media -->
+            <div class="row g-4 mb-4">
+                <div class="col-6">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-share-alt me-2"></i>
+                            Social Media
+                        </h5>
+                        <div class="contact-details">
+                            @if($business->whatsapp_number || $business->facebook || $business->instagram || $business->linkedin)
+                                <div class="social-links d-flex flex-wrap gap-2">
+                                    @if($business->whatsapp_number)
+                                        <a href="https://wa.me/{{ $business->whatsapp_number }}"
+                                        class="social-icon" target="_blank" title="WhatsApp">
+                                            <i class="fab fa-whatsapp"></i>
+                                        </a>
+                                    @endif
+                                    @if($business->facebook)
+                                        <a href="{{ $business->facebook }}" class="social-icon" target="_blank" title="Facebook">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    @endif
+                                    @if($business->instagram)
+                                        <a href="{{ $business->instagram }}" class="social-icon" target="_blank" title="Instagram">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                    @endif
+                                    @if($business->linkedin)
+                                        <a href="{{ $business->linkedin }}" class="social-icon" target="_blank" title="LinkedIn">
+                                            <i class="fab fa-linkedin-in"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            @else
+                                <p class="text-muted mb-0">Not Available</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-globe me-2"></i>
+                            Website
+                        </h5>
+                        <div class="contact-details">
+                            @if($business->website)
+                                <a href="{{ $business->website }}" target="_blank" class="website-link">
+                                    {{ $business->website }}
+                                    <i class="fas fa-external-link-alt ms-2"></i>
+                                </a>
+                            @else
+                                <p class="text-muted mb-0">Not Available</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
+
+
+    {{-- add a button for delete and edit the business if the user is the owner of the business --}}
+    @if(auth()->guard('customer')->user()->id === $business->customer_id)
+        <div class="d-flex gap-2 mt-4 justify-content-center margin-top-1rem" >
+            {{-- <form action="{{ route('gme.business.destroy', $business->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this business?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-outline-danger">
+                    <i class="fas fa-trash me-1"></i>Delete Business 
+                </button>
+            </form> --}}
+
+            <form action="{{ route('gme.business.requestDelete', $business->id) }}" 
+                method="POST"
+                onsubmit="return confirm('Are you sure you want to request deletion of this business?')">
+                @csrf
+                @method('PATCH')
+
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash me-2"></i>
+                    Request for Delete
+                </button>
+            </form>
+
+        </div>
+    @endif
 </div>
+
+ 
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('contactRequestForm');
+        
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const agreement = document.getElementById('agreementCheck');
+                const ethics = document.getElementById('ethicsCheck');
+                
+                if (!agreement.checked || !ethics.checked) {
+                    e.preventDefault();
+                    alert('Please agree to both checkboxes before submitting.');
+                    return false;
+                }
+            });
+        }
+    });
+</script>
 @endsection

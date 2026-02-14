@@ -88,6 +88,11 @@
                                 Rejected - {{ \App\Models\GmeBusinessForm::where('status','rejected')->count() }}
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-status="request_for_delete" href="#">
+                                Delete - {{ \App\Models\GmeBusinessForm::where('status','request_for_delete')->count() }}
+                            </a>
+                        </li>
                     </ul>
 
                     {{-- Table --}}

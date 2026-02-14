@@ -39,6 +39,16 @@
 
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
     <style>
+        .padding-top-1rem{
+            margin-top: 1rem;
+        }
+        .padding-top-2rem{
+            margin-top: 2rem;
+        }
+        .padding-5rem{
+            /* padding-left: 5rem; */
+            padding-right: 10rem;
+        }
         .swiper-button-next, .swiper-button-prev{
             color: #9C7D2D !important;
         }
@@ -687,7 +697,7 @@
 
         /* CTA Button */
         .join-network {
-            background: #576829;
+            background: #9c7d2d;
             /* background: linear-gradient( #c9a23a, #9c7d2d); */
             color: #fff !important;
             font-weight: 600;
@@ -695,7 +705,7 @@
             padding: 12px 26px;
         }
         .join-network:hover {
-            background: #9c7d2d;
+            background: #576829;
             color: #fff !important;
         }
         .join-network-white {
@@ -816,7 +826,7 @@
 
         .gme-nav-right {
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
             padding-left: 2.5rem;
         }
 
@@ -1040,7 +1050,7 @@
         <!-- LEFT MENU -->
         <nav class="gme-nav gme-nav-left">
             <ul>
-                <li><a class="active" href="#">Home</a></li>
+                <li><a class="active" href="{{ route('guest.index') }}">Home</a></li>
                 {{-- <li><a href="#">About GME</a></li> --}}
                 {{-- <li class="has-dropdown">
                     <a href="#">Get Involved</a>
@@ -1057,7 +1067,7 @@
 
         <!-- CENTER LOGO -->
         <div class="gme-logo">
-            <a href="/">
+            <a href="https://gme.network/">
                 <img src="{{ asset('assets/image/logo.webp') }}" alt="GME">
             </a>
         </div>
@@ -1065,16 +1075,23 @@
         <!-- RIGHT MENU -->
         <nav class="gme-nav gme-nav-right">
             <ul>
-                {{-- <li class="has-dropdown">
-                    <a href="#">Events</a>
-                    <ul class="dropdown" style="display: inline-block;">
-                        <li><a href="#">Upcoming Events</a></li>
-                        <li><a href="#">Previous Events</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">News</a></li> --}}
-                <li><a href="#">Contact</a></li>
+                @auth('customer')
+                    <li><a href="{{ route('gme.business.register') }}">Join Network</a></li>
+                @else
+                    <li><a href="{{ route('customer.login') }}">Join Network</a></li>
+                @endauth
             </ul>
+            <ul>
+                @auth('customer')
+                    <li><a href="{{ route('customer.gme-business-form.index') }}"><i class="fa fa-home me-2"></i>Dashboard</a></li>
+                @else
+                    <li><a href="{{ route('customer.login') }}"><i class="fa fa-user me-2"></i>Login</a></li>
+                @endauth
+            </ul>
+        </nav>
+
+        <nav class="gme-nav gme-nav-right">
+            
         </nav>
 
     </div>
@@ -1093,7 +1110,7 @@
                 </div>
                 <div class="container">
                     <h1 class="fw-bold mb-3">Find a Muslim Entrepreneur Near You</h1>
-                    <p class="mb-4">Discover Muslim entrepreneurs in your area</p>
+                    <p class="mb-4">Showcase your business within a trusted community of Muslim entrepreneurs.<br> Connect, collaborate, and grow together with shared values.</p>
 
                     <div class="d-flex justify-content-center">
                         <!-- 🔹 Relative wrapper (IMPORTANT) -->
@@ -1110,7 +1127,7 @@
                                 </button>
                             </div>
                             <a href="{{ route('customer.login') }}" class="btn btn-login join-network-white" style=" color: #576829; margin-top: 3rem;;">
-                                Join the Network
+                                Add Your Business
                             </a>
                             {{-- <a href="{{ route('guest.form') }}" class="gme-btn">
                                 <span class="gme-btn-inner">
@@ -1139,15 +1156,44 @@
                 <div class="container">
                     <div class="footer-cta text-center mb-4 d-md-flex justify-content-between align-items-center">
                         <div class="mb-3 mb-md-0">
-                            <h2 class="h4 mb-1 grow-business" style="color: #fff;">Grow Your Business</h2>
+                            <h2 class="h4 mb-1 grow-business" style="color: #fff;">Bring Your Business to the Global Stage</h2>
                             <p class="mb-0" style="color: rgba(255,255,255,0.8);">
-                                Join our network of talented Muslim entrepreneurs.
+                                Join a growing network of Muslim entrepreneurs building real businesses, real partnerships, and real impact.
                             </p>
                         </div>
                         <a href="{{ route('customer.login') }}" class="btn btn-login join-network" style=" color: #191970;">
-                            Join the Network
+                            Add Your Business Today
                         </a>
                     </div>
+
+                    <!-- Community Contribution Section -->
+                    <div class="footer-cta  mb-4 d-md-flex justify-content-between align-items-center">
+
+                        <div class="col-md-12 mb-3 mb-md-0 padding-5rem">
+                            <h2 class="h4 mb-1 grow-business" style="color: #fff;"> Help Us Build This Together</h2>
+                            <p class="mb-0 padding-top-1rem" style="color: rgba(255,255,255,0.8);">
+                                This is a community-led initiative built to elevate Muslim-owned businesses worldwide. If you find value in this initiative, consider contributing a small amount — even $5 — to help us maintain and grow this platform with integrity.
+                            </p>
+
+                            <a href="{{ route('customer.login') }}" class="btn btn-login join-network padding-top-1rem" style=" color: #191970;">
+                                Contribute $5 or More
+                            </a>
+                            <p class="mb-0 padding-top-1rem" style="color: rgba(255,255,255,0.8);">
+                                
+                                Contributions are voluntary and do not affect your listing status.
+                            </p>
+                        </div>
+                        {{-- <div class="col-md-3 d-flex justify-content-end">
+
+                        <a href="{{ route('customer.login') }}" class="btn btn-login join-network" style=" color: #191970;">
+                             Contribute $5 or More
+                        </a>
+                        </div> --}}
+
+
+
+                    </div>
+
 
                     <div class="row g-4 pb-4 border-bottom border-opacity-25 pt-4">
                         <div class="col-md-3">
@@ -1249,7 +1295,7 @@
         let filteredBusinesses = [];
 
         let currentPage = 1;
-        const perPage = 6;
+        const perPage = 9;
 
         /* =========================
         Select2 Init

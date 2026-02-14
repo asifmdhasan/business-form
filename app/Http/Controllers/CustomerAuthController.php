@@ -119,10 +119,32 @@ class CustomerAuthController extends Controller
         ]);
 
         // Send OTP via Email (example)
-        Mail::raw("Your OTP is: {$otp}", function ($message) use ($customer) {
+        // Mail::raw("Your OTP is: {$otp}", function ($message) use ($customer) {
+        //     $message->to($customer->email)
+        //             ->subject('OTP Verification');
+        // });
+        Mail::send([], [], function ($message) use ($customer, $otp) {
             $message->to($customer->email)
-                    ->subject('OTP Verification');
+                ->subject('Your verification code')
+                ->setBody("
+                    <p>Assalamu Alaikum,</p>
+
+                    <p>Thank you for signing up with the <strong>Global Muslim Business Directory</strong>.</p>
+
+                    <p>Please use the following verification code to complete your request:</p>
+
+                    <h2>Verification Code: {$otp}</h2>
+
+                    <p>This code is valid for a limited time. If you did not request this code, you may safely ignore this email.</p>
+
+                    <br>
+
+                    <p>Warm regards,<br>
+                    Global Muslim Business Directory<br>
+                    Powered by GME Network</p>
+                ", 'text/html');
         });
+
 
         return redirect()
             ->route('customer.reg.otp.form', $customer->id)

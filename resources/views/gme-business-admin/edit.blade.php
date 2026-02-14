@@ -814,7 +814,7 @@
                             <input type="checkbox" name="info_accuracy" value="1" class="form-check-input" id="info_accuracy"
                                 {{ old('info_accuracy', $business->info_accuracy) ? 'checked' : '' }} required>
                             <label class="form-check-label fw-bold" for="info_accuracy">
-                                Info Accuracy <span class="text-danger">(Must be checked)</span>
+                                Info Accuracy
                             </label>
                         </div>
                     </div>
@@ -834,7 +834,7 @@
                             <input type="checkbox" name="allow_contact" value="1" class="form-check-input" id="allow_contact"
                                 {{ old('allow_contact', $business->allow_contact) ? 'checked' : '' }} required>
                             <label class="form-check-label fw-bold" for="allow_contact">
-                                Allow Contact <span class="text-danger">(Must be checked)</span>
+                                Allow Contact 
                             </label>
                         </div>
                     </div>
@@ -854,6 +854,11 @@
         <i class="fa fa-cog"></i> Step 5: Status - Admin Only
     </div>
     <div class="card-body">
+        <div class="alert alert-warning">
+            @if($business->updatedBy)
+                <span>Last Updated By: <strong>{{ $business->updatedBy->name }}</strong></span>
+            @endif
+        </div>
         <div class="row">
             <div class="col-md-3 form-group mb-3">
                 <div class="form-check pt-2">
@@ -883,7 +888,7 @@
                     <option value="pending" {{ old('status', $business->status) == 'pending' ? 'selected' : '' }}>Pending</option>
                     <option value="approved" {{ old('status', $business->status) == 'approved' ? 'selected' : '' }}>Approved</option>
                     <option value="rejected" {{ old('status', $business->status) == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                    <option value="banned" {{ old('status', $business->status) == 'banned' ? 'selected' : '' }}>Banned</option>
+                    <option value="request_for_delete" {{ old('status', $business->status) == 'request_for_delete' ? 'selected' : '' }}>Request for Delete</option>
                 </select>
             </div>
         </div>

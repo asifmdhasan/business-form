@@ -164,7 +164,27 @@ class GmeRegController extends Controller
                     'annual_revenue' => 'nullable|in:under_10k,10k-50k,50k-200k,200k-1m,above_1m',
                     'business_overview' => 'nullable|string|max:1800',
                     'services_id' => 'required|array|max:10',
-                    'services_id.*' => 'exists:services,id',
+                    // 'services_id.*' => 'exists:services,id',
+                    // Custom validation যোগ করুন
+                    'services_id.*' => [
+                        'required',
+                        'string',
+                        function ($attribute, $value, $fail) {
+                            // যদি "new:" দিয়ে শুরু হয় তাহলে allow করুন
+                            if (strpos($value, 'new:') === 0) {
+                                $serviceName = str_replace('new:', '', $value);
+                                // Check করুন নাম খালি নয়
+                                if (empty(trim($serviceName))) {
+                                    $fail('Service name cannot be empty.');
+                                }
+                                return;
+                            }
+                            // নাহলে database-এ exist করতে হবে
+                            if (!is_numeric($value) || !\App\Models\Service::where('id', $value)->exists()) {
+                                $fail('The selected service is invalid.');
+                            }
+                        }
+                    ],
 
                     'collaboration_open' => 'required|in:yes,no,maybe',
                     'collaboration_types' => 'nullable|array',
@@ -191,12 +211,16 @@ class GmeRegController extends Controller
 
             case 3:
                 $rules = [
-                    'avoid_riba' => 'required|in:yes,partially_transitioning,no,prefer_not_to_say',
-                    'avoid_haram_products' => 'required|in:yes,partially_compliant,no',
-                    'fair_pricing' => 'required|in:yes,mostly,needs_improvement',
+                    'finance_practices' => 'nullable|array',
+                    'finance_practices.*' => 'string|max:255',
+                    
+                    'product_practices' => 'nullable|array',
+                    'product_practices.*' => 'string|max:255',
+                    
+                    'community_practices' => 'nullable|array',
+                    'community_practices.*' => 'string|max:255',
+                    
                     'ethical_description' => 'nullable|string|max:1200',
-                    'open_for_guidance' => 'required|in:yes,no,maybe',
-
                 ];
                 break;
 
@@ -272,86 +296,40 @@ class GmeRegController extends Controller
         $business->business_overview = $request->business_overview;
 
         // FIX: Save services_id properly
-        $business->services_id = $request->services_id ? json_encode($request->services_id) : null;
+        // $business->services_id = $request->services_id ? json_encode($request->services_id) : null;
+        // Process services - handle both existing and new services
+        $servicesData = [];
+        
+        if ($request->has('services_id') && is_array($request->services_id)) {
+            foreach ($request->services_id as $serviceId) {
+                if (strpos($serviceId, 'new:') === 0) {
+                    // নতুন custom service
+                    $newServiceName = trim(str_replace('new:', '', $serviceId));
+                    
+                    if (!empty($newServiceName)) {
+                        // Database-এ নতুন service create করুন
+                        $newService = \App\Models\Service::firstOrCreate(
+                            ['name' => $newServiceName],
+                            ['business_category_id' => $business->business_category_id ?? null]
+                        );
+                        
+                        $servicesData[] = $newService->id;
+                    }
+                } else {
+                    // Existing service ID
+                    $servicesData[] = (int)$serviceId;
+                }
+            }
+        }
+        
+        // Save services as JSON
+        // $business->services_id = json_encode($servicesData);
+        $business->services_id = $servicesData;
 
         $business->collaboration_open = $request->collaboration_open;
         $business->collaboration_types = json_encode($request->collaboration_types ?? []);
 
-        // // Handle LOGO upload
-        // if ($request->hasFile('logo')) {
-        //     if ($business->logo && file_exists(public_path('assets/' . $business->logo))) {
-        //         unlink(public_path('assets/' . $business->logo));
-        //     }
-        //     $business->logo = $request->file('logo')
-        //         ->store('uploads/business/logos', 'public_folder');
-        // }
-
-        // // Handle COVER PHOTO upload
-        // if ($request->hasFile('cover_photo')) {
-        //     if ($business->cover_photo && file_exists(public_path('assets/' . $business->cover_photo))) {
-        //         unlink(public_path('assets/' . $business->cover_photo));
-        //     }
-        //     $business->cover_photo = $request->file('cover_photo')
-        //         ->store('uploads/business/covers', 'public_folder');
-        // }
-
-
-        // // NEW: Handle BUSINESS PHOTOS using business_photos table
-        // // Delete photos that were removed
-        // if ($request->has('delete_photos')) {
-        //     $deleteIds = $request->input('delete_photos', []);
-        //     $photosToDelete = BusinessPhoto::whereIn('id', $deleteIds)
-        //         ->where('gme_business_form_id', $business->id)
-        //         ->get();
-
-        //     foreach ($photosToDelete as $photo) {
-        //         // Delete file from storage
-        //         if ($photo->image_url && file_exists(public_path('assets/' . $photo->image_url))) {
-        //             unlink(public_path('assets/' . $photo->image_url));
-        //         }
-        //         // Delete database record
-        //         $photo->delete();
-        //     }
-        // }
-
-        // // Add new photos
-        // if ($request->hasFile('photos')) {
-        //     foreach ($request->file('photos') as $photo) {
-        //         $path = $photo->store('uploads/business/gallery', 'public_folder');
-
-        //         BusinessPhoto::create([
-        //             'gme_business_form_id' => $business->id,
-        //             'image_url' => $path
-        //         ]);
-        //     }
-        // }
-
-        // // Handle REGISTRATION DOCUMENT upload
-        // if ($request->hasFile('registration_document')) {
-        //     if ($business->registration_document && file_exists(public_path('assets/' . $business->registration_document))) {
-        //         unlink(public_path('assets/' . $business->registration_document));
-        //     }
-        //     $business->registration_document = $request->file('registration_document')
-        //         ->store('uploads/business/documents', 'public_folder');
-        // }
-
-        // // Handle BUSINESS PROFILE upload
-        // if ($request->hasFile('business_profile')) {
-        //     if ($business->business_profile && file_exists(public_path('assets/' . $business->business_profile))) {
-        //         unlink(public_path('assets/' . $business->business_profile));
-        //     }
-        //     $business->business_profile = $request->file('business_profile')
-        //         ->store('uploads/business/profiles', 'public_folder');
-        // }
-
-        // // Handle PRODUCT CATALOGUE upload
-        // if ($request->hasFile('product_catalogue')) {
-        //     if ($business->product_catalogue && file_exists(public_path('assets/' . $business->product_catalogue))) {
-        //         unlink(public_path('assets/' . $business->product_catalogue));
-        //     }
-        //     $business->product_catalogue = $request->file('product_catalogue')
-        //         ->store('uploads/business/catalogues', 'public_folder');
-        // }
+       
     }
 
     /**
@@ -359,11 +337,10 @@ class GmeRegController extends Controller
      */
     private function saveStep3(Request $request, GmeBusinessForm $business)
     {
-        $business->avoid_riba = $request->avoid_riba;
-        $business->avoid_haram_products = $request->avoid_haram_products;
-        $business->fair_pricing = $request->fair_pricing;
+        $business->finance_practices = $request->finance_practices ?? [];
+        $business->product_practices = $request->product_practices ?? [];
+        $business->community_practices = $request->community_practices ?? [];
         $business->ethical_description = $request->ethical_description;
-        $business->open_for_guidance = $request->open_for_guidance;
 
     }
 

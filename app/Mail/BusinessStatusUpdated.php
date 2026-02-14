@@ -25,14 +25,29 @@ class BusinessStatusUpdated extends Mailable
     /**
      * Get the message envelope.
      */
+    // public function envelope(): Envelope
+    // {
+    //     //add log here
+    //     Log::info('Receved envelope: ', $this->mailData);
+    //     return new Envelope(
+    //         // subject: 'Business status ' . $this->mailData['status'] . '  for ' . $this->mailData['business_name'],
+    //         subject: 'Update on your business submission',
+    //     );
+    // }
+
     public function envelope(): Envelope
     {
-        //add log here
-        Log::info('Receved envelope: ', $this->mailData);
+        $subject = $this->mailData['status'] === 'approved'
+            ? 'Your Business Has Been Approved 🎉'
+            : 'Update on Your Business Submission';
+
+        Log::info('BusinessStatusUpdated Envelope:', $this->mailData);
+
         return new Envelope(
-            subject: 'Business status ' . $this->mailData['status'] . '  for ' . $this->mailData['business_name'],
+            subject: $subject,
         );
     }
+
 
     /**
      * Get the message content definition.

@@ -75,6 +75,7 @@ class AdminController extends Controller
         $totalBusinesses = GmeBusinessForm::where('status', '!=', 'draft')->count();
         $totalPendingBusinesses = GmeBusinessForm::where('status', 'pending')->count();
         $approvedBusinesses = GmeBusinessForm::where('status', 'approved')->count();
+        $requestForDeleteBusinesses = GmeBusinessForm::where('status', 'request_for_delete')->count();
 
 
 
@@ -82,7 +83,8 @@ class AdminController extends Controller
             'totalBusinesses',
             'totalPendingBusinesses',
             // 'totalCustomers',
-            'approvedBusinesses'
+            'approvedBusinesses',
+            'requestForDeleteBusinesses'
         ));
     }
 

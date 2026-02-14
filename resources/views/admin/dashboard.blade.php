@@ -12,7 +12,7 @@
 
     <div class="row">
         <!-- Total Businesses -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <a href="{{ route('gme-business-admin.index') }}" class="text-decoration-none">
                 <div class="card text-white h-100">
                     <div class="card-body d-flex align-items-center justify-content-center">
@@ -29,7 +29,7 @@
         </div>
 
         <!-- Pending Businesses -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <a href="{{ route('gme-business-admin.index', ['status' => 'pending']) }}" class="text-decoration-none">
                 <div class="card text-white h-100">
                     <div class="card-body d-flex align-items-center justify-content-center">
@@ -46,7 +46,7 @@
         </div>
 
         <!-- Approved Businesses -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <a href="{{ route('gme-business-admin.index', ['status' => 'approved']) }}" class="text-decoration-none">
                 <div class="card text-white h-100">
                     <div class="card-body d-flex align-items-center justify-content-center">
@@ -56,6 +56,24 @@
                         </div>
                         <div>
                             <i class="bi bi-check-circle-fill font-color" style="font-size: 2.5rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+        <!-- Request for Delete Businesses -->
+        <div class="col-md-3 mb-4">
+            <a href="{{ route('gme-business-admin.index', ['status' => 'request_for_delete']) }}" class="text-decoration-none">
+                <div class="card text-white h-100">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <div class="text-center">
+                            <h5 class="card-title font-color">Request for Delete</h5>
+                            <h2 class="card-text font-color">{{ $requestForDeleteBusinesses }}</h2>
+                        </div>
+                        <div>
+                            <i class="bi bi-trash-fill font-color" style="font-size: 2.5rem;"></i>
                         </div>
                     </div>
                 </div>

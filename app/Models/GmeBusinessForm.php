@@ -13,11 +13,30 @@ class GmeBusinessForm extends Model
         'founders' => 'array',
         'services_id' => 'array',
         'collaboration_types' => 'array',
+        'finance_practices' => 'array',  
+        'product_practices' => 'array',   
+        'community_practices' => 'array',
         'info_accuracy' => 'boolean',
         'allow_publish' => 'boolean',
         'allow_contact' => 'boolean',
         // 'is_verified' => 'boolean',
     ];
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function ($model) {
+            if (auth()->check()) {
+                $model->updated_by = auth()->id();
+            }
+        });
+    }
+
 
     public function businessPhotos()
     {
@@ -39,39 +58,32 @@ class GmeBusinessForm extends Model
     // $casts থেকে 'services_id' => 'array' remove করুন
 
     public function getServicesAttribute()
-{
-    // Raw value নিন
-    $rawServicesId = $this->attributes['services_id'] ?? null;
+    {
+        // Raw value নিন (এটা already array কারণ cast করা আছে)
+        $serviceIds = $this->attributes['services_id'] ?? null;
 
-    if (empty($rawServicesId)) {
-        return collect([]);
+        if (empty($serviceIds)) {
+            return collect([]);
+        }
+
+        // যদি string হয় (database থেকে আসলে), তাহলে decode করুন
+        if (is_string($serviceIds)) {
+            $serviceIds = json_decode($serviceIds, true);
+        }
+
+        if (empty($serviceIds) || !is_array($serviceIds)) {
+            return collect([]);
+        }
+
+        // Integer এ convert করুন
+        $serviceIds = array_map('intval', array_filter($serviceIds));
+
+        if (empty($serviceIds)) {
+            return collect([]);
+        }
+
+        return \App\Models\Service::whereIn('id', $serviceIds)->get();
     }
-
-    // যদি string হয়, তাহলে decode করুন
-    if (is_string($rawServicesId)) {
-        $serviceIds = json_decode($rawServicesId, true);
-    } else {
-        $serviceIds = $rawServicesId;
-    }
-
-    // আবার check করুন যদি এখনো string থাকে (double encoded এর জন্য)
-    if (is_string($serviceIds)) {
-        $serviceIds = json_decode($serviceIds, true);
-    }
-
-    if (empty($serviceIds) || !is_array($serviceIds)) {
-        return collect([]);
-    }
-
-    // String IDs কে integer এ convert করুন
-    $serviceIds = array_map('intval', array_filter($serviceIds));
-
-    if (empty($serviceIds)) {
-        return collect([]);
-    }
-
-    return \App\Models\Service::whereIn('id', $serviceIds)->get();
-}
 
     public function customer()
     {

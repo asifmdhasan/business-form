@@ -156,6 +156,30 @@
         min-width: 100px;
         text-align: left;
     }
+    .ethical-section .form-check {
+        padding-left: 2rem;
+    }
+
+    .ethical-section .form-check-input {
+        width: 1.2em;
+        height: 1.2em;
+        margin-top: 0.2em;
+    }
+
+    .ethical-section .form-check-label {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .ethical-section h6 {
+        color: #2c3e50;
+        border-bottom: 2px solid #9C7D2D;
+        padding-bottom: 0.5rem;
+    }
+    .form-check-input:checked{
+        background-color: #9C7D2D;
+        border-color: #9C7D2D;
+    }
 </style>
 
 <div class="container-fluid">
@@ -282,6 +306,27 @@
                             </div>
 
                             <div class="row">
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email <span class="text-danger">*</span></label>
+                                    <input type="email" name="email" class="form-control"
+                                        value="{{ old('email', $business->email ?? '') }}" required>
+                                    <!-- Error Message -->
+                                    @error('email')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Website</label>
+                                    <input type="website" name="website" class="form-control"
+                                        value="{{ old('website', $business->website ?? '') }}">
+                                </div>
+                            </div>
+
+                            
+                                
+
+                            <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Countries of Operation <span class="text-danger">*</span></label>
                                         <select class="form-select search_select" name="countries_of_operation[]" multiple required>
@@ -296,26 +341,6 @@
                                     @error('countries_of_operation')
                                         <div class="text-danger mt-1">{{ $message }}</div>
                                     @enderror
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Email <span class="text-danger">*</span></label>
-                                    <input type="email" name="email" class="form-control"
-                                        value="{{ old('email', $business->email ?? '') }}" required>
-                                    <!-- Error Message -->
-                                    @error('email')
-                                        <div class="text-danger mt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            
-                                
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Website</label>
-                                    <input type="website" name="website" class="form-control"
-                                        value="{{ old('website', $business->website ?? '') }}">
                                 </div>
                             </div>
 
@@ -360,7 +385,7 @@
                             </div>
 
                             <hr>
-                            <h6 class="fw-bold mb-3">Business Contact Person</h6>
+                            <h6 class="fw-bold mb-3">Business Contact Person (This information will be Display for Public view)</h6>
 
                             
                             <div class="border rounded p-3 mb-3 founder-item">
@@ -595,7 +620,7 @@
                                 </div>
 
                                 {{-- DEBUG: Remove after testing --}}
-                                @php
+                                {{-- @php
                                     $savedServices = old('services_id',
                                         is_array($business->services_id ?? null)
                                             ? $business->services_id
@@ -610,6 +635,26 @@
                                             multiple name="services_id[]" id="services" required>
                                         <!-- Options will be loaded by JavaScript -->
                                     </select>
+                                    <small class="text-muted">Type and press comma (,) to add custom service</small>
+
+                                    @error('services_id')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror --}}
+                                    @php
+                                        $savedServices = old('services_id',
+                                            is_array($business->services_id ?? null)
+                                                ? $business->services_id
+                                                : json_decode($business->services_id ?? '[]', true)
+                                        );
+                                    @endphp
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Products / Services <span class="text-danger">*</span></label>
+                                    <select class="form-select search_select @error('services_id') is-invalid @enderror"
+                                            multiple name="services_id[]" id="services" required>
+                                        <!-- Options will be loaded by JavaScript -->
+                                    </select>
+                                    <small class="text-muted">Type and press comma (,) to add custom service</small>
                                     @error('services_id')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
@@ -626,7 +671,7 @@
                                     @foreach ([
                                         'yes' => 'Yes',
                                         'no' => 'No',
-                                        'maybe' => 'Maybe'
+                                   
                                     ] as $key => $label)
                                         <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
                                             <input type="radio" name="collaboration_open" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
@@ -683,7 +728,7 @@
                             <h5 class="fw-bold mt-4 mb-3">Business Media Uploads</h5>
                             <div class="row">
                                 <div class="col-md-3 mb-3">
-                                    <label class="form-label">Upload Business Logo</label>
+                                    <label class="form-label">Upload Business Logo <span class="text-danger">*</span></label>
 
                                     <!-- Upload Container -->
                                     <div class="rounded p-2 text-center position-relative @error('logo') border-danger @enderror"
@@ -698,6 +743,7 @@
                                         <!-- Hidden File Input -->
                                         <input type="file"
                                             name="logo"
+                                            
                                             accept="image/*"
                                             onchange="previewLogo(this)"
                                             style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;">
@@ -787,8 +833,8 @@
 
                             <div class="row">
                                 <!-- Registration Document -->
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Upload Registration Document  <small class="text-muted">(Max 2MB)</small></label>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label"><h5 class="fw-bold mb-3">Upload Registration Document <small class="text-muted">(Max 2MB)</small></h5> </label>
                                     <input type="file" name="registration_document" class="form-control @error('registration_document') is-invalid @enderror">
                                     <!-- Document Links -->
                                     @if(!empty($business->registration_document))
@@ -803,8 +849,8 @@
                                 </div>
 
                                 <!-- Business Profile -->
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Business Profile <small class="text-muted">(Max 2MB)</small></label>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label"><h5 class="fw-bold mb-3">Business Profile <small class="text-muted">(Max 2MB)</small></h5></label>
                                     <input type="file" name="business_profile" class="form-control @error('business_profile') is-invalid @enderror">
                                     @if(!empty($business->business_profile))
                                         <small class="text-success d-block mt-1">
@@ -818,8 +864,8 @@
                                 </div>
 
                                 <!-- Product Catalogue -->
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Product Catalogue <small class="text-muted">(Max 2MB)</small></label>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label"><h5 class="fw-bold mb-3">Product Catalogue <small class="text-muted">(Max 2MB)</small></h5></label>
                                     <input type="file" name="product_catalogue" class="form-control @error('product_catalogue') is-invalid @enderror">
                                     @if(!empty($business->product_catalogue))
                                         <small class="text-success d-block mt-1">
@@ -835,9 +881,11 @@
 
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    <label class="form-label">Business Overview</label>
+                                    <label class="form-label">About the Business <sup class="text-danger">*</sup></label>
                                     <textarea class="form-control @error('business_overview') is-invalid @enderror"
                                             rows="6"
+                                            required
+                                            maxlength="150"
                                             name="business_overview"
                                             placeholder="Describe your business, mission, vision, products/services in detail...">{{ old('business_overview', $business->business_overview ?? '') }}</textarea>
                                     @error('business_overview')
@@ -851,10 +899,9 @@
 
                         {{-- ================= STEP 3 ================= --}}
 
-                        @if($step == 3)
+                        {{-- @if($step == 3)
                             <h5 class="fw-bold mb-3">Islamic Ethics & Community</h5>
 
-                            {{-- Avoid Interest (Riba)? --}}
                             <div class="mb-3 d-flex align-items-center">
                                 <label class="form-label question-label">Avoid Interest (Riba)? <span class="text-danger">*</span></label>
                                 @php $value = old('avoid_riba', $business->avoid_riba ?? ''); @endphp
@@ -875,7 +922,6 @@
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
 
-                            {{-- Avoid Haram Products? --}}
                             <div class="mb-3 d-flex align-items-center">
                                 <label class="form-label question-label">Avoid Haram Products? <span class="text-danger">*</span></label>
                                 @php $value = old('avoid_haram_products', $business->avoid_haram_products ?? ''); @endphp
@@ -895,7 +941,6 @@
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
 
-                            {{-- Fair Pricing --}}
                             <div class="mb-3 d-flex align-items-center">
                                 <label class="form-label question-label">Fair Pricing <span class="text-danger">*</span></label>
                                 @php $value = old('fair_pricing', $business->fair_pricing ?? ''); @endphp
@@ -915,7 +960,6 @@
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
 
-                            {{-- Open for Guidance --}}
                             <div class="mb-3 d-flex align-items-center">
                                 <label class="form-label question-label">Open for Guidance <span class="text-danger">*</span></label>
                                 @php $value = old('open_for_guidance', $business->open_for_guidance ?? ''); @endphp
@@ -953,6 +997,305 @@
                             </div>
 
 
+                        @endif --}}
+
+                        {{-- @if($step == 3)
+                            <div class="ethical-section">
+                                <h5 class="fw-bold mb-3">Islamic Ethics & Community</h5>
+                                <p class="text-muted mb-4">Ethical Standards that Reflect Our Values and Responsibility</p>
+                                <p class="small text-secondary mb-4">
+                                    Our listed businesses commit to Islamic ethical standards, responsible practices, and community welfare. 
+                                    These commitments reflect transparency, integrity, and trust for partners, clients, and the wider Muslim business ecosystem.
+                                </p>
+
+                                <div class="mb-4">
+                                    <h5 class="fw-bold mb-3">Finance & Business Practices</h5>
+                                    @php 
+                                        $financePractices = old('finance_practices', $business->finance_practices ?? []);
+                                    @endphp
+                                    
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
+                                            value="no_riba" id="finance1"
+                                            {{ in_array('no_riba', $financePractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="finance1">
+                                            I do not deal in riba or interest-based transactions
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
+                                            value="no_unethical_trade" id="finance2"
+                                            {{ in_array('no_unethical_trade', $financePractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="finance2">
+                                            I do not engage in unethical or exploitative trade
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
+                                            value="shariah_compliant" id="finance3"
+                                            {{ in_array('shariah_compliant', $financePractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="finance3">
+                                            I follow Shariah-compliant financial practices
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
+                                            value="honest_transparent" id="finance4"
+                                            {{ in_array('honest_transparent', $financePractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="finance4">
+                                            I am honest and transparent in all dealings
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h5 class="fw-bold mb-3">Products & Services Practices</h5>
+                                    @php 
+                                        $productPractices = old('product_practices', $business->product_practices ?? []);
+                                    @endphp
+                                    
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
+                                            value="halal_products" id="product1"
+                                            {{ in_array('halal_products', $productPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="product1">
+                                            My products/services are halal
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
+                                            value="avoid_haram" id="product2"
+                                            {{ in_array('avoid_haram', $productPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="product2">
+                                            I avoid selling haram or prohibited items
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
+                                            value="high_quality_honest" id="product3"
+                                            {{ in_array('high_quality_honest', $productPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="product3">
+                                            I maintain high quality and honesty in offerings
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
+                                            value="accurate_information" id="product4"
+                                            {{ in_array('accurate_information', $productPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="product4">
+                                            I provide accurate information of my products and services
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h5 class="fw-bold mb-3">Community & Responsibility Practices</h5>
+                                    @php 
+                                        $communityPractices = old('community_practices', $business->community_practices ?? []);
+                                    @endphp
+                                    
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
+                                            value="fair_wages" id="community1"
+                                            {{ in_array('fair_wages', $communityPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="community1">
+                                            I pay fair wages and treat employees with respect
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
+                                            value="support_community" id="community2"
+                                            {{ in_array('support_community', $communityPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="community2">
+                                            I support local communities and charitable initiatives
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
+                                            value="environmental_responsibility" id="community3"
+                                            {{ in_array('environmental_responsibility', $communityPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="community3">
+                                            I practice environmental responsibility in my operations
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
+                                            value="ethical_collaboration" id="community4"
+                                            {{ in_array('ethical_collaboration', $communityPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="community4">
+                                            I collaborate ethically with other Muslim businesses
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Ethical Description </label>
+                                    <textarea class="form-control @error('ethical_description') is-invalid @enderror"
+                                            rows="4"
+                                            name="ethical_description"
+                                            placeholder="Describe your business ethics and values..."
+                                            maxlength="1200">{{ old('ethical_description', $business->ethical_description ?? '') }}</textarea>
+                                    @error('ethical_description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">Maximum 1200 characters</small>
+                                </div>
+                            </div>
+                        @endif --}}
+
+                        @if($step == 3)
+                            <div class="ethical-section">
+                                <h5 class="fw-bold mb-2">Islamic Ethics & Community</h5>
+                                <p class="text-muted mb-4">Ethical Standards that Reflect Our Values and Responsibility</p>
+
+                                {{-- Finance & Business Practices --}}
+                                <div class="mb-4">
+                                    <h6 class="fw-semibold mb-3">Finance & Business Practices</h6>
+                                    @php 
+                                        $financePractices = old('finance_practices', $business->finance_practices ?? []);
+                                    @endphp
+                                    
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
+                                            value="I do not deal in riba or interest-based transactions" id="finance1"
+                                            {{ in_array('I do not deal in riba or interest-based transactions', $financePractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="finance1">
+                                            I do not deal in riba or interest-based transactions
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
+                                            value="I do not engage in unethical or exploitative trade" id="finance2"
+                                            {{ in_array('I do not engage in unethical or exploitative trade', $financePractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="finance2">
+                                            I do not engage in unethical or exploitative trade
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
+                                            value="I follow Shariah-compliant financial practices" id="finance3"
+                                            {{ in_array('I follow Shariah-compliant financial practices', $financePractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="finance3">
+                                            I follow Shariah-compliant financial practices
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
+                                            value="I am honest and transparent in all dealings" id="finance4"
+                                            {{ in_array('I am honest and transparent in all dealings', $financePractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="finance4">
+                                            I am honest and transparent in all dealings
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {{-- Products & Services Practices --}}
+                                <div class="mb-4">
+                                    <h6 class="fw-semibold mb-3">Products & Services Practices</h6>
+                                    @php 
+                                        $productPractices = old('product_practices', $business->product_practices ?? []);
+                                    @endphp
+                                    
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
+                                            value="My products/services are halal" id="product1"
+                                            {{ in_array('My products/services are halal', $productPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="product1">
+                                            My products/services are halal
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
+                                            value="I avoid selling haram or prohibited items" id="product2"
+                                            {{ in_array('I avoid selling haram or prohibited items', $productPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="product2">
+                                            I avoid selling haram or prohibited items
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
+                                            value="I maintain high quality and honesty in offerings" id="product3"
+                                            {{ in_array('I maintain high quality and honesty in offerings', $productPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="product3">
+                                            I maintain high quality and honesty in offerings
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
+                                            value="I provide accurate information of my products and services" id="product4"
+                                            {{ in_array('I provide accurate information of my products and services', $productPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="product4">
+                                            I provide accurate information of my products and services
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {{-- Community & Responsibility Practices --}}
+                                <div class="mb-4">
+                                    <h6 class="fw-semibold mb-3">Community & Responsibility Practices</h6>
+                                    @php 
+                                        $communityPractices = old('community_practices', $business->community_practices ?? []);
+                                    @endphp
+                                    
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
+                                            value="I pay fair wages and treat employees with respect" id="community1"
+                                            {{ in_array('I pay fair wages and treat employees with respect', $communityPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="community1">
+                                            I pay fair wages and treat employees with respect
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
+                                            value="I support local communities and charitable initiatives" id="community2"
+                                            {{ in_array('I support local communities and charitable initiatives', $communityPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="community2">
+                                            I support local communities and charitable initiatives
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
+                                            value="I practice environmental responsibility in my operations" id="community3"
+                                            {{ in_array('I practice environmental responsibility in my operations', $communityPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="community3">
+                                            I practice environmental responsibility in my operations
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
+                                            value="I collaborate ethically with other Muslim businesses" id="community4"
+                                            {{ in_array('I collaborate ethically with other Muslim businesses', $communityPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="community4">
+                                            I collaborate ethically with other Muslim businesses
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {{-- Ethical Description (Optional) --}}
+                                <div class="mb-3">
+                                    <label class="form-label">Ethical Description <span class="text-muted">(Optional)</span></label>
+                                    <textarea class="form-control" rows="4" name="ethical_description" maxlength="1200">{{ old('ethical_description', $business->ethical_description ?? '') }}</textarea>
+                                    <small class="text-muted">Maximum 1200 characters</small>
+                                </div>
+                            </div>
                         @endif
 
                         {{-- ================= STEP 4 ================= --}}
@@ -1720,6 +2063,27 @@ $(document).ready(function () {
             console.log('Category ID:', categoryId);
             console.log('Selected Services:', selectedServices);
 
+            // Initialize Select2 with tags enabled
+            $services.select2({
+                tags: true,                    // Enable custom tags
+                tokenSeparators: [','],        // Comma দিয়ে separate হবে
+                placeholder: 'Select or type services',
+                allowClear: true,
+                createTag: function (params) {
+                    var term = $.trim(params.term);
+                    
+                    if (term === '') {
+                        return null;
+                    }
+
+                    return {
+                        id: 'new:' + term,     // নতুন item এর জন্য prefix
+                        text: term + ' (New)',
+                        newTag: true
+                    }
+                }
+            });
+
             // Initial load
             if (categoryId && $services.length) {
                 loadServices(categoryId, selectedServices);
@@ -1732,7 +2096,12 @@ $(document).ready(function () {
                 if (newCategoryId) {
                     loadServices(newCategoryId, []);
                 } else {
-                    $services.empty().append('<option value="">Select category first</option>');
+                    $services.empty().trigger('change');
+                    $services.select2({
+                        tags: true,
+                        tokenSeparators: [','],
+                        placeholder: 'Select category first'
+                    });
                 }
             });
 
@@ -1751,6 +2120,7 @@ $(document).ready(function () {
 
                         if (!Array.isArray(data) || data.length === 0) {
                             $services.append('<option value="">No services found</option>');
+                            initializeSelect2WithTags();
                             return;
                         }
 
@@ -1764,7 +2134,11 @@ $(document).ready(function () {
                             }
 
                             const isSelected = selected.some(function (val) {
-                                return val != null && val.toString() === serviceId.toString();
+                                // Check both ID and custom text
+                                if (val != null && val.toString() === serviceId.toString()) {
+                                    return true;
+                                }
+                                return false;
                             });
 
                             $services.append(`
@@ -1773,9 +2147,46 @@ $(document).ready(function () {
                                 </option>
                             `);
                         });
+
+                        // Add custom/new services that were previously saved
+                        selected.forEach(function(val) {
+                            if (val && val.toString().startsWith('new:')) {
+                                const customText = val.toString().replace('new:', '');
+                                $services.append(`
+                                    <option value="${val}" selected>
+                                        ${customText}
+                                    </option>
+                                `);
+                            }
+                        });
+
+                        initializeSelect2WithTags();
                     },
                     error: function () {
                         $services.empty().append('<option value="">Error loading services</option>');
+                        initializeSelect2WithTags();
+                    }
+                });
+            }
+
+            function initializeSelect2WithTags() {
+                $services.select2({
+                    tags: true,
+                    tokenSeparators: [','],
+                    placeholder: 'Select or type services',
+                    allowClear: true,
+                    createTag: function (params) {
+                        var term = $.trim(params.term);
+                        
+                        if (term === '') {
+                            return null;
+                        }
+
+                        return {
+                            id: 'new:' + term,
+                            text: term + ' (New)',
+                            newTag: true
+                        }
                     }
                 });
             }
@@ -1818,8 +2229,6 @@ $(document).ready(function () {
                 reader.readAsDataURL(file);
             }
         }
-
-
 
     </script>
 @endif
@@ -1944,7 +2353,7 @@ $(document).ready(function () {
                         // Clear input
                         $(input).val('');
                         
-                        alert('File uploaded successfully!');
+                        // alert('File uploaded successfully!');
                     } else {
                         alert('Upload failed: ' + (response.message || 'Unknown error'));
                     }
@@ -1997,7 +2406,7 @@ $(document).ready(function () {
 
                         toggleUploadBox();
                         $(input).val('');
-                        alert('Photos uploaded successfully!');
+                        // alert('Photos uploaded successfully!');
                     } else {
                         alert('Upload failed: ' + (response.message || 'Unknown error'));
                     }
@@ -2089,7 +2498,7 @@ $(document).ready(function () {
                 if (response.success) {
                     $(btn).closest('.gallery-item').remove();
                     toggleUploadBox();
-                    alert('Photo deleted successfully!');
+                    // alert('Photo deleted successfully!');
                 } else {
                     alert('Delete failed: ' + (response.message || 'Unknown error'));
                 }

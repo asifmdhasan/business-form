@@ -1,23 +1,24 @@
 <?php
 
-use App\Http\Middleware\CustomerAuth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\GuestController;
-use App\Http\Controllers\GmeRegController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Middleware\LoginAuthMiddleware;
 use App\Http\Controllers\AnalyticsController;
-use App\Http\Controllers\GmeBusinessController;
-use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessCategoryController;
-use App\Http\Controllers\GmeBusinessAdminController;
-use App\Http\Controllers\GmeBusinessExportController;
+use App\Http\Controllers\ContactRequestController;
+use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FrontendGmeBusinessController;
+use App\Http\Controllers\GmeBusinessAdminController;
+use App\Http\Controllers\GmeBusinessController;
+use App\Http\Controllers\GmeBusinessExportController;
+use App\Http\Controllers\GmeRegController;
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\CustomerAuth;
+use App\Http\Middleware\LoginAuthMiddleware;
+use Illuminate\Support\Facades\Route;
 
 
 
@@ -78,6 +79,7 @@ Route::middleware(['web', 'setLocale'])->group(function () {
     //View GME Business Details
     Route::get('/guest-gme-business-form/{business}', [GuestController::class, 'show'])->name('guest.gme-business-form.show');
 //    Route::get('/gme-business-form/{business}', [CustomerController::class, 'show'])->name('customer.gme-business-form.show');
+        Route::post('/contact-request/submit', [ContactRequestController::class, 'submitContact'])->name('contact.request.submit');
 
 
 
@@ -200,7 +202,7 @@ Route::middleware([
     Route::get('/gme-business-form', [CustomerController::class, 'createGmeBusinessForm'])->name('customer.gme-business-form.create');
 
     Route::get('/gme-business-form/{business}', [CustomerController::class, 'show'])->name('customer.gme-business-form.show');
-
+    Route::patch('/gme-business/{id}/request-delete', [CustomerController::class, 'requestDelete'])->name('gme.business.requestDelete');
 
 });
 
@@ -265,7 +267,13 @@ Route::middleware([
     Route::get('gme/export-approved', [GmeBusinessExportController::class, 'exportApproved'])
         ->name('exportApproved');
 
-
+    //Contact////
+    Route::prefix('admin/contact-requests')->name('contact-requests.')->group(function () {
+        Route::get('/', [GmeBusinessAdminController::class, 'contactRequestsIndex'])->name('index');
+        Route::get('/{id}', [GmeBusinessAdminController::class, 'contactRequestsShow'])->name('show');
+        Route::post('/{id}/approve', [GmeBusinessAdminController::class, 'contactRequestsApprove'])->name('approve');
+        Route::post('/{id}/reject', [GmeBusinessAdminController::class, 'contactRequestsReject'])->name('reject');
+    });
 
         
 

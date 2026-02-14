@@ -29,7 +29,8 @@ class BusinessCreatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Business Created for ' . $this->business->business_name,
+            // subject: 'Your business has been submitted successfully ' . $this->business->business_name,
+            subject: 'Your business has been submitted successfully ' ,
         );
     }
 

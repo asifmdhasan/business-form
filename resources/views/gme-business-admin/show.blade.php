@@ -136,6 +136,16 @@
         border-left: 4px solid var(--primary-color);
         font-size: 1.05rem;
     }
+    .section-divider-inner-card {
+        background: #f8f9fa;
+        padding: 0.75rem 1.25rem;
+        border-radius: 8px;
+        margin: 1.5rem 0 1rem 0;
+        font-weight: 600;
+        color: var(--secondary-color);
+        /* border-left: 4px solid var(--primary-color); */
+        font-size: 1.05rem;
+    }
 
     .badge {
         font-size: 0.85rem;
@@ -398,11 +408,17 @@
         @endif
         
         {{-- Ethics --}}
-        <input type="hidden" name="avoid_riba" value="{{ $business->avoid_riba }}">
+        {{-- <input type="hidden" name="avoid_riba" value="{{ $business->avoid_riba }}">
         <input type="hidden" name="avoid_haram_products" value="{{ $business->avoid_haram_products }}">
         <input type="hidden" name="fair_pricing" value="{{ $business->fair_pricing }}">
+        <input type="hidden" name="open_for_guidance" value="{{ $business->open_for_guidance }}"> --}}
+        {{-- finance_practices --}}
+        <input type="hidden" name="ethical_compliance" value="{{ $business->ethical_compliance }}">
+        {{-- product_practices --}}
+        <input type="hidden" name="ethical_supply" value="{{ $business->ethical_supply }}">
+        {{-- community_practices --}}
+        <input type="hidden" name="ethical_investing" value="{{ $business->ethical_investing }}">
         <input type="hidden" name="ethical_description" value="{{ $business->ethical_description }}">
-        <input type="hidden" name="open_for_guidance" value="{{ $business->open_for_guidance }}">
         
         {{-- Collaboration --}}
         <input type="hidden" name="collaboration_open" value="{{ $business->collaboration_open }}">
@@ -456,17 +472,6 @@
 
                     <div>
                         <div class="info-row">
-                            <div class="info-label">Website</div>
-                            <div class="info-separator">:</div>
-                            <div class="info-value">
-                                @if($business->website)
-                                    <a href="{{ $business->website }}" target="_blank">{{ $business->website }}</a>
-                                @else
-                                    <span class="text-empty">-</span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="info-row">
                             <div class="info-label">Email</div>
                             <div class="info-separator">:</div>
                             <div class="info-value">
@@ -478,10 +483,18 @@
                             </div>
                         </div>
                         <div class="info-row">
-                            <div class="info-label">Contact Person Number</div>
+                            <div class="info-label">Website</div>
                             <div class="info-separator">:</div>
-                            <div class="info-value">{{ $business->whatsapp_number ?: '-' }}</div>
+                            <div class="info-value">
+                                @if($business->website)
+                                    <a href="{{ $business->website }}" target="_blank">{{ $business->website }}</a>
+                                @else
+                                    <span class="text-empty">-</span>
+                                @endif
+                            </div>
                         </div>
+                        
+                        
                         <div class="info-row">
                             <div class="info-label">Business Address</div>
                             <div class="info-separator">:</div>
@@ -489,6 +502,29 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="section-divider mt-3">
+                    <i class="fa fa-info-contact"></i> Business Contact Person Details
+                </div>
+                <div class="two-column-grid">
+                    <div>
+                        <div class="info-row">
+                            <div class="info-label">Contact Person Name</div>
+                            <div class="info-separator">:</div>
+                            <div class="info-value">{{ $business->business_contact_person_name ?: '-' }}</div>
+                        </div>
+                        
+                    </div>
+                    <div>
+                        <div class="info-row">
+                            <div class="info-label">Contact Person Number</div>
+                            <div class="info-separator">:</div>
+                            <div class="info-value">{{ $business->whatsapp_number ?: '-' }}</div>
+                        </div>
+                    </div>
+                </div>
+
+
 
                 @if($business->short_introduction)
                 <div class="section-divider mt-3">
@@ -663,7 +699,56 @@
                         @endforeach
                     </div>
                 @endif
+
+                <div class="section-divider">
+                    <div class="info-row">
+                        <div class="info-label">Collaboration Open</div>
+                        <div class="info-separator">:</div>
+                        <div class="info-value">
+                            @php
+                                $badgeClass = match($business->collaboration_open) {
+                                    'yes' => 'badge-yes',
+                                    'no' => 'badge-no',
+                                    default => 'badge-maybe'
+                                };
+                            @endphp
+                            <span class="badge {{ $badgeClass }}">
+                                {{ ucfirst($business->collaboration_open ?? '-') }}
+                            </span>
+                        </div>
+                    </div>
+
+                    @php
+                        $collaborationTypes = is_array($business->collaboration_types ?? null)
+                            ? $business->collaboration_types
+                            : json_decode($business->collaboration_types ?? '[]', true);
+                    @endphp
+
+                    @if(is_array($collaborationTypes) && count($collaborationTypes) > 0)
+                        <div class="section-divider-inner-card">
+                            <i class="fa fa-handshake"></i> Collaboration Interests
+                        </div>
+                        <div style="padding: 0 0.5rem;">
+                            @foreach($collaborationTypes as $type)
+                                <span class="badge bg-primary me-2 mb-2">{{ $type }}</span>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+
+
             </div>
+
+
+
+
+
+
+
+            
+                
+
+
         </div>
 
         {{-- Media & Documents --}}
@@ -790,113 +875,110 @@
                 <div class="two-column-grid">
                     <div>
                         <div class="info-row">
-                            <div class="info-label">Avoid Interest (Riba)</div>
+                            <div class="info-label">Finance & Business Practices</div>
                             <div class="info-separator">:</div>
                             <div class="info-value">
                                 @php
-                                    $badgeClass = match($business->avoid_riba) {
-                                        'yes' => 'badge-yes',
-                                        'no' => 'badge-no',
-                                        'partially_transitioning' => 'badge-partial',
-                                        default => 'badge-maybe'
-                                    };
+                                    $financePractices = is_string($business->finance_practices)
+                                        ? json_decode($business->finance_practices, true)
+                                        : ($business->finance_practices ?? []);
+                                        
+                                    $financeLabels = [
+                                        'no_riba' => 'No Riba/Interest',
+                                        'no_unethical_trade' => 'No Unethical Trade',
+                                        'shariah_compliant' => 'Shariah Compliant',
+                                        'honest_transparent' => 'Honest & Transparent'
+                                    ];
                                 @endphp
-                                <span class="badge {{ $badgeClass }}">
-                                    {{ ucwords(str_replace('_', ' ', $business->avoid_riba ?? '-')) }}
-                                </span>
+                                @if(!empty($financePractices))
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @foreach($financePractices as $practice)
+                                            <span class="badge badge-yes">
+                                                <i class="fas fa-check-circle me-1"></i>
+                                                {{ $financeLabels[$practice] ?? ucfirst(str_replace('_', ' ', $practice)) }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-muted mb-0">No practices selected</p>
+                                @endif
                             </div>
                         </div>
 
                         <div class="info-row">
-                            <div class="info-label">Avoid Haram Products</div>
+                            <div class="info-label">Product & Services Practices</div>
                             <div class="info-separator">:</div>
                             <div class="info-value">
-                                @php
-                                    $badgeClass = match($business->avoid_haram_products) {
-                                        'yes' => 'badge-yes',
-                                        'no' => 'badge-no',
-                                        'partially_compliant' => 'badge-partial',
-                                        default => 'badge-maybe'
-                                    };
+                               @php
+                                    $productPractices = is_string($business->product_practices)
+                                        ? json_decode($business->product_practices, true)
+                                        : ($business->product_practices ?? []);
+                                        
+                                    $productLabels = [
+                                        'halal_products' => 'Halal Products',
+                                        'avoid_haram' => 'Avoid Haram Items',
+                                        'high_quality_honest' => 'High Quality & Honest',
+                                        'accurate_information' => 'Accurate Information'
+                                    ];
                                 @endphp
-                                <span class="badge {{ $badgeClass }}">
-                                    {{ ucwords(str_replace('_', ' ', $business->avoid_haram_products ?? '-')) }}
-                                </span>
+                                
+                                @if(!empty($productPractices))
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @foreach($productPractices as $practice)
+                                            <span class="badge badge-yes">
+                                                <i class="fas fa-check-circle me-1"></i>
+                                                {{ $productLabels[$practice] ?? ucfirst(str_replace('_', ' ', $practice)) }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-muted mb-0">No practices selected</p>
+                                @endif
                             </div>
                         </div>
 
                         <div class="info-row">
-                            <div class="info-label">Fair Pricing</div>
+                            <div class="info-label">Community & Responsibility Practices</div>
                             <div class="info-separator">:</div>
                             <div class="info-value">
                                 @php
-                                    $badgeClass = match($business->fair_pricing) {
-                                        'yes' => 'badge-yes',
-                                        'mostly' => 'badge-partial',
-                                        'needs_improvement' => 'badge-no',
-                                        default => 'badge-maybe'
-                                    };
+                                    $communityPractices = is_string($business->community_practices)
+                                        ? json_decode($business->community_practices, true)
+                                        : ($business->community_practices ?? []);
+                                        
+                                    $communityLabels = [
+                                        'fair_wages' => 'Fair Wages',
+                                        'support_community' => 'Support Community',
+                                        'environmental_responsibility' => 'Environmental Responsibility',
+                                        'ethical_collaboration' => 'Ethical Collaboration'
+                                    ];
                                 @endphp
-                                <span class="badge {{ $badgeClass }}">
-                                    {{ ucwords(str_replace('_', ' ', $business->fair_pricing ?? '-')) }}
-                                </span>
+                                
+                                @if(!empty($communityPractices))
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @foreach($communityPractices as $practice)
+                                            <span class="badge badge-yes">
+                                                <i class="fas fa-check-circle me-1"></i>
+                                                {{ $communityLabels[$practice] ?? ucfirst(str_replace('_', ' ', $practice)) }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-muted mb-0">No practices selected</p>
+                                @endif
                             </div>
                         </div>
                     </div>
 
                     <div>
-                        <div class="info-row">
-                            <div class="info-label">Open for Guidance</div>
-                            <div class="info-separator">:</div>
-                            <div class="info-value">
-                                @php
-                                    $badgeClass = match($business->open_for_guidance) {
-                                        'yes' => 'badge-yes',
-                                        'no' => 'badge-no',
-                                        default => 'badge-maybe'
-                                    };
-                                @endphp
-                                <span class="badge {{ $badgeClass }}">
-                                    {{ ucfirst($business->open_for_guidance ?? '-') }}
-                                </span>
-                            </div>
-                        </div>
+        
 
-                        <div class="info-row">
-                            <div class="info-label">Collaboration Open</div>
-                            <div class="info-separator">:</div>
-                            <div class="info-value">
-                                @php
-                                    $badgeClass = match($business->collaboration_open) {
-                                        'yes' => 'badge-yes',
-                                        'no' => 'badge-no',
-                                        default => 'badge-maybe'
-                                    };
-                                @endphp
-                                <span class="badge {{ $badgeClass }}">
-                                    {{ ucfirst($business->collaboration_open ?? '-') }}
-                                </span>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
 
-                @php
-                    $collaborationTypes = is_array($business->collaboration_types ?? null)
-                        ? $business->collaboration_types
-                        : json_decode($business->collaboration_types ?? '[]', true);
-                @endphp
 
-                @if(is_array($collaborationTypes) && count($collaborationTypes) > 0)
-                <div class="section-divider">
-                    <i class="fa fa-handshake"></i> Collaboration Interests
-                </div>
-                <div style="padding: 0 0.5rem;">
-                    @foreach($collaborationTypes as $type)
-                        <span class="badge bg-primary me-2 mb-2">{{ $type }}</span>
-                    @endforeach
-                </div>
-                @endif
+
 
                 @if($business->ethical_description)
                 <div class="section-divider">
@@ -968,6 +1050,13 @@
                 <div class="alert alert-warning">
                     <i class="fa fa-exclamation-triangle"></i> <strong>Note:</strong> Only the fields in this section can be modified. All other information is read-only.
                 </div>
+                {{-- updated by admin --}}
+                <div class="alert alert-warning">
+                    @if($business->updatedBy)
+                        <span>Last Updated By: <strong>{{ $business->updatedBy->name }}</strong></span>
+                    @endif
+                </div>
+                
 
                 <div class="row">
                     <div class="col-md-3 form-group mb-3">
@@ -1022,6 +1111,9 @@
                             </option>
                             <option value="rejected" {{ old('status', $business->status) == 'rejected' ? 'selected' : '' }}>
                                 Rejected
+                            </option>
+                            <option value="request_for_delete" {{ old('status', $business->status) == 'request_for_delete' ? 'selected' : '' }}>
+                                Request for Delete
                             </option>
                         </select>
                     </div>

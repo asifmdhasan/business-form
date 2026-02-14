@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\GmeBusinessForm;
-use App\Models\BusinessCategory;
 use App\Mail\BusinessStatusUpdated;
+use App\Models\BusinessCategory;
+use App\Models\ContactRequest;
+use App\Models\GmeBusinessForm;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class GmeBusinessAdminController extends Controller
@@ -86,11 +87,14 @@ class GmeBusinessAdminController extends Controller
             'services_id'              => 'nullable|array',
 
             // Ethics
-            'avoid_riba'               => 'nullable|string',
-            'avoid_haram_products'     => 'nullable|string',
-            'fair_pricing'             => 'nullable|string',
+            'finance_practices'        => 'nullable|array',
+            'product_practices'        => 'nullable|array',
+            'community_practices'      => 'nullable|array',
+            // 'avoid_riba'               => 'nullable|string',
+            // 'avoid_haram_products'     => 'nullable|string',
+            // 'fair_pricing'             => 'nullable|string',
             'ethical_description'      => 'nullable|string',
-            'open_for_guidance'        => 'nullable|string',
+            // 'open_for_guidance'        => 'nullable|string',
 
             // Collaboration
             'collaboration_open'       => 'nullable|string',
@@ -292,5 +296,47 @@ class GmeBusinessAdminController extends Controller
         return $mpdf->Output('business-profile.pdf', 'I');
     }
 
+
+
+    //////////CONTACT REQUESTS//////////
+    public function contactRequestsIndex()
+    {
+        $requests = ContactRequest::with('business')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        return view('admin.contact-requests.index', compact('requests'));
+    }
+
+    // Show - View single contact request
+    public function contactRequestsShow($id)
+    {
+        $request = ContactRequest::with('business')->findOrFail($id);
+        
+        return view('admin.contact-requests.show', compact('request'));
+    }
+
+    // Approve contact request
+    // public function contactRequestsApprove($id)
+    // {
+    //     $contactRequest = ContactRequest::findOrFail($id);
+    //     $contactRequest->status = 'approved';
+    //     $contactRequest->save();
+
+    //     // Send email to requester with business contact info
+    //     // Mail::to($contactRequest->requester_email)->send(new ContactRequestApproved($contactRequest));
+
+    //     return redirect()->back()->with('success', 'Contact request approved successfully!');
+    // }
+
+    // Reject contact request
+    // public function contactRequestsReject($id)
+    // {
+    //     $contactRequest = ContactRequest::findOrFail($id);
+    //     $contactRequest->status = 'rejected';
+    //     $contactRequest->save();
+
+    //     return redirect()->back()->with('success', 'Contact request rejected.');
+    // }
 
 }

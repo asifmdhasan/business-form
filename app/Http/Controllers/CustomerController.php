@@ -129,6 +129,7 @@ class CustomerController extends Controller
             ])
             ->with('category:id,name')
             ->where('customer_id', $customer->id)
+            ->where('status', '!=', 'request_for_delete')
             ->orderByDesc('id')
             ->paginate(8);
             $businesses->getCollection()->transform(function ($business) {
@@ -244,5 +245,23 @@ class CustomerController extends Controller
             'Yemen', 'Zambia', 'Zimbabwe'
         ];
     }
+
+
+    public function requestDelete($id)
+    {
+        $business = GmeBusinessForm::findOrFail($id);
+
+        // Security check (owner only)
+        if (auth()->guard('customer')->user()->id !== $business->customer_id) {
+            abort(403);
+        }
+
+        $business->update([
+            'status' => 'request_for_delete'
+        ]);
+
+        return redirect()->back()->with('success', 'Deletion request submitted successfully.');
+    }
+
 
 }
