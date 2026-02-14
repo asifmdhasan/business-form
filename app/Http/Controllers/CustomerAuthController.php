@@ -123,10 +123,29 @@ class CustomerAuthController extends Controller
         //     $message->to($customer->email)
         //             ->subject('OTP Verification');
         // });
+
+        // Mail::send([], [], function ($message) use ($customer, $otp) {
+        //     $message->to($customer->email)
+        //         ->subject('Your verification code')
+        //         ->html("
+        //             <p>Assalamu Alaikum,</p>
+
+        //             <p>Thank you for signing up with the <strong>Global Muslim Business Directory</strong>.</p>
+
+        //             <p>Please use the following verification code to complete your request:</p>
+
+        //             <h2>Verification Code: {$otp}</h2>
+
+        //             <p>This code is valid for a limited time. If you did not request this code, you may safely ignore this email.</p>
+        //         ");
+        // });
+
+
+
         Mail::send([], [], function ($message) use ($customer, $otp) {
             $message->to($customer->email)
                 ->subject('Your verification code')
-                ->setBody("
+                ->html("
                     <p>Assalamu Alaikum,</p>
 
                     <p>Thank you for signing up with the <strong>Global Muslim Business Directory</strong>.</p>
@@ -142,7 +161,7 @@ class CustomerAuthController extends Controller
                     <p>Warm regards,<br>
                     Global Muslim Business Directory<br>
                     Powered by GME Network</p>
-                ", 'text/html');
+                ");
         });
 
 
