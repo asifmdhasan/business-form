@@ -78,8 +78,8 @@ Route::middleware(['web', 'setLocale'])->group(function () {
 
     //View GME Business Details
     Route::get('/guest-gme-business-form/{business}', [GuestController::class, 'show'])->name('guest.gme-business-form.show');
-//    Route::get('/gme-business-form/{business}', [CustomerController::class, 'show'])->name('customer.gme-business-form.show');
-        Route::post('/contact-request/submit', [ContactRequestController::class, 'submitContact'])->name('contact.request.submit');
+    Route::get('/gme-business-form/{business}', [CustomerController::class, 'show'])->name('customer.gme-business-form.show');
+    Route::post('/contact-request/submit', [ContactRequestController::class, 'submitContact'])->name('contact.request.submit');
 
 
 
@@ -203,6 +203,7 @@ Route::middleware([
 
     Route::get('/gme-business-form/{business}', [CustomerController::class, 'show'])->name('customer.gme-business-form.show');
     Route::patch('/gme-business/{id}/request-delete', [CustomerController::class, 'requestDelete'])->name('gme.business.requestDelete');
+    Route::delete('/gme-business/{id}', [CustomerController::class, 'draftDestroy'])->name('gme.business.destroy');
 
 });
 

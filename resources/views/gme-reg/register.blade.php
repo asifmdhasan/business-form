@@ -277,7 +277,8 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Short Introduction</label>
-                                <textarea class="form-control" rows="3" name="short_introduction">{{ old('short_introduction', $business->short_introduction ?? '') }}</textarea>
+                                <textarea class="form-control" rows="3" name="short_introduction" maxlength="200">{{ old('short_introduction', $business->short_introduction ?? '') }}</textarea>
+                                <small class="text-muted">Maximum 200 characters</small>
                             </div>
 
                             <div class="row">
@@ -885,7 +886,7 @@
                                     <textarea class="form-control @error('business_overview') is-invalid @enderror"
                                             rows="6"
                                             required
-                                            maxlength="150"
+                                            maxlength="1800"
                                             name="business_overview"
                                             placeholder="Describe your business, mission, vision, products/services in detail...">{{ old('business_overview', $business->business_overview ?? '') }}</textarea>
                                     @error('business_overview')
@@ -1291,8 +1292,8 @@
 
                                 {{-- Ethical Description (Optional) --}}
                                 <div class="mb-3">
-                                    <label class="form-label">Ethical Description <span class="text-muted">(Optional)</span></label>
-                                    <textarea class="form-control" rows="4" name="ethical_description" maxlength="1200">{{ old('ethical_description', $business->ethical_description ?? '') }}</textarea>
+                                    <label class="form-label">Ethical Description</label>
+                                    <textarea class="form-control" rows="4" maxlength="1200" name="ethical_description" maxlength="1200">{{ old('ethical_description', $business->ethical_description ?? '') }}</textarea>
                                     <small class="text-muted">Maximum 1200 characters</small>
                                 </div>
                             </div>

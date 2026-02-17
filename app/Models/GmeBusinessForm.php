@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class GmeBusinessForm extends Model
 {
@@ -26,15 +27,85 @@ class GmeBusinessForm extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //      static::creating(function ($business) {
+    //         $business->slug = Str::slug($business->business_name);
+    //     });
+
+    //     static::updating(function ($model) {
+    //         if (auth()->check()) {
+    //             $model->updated_by = auth()->id();
+    //         }
+    //     });
+
+    // }
+
+
     protected static function boot()
     {
         parent::boot();
 
-        static::updating(function ($model) {
+        // Creating
+        static::creating(function ($business) {
+            $business->slug = static::generateUniqueSlug($business->business_name);
+
+            // if (auth()->check()) {
+            //     $business->created_by = auth()->id();
+            // }
+        });
+
+        // Updating
+        static::updating(function ($business) {
+
+            // Regenerate slug only if name changed
+            if ($business->isDirty('business_name')) {
+                $business->slug = static::generateUniqueSlug(
+                    $business->business_name,
+                    $business->id
+                );
+            }
+
             if (auth()->check()) {
-                $model->updated_by = auth()->id();
+                $business->updated_by = auth()->id();
             }
         });
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Slug Generator (Update Safe)
+    |--------------------------------------------------------------------------
+    */
+
+    public static function generateUniqueSlug($name, $ignoreId = null)
+    {
+        $slug = Str::slug($name);
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (
+            static::where('slug', $slug)
+                ->when($ignoreId, fn($query) => $query->where('id', '!=', $ignoreId))
+                ->exists()
+        ) {
+            $slug = $originalSlug . '-' . $count++;
+        }
+
+        return $slug;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Route Model Binding by Slug
+    |--------------------------------------------------------------------------
+    */
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 
 

@@ -38,6 +38,408 @@
 
 
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+
+
+    <style>
+        .footer-col ul{
+            padding-left: 0;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+        --gold:       #B8962E;
+        --gold-light: #D4AF37;
+        --gold-pale:  #F5E8C0;
+        --dark:       #1a1a1a;
+        --dark-footer:#111111;
+        --white:      #ffffff;
+        --text-muted: rgba(255,255,255,0.75);
+        }
+
+        body {
+        font-family: 'Lato', sans-serif;
+        background: #111;
+        }
+
+        /* ─── UTILITY ─── */
+        .container {
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        }
+
+        /* ════════════════════════════════════════════
+        SECTION 1 — GOLDEN "BECOME A PARTNER"
+        (matches the image: gold bg, centered text)
+        ════════════════════════════════════════════ */
+        .partner-section {
+        background-color: var(--gold);
+        background-image:
+            radial-gradient(ellipse at 0% 50%, rgba(255,255,255,0.07) 0%, transparent 55%),
+            radial-gradient(ellipse at 100% 50%, rgba(255,255,255,0.07) 0%, transparent 55%),
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='1' fill='rgba(255,255,255,0.08)'/%3E%3C/svg%3E");
+        background-size: auto, auto, 80px 80px;
+        padding: 80px 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        }
+
+        /* decorative floral silhouettes */
+        .partner-section::before,
+        .partner-section::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 220px;
+        height: 220px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cellipse cx='100' cy='100' rx='8' ry='35' fill='rgba(255,255,255,0.13)' transform='rotate(0 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='8' ry='35' fill='rgba(255,255,255,0.13)' transform='rotate(30 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='8' ry='35' fill='rgba(255,255,255,0.13)' transform='rotate(60 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='8' ry='35' fill='rgba(255,255,255,0.13)' transform='rotate(90 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='8' ry='35' fill='rgba(255,255,255,0.13)' transform='rotate(120 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='8' ry='35' fill='rgba(255,255,255,0.13)' transform='rotate(150 100 100)'/%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+        opacity: 0.6;
+        pointer-events: none;
+        }
+        .partner-section::before { left: -60px; }
+        .partner-section::after  { right: -60px; }
+
+        .partner-section .tag {
+        font-family: "SF Ui Display", sans-serif;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.35em;
+        color: rgba(255,255,255,0.65);
+        text-transform: uppercase;
+        margin-bottom: 0.6rem;
+        }
+
+        .partner-section h2 {
+        font-family: "SF Ui Display", sans-serif;
+        /* font-size: clamp(1.5rem, 3.5vw, 2.6rem); */
+        /* font-weight: 400; */
+        color: #fff;
+        /* letter-spacing: 0.12em; */
+        text-transform: uppercase;
+        line-height: 1.2;
+        margin-bottom: 0.5rem;
+        }
+        .partner-section h2 strong {
+        font-weight: 900;
+        }
+
+        .partner-section .subtitle {
+        font-family: "SF Ui Display", sans-serif;
+        font-size: clamp(0.9rem, 1.8vw, 1.15rem);
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.9rem;
+        }
+
+        .partner-section .desc {
+        font-family: 'Lato', sans-serif;
+        font-size: 0.95rem;
+        color: rgba(255,255,255,0.85);
+        max-width: 520px;
+        margin: 0 auto 2.2rem;
+        line-height: 1.65;
+        }
+
+        .btn-partner {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        background: rgba(255,255,255,0.92);
+        color: var(--dark);
+        font-family: 'Lato', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 0.75rem 1.8rem;
+        border-radius: 50px;
+        transition: background 0.25s, color 0.25s, transform 0.2s;
+        }
+        .btn-partner:hover {
+        background: var(--gold-pale);
+        transform: translateY(-2px);
+        }
+        .btn-partner .arrow-circle {
+        width: 28px; height: 28px;
+        background: var(--gold);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        color: #fff;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+        transition: background 0.25s;
+        }
+        .btn-partner:hover .arrow-circle {
+        background: var(--dark);
+        }
+
+        /* ════════════════════════════════════════════
+        SECTION 2 — WHITE "HELP US BUILD"
+        ════════════════════════════════════════════ */
+        .community-section {
+        background: var(--white);
+        padding: 64px 2rem;
+        }
+
+        .community-section .inner {
+        max-width: 720px;
+        margin: 0 auto;
+        text-align: center;
+        }
+
+        .community-section .eyebrow {
+        font-family: 'Lato', sans-serif;
+        font-size: 0.72rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-weight: 700;
+        margin-bottom: 0.9rem;
+        }
+
+        .community-section h2 {
+        font-family: "SF Ui Display", sans-serif;
+        /* font-size: clamp(1.3rem, 3vw, 2rem); */
+        /* font-weight: 700; */
+        color: var(--dark);
+        /* letter-spacing: 0.06em; */
+        margin-bottom: 1.2rem;
+        line-height: 1.25;
+        }
+
+        .community-section p {
+        font-family: 'Lato', sans-serif;
+        font-size: 0.97rem;
+        color: #444;
+        line-height: 1.75;
+        margin-bottom: 2rem;
+        }
+
+        .btn-contribute {
+        display: inline-block;
+        background: var(--gold);
+        color: #fff;
+        font-family: 'Lato', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 0.8rem 2.2rem;
+        border-radius: 4px;
+        transition: background 0.25s, transform 0.2s;
+        margin-bottom: 1.2rem;
+        }
+        .btn-contribute:hover {
+        background: #9a7d25;
+        transform: translateY(-2px);
+        }
+
+        .community-section .note {
+        font-family: 'Lato', sans-serif;
+        font-size: 0.8rem;
+        color: #888;
+        font-style: italic;
+        margin-top: 0.6rem;
+        }
+
+        /* ════════════════════════════════════════════
+        FOOTER — DARK (matches image bottom section)
+        ════════════════════════════════════════════ */
+        .main-footer {
+        background: var(--dark-footer);
+        padding: 56px 2rem 36px;
+        /* position: relative; */
+        }
+
+        /* subtle mosque silhouette bg */
+        .main-footer::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 400'%3E%3Cellipse cx='600' cy='500' rx='500' ry='400' fill='rgba(184,150,46,0.04)'/%3E%3C/svg%3E");
+        background-size: cover;
+        pointer-events: none;
+        opacity: 0.5;
+        }
+
+        .footer-logo-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        position: relative;
+        }
+
+        .footer-logo-mark {
+        width: 56px; height: 56px;
+        background: var(--gold);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 0.2rem;
+        }
+        .footer-logo-mark svg {
+        width: 30px; height: 30px; fill: #fff;
+        }
+
+        .footer-brand {
+        font-family: 'Cinzel', serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--gold-light);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        }
+        .footer-brand span {
+        font-weight: 400;
+        color: rgba(255,255,255,0.7);
+        }
+
+        .footer-tagline-center {
+        text-align: center;
+        font-family: 'Lato', sans-serif;
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.5);
+        margin-bottom: 2rem;
+        letter-spacing: 0.04em;
+        position: relative;
+        }
+
+        .footer-subscribe {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        position: relative;
+        }
+        .footer-subscribe p {
+        font-family: 'Lato', sans-serif;
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.7);
+        margin-bottom: 1rem;
+        }
+        .subscribe-form {
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        max-width: 420px;
+        margin: 0 auto;
+        }
+        .subscribe-form input {
+        flex: 1;
+        padding: 0.7rem 1.2rem;
+        border: 1px solid rgba(184,150,46,0.35);
+        border-right: none;
+        border-radius: 30px 0 0 30px;
+        background: rgba(255,255,255,0.06);
+        color: #fff;
+        font-family: 'Lato', sans-serif;
+        font-size: 0.88rem;
+        outline: none;
+        }
+        .subscribe-form input::placeholder { color: rgba(255,255,255,0.35); }
+        .subscribe-form input:focus { border-color: var(--gold); }
+        .subscribe-form button {
+        padding: 0.7rem 1.4rem;
+        background: var(--gold);
+        color: #fff;
+        border: none;
+        border-radius: 0 30px 30px 0;
+        font-family: 'Lato', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s;
+        }
+        .subscribe-form button:hover { background: #9a7d25; }
+
+        .footer-divider {
+        border: none;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        margin: 0 0 2.5rem;
+        }
+
+        .footer-cols {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        max-width: 700px;
+        margin: 0 auto 2rem;
+        position: relative;
+        }
+
+        .footer-col h3 {
+        font-family: 'Cinzel', serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--gold-light);
+        margin-bottom: 1rem;
+        }
+
+        .footer-col ul {
+        list-style: none;
+        }
+        .footer-col ul li {
+        margin-bottom: 0.55rem;
+        }
+        .footer-col ul li a {
+        font-family: 'Lato', sans-serif;
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.55);
+        text-decoration: none;
+        transition: color 0.2s;
+        }
+        .footer-col ul li a:hover { color: var(--gold-light); }
+
+        .social-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        }
+        .social-links a {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        font-family: 'Lato', sans-serif;
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.55);
+        text-decoration: none;
+        transition: color 0.2s;
+        }
+        .social-links a i {
+        width: 18px;
+        text-align: center;
+        font-size: 0.95rem;
+        color: var(--gold);
+        transition: color 0.2s;
+        }
+        .social-links a:hover { color: var(--gold-light); }
+        .social-links a:hover i { color: var(--gold-light); }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+        .footer-cols { grid-template-columns: 1fr 1fr; }
+        .subscribe-form { flex-direction: column; }
+        .subscribe-form input {
+            border-right: 1px solid rgba(184,150,46,0.35);
+            border-bottom: none;
+            border-radius: 30px 30px 0 0;
+        }
+        .subscribe-form button { border-radius: 0 0 30px 30px; }
+        }
+        @media (max-width: 420px) {
+        .footer-cols { grid-template-columns: 1fr; }
+        }
+    </style>
     <style>
         .padding-top-1rem{
             margin-top: 1rem;
@@ -1076,16 +1478,16 @@
         <nav class="gme-nav gme-nav-right">
             <ul>
                 @auth('customer')
-                    <li><a href="{{ route('gme.business.register') }}">Join Network</a></li>
+                    <li><a href="{{ route('gme.business.register') }}">Add Your Business</a></li>
                 @else
-                    <li><a href="{{ route('customer.login') }}">Join Network</a></li>
+                    <li><a href="{{ route('customer.register') }}">Add Your Business</a></li>
                 @endauth
             </ul>
             <ul>
                 @auth('customer')
-                    <li><a href="{{ route('customer.gme-business-form.index') }}"><i class="fa fa-home me-2"></i>Dashboard</a></li>
+                    <li><a href="{{ route('customer.gme-business-form.index') }}" style="border: 1px solid #9C7D2D; padding: 1rem;border-radius: 6px;"><i class="fa fa-home me-2"></i>Dashboard</a></li>
                 @else
-                    <li><a href="{{ route('customer.login') }}"><i class="fa fa-user me-2"></i>Login</a></li>
+                    <li><a href="{{ route('customer.login') }}" style="border: 1px solid #9C7D2D;padding: 1rem;border-radius: 6px;"><i class="fa fa-user me-2"></i>Login</a></li>
                 @endauth
             </ul>
         </nav>
@@ -1126,7 +1528,7 @@
                                     <span style="font-weight: 400;color: #fff; font-size: 18px;"> Search
                                 </button>
                             </div>
-                            <a href="{{ route('customer.login') }}" class="btn btn-login join-network-white" style=" color: #576829; margin-top: 3rem;;">
+                            <a href="{{ route('customer.register') }}" class="btn btn-login join-network-white" style=" color: #576829; margin-top: 3rem;;">
                                 Add Your Business
                             </a>
                             {{-- <a href="{{ route('guest.form') }}" class="gme-btn">
@@ -1152,7 +1554,7 @@
             @yield('content')
 
             {{-- FOOTER --}}
-            <footer class="footer islamic-bg">
+            {{-- <footer class="footer islamic-bg">
                 <div class="container">
                     <div class="footer-cta text-center mb-4 d-md-flex justify-content-between align-items-center">
                         <div class="mb-3 mb-md-0">
@@ -1161,7 +1563,7 @@
                                 Join a growing network of Muslim entrepreneurs building real businesses, real partnerships, and real impact.
                             </p>
                         </div>
-                        <a href="{{ route('customer.login') }}" class="btn btn-login join-network" style=" color: #191970;">
+                        <a href="{{ route('customer.register') }}" class="btn btn-login join-network" style=" color: #191970;">
                             Add Your Business Today
                         </a>
                     </div>
@@ -1183,21 +1585,11 @@
                                 Contributions are voluntary and do not affect your listing status.
                             </p>
                         </div>
-                        {{-- <div class="col-md-3 d-flex justify-content-end">
-
-                        <a href="{{ route('customer.login') }}" class="btn btn-login join-network" style=" color: #191970;">
-                             Contribute $5 or More
-                        </a>
-                        </div> --}}
-
-
-
                     </div>
 
 
                     <div class="row g-4 pb-4 border-bottom border-opacity-25 pt-4">
                         <div class="col-md-3">
-                            {{-- <h3>GME Directory</h3> --}}
                             <img src="{{ asset('assets/image/front-logo.png') }}" 
                                 alt="Gme Network Logo" 
                                 class="img-fluid mb-2 mx-auto" 
@@ -1234,12 +1626,115 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </footer> --}}
+            <!-- ══ SECTION 1: GOLDEN CTA ══ -->
+            <section class="partner-section">
+                {{-- <div class="tag">Community</div> --}}
+                {{-- <h2>Bring Your Business to the <strong>Global Stage</strong></h2> --}}
+                <h4 class="fw-bold mb-4 featured-business "
+                    style="
+                        text-align: center;
+                        font-size: 34px;
+                        text-transform: uppercase;
+                        line-height: 1.3em;">
+                    <span style="color:#fff;  font-weight: 300;">Bring Your Business to the  </span>
+                    <span style="color:#fff;font-weight: 900;">Global Stage </span>
+                </h4>
+                <p class="desc">
+                Join a growing network of Muslim entrepreneurs building real businesses,
+                real partnerships, and real impact.
+                </p>
+                <a href="#" class="btn-partner">
+                Add Your Business Today
+                <span class="arrow-circle"><i class="fas fa-arrow-right"></i></span>
+                </a>
+            </section>
 
-                    {{-- <div class="text-center pt-4" style="color: rgba(255,255,255,0.5); font-size: 0.875rem;">
-                        © 2024 GME Business Directory. All Rights Reserved.
-                    </div> --}}
+            <!-- ══ SECTION 2: WHITE COMMUNITY ══ -->
+            <section class="community-section">
+                <div class="inner">
+                {{-- <div class="eyebrow">Community Initiative</div> --}}
+                <h4 class="fw-bold mb-4 featured-business "
+                    style="
+                        text-align: center;
+                        font-size: 34px;
+                        text-transform: uppercase;
+                        line-height: 1.3em;">
+                    <span style=" font-weight: 300;">Help Us  </span>
+                    <span style="color:#9b7d2d;font-weight: 900;">Build This Together </span>
+                </h4>
+           
+                <p>
+                    This is a community-led initiative built to elevate Muslim-owned businesses worldwide.
+                    If you find value in this initiative, consider contributing a small amount — even $5 —
+                    to help us maintain and grow this platform with integrity.
+                </p>
+                <a href="#" class="btn-contribute">Contribute $5 or More</a>
+                <p class="note">Contributions are voluntary and do not affect your listing status.</p>
+                </div>
+            </section>
+
+            <!-- ══ FOOTER: DARK ══ -->
+            <footer class="main-footer">
+                <div class="footer-logo-row">
+                <!-- GME circular logo mark -->
+                <div class="footer-logo">
+                    {{-- <a href="https://gme.network/"> --}}
+                        <img style="width: 8rem;" src="{{ asset('assets/image/logo.webp') }}" style="max-width: 100%; height: auto;" alt="GME">
+                    {{-- </a> --}}
+                    {{-- <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="18" stroke="#fff" stroke-width="1.5" fill="none"/>
+                    <text x="20" y="25" text-anchor="middle" font-family="serif" font-size="12" font-weight="bold" fill="#fff">GME</text>
+                    </svg> --}}
+                </div>
+                {{-- <div class="footer-brand">GME <span>Network</span></div> --}}
+                </div>
+
+                <div class="footer-tagline-center">Connecting communities, one business at a time.</div>
+
+                {{-- <div class="footer-subscribe">
+                <form class="subscribe-form" onsubmit="return false;">
+                    <input type="email" placeholder="Your Email" />
+                    <button type="submit">Subscribe</button>
+                </form>
+                </div> --}}
+
+                <hr class="footer-divider">
+
+                <div class="footer-cols">
+                <div class="footer-col">
+                    <h3>Explore</h3>
+                    <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About GME</a></li>
+                    <li><a href="#">Get Involved</a></li>
+                    <li><a href="#">Events</a></li>
+                    <li><a href="#">News</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Legal</h3>
+                    <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Members Charter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Connect Us</h3>
+                    <div class="social-links">
+                    <a href="https://www.facebook.com/gme.network/" target="_blank"><i class="fab fa-facebook"></i>Facebook</a>
+                    <a href="https://www.linkedin.com/company/gmenetwork/" target="_blank"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                    <a href="https://www.instagram.com/gme.network" target="_blank"><i class="fab fa-instagram"></i>Instagram</a>
+                    <a href="https://www.youtube.com/@gmenetwork" target="_blank"><i class="fab fa-youtube"></i>YouTube</a>
+                    <a href="https://x.com/GmeNetwork50551" target="_blank"><i class="fab fa-x-twitter"></i>X</a>
+                    </div>
+                </div>
                 </div>
             </footer>
+
         </div>
     </main>
 
@@ -1558,7 +2053,7 @@
 
             return `
             <div class="col-md-4 col-lg-4 p-2">
-                <div class="business-card" onclick="location.href='{{ url('guest-gme-business-form') }}/${business.id}'">
+                <div class="business-card" onclick="location.href='{{ url('guest-gme-business-form') }}/${business.slug}'">
                     <div style="position:relative">
                         
                         <img src="${photo}" class="business-image"style="height:200px; object-fit:cover;">
@@ -1622,7 +2117,7 @@
             return `
             <div class="swiper-slide">
                 <div class="business-card"
-                    onclick="location.href='{{ url('guest-gme-business-form') }}/${business.id}'">
+                    onclick="location.href='{{ url('guest-gme-business-form') }}/${business.slug}'">
 
                     <div class="position-relative">
                         <img src="${photo}" class="business-image"

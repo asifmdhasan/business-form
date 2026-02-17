@@ -962,6 +962,141 @@
             margin-bottom: 1rem;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    .faith-section {
+        background: #fff;
+        padding: 70px 20px;
+    }
+
+    .faith-main-title {
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
+        font-weight: 300;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #1a1a1a;
+        margin-bottom: 0.4rem;
+    }
+    .faith-main-title strong {
+        font-weight: 900;
+        color: #9C7D2D;
+    }
+
+    .faith-subtitle {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        max-width: 560px;
+        margin: 0 auto 3rem;
+    }
+
+    .faith-divider {
+        width: 50px;
+        height: 2.5px;
+        background: #9C7D2D;
+        margin: 0 auto 1rem;
+        border-radius: 2px;
+    }
+
+    /* ── card ── */
+    .faith-category-card {
+        border: 1.5px solid #9C7D2D;
+        border-radius: 10px;
+        overflow: hidden;
+        height: 100%;
+        background: #fff;
+    }
+
+    /* ── gold header bar ── */
+    .faith-category-header {
+        background: #9C7D2D;
+        padding: 13px 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .faith-category-header i {
+        font-size: 1rem;
+        color: #fff;
+    }
+    .faith-category-header span {
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #fff;
+    }
+
+    /* ── practice rows ── */
+    .faith-practice-list {
+        padding: 16px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .faith-practice-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        padding: 12px 0;
+    }
+
+    .faith-practice-item:not(:last-child) {
+        border-bottom: 1px solid rgba(156,125,45,0.13);
+    }
+
+    .practice-icon {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        border: 1.5px solid #9C7D2D;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9C7D2D;
+        font-size: 0.72rem;
+        background: rgba(156,125,45,0.06);
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .practice-text {
+        font-size: 0.875rem;
+        color: #333;
+        line-height: 1.6;
+        padding-top: 5px;
+    }
+
+    /* ── ethical statement ── */
+    .ethical-label {
+        font-size: 0.7rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: #9C7D2D;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    .ethical-text {
+        font-size: 0.92rem;
+        color: #555;
+        line-height: 1.8;
+        max-width: 680px;
+        margin: 0 auto;
+        font-style: italic;
+    }
+
 </style>
 
 <div class="container my-4">
@@ -1228,11 +1363,11 @@
 
                 <div class="mt-4">
                     
-                    {{-- <a href="#" 
+                    <a href="#" 
                     class="btn btn-collaboration-cta">
                         <i class="fas fa-envelope me-2"></i>
                         Get in Touch
-                    </a> --}}
+                    </a>
                 </div>
             </div>
         </section>
@@ -1334,14 +1469,15 @@
     @endif
 
     <!-- FAITH COMPLIANCE -->
+        <!-- FAITH COMPLIANCE -->
     <section class="faith-section">
         <div class="faith-content text-center">
-            <h4 class="fw-bold mb-4 featured-business"
-                style="font-size: 34px; text-transform: uppercase; line-height: 1.3em;">
-                <span style="color:#fff; font-weight: 300;">Faith-Compliant </span>
-                <span style="color:#fff;font-weight: 900;">Business</span>
+
+            <div class="faith-divider"></div>
+            <h4 class="faith-main-title mb-2">
+                Faith-Compliant <strong>Business</strong>
             </h4>
-            <p class="section-subtitle mx-auto" style="max-width: 600px;color:#fff;">
+            <p class="faith-subtitle">
                 This business commits to Islamic ethical principles and community responsibility.
             </p>
 
@@ -1349,105 +1485,111 @@
                 $financePractices = is_string($business->finance_practices)
                     ? json_decode($business->finance_practices, true)
                     : ($business->finance_practices ?? []);
-                    
+
                 $productPractices = is_string($business->product_practices)
                     ? json_decode($business->product_practices, true)
                     : ($business->product_practices ?? []);
-                    
+
                 $communityPractices = is_string($business->community_practices)
                     ? json_decode($business->community_practices, true)
                     : ($business->community_practices ?? []);
 
                 $hasPractices = !empty($financePractices) || !empty($productPractices) || !empty($communityPractices);
 
-                // Practice icons mapping - using full text as keys
                 $practiceIcons = [
-                    // Finance
-                    'I do not deal in riba or interest-based transactions' => 'fa-ban',
-                    'I do not engage in unethical or exploitative trade' => 'fa-shield-alt',
-                    'I follow Shariah-compliant financial practices' => 'fa-check-circle',
-                    'I am honest and transparent in all dealings' => 'fa-handshake',
-                    
-                    // Products
-                    'My products/services are halal' => 'fa-check-circle',
-                    'I avoid selling haram or prohibited items' => 'fa-ban',
-                    'I maintain high quality and honesty in offerings' => 'fa-star',
+                    'I do not deal in riba or interest-based transactions'       => 'fa-ban',
+                    'I do not engage in unethical or exploitative trade'         => 'fa-shield-alt',
+                    'I follow Shariah-compliant financial practices'             => 'fa-check-circle',
+                    'I am honest and transparent in all dealings'                => 'fa-handshake',
+                    'My products/services are halal'                            => 'fa-check-circle',
+                    'I avoid selling haram or prohibited items'                  => 'fa-ban',
+                    'I maintain high quality and honesty in offerings'           => 'fa-star',
                     'I provide accurate information of my products and services' => 'fa-info-circle',
-                    
-                    // Community
-                    'I pay fair wages and treat employees with respect' => 'fa-money-bill-wave',
-                    'I support local communities and charitable initiatives' => 'fa-heart',
-                    'I practice environmental responsibility in my operations' => 'fa-leaf',
-                    'I collaborate ethically with other Muslim businesses' => 'fa-handshake',
+                    'I pay fair wages and treat employees with respect'          => 'fa-money-bill-wave',
+                    'I support local communities and charitable initiatives'     => 'fa-heart',
+                    'I practice environmental responsibility in my operations'   => 'fa-leaf',
+                    'I collaborate ethically with other Muslim businesses'       => 'fa-handshake',
                 ];
             @endphp
 
             @if($hasPractices)
-                {{-- Finance & Business Practices --}}
-                @if(!empty($financePractices))
-                    <div class="mb-4">
-                        <h4 class="text-white fw-bold mb-3">
-                            <i class="fas fa-coins me-2"></i>Finance & Business Practices
-                        </h4>
-                        <div class="row g-3 justify-content-center">
-                            @foreach($financePractices as $practice)
-                                <div class="col-md-6 col-lg-3">
-                                    <div class="faith-card">
-                                        <i class="fas {{ $practiceIcons[$practice] ?? 'fa-check' }} icon-primary"></i>
-                                        <div class="fw-semibold">{{ $practice }}</div>
+
+                <div class="row g-4 justify-content-center text-start mb-5">
+
+                    {{-- FINANCE --}}
+                    @if(!empty($financePractices))
+                    <div class="col-md-6 col-lg-4">
+                        <div class="faith-category-card">
+                            <div class="faith-category-header">
+                                <i class="fas fa-coins"></i>
+                                <span>Finance & Business</span>
+                            </div>
+                            <div class="faith-practice-list">
+                                @foreach($financePractices as $practice)
+                                <div class="faith-practice-item">
+                                    <div class="practice-icon">
+                                        <i class="fas {{ $practiceIcons[$practice] ?? 'fa-check' }}"></i>
                                     </div>
+                                    <div class="practice-text">{{ $practice }}</div>
                                 </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                @endif
+                    @endif
 
-                {{-- Product & Services Practices --}}
-                @if(!empty($productPractices))
-                    <div class="mb-4">
-                        <h4 class="text-white fw-bold mb-3">
-                            <i class="fas fa-box-open me-2"></i>Product & Services Practices
-                        </h4>
-                        <div class="row g-3 justify-content-center">
-                            @foreach($productPractices as $practice)
-                                <div class="col-md-6 col-lg-3">
-                                    <div class="faith-card">
-                                        <i class="fas {{ $practiceIcons[$practice] ?? 'fa-check' }} icon-primary"></i>
-                                        <div class="fw-semibold">{{ $practice }}</div>
+                    {{-- PRODUCTS --}}
+                    @if(!empty($productPractices))
+                    <div class="col-md-6 col-lg-4">
+                        <div class="faith-category-card">
+                            <div class="faith-category-header">
+                                <i class="fas fa-box-open"></i>
+                                <span>Products & Services</span>
+                            </div>
+                            <div class="faith-practice-list">
+                                @foreach($productPractices as $practice)
+                                <div class="faith-practice-item">
+                                    <div class="practice-icon">
+                                        <i class="fas {{ $practiceIcons[$practice] ?? 'fa-check' }}"></i>
                                     </div>
+                                    <div class="practice-text">{{ $practice }}</div>
                                 </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                @endif
+                    @endif
 
-                {{-- Community & Responsibility Practices --}}
-                @if(!empty($communityPractices))
-                    <div class="mb-4">
-                        <h4 class="text-white fw-bold mb-3">
-                            <i class="fas fa-users me-2"></i>Community & Responsibility
-                        </h4>
-                        <div class="row g-3 justify-content-center">
-                            @foreach($communityPractices as $practice)
-                                <div class="col-md-6 col-lg-3">
-                                    <div class="faith-card">
-                                        <i class="fas {{ $practiceIcons[$practice] ?? 'fa-check' }} icon-primary"></i>
-                                        <div class="fw-semibold">{{ $practice }}</div>
+                    {{-- COMMUNITY --}}
+                    @if(!empty($communityPractices))
+                    <div class="col-md-6 col-lg-4">
+                        <div class="faith-category-card">
+                            <div class="faith-category-header">
+                                <i class="fas fa-users"></i>
+                                <span>Community & Responsibility</span>
+                            </div>
+                            <div class="faith-practice-list">
+                                @foreach($communityPractices as $practice)
+                                <div class="faith-practice-item">
+                                    <div class="practice-icon">
+                                        <i class="fas {{ $practiceIcons[$practice] ?? 'fa-check' }}"></i>
                                     </div>
+                                    <div class="practice-text">{{ $practice }}</div>
                                 </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                @endif
+                    @endif
 
-                {{-- Ethical Description --}}
+                </div>
+
+                {{-- Ethical Description — plain, no box, no border --}}
                 @if($business->ethical_description)
-                    <div class="mt-4">
-                        <h4 class="text-white fw-bold mb-2">Ethical Description (Optional)</h4>
-                        <p class="mb-0 mx-auto text-white" style="max-width: 700px;">
-                            {{ $business->ethical_description }}
-                        </p>
-                    </div>
+                <div class="text-center mt-2">
+                    <p class="ethical-label">Ethical Statement</p>
+                    <p class="ethical-text">{{ $business->ethical_description }}</p>
+                </div>
                 @endif
 
             @else
@@ -1459,6 +1601,7 @@
 
         </div>
     </section>
+
 
 
     
@@ -1656,7 +1799,9 @@
 
 
     {{-- add a button for delete and edit the business if the user is the owner of the business --}}
-    @if(auth()->guard('customer')->user()->id === $business->customer_id)
+    {{-- @if(auth()->guard('customer')->user()->id === $business->customer_id) --}}
+    @if(auth()->guard('customer')->check() && auth()->guard('customer')->user()->id === $business->customer_id)
+
         <div class="d-flex gap-2 mt-4 justify-content-center margin-top-1rem" >
             {{-- <form action="{{ route('gme.business.destroy', $business->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this business?');">
                 @csrf

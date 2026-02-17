@@ -8,6 +8,7 @@ use App\Models\BusinessCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+
 class CustomerController extends Controller
 {
     public function customerProfile()
@@ -115,6 +116,7 @@ class CustomerController extends Controller
         $businesses = GmeBusinessForm::query()
             ->select([
                 'id',
+                'slug',
                 'customer_id',
                 'business_name',
                 'short_introduction',
@@ -194,10 +196,10 @@ class CustomerController extends Controller
 
 
 
-    public function show($id)
+    public function show(GmeBusinessForm $business)
     {
         $business = GmeBusinessForm::with(['category.services', 'businessPhotos'])
-            ->findOrFail($id);
+            ->findOrFail($business->id);
 
         // Decode services_id JSON
         $selectedServiceIds = $business->services_id ?? [];
@@ -261,6 +263,34 @@ class CustomerController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Deletion request submitted successfully.');
+    }
+
+    public function draftDestroy($id)
+    {
+        $business = GmeBusinessForm::findOrFail($id);
+
+        // ── Owner check ──
+        if (auth()->guard('customer')->id() !== $business->customer_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. You do not own this business.'
+            ], 403);
+        }
+
+        // ── Only draft can be permanently deleted ──
+        if ($business->status !== 'draft') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Only draft businesses can be permanently deleted.'
+            ], 422);
+        }
+
+        $business->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Draft business has been permanently deleted.'
+        ], 200);
     }
 
 

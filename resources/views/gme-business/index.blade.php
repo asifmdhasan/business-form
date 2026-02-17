@@ -294,6 +294,55 @@
                 margin-bottom: 30px;
             }
         }
+
+
+
+
+
+
+        /* Delete Button Styles */
+        .draft-delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+
+            background: rgba(220, 38, 38, 0.92);
+            color: #fff;
+            font-size: 0.75rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+
+        .draft-delete-btn:hover {
+            background: #b91c1c;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(185, 28, 28, 0.4);
+        }
+
+        .draft-delete-btn:active {
+            transform: scale(0.96);
+        }
+
+
+
+
+
+
+
+
+
     </style>
 
 
@@ -652,13 +701,12 @@
         /* =========================
         Card HTML
         ========================== */
-        // function createBusinessCard(business) {
 
+        // function createBusinessCard(business) {
         //     const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
         //     const category = business.category?.name ?? '';
         //     const logo = `{{ asset('assets') }}/${business.logo}`;
-
         //     const photo = business.cover_photo
         //         ? `{{ asset('assets') }}/${business.cover_photo}`
         //         : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
@@ -675,9 +723,14 @@
         //             : business.short_introduction)
         //         : '';
 
+        //     // ✅ Determine link based on status
+        //     const link = (business.status === 'draft')
+        //         ? '{{ route("gme.business.register") }}' // draft goes to register
+        //         : `{{ url('gme-business-form') }}/${business.slug}`; // others go to form view
+
         //     return `
         //     <div class="col-md-6 col-lg-3">
-        //         <div class="business-card" onclick="location.href='{{ url('gme-business-form') }}/${business.id}'">
+        //         <div class="business-card" onclick="location.href='${link}'">
         //             <div style="position:relative">
         //                 <img src="${photo}" class="business-image">
         //                 ${verified}
@@ -695,7 +748,9 @@
         //         </div>
         //     </div>`;
         // }
-        function createBusinessCard(business) {
+
+        // createBusinessCard — draft delete button + data-business-id on card
+         function createBusinessCard(business) {
             const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
             const category = business.category?.name ?? '';
@@ -704,10 +759,10 @@
                 ? `{{ asset('assets') }}/${business.cover_photo}`
                 : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
 
-            const verified =(business.status === 'approved' && business.is_verified === 1)
+            const verified = (business.status === 'approved' && business.is_verified === 1)
                 ? `<div class="verified-badge">
                         <i class="fas fa-check-circle"></i> GME Verified
-                </div>`
+                   </div>`
                 : '';
 
             const shortIntro = business.short_introduction
@@ -716,14 +771,28 @@
                     : business.short_introduction)
                 : '';
 
-            // ✅ Determine link based on status
+            // ── link stored in data-link, NO onclick on card ──
             const link = (business.status === 'draft')
-                ? '{{ route("gme.business.register") }}' // draft goes to register
-                : `{{ url('gme-business-form') }}/${business.id}`; // others go to form view
+                ? '{{ route("gme.business.register") }}'
+                : `{{ url('gme-business-form') }}/${business.slug}`;
+
+            // ── delete button only for draft, NO onclick, uses data-business-id ──
+            const deleteBtn = (business.status === 'draft')
+                ? `<button
+                        class="draft-delete-btn"
+                        data-business-id="${business.id}"
+                        title="Delete Draft">
+                        <i class="fas fa-trash-alt"></i>
+                   </button>`
+                : '';
 
             return `
             <div class="col-md-6 col-lg-3">
-                <div class="business-card" onclick="location.href='${link}'">
+                <div class="business-card"
+                     data-business-id="${business.id}"
+                     data-link="${link}"
+                     style="position:relative; cursor:pointer;">
+                    ${deleteBtn}
                     <div style="position:relative">
                         <img src="${photo}" class="business-image">
                         ${verified}
@@ -742,6 +811,105 @@
             </div>`;
         }
 
+
+        // ── Delete handler ──
+
+        document.addEventListener('click', function (e) {
+
+            // 1. Delete button
+            const deleteBtn = e.target.closest('.draft-delete-btn');
+            if (deleteBtn) {
+                e.stopPropagation();
+                e.preventDefault();
+
+                const businessId = deleteBtn.dataset.businessId;
+
+                if (!confirm('Warning: All data for this business will be permanently deleted and cannot be recovered.\n\nAre you sure you want to delete this draft?')) {
+                    return;
+                }
+
+                const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+                if (!csrfMeta) {
+                    alert('CSRF token not found. Please refresh the page.');
+                    return;
+                }
+
+                fetch(`/gme-business/${businessId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfMeta.getAttribute('content'),
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    body: JSON.stringify({ _method: 'DELETE' })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        deleteBtn.closest('.col-md-6').remove();
+                    } else {
+                        alert(data.message ?? 'Could not delete. Please try again.');
+                    }
+                })
+                .catch(() => alert('Something went wrong. Please try again.'));
+
+                return;
+            }
+
+            // 2. Card click → redirect
+            const card = e.target.closest('.business-card');
+            if (card) {
+                const link = card.dataset.link;
+                if (link) window.location.href = link;
+            }
+        });
+        // function deleteDraftBusiness(event, businessId) {
+        //     event.stopPropagation();
+        //     event.preventDefault();
+
+        //     if (!confirm('Warning: All data for this business will be permanently deleted and cannot be recovered.\n\nAre you sure you want to delete this draft?')) {
+        //         return;
+        //     }
+
+        //     const csrfToken = document.querySelector('meta[name="csrf-token"]');
+        //     if (!csrfToken) {
+        //         alert('CSRF token not found. Please refresh the page.');
+        //         return;
+        //     }
+
+        //     fetch(`/gme-business/${businessId}`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
+        //             'X-Requested-With': 'XMLHttpRequest',
+        //         },
+        //         body: JSON.stringify({ _method: 'DELETE' })
+        //     })
+        //     .then(res => {
+        //         if (!res.ok) {
+        //             return res.json().then(err => { throw err; });
+        //         }
+        //         return res.json();
+        //     })
+        //     .then(data => {
+        //         if (data.success) {
+        //             // ── Remove card from DOM ──
+        //             const card = document.querySelector(`.business-card[data-business-id="${businessId}"]`);
+        //             if (card) {
+        //                 card.closest('.col-md-6').remove();
+        //             } else {
+        //                 window.location.reload();
+        //             }
+        //         } else {
+        //             alert(data.message ?? 'Could not delete. Please try again.');
+        //         }
+        //     })
+        //     .catch(err => {
+        //         console.error('Delete error:', err);
+        //         alert(err.message ? 'Error: ' + err.message : 'Something went wrong. Please try again.');
+        //     });
+        // }
         /* =========================
         Count
         ========================== */

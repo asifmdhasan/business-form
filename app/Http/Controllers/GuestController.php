@@ -12,23 +12,42 @@ use Illuminate\Support\Facades\Validator;
 
 class GuestController extends Controller
 {
-    public function show($id)
-    {
-        $business = GmeBusinessForm::with(['category.services', 'businessPhotos'])->findOrFail($id);
+    // public function show($id)
+    // {
+    //     $business = GmeBusinessForm::with(['category.services', 'businessPhotos'])->findOrFail($id);
 
-        // Decode services_id JSON
+    //     // Decode services_id JSON
+    //     $selectedServiceIds = $business->services_id ?? [];
+    //     if (is_string($selectedServiceIds)) {
+    //         $selectedServiceIds = json_decode($selectedServiceIds, true);
+    //     }
+
+    //     // Filter category services based on selected IDs
+    //     $services = $business->category
+    //         ? $business->category->services->whereIn('id', $selectedServiceIds)
+    //         : collect();
+
+    //     return view('guest.show', compact('business', 'services'));
+    // }
+
+
+    public function show(GmeBusinessForm $business)
+    {
+        $business->load(['category.services', 'businessPhotos']);
+
         $selectedServiceIds = $business->services_id ?? [];
+
         if (is_string($selectedServiceIds)) {
             $selectedServiceIds = json_decode($selectedServiceIds, true);
         }
 
-        // Filter category services based on selected IDs
         $services = $business->category
             ? $business->category->services->whereIn('id', $selectedServiceIds)
             : collect();
 
         return view('guest.show', compact('business', 'services'));
     }
+
     /**
      * Show guest registration form
      */
@@ -423,6 +442,7 @@ class GuestController extends Controller
         $businesses = GmeBusinessForm::query()
             ->select([
                 'id',
+                'slug',
                 'business_name',
                 'short_introduction',
                 'business_category_id',
