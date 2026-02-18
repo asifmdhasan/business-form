@@ -262,9 +262,9 @@
             <nav class="gme-nav gme-nav-right">
                 <ul>
                     @auth('customer')
-                        <li><a href="{{ route('gme.business.register') }}">Join Network</a></li>
+                        <li><a href="{{ route('gme.business.register') }}">Add Your Business</a></li>
                     @else
-                        <li><a href="{{ route('customer.login') }}">Join Network</a></li>
+                        <li><a href="{{ route('customer.login') }}">Add Your Business</a></li>
                     @endauth
                 </ul>
                 
