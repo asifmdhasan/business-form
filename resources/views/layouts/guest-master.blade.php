@@ -86,7 +86,7 @@
         }
 
         /* decorative floral silhouettes */
-        .partner-section::before,
+        /* .partner-section::before,
         .partner-section::after {
         content: '';
         position: absolute;
@@ -101,7 +101,7 @@
         pointer-events: none;
         }
         .partner-section::before { left: -60px; }
-        .partner-section::after  { right: -60px; }
+        .partner-section::after  { right: -60px; } */
 
         .partner-section .tag {
         font-family: "SF Ui Display", sans-serif;
@@ -1485,9 +1485,9 @@
             </ul>
             <ul>
                 @auth('customer')
-                    <li><a href="{{ route('customer.gme-business-form.index') }}" style="border: 1px solid #9C7D2D; padding: 1rem;border-radius: 6px;"><i class="fa fa-home me-2"></i>Dashboard</a></li>
+                    <li><a href="{{ route('customer.gme-business-form.index') }}" style="border: 1px solid #9C7D2D; padding: 0.7rem;border-radius: 6px;"><i class="fa fa-home me-2"></i>Dashboard</a></li>
                 @else
-                    <li><a href="{{ route('customer.login') }}" style="border: 1px solid #9C7D2D;padding: 1rem;border-radius: 6px;"><i class="fa fa-user me-2"></i>Login</a></li>
+                    <li><a href="{{ route('customer.login') }}" style="border: 1px solid #9C7D2D;padding: 0.7rem;border-radius: 6px;"><i class="fa fa-user me-2"></i>Login</a></li>
                 @endauth
             </ul>
         </nav>
@@ -1681,7 +1681,7 @@
                 <!-- GME circular logo mark -->
                 <div class="footer-logo">
                     {{-- <a href="https://gme.network/"> --}}
-                        <img style="width: 8rem;" src="{{ asset('assets/image/logo.webp') }}" style="max-width: 100%; height: auto;" alt="GME">
+                        <img style="width: 8rem; margin-left: -2rem;" src="{{ asset('assets/image/logo.webp') }}" style="max-width: 100%; height: auto;" alt="GME">
                     {{-- </a> --}}
                     {{-- <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="20" cy="20" r="18" stroke="#fff" stroke-width="1.5" fill="none"/>
@@ -1716,10 +1716,11 @@
                 <div class="footer-col">
                     <h3>Legal</h3>
                     <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Use</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Members Charter</a></li>
+                    <li><a href="{{ route('legal.privacy') }}">Privacy Policy</a></li>
+                    <li><a href="{{ route('legal.cookie') }}">Cookie Policy</a></li>
+                    <li><a href="{{ route('legal.terms') }}">Terms and Conditions</a></li>
+                    <li><a href="{{ route('legal.ethics') }}">Ethical Business Commitment</a></li>
+                    <li><a href="{{ route('legal.disclaimer') }}">Disclaimer</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">

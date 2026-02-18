@@ -728,7 +728,7 @@
 
                             <h5 class="fw-bold mt-4 mb-3">Business Media Uploads</h5>
                             <div class="row">
-                                <div class="col-md-3 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label">Upload Business Logo <span class="text-danger">*</span></label>
 
                                     <!-- Upload Container -->
@@ -759,7 +759,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-2 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label">Upload Cover Photo</label>
 
                                     <!-- Upload Container -->

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Mail\BusinessStatusUpdated;
+use App\Mail\ContactRequestApproved;
+use App\Mail\ContactRequestApprovedOwner;
+use App\Mail\ContactRequestRejected;
 use App\Models\BusinessCategory;
 use App\Models\ContactRequest;
 use App\Models\GmeBusinessForm;
@@ -317,26 +320,30 @@ class GmeBusinessAdminController extends Controller
     }
 
     // Approve contact request
-    // public function contactRequestsApprove($id)
-    // {
-    //     $contactRequest = ContactRequest::findOrFail($id);
-    //     $contactRequest->status = 'approved';
-    //     $contactRequest->save();
+    public function contactRequestsApprove($id)
+    {
+        $contactRequest = ContactRequest::findOrFail($id);
+        $contactRequest->status = 'approved';
+        $contactRequest->save();
 
-    //     // Send email to requester with business contact info
-    //     // Mail::to($contactRequest->requester_email)->send(new ContactRequestApproved($contactRequest));
+        // Send email to requester with business contact info
+        Mail::to($contactRequest->requester_email)->send(new ContactRequestApproved($contactRequest));
 
-    //     return redirect()->back()->with('success', 'Contact request approved successfully!');
-    // }
+            // Business owner কে requester info পাঠাও
+        Mail::to($contactRequest->business->email)->send(new ContactRequestApprovedOwner($contactRequest));
+
+
+        return redirect()->back()->with('success', 'Contact request approved successfully!');
+    }
 
     // Reject contact request
-    // public function contactRequestsReject($id)
-    // {
-    //     $contactRequest = ContactRequest::findOrFail($id);
-    //     $contactRequest->status = 'rejected';
-    //     $contactRequest->save();
-
-    //     return redirect()->back()->with('success', 'Contact request rejected.');
-    // }
+    public function contactRequestsReject($id)
+    {
+        $contactRequest = ContactRequest::findOrFail($id);
+        $contactRequest->status = 'rejected';
+        $contactRequest->save();
+            Mail::to($contactRequest->requester_email)->send(new ContactRequestRejected($contactRequest));
+        return redirect()->back()->with('success', 'Contact request rejected.');
+    }
 
 }

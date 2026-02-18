@@ -45,6 +45,7 @@
                 <a href="{{ route('gme-business-admin.index') }}"
                     class="nav-link text-white {{ request()->routeIs('gme-business-admin.index') ? 'active' : '' }}">
                     <i class="fa fa-list me-2"></i> All Business
+                     ({{ \App\Models\GmeBusinessForm::where('status', 'pending')->count() }})
                 </a>
             </li>
 
@@ -53,6 +54,9 @@
                 <a href="{{ route('contact-requests.index') }}"
                     class="nav-link text-white {{ request()->routeIs('contact-requests.index') ? 'active' : '' }}">
                     <i class="fas fa-envelope-open me-2"></i> Contact Requests
+                    @if($pendingCount = \App\Models\ContactRequest::where('status', 'pending')->count())
+                        <span class="badge bg-warning ms-2">{{ $pendingCount }}</span>
+                    @endif
                 </a>
             </li>
 

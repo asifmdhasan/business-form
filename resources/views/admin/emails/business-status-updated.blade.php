@@ -5,7 +5,10 @@
     <title>Business Status Update</title>
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 30px;">
-
+<!-- Site logo in center -->
+    <div style="text-align: center; margin-bottom: 30px;">
+        <img src="{{ asset('assets/image/logo.webp') }}" alt="Global Muslim Business Directory" style="max-width: 200px;">
+    </div>
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr>
 <td align="center">

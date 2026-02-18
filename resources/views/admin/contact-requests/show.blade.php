@@ -244,7 +244,7 @@
     @endif
 
     <!-- Action Buttons -->
-    {{-- @if($request->status === 'pending')
+    @if($request->status === 'pending')
     <div class="row">
         <div class="col-12">
             <div class="detail-card">
@@ -271,7 +271,7 @@
             </div>
         </div>
     </div>
-    @endif --}}
+    @endif
 
 </div>
 @endsection

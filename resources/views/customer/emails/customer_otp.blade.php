@@ -1,14 +1,3 @@
-{{-- <!DOCTYPE html>
-<html>
-<body>
-    <p>Assalamu Alaikum,</p>
-    <p>We received a request to reset the password for your Global Muslim Business Directory account.</p>
-    <p>Your OTP is: <strong>{{ $otp }}</strong></p>
-    <p>This OTP will expire in 3 minutes.</p>
-</body>
-</html> --}}
-
-
 
 <!DOCTYPE html>
 <html>
@@ -17,7 +6,10 @@
     <title>Password Reset OTP</title>
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 30px;">
-
+    <!-- Site logo in center -->
+    <div style="text-align: center; margin-bottom: 30px;">
+        <img src="{{ asset('assets/image/logo.webp') }}" alt="Global Muslim Business Directory" style="max-width: 200px;">
+    </div>
     <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
             <td align="center">

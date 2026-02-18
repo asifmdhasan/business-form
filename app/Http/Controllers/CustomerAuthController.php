@@ -118,16 +118,18 @@ class CustomerAuthController extends Controller
             'status'          => 0,
         ]);
 
-        // Send OTP via Email (example)
-        // Mail::raw("Your OTP is: {$otp}", function ($message) use ($customer) {
-        //     $message->to($customer->email)
-        //             ->subject('OTP Verification');
-        // });
+
+
 
         // Mail::send([], [], function ($message) use ($customer, $otp) {
         //     $message->to($customer->email)
         //         ->subject('Your verification code')
         //         ->html("
+
+                    
+        //             <div style='text-align: center; margin-bottom: 30px;'>
+        //                 <img src="{{ asset('assets/image/logo.png') }}" style='max-width: 200px;'>
+        //             </div>
         //             <p>Assalamu Alaikum,</p>
 
         //             <p>Thank you for signing up with the <strong>Global Muslim Business Directory</strong>.</p>
@@ -137,32 +139,52 @@ class CustomerAuthController extends Controller
         //             <h2>Verification Code: {$otp}</h2>
 
         //             <p>This code is valid for a limited time. If you did not request this code, you may safely ignore this email.</p>
+
+        //             <br>
+
+        //             <p>Warm regards,<br>
+        //             Global Muslim Business Directory<br>
+        //             Powered by GME Network</p>
         //         ");
         // });
 
 
 
         Mail::send([], [], function ($message) use ($customer, $otp) {
+
+            $logo = asset('assets/img/logos/logo.webp');
+
             $message->to($customer->email)
                 ->subject('Your verification code')
                 ->html("
-                    <p>Assalamu Alaikum,</p>
+                    <div style='font-family: Arial, sans-serif; line-height: 1.6;'>
 
-                    <p>Thank you for signing up with the <strong>Global Muslim Business Directory</strong>.</p>
+                        <div style='text-align: center; margin-bottom: 30px;'>
+                            <img src='{$logo}' style='max-width: 200px;'>
+                        </div>
 
-                    <p>Please use the following verification code to complete your request:</p>
+                        <p>Assalamu Alaikum,</p>
 
-                    <h2>Verification Code: {$otp}</h2>
+                        <p>Thank you for signing up with the <strong>Global Muslim Business Directory</strong>.</p>
 
-                    <p>This code is valid for a limited time. If you did not request this code, you may safely ignore this email.</p>
+                        <p>Please use the following verification code to complete your request:</p>
 
-                    <br>
+                        <h2 style='color:#2c3e50;'>Verification Code: {$otp}</h2>
 
-                    <p>Warm regards,<br>
-                    Global Muslim Business Directory<br>
-                    Powered by GME Network</p>
+                        <p>This code is valid for a limited time. If you did not request this code, you may safely ignore this email.</p>
+
+                        <br>
+
+                        <p>
+                            Warm regards,<br>
+                            Global Muslim Business Directory<br>
+                            Powered by GME Network
+                        </p>
+
+                    </div>
                 ");
         });
+
 
 
         return redirect()

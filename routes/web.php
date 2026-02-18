@@ -13,6 +13,7 @@ use App\Http\Controllers\GmeBusinessController;
 use App\Http\Controllers\GmeBusinessExportController;
 use App\Http\Controllers\GmeRegController;
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\LegalController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
@@ -32,33 +33,10 @@ use Illuminate\Support\Facades\Route;
 
 
 
-// Route::prefix('gme')->name('gme.')->group(function () {
-//     Route::get('/business/register', [GmeBusinessController::class, 'showRegister'])->name('business.register');
-//     Route::post('/business/save-step', [GmeBusinessController::class, 'saveStep'])->name('business.save-step');
-//     Route::get('/business/success', [GmeBusinessController::class, 'success'])->name('business.success');
-// });
-
-
-
-
-
-
-
-
-
-
 
 
 Route::middleware(['web', 'setLocale'])->group(function () {
     Route::get('/', [GuestController::class, 'landingPage']);
-
-    // Route::get('/gme-guest/business/register', [GuestController::class, 'showRegisterForm'])->name('gme.business.register.guest');
-    // Route::post('/gme-guest/business/save-step', [GuestController::class, 'saveStep'])->name('gme.business.save-step.guest');
-    // Route::get('/gme-guest/business/complete-submission', [GuestController::class, 'completeSubmission'])->name('gme.business.complete-submission');
-    // Route::get('/gme-guest/business/success', [GuestController::class, 'formSuccess'])->name('gme.business.success.guest');
-    // Route::get('/gme-guest-get-services/{categoryId}', [GuestController::class, 'getServices']);
-
-
     Route::get('/business/register/form', [GuestController::class, 'guestForm'])->name('guest.form');
     Route::post('/business/register/save-step', [GuestController::class, 'guestSaveStep'])->name('guest.save-step');
     Route::get('/gme-guest/business/success', [GuestController::class, 'formSuccess'])->name('guest.success');
@@ -82,6 +60,13 @@ Route::middleware(['web', 'setLocale'])->group(function () {
     Route::post('/contact-request/submit', [ContactRequestController::class, 'submitContact'])->name('contact.request.submit');
 
 
+    // Footer
+    // Legal / Footer Pages
+    Route::get('/privacy-policy', [LegalController::class, 'privacyPolicy'])->name('legal.privacy');
+    Route::get('/cookie-policy', [LegalController::class, 'cookiePolicy'])->name('legal.cookie');
+    Route::get('/terms-and-conditions', [LegalController::class, 'terms'])->name('legal.terms');
+    Route::get('/ethical-commitment', [LegalController::class, 'ethicalCommitment'])->name('legal.ethics');
+    Route::get('/disclaimer', [LegalController::class, 'disclaimer'])->name('legal.disclaimer');
 
 
 

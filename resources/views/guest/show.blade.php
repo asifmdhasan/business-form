@@ -1163,6 +1163,85 @@
         margin: 0 auto;
         font-style: italic;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .captcha-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid #d3d3d3;
+        border-radius: 4px;
+        padding: 12px 16px;
+        width: 300px;
+        background: #f9f9f9;
+        cursor: pointer;
+        user-select: none;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: background 0.3s;
+    }
+
+    .captcha-inner {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .check-circle {
+        width: 24px;
+        height: 24px;
+        border: 2px solid #c1c1c1;
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+    }
+
+    .loader {
+        width: 14px;
+        height: 14px;
+        border: 2px solid #ccc;
+        border-top-color: #4CAF50;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: none;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    #captcha-label {
+        font-size: 14px;
+        color: #333;
+    }
+
+    .recaptcha-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 9px;
+        color: #999;
+        line-height: 1.4;
+    }
+
+    .recaptcha-logo span {
+        font-size: 10px;
+        color: #555;
+        font-weight: bold;
+    }
     
 </style>
 
@@ -1766,7 +1845,12 @@
                         </h5>
                         <div class="contact-details">
                             <div class="contact-item">
-                                 <p class="fw-bold mb-2" style="color: #9C7D2D;"> Privacy Protected</p>
+                                <a style="color: #9C7D2D;cursor: pointer" class="fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#contactRequestModal">
+                                    {{-- <i class="fas fa-user-check me-2"></i> --}}
+                                    Privacy Protected
+                                </a>
+
+                                 {{-- <p class="fw-bold mb-2" style="color: #9C7D2D;"> Privacy Protected</p> --}}
                             </div>
                         </div>
                     </div>
@@ -1968,6 +2052,30 @@
                             </div>
                         </div>
 
+
+                        <!-- Captcha -->
+                        <div class="mb-3">
+                            <div class="captcha-box" onclick="verifyCaptcha(this)">
+                                <div class="captcha-inner">
+                                    <div class="check-circle" id="check-circle">
+                                        <svg id="check-icon" style="display:none;" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24" fill="#4CAF50" width="20px" height="20px">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                        </svg>
+                                        <div id="loader" class="loader"></div>
+                                    </div>
+                                    <span id="captcha-label">I'm not a robot</span>
+                                </div>
+
+                                <div class="recaptcha-logo">
+                                    <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA" width="32">
+                                    <span>reCAPTCHA</span>
+                                    <small>Privacy · Terms</small>
+                                </div>
+                            </div>
+                            <input type="hidden" name="captcha" id="captcha-input" value="">
+                        </div>
+
                         <!-- Privacy Notice -->
                         {{-- <div class="alert alert-info border-0 mb-0" style="background-color: #F5EFE0;">
                             <i class="fas fa-info-circle me-2" style="color: #9C7D2D;"></i>
@@ -2012,5 +2120,50 @@
             });
         }
     });
+</script>
+<script>
+    function verifyCaptcha(box) {
+    const loader = document.getElementById('loader');
+    const checkIcon = document.getElementById('check-icon');
+    const checkCircle = document.getElementById('check-circle');
+    const label = document.getElementById('captcha-label');
+    const input = document.getElementById('captcha-input');
+
+    if (input.value === '1') return; // already verified
+
+    loader.style.display = 'block';
+    label.textContent = 'Verifying...';
+    box.style.pointerEvents = 'none';
+
+    setTimeout(() => {
+        loader.style.display = 'none';
+        checkIcon.style.display = 'block';
+        checkCircle.style.border = 'none';
+        label.textContent = "I'm not a robot";
+        input.value = '1';
+        box.style.background = '#f0fff0';
+        box.style.borderColor = '#4CAF50';
+    }, 1200);
+}
+
+// Form submit এ captcha check
+document.getElementById('contactRequestForm').addEventListener('submit', function(e) {
+    if (document.getElementById('captcha-input').value !== '1') {
+        e.preventDefault();
+        alert('Please complete the captcha verification.');
+    }
+});
+</script>
+<script>
+    document.getElementById('contactRequestModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('captcha-input').value = '';
+    document.getElementById('check-icon').style.display = 'none';
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('check-circle').style.border = '2px solid #c1c1c1';
+    document.getElementById('captcha-label').textContent = "I'm not a robot";
+    document.querySelector('.captcha-box').style.background = '#f9f9f9';
+    document.querySelector('.captcha-box').style.borderColor = '#d3d3d3';
+    document.querySelector('.captcha-box').style.pointerEvents = 'auto';
+});
 </script>
 @endsection
