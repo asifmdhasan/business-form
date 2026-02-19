@@ -191,9 +191,9 @@ class GmeRegController extends Controller
                     'collaboration_types.*' => 'in:Partnerships,Investment Oportunities,Vendor Supply Chain,Marketing Promotion,Networking,Training Workshops,Community Charity Projects,Not Sure Yet',
 
                     // Documents + Images
-                    'registration_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:2048',
-                    'business_profile'      => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:2048',
-                    'product_catalogue'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:2048',
+                    'registration_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
+                    'business_profile'      => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
+                    'product_catalogue'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',
 
                     // Images only (all image types)
                     'logo'                  => 'nullable|image|max:2048',
@@ -432,9 +432,9 @@ class GmeRegController extends Controller
             $maxSizes = [
                 'logo' => 2048,
                 'cover_photo' => 2048,
-                'registration_document' => 2048,
-                'business_profile' => 2048,
-                'product_catalogue' => 2048
+                'registration_document' => 5120,
+                'business_profile' => 5120,
+                'product_catalogue' => 5120
             ];
 
             $fileValidator = Validator::make($request->all(), [

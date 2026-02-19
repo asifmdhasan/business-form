@@ -835,7 +835,7 @@
                             <div class="row">
                                 <!-- Registration Document -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label"><h5 class="fw-bold mb-3">Upload Registration Document <small class="text-muted">(Max 2MB)</small></h5> </label>
+                                    <label class="form-label"><h5 class="fw-bold mb-3">Upload Registration Document <small class="text-muted">(Max 5MB)</small></h5> </label>
                                     <input type="file" name="registration_document" class="form-control @error('registration_document') is-invalid @enderror">
                                     <!-- Document Links -->
                                     @if(!empty($business->registration_document))
@@ -851,7 +851,7 @@
 
                                 <!-- Business Profile -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label"><h5 class="fw-bold mb-3">Business Profile <small class="text-muted">(Max 2MB)</small></h5></label>
+                                    <label class="form-label"><h5 class="fw-bold mb-3">Business Profile <small class="text-muted">(Max 5MB)</small></h5></label>
                                     <input type="file" name="business_profile" class="form-control @error('business_profile') is-invalid @enderror">
                                     @if(!empty($business->business_profile))
                                         <small class="text-success d-block mt-1">
@@ -866,7 +866,7 @@
 
                                 <!-- Product Catalogue -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label"><h5 class="fw-bold mb-3">Product Catalogue <small class="text-muted">(Max 2MB)</small></h5></label>
+                                    <label class="form-label"><h5 class="fw-bold mb-3">Product Catalogue <small class="text-muted">(Max 5MB)</small></h5></label>
                                     <input type="file" name="product_catalogue" class="form-control @error('product_catalogue') is-invalid @enderror">
                                     @if(!empty($business->product_catalogue))
                                         <small class="text-success d-block mt-1">
@@ -899,259 +899,6 @@
                         @endif
 
                         {{-- ================= STEP 3 ================= --}}
-
-                        {{-- @if($step == 3)
-                            <h5 class="fw-bold mb-3">Islamic Ethics & Community</h5>
-
-                            <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Avoid Interest (Riba)? <span class="text-danger">*</span></label>
-                                @php $value = old('avoid_riba', $business->avoid_riba ?? ''); @endphp
-                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                    @foreach ([
-                                        'yes' => 'Yes',
-                                        'no' => 'No',
-                                        'partially_transitioning' => 'Partially Transitioning',
-                                        'prefer_not_to_say' => 'Prefer Not to Say'
-                                    ] as $key => $label)
-                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
-                                            <input type="radio" name="avoid_riba" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @error('avoid_riba')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-
-                            <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Avoid Haram Products? <span class="text-danger">*</span></label>
-                                @php $value = old('avoid_haram_products', $business->avoid_haram_products ?? ''); @endphp
-                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                    @foreach ([
-                                        'yes' => 'Yes',
-                                        'no' => 'No',
-                                        'partially_compliant' => 'Partially Compliant',
-                                    ] as $key => $label)
-                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
-                                            <input type="radio" name="avoid_haram_products" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @error('avoid_haram_products')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-
-                            <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Fair Pricing <span class="text-danger">*</span></label>
-                                @php $value = old('fair_pricing', $business->fair_pricing ?? ''); @endphp
-                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                    @foreach ([
-                                        'yes' => 'Yes',
-                                        'mostly' => 'Mostly',
-                                        'needs_improvement' => 'Needs Improvement'
-                                    ] as $key => $label)
-                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
-                                            <input type="radio" name="fair_pricing" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @error('fair_pricing')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-
-                            <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Open for Guidance <span class="text-danger">*</span></label>
-                                @php $value = old('open_for_guidance', $business->open_for_guidance ?? ''); @endphp
-                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                    @foreach ([
-                                        'yes' => 'Yes',
-                                        'no' => 'No',
-                                        'maybe' => 'Maybe'
-                                    ] as $key => $label)
-                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
-                                            <input type="radio" name="open_for_guidance" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @error('open_for_guidance')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-
-
-
-
-
-
-                            <div class="mb-3">
-                                <label class="form-label">Ethical Description</label>
-                                <textarea class="form-control @error('ethical_description') is-invalid @enderror"
-                                        rows="4"
-                                        name="ethical_description"
-                                        placeholder="Describe your business ethics and values...">{{ old('ethical_description', $business->ethical_description ?? '') }}</textarea>
-                                @error('ethical_description')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <small class="text-muted">Maximum 1200 characters</small>
-                            </div>
-
-
-                        @endif --}}
-
-                        {{-- @if($step == 3)
-                            <div class="ethical-section">
-                                <h5 class="fw-bold mb-3">Islamic Ethics & Community</h5>
-                                <p class="text-muted mb-4">Ethical Standards that Reflect Our Values and Responsibility</p>
-                                <p class="small text-secondary mb-4">
-                                    Our listed businesses commit to Islamic ethical standards, responsible practices, and community welfare. 
-                                    These commitments reflect transparency, integrity, and trust for partners, clients, and the wider Muslim business ecosystem.
-                                </p>
-
-                                <div class="mb-4">
-                                    <h5 class="fw-bold mb-3">Finance & Business Practices</h5>
-                                    @php 
-                                        $financePractices = old('finance_practices', $business->finance_practices ?? []);
-                                    @endphp
-                                    
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
-                                            value="no_riba" id="finance1"
-                                            {{ in_array('no_riba', $financePractices) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="finance1">
-                                            I do not deal in riba or interest-based transactions
-                                        </label>
-                                    </div>
-
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
-                                            value="no_unethical_trade" id="finance2"
-                                            {{ in_array('no_unethical_trade', $financePractices) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="finance2">
-                                            I do not engage in unethical or exploitative trade
-                                        </label>
-                                    </div>
-
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
-                                            value="shariah_compliant" id="finance3"
-                                            {{ in_array('shariah_compliant', $financePractices) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="finance3">
-                                            I follow Shariah-compliant financial practices
-                                        </label>
-                                    </div>
-
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
-                                            value="honest_transparent" id="finance4"
-                                            {{ in_array('honest_transparent', $financePractices) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="finance4">
-                                            I am honest and transparent in all dealings
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="mb-4">
-                                    <h5 class="fw-bold mb-3">Products & Services Practices</h5>
-                                    @php 
-                                        $productPractices = old('product_practices', $business->product_practices ?? []);
-                                    @endphp
-                                    
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
-                                            value="halal_products" id="product1"
-                                            {{ in_array('halal_products', $productPractices) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="product1">
-                                            My products/services are halal
-                                        </label>
-                                    </div>
-
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
-                                            value="avoid_haram" id="product2"
-                                            {{ in_array('avoid_haram', $productPractices) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="product2">
-                                            I avoid selling haram or prohibited items
-                                        </label>
-                                    </div>
-
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
-                                            value="high_quality_honest" id="product3"
-                                            {{ in_array('high_quality_honest', $productPractices) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="product3">
-                                            I maintain high quality and honesty in offerings
-                                        </label>
-                                    </div>
-
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
-                                            value="accurate_information" id="product4"
-                                            {{ in_array('accurate_information', $productPractices) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="product4">
-                                            I provide accurate information of my products and services
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="mb-4">
-                                    <h5 class="fw-bold mb-3">Community & Responsibility Practices</h5>
-                                    @php 
-                                        $communityPractices = old('community_practices', $business->community_practices ?? []);
-                                    @endphp
-                                    
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
-                                            value="fair_wages" id="community1"
-                                            {{ in_array('fair_wages', $communityPractices) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="community1">
-                                            I pay fair wages and treat employees with respect
-                                        </label>
-                                    </div>
-
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
-                                            value="support_community" id="community2"
-                                            {{ in_array('support_community', $communityPractices) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="community2">
-                                            I support local communities and charitable initiatives
-                                        </label>
-                                    </div>
-
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
-                                            value="environmental_responsibility" id="community3"
-                                            {{ in_array('environmental_responsibility', $communityPractices) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="community3">
-                                            I practice environmental responsibility in my operations
-                                        </label>
-                                    </div>
-
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
-                                            value="ethical_collaboration" id="community4"
-                                            {{ in_array('ethical_collaboration', $communityPractices) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="community4">
-                                            I collaborate ethically with other Muslim businesses
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Ethical Description </label>
-                                    <textarea class="form-control @error('ethical_description') is-invalid @enderror"
-                                            rows="4"
-                                            name="ethical_description"
-                                            placeholder="Describe your business ethics and values..."
-                                            maxlength="1200">{{ old('ethical_description', $business->ethical_description ?? '') }}</textarea>
-                                    @error('ethical_description')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <small class="text-muted">Maximum 1200 characters</small>
-                                </div>
-                            </div>
-                        @endif --}}
 
                         @if($step == 3)
                             <div class="ethical-section">
@@ -2304,7 +2051,21 @@ $(document).ready(function () {
             if (!file) return;
 
             // Validation
-            const maxSize = fieldName === 'logo' ? 2048 : 5120; // KB
+            // const maxSize = fieldName === 'logo' ? 2048 : 5120; // KB
+            // if (file.size > maxSize * 1024) {
+            //     alert(`File size must be less than ${maxSize / 1024}MB`);
+            //     $(input).val('');
+            //     return;
+            // }
+            const maxSizes = {
+                'logo': 2048,
+                'cover_photo': 2048,
+                'registration_document': 5120,
+                'business_profile': 5120,
+                'product_catalogue': 5120
+            };
+            const maxSize = maxSizes[fieldName] ?? 2048;
+
             if (file.size > maxSize * 1024) {
                 alert(`File size must be less than ${maxSize / 1024}MB`);
                 $(input).val('');
@@ -2326,35 +2087,65 @@ $(document).ready(function () {
                 data: formData,
                 processData: false,
                 contentType: false,
+                // success: function(response) {
+                //     hideLoader();
+                    
+                //     if (response.success) {
+                //         // Update preview if image
+                //         if (previewSelector && response.file_url) {
+                //             $(previewSelector).attr('src', response.file_url);
+                //         }
+
+                //         // Show success message with delete button
+                //         const $parent = $(input).closest('.col-md-3, .col-md-4, .col-md-2');
+                //         $parent.find('.text-success').remove();
+                //         $parent.find('.delete-file-btn').remove();
+                        
+                //         $parent.append(`
+                //             <small class="text-success d-block mt-1">
+                //                 <i class="fa fa-check"></i> File uploaded successfully
+                //                 ${response.file_url ? `<a href="${response.file_url}" target="_blank">View</a>` : ''}
+                //             </small>
+                //             <button type="button" class="btn btn-danger btn-sm mt-2 delete-file-btn" 
+                //                     data-field="${fieldName}" data-business-id="${businessId}">
+                //                 <i class="fa fa-trash"></i> Delete
+                //             </button>
+                //         `);
+
+                //         // Clear input
+                //         $(input).val('');
+                        
+                //         // alert('File uploaded successfully!');
+                //     } else {
+                //         alert('Upload failed: ' + (response.message || 'Unknown error'));
+                //     }
+                // },
                 success: function(response) {
                     hideLoader();
                     
                     if (response.success) {
-                        // Update preview if image
                         if (previewSelector && response.file_url) {
                             $(previewSelector).attr('src', response.file_url);
                         }
 
-                        // Show success message with delete button
-                        const $parent = $(input).closest('.col-md-3, .col-md-4, .col-md-2');
-                        $parent.find('.text-success').remove();
-                        $parent.find('.delete-file-btn').remove();
+                        // ✅ এই অংশটা বদলান
+                        const $input = $(input);
                         
-                        $parent.append(`
-                            <small class="text-success d-block mt-1">
-                                <i class="fa fa-check"></i> File uploaded successfully
-                                ${response.file_url ? `<a href="${response.file_url}" target="_blank">View</a>` : ''}
+                        // আগের success message সরান
+                        $input.siblings('.upload-success-msg').remove();
+                        
+                        // নতুন success message যোগ করুন
+                        const viewLink = response.file_url 
+                            ? `<a href="${response.file_url}" target="_blank">View</a>` 
+                            : '';
+                            
+                        $input.after(`
+                            <small class="text-success d-block mt-1 upload-success-msg">
+                                <i class="fa fa-check"></i> Document uploaded: ${viewLink}
                             </small>
-                            <button type="button" class="btn btn-danger btn-sm mt-2 delete-file-btn" 
-                                    data-field="${fieldName}" data-business-id="${businessId}">
-                                <i class="fa fa-trash"></i> Delete
-                            </button>
                         `);
 
-                        // Clear input
                         $(input).val('');
-                        
-                        // alert('File uploaded successfully!');
                     } else {
                         alert('Upload failed: ' + (response.message || 'Unknown error'));
                     }
