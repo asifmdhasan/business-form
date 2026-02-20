@@ -678,7 +678,7 @@
             .filter-sidebar {
                 background: white;
                 border-radius: 12px;
-                padding: 25px;
+                padding: 12px;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.08);
                 position: sticky;
                 top: 20px;
