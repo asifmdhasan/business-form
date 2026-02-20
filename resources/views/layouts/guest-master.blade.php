@@ -72,18 +72,34 @@
         SECTION 1 — GOLDEN "BECOME A PARTNER"
         (matches the image: gold bg, centered text)
         ════════════════════════════════════════════ */
+        /* .partner-section {
+            background-color: var(--gold);
+            background-image: url('{{ asset('assets/image/bg.webp') }}');
+            background-size: cover;
+            padding: 80px 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        } */
+
         .partner-section {
-        background-color: var(--gold);
-        background-image:
-            radial-gradient(ellipse at 0% 50%, rgba(255,255,255,0.07) 0%, transparent 55%),
-            radial-gradient(ellipse at 100% 50%, rgba(255,255,255,0.07) 0%, transparent 55%),
-            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='1' fill='rgba(255,255,255,0.08)'/%3E%3C/svg%3E");
-        background-size: auto, auto, 80px 80px;
-        padding: 80px 2rem;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        }
+    /* background-color: var(--gold); */
+    padding: 80px 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.partner-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('http://127.0.0.1:8000/assets/image/bg.webp');
+    background-size: cover;
+    background-position: center;
+    transform: rotate(180deg);
+    z-index: -1;
+}
 
         /* decorative floral silhouettes */
         /* .partner-section::before,
@@ -167,7 +183,7 @@
         }
         .btn-partner .arrow-circle {
         width: 28px; height: 28px;
-        background: var(--gold);
+        background: #9b7d2d;
         border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
         color: #fff;
@@ -223,7 +239,7 @@
 
         .btn-contribute {
         display: inline-block;
-        background: var(--gold);
+        background: #9b7d2d;
         color: #fff;
         font-family: 'Lato', sans-serif;
         font-size: 0.88rem;

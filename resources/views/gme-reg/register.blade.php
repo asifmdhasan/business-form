@@ -289,7 +289,7 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Business Category <span class="text-danger">*</span></label>
+                                    <label class="form-label">Business Category/Industry  <span class="text-danger">*</span></label>
                                     <select class="form-select" name="business_category_id" id="business_category" required>
                                         <option value="">Select Category</option>
                                         @foreach($categories as $category)
@@ -666,7 +666,7 @@
 
                             {{-- Collaboration Open --}}
                             <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Collaboration Open <span class="text-danger">*</span></label>
+                                <label class="form-label question-label" style="font-size: 1.35rem; font-weight: 600;">Collaboration Open <span class="text-danger">*</span></label>
                                 @php $value = old('collaboration_open', $business->collaboration_open ?? ''); @endphp
                                 <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
                                     @foreach ([
