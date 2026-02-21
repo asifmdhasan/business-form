@@ -94,7 +94,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background-image: url('http://127.0.0.1:8000/assets/image/bg.webp');
+    background-image: url('{{ asset('assets/image/bg.webp') }}');
     background-size: cover;
     background-position: center;
     transform: rotate(180deg);

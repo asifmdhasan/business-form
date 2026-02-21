@@ -152,7 +152,7 @@ class CustomerAuthController extends Controller
 
         Mail::send([], [], function ($message) use ($customer, $otp) {
 
-            $logo = asset('assets/img/logos/logo.webp');
+            $logo = asset('assets/image/logo.png');
 
             $message->to($customer->email)
                 ->subject('Your verification code')
