@@ -83,23 +83,23 @@
         } */
 
         .partner-section {
-    /* background-color: var(--gold); */
-    padding: 80px 2rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
+            /* background-color: var(--gold); */
+            padding: 80px 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-.partner-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url('{{ asset('assets/image/bg.webp') }}');
-    background-size: cover;
-    background-position: center;
-    transform: rotate(180deg);
-    z-index: -1;
-}
+        .partner-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('{{ asset('assets/image/bg.webp') }}');
+            background-size: cover;
+            background-position: center;
+            transform: rotate(180deg);
+            z-index: -1;
+        }
 
         /* decorative floral silhouettes */
         /* .partner-section::before,
@@ -178,9 +178,11 @@
         transition: background 0.25s, color 0.25s, transform 0.2s;
         }
         .btn-partner:hover {
-        background: var(--gold-pale);
+        background: #576829;
         transform: translateY(-2px);
+        color: #fff;
         }
+
         .btn-partner .arrow-circle {
         width: 28px; height: 28px;
         background: #9b7d2d;
@@ -191,9 +193,9 @@
         flex-shrink: 0;
         transition: background 0.25s;
         }
-        .btn-partner:hover .arrow-circle {
+        /* .btn-partner:hover .arrow-circle {
         background: var(--dark);
-        }
+        } */
 
         /* ════════════════════════════════════════════
         SECTION 2 — WHITE "HELP US BUILD"
@@ -457,6 +459,11 @@
         }
     </style>
     <style>
+        .gme-nav-right li{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
         .padding-top-1rem{
             margin-top: 1rem;
         }
@@ -1258,7 +1265,7 @@
 
         .gme-nav a:hover,
         .gme-nav a.active {
-            color: #b08d2f;
+            color: #9C7D2D;
         }
 
         /* DROPDOWN */
@@ -1469,6 +1476,9 @@
         <nav class="gme-nav gme-nav-left">
             <ul>
                 <li><a class="active" href="{{ route('guest.index') }}">Home</a></li>
+                {{-- Get Involved --}}
+                <li><a class="active" href="https://gme.network/get-involved/">Get Involved</a></li>
+
                 {{-- <li><a href="#">About GME</a></li> --}}
                 {{-- <li class="has-dropdown">
                     <a href="#">Get Involved</a>
@@ -1493,13 +1503,19 @@
         <!-- RIGHT MENU -->
         <nav class="gme-nav gme-nav-right">
             <ul>
-                @auth('customer')
-                    <li><a href="{{ route('gme.business.register') }}">Add Your Business</a></li>
-                @else
-                    <li><a href="{{ route('customer.register') }}">Add Your Business</a></li>
-                @endauth
+                {{-- Events --}}
+                <li><a class="active" href="{{ url('https://gme.network/events/') }}">Events</a></li>
+                {{-- News --}}
+                <li><a class="active" href="{{ url('https://gme.network/news/') }}">News</a></li>
+                <ul>
+                    @auth('customer')
+                        <li><a style="color: #9C7D2D" href="{{ route('gme.business.register') }}">Add Your Business</a></li>
+                    @else
+                        <li><a style="color: #9C7D2D" href="{{ route('customer.register') }}">Add Your Business</a></li>
+                    @endauth
+                </ul>
             </ul>
-            <ul>
+            <ul class="d-flex align-items-center">
                 @auth('customer')
                     <li><a href="{{ route('customer.gme-business-form.index') }}" style="border: 1px solid #9C7D2D; padding: 0.7rem;border-radius: 6px;"><i class="fa fa-home me-2"></i>Dashboard</a></li>
                 @else
@@ -1508,9 +1524,9 @@
             </ul>
         </nav>
 
-        <nav class="gme-nav gme-nav-right">
+        {{-- <nav class="gme-nav gme-nav-right">
             
-        </nav>
+        </nav> --}}
 
     </div>
 </header>

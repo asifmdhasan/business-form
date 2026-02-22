@@ -20,10 +20,12 @@
         {{-- <img src="{{ asset('assets/image/logo.webp') }}" alt="Gme Network Logo" class="img-fluid mb-2" style="max-width: 100%; height: auto;"> --}}
         <div class="p-3 text-center">
         <!-- Logo and Title -->
-            <img src="{{ asset('assets/image/front-logo.png') }}" 
-                alt="Gme Network Logo" 
-                class="img-fluid mb-2" 
-                style="max-width: 60%; height: auto;">
+            <a href="{{ route('admin.dashboard') }}">
+                <img src="{{ asset('assets/image/front-logo.png') }}" 
+                    alt="Gme Network Logo" 
+                    class="img-fluid mb-2" 
+                    style="max-width: 60%; height: auto;">
+            </a>
         </div>
 
         {{-- <h4 class="text-center py-3 border-bottom">
