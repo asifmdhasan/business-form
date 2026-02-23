@@ -111,8 +111,8 @@ class GmeRegController extends Controller
             // BusinessCreatedMail::dispatch($business);
             Mail::to($customer->email)->send(new BusinessCreatedMail($business));
 
-            // Send notification email to noreply@gmail.com
-            // Mail::to('noreply@gmail.com')->send(new BusinessCreatedMail($business, 'Notification for business request'));
+            // Send notification email to directory@gme.network
+            Mail::to('directory@gme.network')->send(new BusinessCreatedMailforDirectory($business, 'Notification for business request'));
 
 
 

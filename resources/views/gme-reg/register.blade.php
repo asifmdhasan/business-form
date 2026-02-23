@@ -1155,18 +1155,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js"></script>
 
 <script>
-$(document).ready(function () {
-    $('form').on('submit', function () {
-        // Show loader
-        $('#pageLoader').removeClass('d-none');
+    $(document).ready(function () {
+        $('form').on('submit', function () {
+            // Show loader
+            $('#pageLoader').removeClass('d-none');
 
-        // Disable submit button to prevent double click
-        $(this).find('button[type="submit"]').prop('disabled', true);
+            // Disable submit button to prevent double click
+            $(this).find('button[type="submit"]').prop('disabled', true);
+        });
+
+        // Initialize WhatsApp dropdowns on page load
+        initializeWhatsAppDropdowns();
     });
-
-    // Initialize WhatsApp dropdowns on page load
-    initializeWhatsAppDropdowns();
-});
 </script>
 
 <script>
@@ -1473,296 +1473,6 @@ $(document).ready(function () {
         });
     });
 </script>
-{{-- <script>
-    // Country codes data
-    const topCountries = [
-        { name: "Bangladesh", code: "+880" },
-        { name: "India", code: "+91" },
-        { name: "United States", code: "+1" },
-        { name: "United Kingdom", code: "+44" },
-        { name: "Saudi Arabia", code: "+966" }
-    ];
-
-    const allCountries = [
-        { name: "Afghanistan", code: "+93" },
-        { name: "Albania", code: "+355" },
-        { name: "Algeria", code: "+213" },
-        { name: "Argentina", code: "+54" },
-        { name: "Australia", code: "+61" },
-        { name: "Austria", code: "+43" },
-        { name: "Bangladesh", code: "+880" },
-        { name: "Belgium", code: "+32" },
-        { name: "Brazil", code: "+55" },
-        { name: "Canada", code: "+1" },
-        { name: "China", code: "+86" },
-        { name: "Denmark", code: "+45" },
-        { name: "Egypt", code: "+20" },
-        { name: "France", code: "+33" },
-        { name: "Germany", code: "+49" },
-        { name: "India", code: "+91" },
-        { name: "Indonesia", code: "+62" },
-        { name: "Italy", code: "+39" },
-        { name: "Japan", code: "+81" },
-        { name: "Malaysia", code: "+60" },
-        { name: "Nepal", code: "+977" },
-        { name: "Netherlands", code: "+31" },
-        { name: "New Zealand", code: "+64" },
-        { name: "Norway", code: "+47" },
-        { name: "Pakistan", code: "+92" },
-        { name: "Philippines", code: "+63" },
-        { name: "Qatar", code: "+974" },
-        { name: "Russia", code: "+7" },
-        { name: "Singapore", code: "+65" },
-        { name: "South Africa", code: "+27" },
-        { name: "South Korea", code: "+82" },
-        { name: "Spain", code: "+34" },
-        { name: "Sri Lanka", code: "+94" },
-        { name: "Sweden", code: "+46" },
-        { name: "Switzerland", code: "+41" },
-        { name: "Thailand", code: "+66" },
-        { name: "Turkey", code: "+90" },
-        { name: "UAE", code: "+971" },
-        { name: "United Kingdom", code: "+44" },
-        { name: "United States", code: "+1" },
-        { name: "Vietnam", code: "+84" },
-        { name: "Zimbabwe", code: "+263" }
-    ];
-
-    // Business WhatsApp dropdown (single instance)
-    const dropdown = document.getElementById("prefixDropdown");
-    const list = document.getElementById("prefixList");
-    const ul = document.getElementById("prefixItems");
-    const search = document.getElementById("prefixSearch");
-    const selected = document.getElementById("selectedPrefix");
-    const hiddenPrefix = document.getElementById("whatsappPrefix");
-
-    function renderList(filter = "") {
-        if (!ul) return;
-        
-        ul.innerHTML = "";
-
-        // Always show top 5 first
-        topCountries.forEach(c => {
-            if (c.name.toLowerCase().includes(filter.toLowerCase())) {
-                const li = document.createElement("li");
-                li.textContent = `${c.name} (${c.code})`;
-                li.style.fontWeight = "600";
-                li.onclick = () => {
-                    selected.textContent = c.code;
-                    hiddenPrefix.value = c.code;
-                    list.classList.add("d-none");
-                };
-                ul.appendChild(li);
-            }
-        });
-
-        // Divider
-        const divider = document.createElement("li");
-        divider.style.borderTop = "1px solid #ddd";
-        ul.appendChild(divider);
-
-        // All countries (FULL scroll)
-        allCountries
-            .filter(c => c.name.toLowerCase().includes(filter.toLowerCase()))
-            .forEach(c => {
-                const li = document.createElement("li");
-                li.textContent = `${c.name} (${c.code})`;
-                li.onclick = () => {
-                    selected.textContent = c.code;
-                    hiddenPrefix.value = c.code;
-                    list.classList.add("d-none");
-                };
-                ul.appendChild(li);
-            });
-    }
-
-    if (dropdown) {
-        dropdown.onclick = () => {
-            list.classList.toggle("d-none");
-            renderList();
-        };
-    }
-
-    if (search) {
-        search.onkeyup = () => {
-            renderList(search.value);
-        };
-    }
-
-    // Close business WhatsApp dropdown when clicking outside
-    document.addEventListener('click', function(e) {
-        if (list && dropdown && !dropdown.contains(e.target) && !list.contains(e.target)) {
-            list.classList.add('d-none');
-        }
-    });
-</script> --}}
-
-{{-- <script>
-    // Initialize WhatsApp Dropdowns for Founders (works for existing and new founders)
-    function initializeWhatsAppDropdowns() {
-        $('.whatsapp-wrapper').each(function() {
-            const $wrapper = $(this);
-            const $dropdown = $wrapper.find('.prefix-dropdown');
-            const $prefixList = $wrapper.next('.prefix-list');
-            const $selectedPrefix = $wrapper.find('.selectedPrefix');
-            const $hiddenInput = $wrapper.find('.whatsapp-prefix');
-            const $searchInput = $prefixList.find('.prefixSearch');
-            const $itemsList = $prefixList.find('.prefixItems');
-
-            // Skip if already initialized
-            if ($wrapper.data('initialized')) return;
-            $wrapper.data('initialized', true);
-
-            // Populate country codes if not already done
-            if ($itemsList.children().length === 0) {
-                // Top countries first
-                topCountries.forEach(country => {
-                    $itemsList.append(`
-                        <li data-code="${country.code}" style="font-weight: 600;">
-                            ${country.name} (${country.code})
-                        </li>
-                    `);
-                });
-
-                // Divider
-                $itemsList.append('<li style="border-top: 1px solid #ddd;"></li>');
-
-                // All countries
-                allCountries.forEach(country => {
-                    $itemsList.append(`
-                        <li data-code="${country.code}">
-                            ${country.name} (${country.code})
-                        </li>
-                    `);
-                });
-            }
-
-            // Toggle dropdown
-            $dropdown.off('click').on('click', function(e) {
-                e.stopPropagation();
-                
-                // Close other dropdowns
-                $('.prefix-list').not($prefixList).addClass('d-none');
-                
-                // Toggle current
-                $prefixList.toggleClass('d-none');
-            });
-
-            // Search functionality
-            $searchInput.off('input').on('input', function() {
-                const searchTerm = $(this).val().toLowerCase();
-                $itemsList.find('li').each(function() {
-                    const text = $(this).text().toLowerCase();
-                    const hasBorder = $(this).css('border-top') !== '0px none rgb(0, 0, 0)';
-                    
-                    if (hasBorder) {
-                        $(this).hide(); // Hide divider during search
-                    } else {
-                        $(this).toggle(text.includes(searchTerm));
-                    }
-                });
-
-                // Show divider only if search is empty
-                if (searchTerm === '') {
-                    $itemsList.find('li[style*="border-top"]').show();
-                }
-            });
-
-            // Select country code
-            $itemsList.off('click').on('click', 'li', function() {
-                const selectedCode = $(this).data('code');
-                if (!selectedCode) return; // Skip if clicking on divider
-                
-                $selectedPrefix.text(selectedCode);
-                $hiddenInput.val(selectedCode);
-                $prefixList.addClass('d-none');
-                $searchInput.val('');
-                $itemsList.find('li').show();
-            });
-        });
-
-        // Close dropdowns when clicking outside
-        $(document).off('click.whatsappFounder').on('click.whatsappFounder', function(e) {
-            if (!$(e.target).closest('.whatsapp-wrapper, .prefix-list').length) {
-                $('.whatsapp-wrapper').next('.prefix-list').addClass('d-none');
-            }
-        });
-    }
-</script> --}}
-
-{{-- <script>
-    // Founder Management
-        const founderIndex = $('#founders-container .border.rounded').length;
-
-
-    function addFounder() {
-        const newFounderHtml = `
-            <div class="border rounded p-3 mb-3 founder-item">
-                <div class="row">
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">Founder / Owner Full Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="founders[${founderIndex}][name]" required>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">Designation <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="founders[${founderIndex}][designation]" required>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">WhatsApp Number</label>
-
-                        <div class="whatsapp-wrapper" data-index="${founderIndex}">
-                            <div class="prefix-dropdown">
-                                <span class="selectedPrefix">+880</span>
-                                <span class="arrow">▼</span>
-                            </div>
-
-                            <input type="hidden"
-                                name="founders[${founderIndex}][whatsapp_prefix]"
-                                class="whatsapp-prefix"
-                                value="+880">
-
-                            <input type="text"
-                                name="founders[${founderIndex}][whatsapp_number]"
-                                class="form-control whatsapp-input"
-                                placeholder="Enter number"
-                                value="">
-                        </div>
-
-                        <div class="prefix-list d-none">
-                            <input type="text" class="prefixSearch" placeholder="Search country...">
-                            <ul class="prefixItems"></ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">Linkedin URL</label>
-                        <input type="text" class="form-control" name="founders[${founderIndex}][linkedin]">
-                    </div>
-                    <div class="col-12 mb-2">
-                        <button type="button" class="btn btn-danger btn-sm remove-founder">
-                            <i class="fa fa-trash"></i> Remove Founder
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        $('#founders-container').append(newFounderHtml);
-        founderIndex++;
-        
-        // Re-initialize WhatsApp dropdowns for the new founder
-        initializeWhatsAppDropdowns();
-    }
-
-    // Remove Founder
-    $(document).on('click', '.remove-founder', function() {
-        $(this).closest('.founder-item').remove();
-    });
-
-    // Add Founder button click
-    $(document).on('click', '#addFounderBtn', function() {
-        addFounder();
-    });
-</script> --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const radios = document.querySelectorAll('input[name="collaboration_open"]');
@@ -1789,7 +1499,6 @@ $(document).ready(function () {
         toggleCollaborationTypes();
     });
 </script>
-
 @if($step == 2)
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script>
@@ -1980,7 +1689,6 @@ $(document).ready(function () {
 
     </script>
 @endif
-
 {{-- Auto-upload scripts for Step 2 --}}
 <script>
     $(document).ready(function() {
@@ -2301,5 +2009,22 @@ $(document).ready(function () {
             }
         });
     }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const MAX_COLLABORATION = 4;
+        const checkboxes = document.querySelectorAll('input[name="collaboration_types[]"]');
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                const checked = document.querySelectorAll('input[name="collaboration_types[]"]:checked');
+
+                if (checked.length > MAX_COLLABORATION) {
+                    this.checked = false;
+                    alert('You can select a maximum of 4 collaboration interests.');
+                }
+            });
+        });
+    });
 </script>
 @endsection

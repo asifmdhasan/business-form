@@ -38,7 +38,7 @@ class BusinessStatusUpdated extends Mailable
     public function envelope(): Envelope
     {
         $subject = $this->mailData['status'] === 'approved'
-            ? 'Your Business Has Been Approved 🎉'
+            ? 'Your Business Has Been Approved'
             : 'Update on Your Business Submission';
 
         Log::info('BusinessStatusUpdated Envelope:', $this->mailData);

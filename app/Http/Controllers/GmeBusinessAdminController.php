@@ -203,6 +203,7 @@ class GmeBusinessAdminController extends Controller
             $mailData = [
                 'business_name' => $business->business_name,
                 'status'        => $business->status,
+                'slug'          => $business->slug,
             ];
 
             // Send mail (example using a Mailable class)

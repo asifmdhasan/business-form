@@ -18,7 +18,7 @@
                     <tr>
                         <td>
 
-                            <h2 style="margin-top: 0; color: #2e7d32;">Contact Request Approved ✅</h2>
+                            <h2 style="margin-top: 0; color: #2e7d32;">Contact Request Approved</h2>
 
                             <p style="font-size: 16px;">Assalamu Alaikum,</p>
 
