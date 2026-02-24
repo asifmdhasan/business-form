@@ -117,13 +117,13 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 15px;
-            color: #1c1c1c;
+            color: #9C7D2D;
             position: relative;
         }
 
         .gme-nav a:hover,
         .gme-nav a.active {
-            color: #b08d2f;
+            color: #9C7D2D;
         }
 
         /* DROPDOWN */
@@ -234,20 +234,11 @@
         <div class="container gme-header-inner">
 
             <!-- LEFT MENU -->
+            <!-- LEFT NAV -->
             <nav class="gme-nav gme-nav-left">
                 <ul>
                     <li><a class="active" href="{{ route('guest.index') }}">Home</a></li>
-                    {{-- <li><a href="#">About GME</a></li> --}}
-                    {{-- <li class="has-dropdown">
-                        <a href="#">Get Involved</a>
-                        <ul class="dropdown" style="display: inline-block;">
-                            <li><a href="#">Become a Member</a></li>
-                            <li><a href="#">Become a Partner</a></li>
-                            <li><a href="#">Become a Volunteer</a></li>
-                            <li><a href="#">Country Convenor</a></li>
-                        </ul>
-                    </li> --}}
-                    {{-- <li><a href="#">Business</a></li> --}}
+                    <li><a href="https://gme.network/get-involved/">Get Involved</a></li>
                 </ul>
             </nav>
 
@@ -261,13 +252,31 @@
             <!-- RIGHT MENU -->
             <nav class="gme-nav gme-nav-right">
                 <ul>
-                    @auth('customer')
-                        <li><a href="{{ route('gme.business.register') }}">Add Your Business</a></li>
-                    @else
-                        <li><a href="{{ route('customer.login') }}">Add Your Business</a></li>
-                    @endauth
+                    <li><a href="https://gme.network/events/">Events</a></li>
+                    <li><a href="https://gme.network/news/">News</a></li>
+                    <li>
+                        @auth('customer')
+                            <a style="color:#9C7D2D" href="{{ route('gme.business.register') }}">Add Your Business</a>
+                        @else
+                            <a style="color:#9C7D2D" href="{{ route('customer.register') }}">Add Your Business</a>
+                        @endauth
+                    </li>
                 </ul>
-                
+                {{-- <ul class="d-flex align-items-center">
+                    @auth('customer')
+                        <li>
+                            <a href="{{ route('customer.gme-business-form.index') }}" style="border:1px solid #9C7D2D; padding:0.7rem; border-radius:6px;">
+                                <i class="fa fa-home me-2"></i>Dashboard
+                            </a>
+                        </li>
+                    @else
+                        <li>
+                            <a href="{{ route('customer.login') }}" style="border:1px solid #9C7D2D; padding:0.7rem; border-radius:6px;">
+                                <i class="fa fa-user me-2"></i>Login
+                            </a>
+                        </li>
+                    @endauth
+                </ul> --}}
             </nav>
         </div>
     </header>
