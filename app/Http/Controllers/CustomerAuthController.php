@@ -178,7 +178,7 @@ class CustomerAuthController extends Controller
                         <p>
                             Warm regards,<br>
                             Global Muslim Business Directory<br>
-                            Powered by GME Network
+                            Powered by Muslim Business Directory
                         </p>
 
                     </div>

@@ -634,7 +634,7 @@
                                 );
                             @endphp
 
-                            @foreach(['Partnerships','Investment Oportunities','Vendor Supply Chain','Marketing Promotion','Networking','Training Workshops','Community Charity Projects','Not Sure Yet'] as $type)
+                            @foreach(['Partnerships','Investment Oportunities','Vendor Supply Chain','Marketing Promotion','Networking','Mentorship or Growth Coaching','Community Charity Projects','Not Sure Yet'] as $type)
                             <div class="form-check">
                                 <input class="form-check-input"
                                     type="checkbox"

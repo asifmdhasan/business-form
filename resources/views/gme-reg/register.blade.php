@@ -703,7 +703,7 @@
                                     'Vendor Supply Chain',
                                     'Marketing Promotion',
                                     'Networking',
-                                    'Training Workshops',
+                                    'Mentorship or Growth Coaching',
                                     'Community Charity Projects',
                                     'Not Sure Yet'
                                 ] as $type)

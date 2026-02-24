@@ -7,7 +7,7 @@
 <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 30px;">
 <!-- Site logo in center -->
     <div style="text-align: center; margin-bottom: 30px;">
-        <img src="{{ asset('assets/image/logo.png') }}" alt="Global Muslim Business Directory" style="max-width: 200px;">
+        <img src="{{ asset('assets/image/gmemail.png') }}" alt="Global Muslim Business Directory" style="max-width: 200px;">
     </div>
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr>
@@ -53,7 +53,7 @@
     <p>
         Sincerely,<br>
         <strong>Global Muslim Business Directory</strong><br>
-        Powered by GME Network
+        Powered by Muslim Business Directory
     </p>
 
 @elseif($mailData['status'] === 'rejected')

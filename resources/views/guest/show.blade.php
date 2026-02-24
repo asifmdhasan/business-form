@@ -1470,7 +1470,7 @@
                         'Vendor Supply Chain' => 'fa-truck',
                         'Marketing Promotion' => 'fa-bullhorn',
                         'Networking' => 'fa-users',
-                        'Training Workshops' => 'fa-graduation-cap',
+                        'Mentorship or Growth Coaching' => 'fa-graduation-cap',
                         'Community Charity Projects' => 'fa-heart',
                         'Not Sure Yet' => 'fa-question-circle'
                     ];
