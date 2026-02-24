@@ -348,77 +348,8 @@
 
     <div class="container py-5">
         <div class="row">
-            <!-- Filter Sidebar -->
-            {{-- <div class="col-lg-3">
-                <div class="filter-sidebar">
-                    <div class="filter-header">
-                        <i class="fas fa-filter filter-icon"></i>
-                        <h4 class="fw-bold mb-4 featured-business "
-                        style="
-                            font-size: 34px;
-                            text-transform: uppercase;
-                            line-height: 1.3em;">
-                        <span style=" font-weight: 300;"> Filter </span>
-                        <span style="color:#9b7d2d;font-weight: 900;">Businesses </span>
-                    </h4>
-                    </div>
-
-                    <!-- Search Box -->
-                    <div class="search-box">
-                        <input type="text" class="form-control" id="searchInput" placeholder="Search businesses...">
-                    </div>
-
-                    <!-- Category Filter -->
-                    <div class="filter-section">
-                        <div class="filter-label">Category</div>
-                        <select class="form-select" id="categoryFilter" style="width: 100%;">
-                            <option value="">All Categories</option>
-                        </select>
-                    </div>
-
-                    <!-- Location Filter -->
-                    <div class="filter-section">
-                        <div class="filter-label">Location</div>
-                        <select class="form-select" id="locationFilter" style="width: 100%;" multiple>
-                        </select>
-                    </div>
-
-                    <!-- Verification Status -->
-                    <div class="filter-section">
-                        <div class="filter-label">Verification Status</div>
-                        <div class="radio-option">
-                            <input type="radio" name="status" id="statusAll" value="" checked>
-                            <label for="statusAll">All Businesses</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" name="status" id="statusVerified" value="1">
-                            <label for="statusVerified">GME Verified</label>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <button class="btn-apply-filter" id="applyFilters">Apply Filters</button>
-                    <button class="btn-reset" id="resetFilters">Reset</button>
-                </div>
-            </div> --}}
-
             <!-- Business Listings -->
             <div class="col-lg-12">
-                <!-- Content Header -->
-                {{-- <div class="content-header">
-                    <div class="results-count">
-                        Showing <strong id="showingCount">0</strong> of <strong id="totalCount">0</strong> businesses
-                    </div>
-                    <div class="sort-section">
-                        <label class="sort-label">Sort by:</label>
-                        <select class="sort-dropdown" id="sortBy">
-                            <option value="relevant">Most Relevant</option>
-                            <option value="newest">New Business</option>
-                            <option value="asc">Sort by Ascending</option>
-                            <option value="desc">Sort by Descending</option>
-                        </select>
-                    </div>
-                </div> --}}
 
                 <!-- Business Cards Grid -->
                 <div class="row" id="businessGrid">
@@ -698,57 +629,6 @@
             updateResultsCount(filteredBusinesses.length);
         }
 
-        /* =========================
-        Card HTML
-        ========================== */
-
-        // function createBusinessCard(business) {
-        //     const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
-
-        //     const category = business.category?.name ?? '';
-        //     const logo = `{{ asset('assets') }}/${business.logo}`;
-        //     const photo = business.cover_photo
-        //         ? `{{ asset('assets') }}/${business.cover_photo}`
-        //         : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
-
-        //     const verified =(business.status === 'approved' && business.is_verified === 1)
-        //         ? `<div class="verified-badge">
-        //                 <i class="fas fa-check-circle"></i> GME Verified
-        //         </div>`
-        //         : '';
-
-        //     const shortIntro = business.short_introduction
-        //         ? (business.short_introduction.length > 100
-        //             ? business.short_introduction.substring(0, 100) + '...'
-        //             : business.short_introduction)
-        //         : '';
-
-        //     // ✅ Determine link based on status
-        //     const link = (business.status === 'draft')
-        //         ? '{{ route("gme.business.register") }}' // draft goes to register
-        //         : `{{ url('gme-business-form') }}/${business.slug}`; // others go to form view
-
-        //     return `
-        //     <div class="col-md-6 col-lg-3">
-        //         <div class="business-card" onclick="location.href='${link}'">
-        //             <div style="position:relative">
-        //                 <img src="${photo}" class="business-image">
-        //                 ${verified}
-        //             </div>
-        //             <div class="business-content">
-        //                 <div class="business-header" style="display: flex; align-items: center;">
-        //                     <img src="${logo}" class="business-logo">
-        //                     <div>
-        //                         <div class="business-name">${business.business_name} - (${capitalizeFirstLetter(business.status)})</div>
-        //                         <div class="business-category">${category}</div>
-        //                     </div>
-        //                 </div>
-        //                 ${shortIntro}
-        //             </div>
-        //         </div>
-        //     </div>`;
-        // }
-
         // createBusinessCard — draft delete button + data-business-id on card
          function createBusinessCard(business) {
             const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
@@ -863,53 +743,7 @@
                 if (link) window.location.href = link;
             }
         });
-        // function deleteDraftBusiness(event, businessId) {
-        //     event.stopPropagation();
-        //     event.preventDefault();
-
-        //     if (!confirm('Warning: All data for this business will be permanently deleted and cannot be recovered.\n\nAre you sure you want to delete this draft?')) {
-        //         return;
-        //     }
-
-        //     const csrfToken = document.querySelector('meta[name="csrf-token"]');
-        //     if (!csrfToken) {
-        //         alert('CSRF token not found. Please refresh the page.');
-        //         return;
-        //     }
-
-        //     fetch(`/gme-business/${businessId}`, {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
-        //             'X-Requested-With': 'XMLHttpRequest',
-        //         },
-        //         body: JSON.stringify({ _method: 'DELETE' })
-        //     })
-        //     .then(res => {
-        //         if (!res.ok) {
-        //             return res.json().then(err => { throw err; });
-        //         }
-        //         return res.json();
-        //     })
-        //     .then(data => {
-        //         if (data.success) {
-        //             // ── Remove card from DOM ──
-        //             const card = document.querySelector(`.business-card[data-business-id="${businessId}"]`);
-        //             if (card) {
-        //                 card.closest('.col-md-6').remove();
-        //             } else {
-        //                 window.location.reload();
-        //             }
-        //         } else {
-        //             alert(data.message ?? 'Could not delete. Please try again.');
-        //         }
-        //     })
-        //     .catch(err => {
-        //         console.error('Delete error:', err);
-        //         alert(err.message ? 'Error: ' + err.message : 'Something went wrong. Please try again.');
-        //     });
-        // }
+       
         /* =========================
         Count
         ========================== */

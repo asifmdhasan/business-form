@@ -1,72 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{-- <title>{{ __('layouts.projectName') }}</title> --}}
     <title>GME Network Register</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+        * { box-sizing: border-box; }
+
         body {
             font-family: 'Inter', sans-serif;
-        }
-
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .gradient-bg {
             background: linear-gradient(135deg, #9C7D2D 0%, #FFD700 100%);
+            min-height: 100vh;
+            margin: 0;
         }
 
-        .input-focus:focus {
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            border-color: #667eea;
-        }
-
-        .btn-hover:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        .floating-label {
-            transition: all 0.2s ease;
-        }
-
-        .floating-label.active {
-            transform: translateY(-1.5rem) scale(0.85);
-            color: #667eea;
-        }
-
-
-
-
-        /* HEADER BASE */
+        /* ── HEADER ───────────────────────────────── */
         .gme-header {
             position: fixed;
             top: 0;
             width: 100%;
-            z-index: 9999;
+            z-index: 100;
             background: #fdfaf2;
             transition: all 0.3s ease;
-
-        }
-        /* .gme-header {
-            transition: all 0.3s ease;
         }
 
-        #mainNavbar.scrolled {
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            background-color: rgba(240, 235, 223, 0.6);
-        } */
-
-        /* INNER GRID */
         .gme-header-inner {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -74,9 +35,7 @@
             padding: 18px 0;
         }
 
-        /* STICKY EFFECT */
         .gme-header.scrolled {
-            padding: 0;
             background: #f9f6ef;
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
@@ -85,14 +44,12 @@
             padding: 12px 0;
         }
 
-        /* LOGO */
         .gme-logo img {
             height: 42px;
             display: block;
             margin: auto;
         }
 
-        /* NAV */
         .gme-nav ul {
             list-style: none;
             display: flex;
@@ -118,123 +75,374 @@
             font-weight: 500;
             font-size: 15px;
             color: #9C7D2D;
-            position: relative;
         }
 
         .gme-nav a:hover,
         .gme-nav a.active {
+            color: #b08d2f;
+        }
+
+        /* ── HAMBURGER ────────────────────────────── */
+        .gme-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .gme-hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #9C7D2D;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* ── MOBILE OVERLAY ───────────────────────── */
+        #mobileMenu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+        }
+
+        #mobileMenu.open {
+            display: block;
+        }
+
+        .gme-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+        }
+
+        .gme-drawer {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: min(300px, 85vw);
+            height: 100%;
+            background: #fdfaf2;
+            box-shadow: -10px 0 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            animation: drawerIn 0.3s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        @keyframes drawerIn {
+            from { transform: translateX(100%); }
+            to   { transform: translateX(0); }
+        }
+
+        .gme-drawer-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0ead8;
+        }
+
+        .gme-drawer-top img { height: 32px; }
+
+        .gme-close-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #9C7D2D;
+            transition: background 0.2s;
+        }
+
+        .gme-close-btn:hover { background: rgba(156,125,45,0.1); }
+
+        .gme-drawer-links {
+            flex: 1;
+            padding: 8px 0;
+            overflow-y: auto;
+        }
+
+        .gme-drawer-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 24px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            color: #3a2e10;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .gme-drawer-links a i {
+            width: 18px;
+            text-align: center;
             color: #9C7D2D;
         }
 
-        /* DROPDOWN */
-        .has-dropdown {
+        .gme-drawer-links a:hover,
+        .gme-drawer-links a.active {
+            background: #fdf5e0;
+            color: #9C7D2D;
+            border-left-color: #9C7D2D;
+        }
+
+        .gme-drawer-divider {
+            height: 1px;
+            background: #f0ead8;
+            margin: 6px 24px;
+        }
+
+        .gme-drawer-footer {
+            padding: 16px 20px;
+            border-top: 1px solid #f0ead8;
+        }
+
+        .gme-drawer-footer a {
+            display: block;
+            text-align: center;
+            background: linear-gradient(135deg, #9C7D2D, #e6b83a);
+            color: #fff !important;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .gme-drawer-footer a:hover { opacity: 0.9; }
+
+        /* ── PAGE WRAPPER ─────────────────────────── */
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 7rem 1rem 3rem;
+        }
+
+        .register-logo {
+            max-width: 220px;
+            height: auto;
+            padding-right: 3rem;
+            display: block;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* ── REGISTER CARD ────────────────────────── */
+        .register-card {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 1.5rem;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .register-card h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #3a2e10;
+            margin-bottom: 0.25rem;
+        }
+
+        .register-card .subtitle {
+            font-size: 0.85rem;
+            color: #9a8a6a;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Form fields */
+        .field-group {
+            margin-bottom: 1.1rem;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4a3a1a;
+            margin-bottom: 0.4rem;
+        }
+
+        .field-group .optional {
+            font-weight: 400;
+            color: #aaa;
+            font-size: 0.78rem;
+            margin-left: 4px;
+        }
+
+        .field-group input {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border: 1.5px solid #e5dcc8;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #3a2e10;
+            background: #fdfaf5;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .field-group input:focus {
+            border-color: #9C7D2D;
+            box-shadow: 0 0 0 3px rgba(156,125,45,0.12);
+            background: #fff;
+        }
+
+        .field-group input::placeholder { color: #c0b090; }
+
+        .field-error {
+            font-size: 0.78rem;
+            color: #dc2626;
+            margin-top: 4px;
+        }
+
+        /* Password wrapper */
+        .password-wrapper {
             position: relative;
         }
 
-        .dropdown {
+        .password-wrapper input {
+            padding-right: 2.8rem;
+        }
+
+        .toggle-password {
             position: absolute;
-            top: 130%;
-            left: 0;
-            background: #fff;
-            min-width: 220px;
-            border-radius: 8px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
-            transition: 0.25s ease;
-            padding: 10px 0;
-        }
-
-        .dropdown li {
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #9C7D2D;
+            font-size: 15px;
             padding: 0;
+            line-height: 1;
         }
 
-        .dropdown a {
-            display: block;
-            padding: 10px 18px;
-            font-size: 14px;
-            color: #333;
+        /* Submit button */
+        .btn-register {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #576829 0%, #758c39 100%);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+            margin-top: 0.5rem;
         }
 
-        .dropdown a:hover {
-            background: #f5f2ea;
+        .btn-register:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(87,104,41,0.3);
         }
 
-        /* SHOW DROPDOWN */
-        .has-dropdown:hover .dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+        .login-link {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.875rem;
         }
 
+        .login-link a {
+            color: #576829;
+            text-decoration: none;
+            font-weight: 500;
+        }
 
-            @media (max-width: 768px) {
-                .hero-section h1 {
-                    font-size: 2rem;
-                }
-                .filter-sidebar {
-                    position: relative;
-                    top: 0;
-                    margin-bottom: 2rem;
-                }
-            }
-            @media (max-width: 768px) {
-                .filter-sidebar {
-                    margin-bottom: 30px;
-                }
-            }
-            @media (max-width: 768px) {
-            .hero-section {
-                padding-top: 4rem;
-                padding-bottom: 4rem;
-            }
-            .hero-section h1 {
-                font-size: 1.5rem;
-            }
-            .hero-section p {
-                font-size: 0.875rem;
-            }
-            .position-relative.w-100 {
-                max-width: 100% !important;
-                padding: 0 0.5rem;
-            }
-            #heroSearchResults {
-                max-height: 200px;
-            }
+        .login-link a:hover {
+            color: #9C7D2D;
+            text-decoration: underline;
+        }
 
-            #businessGrid {
-                grid-template-columns: 1fr;
-            }
+        /* Error alert */
+        .error-alert {
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.25rem;
+        }
 
-            .business-card {
-                flex-direction: column;
-            }
+        .error-alert ul {
+            margin: 0;
+            padding-left: 1.2rem;
+            color: #dc2626;
+            font-size: 0.85rem;
+        }
 
-            .business-header {
-                flex-direction: row;
+        /* ── MOBILE (≤768px) ──────────────────────── */
+        @media (max-width: 768px) {
+            .gme-nav-left,
+            .gme-nav-right { display: none; }
+
+            .gme-hamburger { display: flex; }
+
+            .gme-header-inner {
+                display: flex;
                 align-items: center;
-                gap: 10px;
+                justify-content: space-between;
+                padding: 14px 16px;
             }
 
-            .business-content {
-                padding: 15px;
+            .gme-logo {
+                flex: 1;
+                display: flex;
+                justify-content: center;
             }
 
-            .business-name {
-                font-size: 16px;
+            .page-wrapper {
+                padding: 5.5rem 1rem 2rem;
+                justify-content: flex-start;
             }
+
+            .register-logo {
+                display: none;
+                max-width: 140px;
+                padding-right: 1.5rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .register-card {
+
+                padding: 1.75rem 1.25rem;
+                border-radius: 1.25rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .register-logo { max-width: 110px; }
         }
     </style>
 </head>
 
-<body class="min-h-screen gradient-bg">
+<body>
 
+    <!-- HEADER -->
     <header id="mainHeader" class="gme-header">
         <div class="container gme-header-inner">
 
-            <!-- LEFT MENU -->
-            <!-- LEFT NAV -->
             <nav class="gme-nav gme-nav-left">
                 <ul>
                     <li><a class="active" href="{{ route('guest.index') }}">Home</a></li>
@@ -242,14 +450,12 @@
                 </ul>
             </nav>
 
-            <!-- CENTER LOGO -->
             <div class="gme-logo">
                 <a href="https://gme.network/">
                     <img src="{{ asset('assets/image/logo.webp') }}" alt="GME">
                 </a>
             </div>
 
-            <!-- RIGHT MENU -->
             <nav class="gme-nav gme-nav-right">
                 <ul>
                     <li><a href="https://gme.network/events/">Events</a></li>
@@ -262,149 +468,176 @@
                         @endauth
                     </li>
                 </ul>
-                {{-- <ul class="d-flex align-items-center">
-                    @auth('customer')
-                        <li>
-                            <a href="{{ route('customer.gme-business-form.index') }}" style="border:1px solid #9C7D2D; padding:0.7rem; border-radius:6px;">
-                                <i class="fa fa-home me-2"></i>Dashboard
-                            </a>
-                        </li>
-                    @else
-                        <li>
-                            <a href="{{ route('customer.login') }}" style="border:1px solid #9C7D2D; padding:0.7rem; border-radius:6px;">
-                                <i class="fa fa-user me-2"></i>Login
-                            </a>
-                        </li>
-                    @endauth
-                </ul> --}}
             </nav>
+
+            <!-- HAMBURGER (mobile only) -->
+            <button class="gme-hamburger" id="hamburgerBtn" aria-label="Open menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
         </div>
     </header>
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0"
-            style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 30px 30px;">
-        </div>
-    </div>
-    
-    <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
-        <!-- Header Section -->
-        <div class="sm:mx-auto sm:w-full sm:max-w-md">
 
-            
-            <img src="{{ asset('assets/image/front-logo.png') }}" 
-                alt="Gme Network Logo" 
-                class="img-fluid mb-2 mx-auto" 
-                style="    max-width: 50%;height: auto;padding-right: 3rem; padding-top: 4rem;">
-
-        </div>
-
-        <!-- Form Section -->
-        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-            <div class="glass-effect py-10 px-8 shadow-2xl sm:rounded-3xl relative overflow-hidden">
-                <!-- Decorative elements -->
-                {{-- <div
-                    class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full opacity-10 transform translate-x-16 -translate-y-16">
-                </div>
-                <div
-                    class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-400 to-indigo-500 rounded-full opacity-10 transform -translate-x-12 translate-y-12">
-                </div> --}}
-                @if ($errors->any())
-                    <div class="mb-6 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-                        <ul class="list-disc pl-5">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <form action="{{ url('/register') }}" method="POST">
-                    @csrf
-
-                    <div class="mb-4">
-                        <label class="block font-medium mb-1">Full Name</label>
-                        <input type="text" name="name" class="w-full border p-2 rounded"
-                            placeholder="Enter your name" required>
-                        @error('name')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block font-medium mb-1">Email</label>
-                        <input type="email" name="email" class="w-full border p-2 rounded"
-                            placeholder="Enter email" required>
-                        @error('email')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block font-medium mb-1">Phone (optional)</label>
-                        <input type="text" name="phone" class="w-full border p-2 rounded"
-                            placeholder="Enter phone">
-                        @error('phone')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block font-medium mb-1">Password</label>
-                        <input type="password" name="password" class="w-full border p-2 rounded"
-                            placeholder="Enter password" required>
-                        @error('password')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
-                    </div>
-
-                    <button type="submit"
-                            class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700"style="background: linear-gradient(135deg, #576829 0%, #758c39 100%);">
-                        Register
-                    </button>
-
-                    <div class="text-center mt-3">
-                        <a href="{{ route('customer.login') }}" class="text-sm" style="color: #576829">
-                            Already have an account?
-                        </a>
-                    </div>
-
-                </form>
-
-                
+    <!-- MOBILE MENU -->
+    <div id="mobileMenu">
+        <div class="gme-backdrop" id="menuBackdrop"></div>
+        <div class="gme-drawer">
+            <div class="gme-drawer-top">
+                <img src="{{ asset('assets/image/logo.webp') }}" alt="GME">
+                <button class="gme-close-btn" id="closeBtn" aria-label="Close menu">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <nav class="gme-drawer-links">
+                <a class="active" href="{{ route('guest.index') }}">
+                    <i class="fa fa-home"></i> Home
+                </a>
+                <a href="https://gme.network/get-involved/">
+                    <i class="fa fa-hands-helping"></i> Get Involved
+                </a>
+                <div class="gme-drawer-divider"></div>
+                <a href="https://gme.network/events/">
+                    <i class="fa fa-calendar-alt"></i> Events
+                </a>
+                <a href="https://gme.network/news/">
+                    <i class="fa fa-newspaper"></i> News
+                </a>
+            </nav>
+            <div class="gme-drawer-footer">
+                @auth('customer')
+                    <a href="{{ route('gme.business.register') }}">
+                        <i class="fa fa-plus-circle me-2"></i> Add Your Business
+                    </a>
+                @else
+                    <a href="{{ route('customer.register') }}">
+                        <i class="fa fa-plus-circle me-2"></i> Add Your Business
+                    </a>
+                @endauth
             </div>
         </div>
-
-        <!-- Footer -->
-        {{-- <div class="mt-8 text-center">
-            <p class="text-sm text-indigo-100 opacity-75">
-                &copy; 2024 Inventory Management System. All rights reserved.
-            </p>
-        </div> --}}
     </div>
 
-    <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const eyeOpen = document.getElementById('eye-open');
-            const eyeClosed = document.getElementById('eye-closed');
+    <!-- PAGE CONTENT -->
+    <div class="page-wrapper">
 
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeOpen.classList.add('hidden');
-                eyeClosed.classList.remove('hidden');
-            } else {
-                passwordInput.type = 'password';
-                eyeOpen.classList.remove('hidden');
-                eyeClosed.classList.add('hidden');
-            }
+        <img src="{{ asset('assets/image/front-logo.png') }}"
+             alt="GME Network Logo"
+             class="register-logo">
+
+        <div class="register-card">
+
+            <h2>Create Account</h2>
+            <p class="subtitle">Join the Global Muslim Business Directory</p>
+
+            @if ($errors->any())
+                <div class="error-alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ url('/register') }}" method="POST">
+                @csrf
+
+                <div class="field-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name"
+                           placeholder="Enter your full name"
+                           value="{{ old('name') }}" required>
+                    @error('name')<p class="field-error">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="field-group">
+                    <label>Email</label>
+                    <input type="email" name="email"
+                           placeholder="Enter your email"
+                           value="{{ old('email') }}" required>
+                    @error('email')<p class="field-error">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="field-group">
+                    <label>Phone <span class="optional">(optional)</span></label>
+                    <input type="text" name="phone"
+                           placeholder="Enter your phone number"
+                           value="{{ old('phone') }}">
+                    @error('phone')<p class="field-error">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="field-group">
+                    <label>Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" name="password"
+                               id="passwordInput"
+                               placeholder="Create a password" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword()">
+                            <i class="fa fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                    @error('password')<p class="field-error">{{ $message }}</p>@enderror
+                </div>
+
+                <button type="submit" class="btn-register">
+                    <i class="fa fa-user-plus me-2"></i> Create Account
+                </button>
+
+                <div class="login-link">
+                    Already have an account?
+                    <a href="{{ route('customer.login') }}">Sign In</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sticky header
+        window.addEventListener('scroll', function () {
+            document.getElementById('mainHeader')
+                .classList.toggle('scrolled', window.scrollY > 10);
+        });
+
+        // Mobile menu
+        var menu      = document.getElementById('mobileMenu');
+        var hamburger = document.getElementById('hamburgerBtn');
+        var closeBtn  = document.getElementById('closeBtn');
+        var backdrop  = document.getElementById('menuBackdrop');
+
+        function openMenu() {
+            menu.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
-        // Add some interactive effects
-        document.addEventListener('DOMContentLoaded', function() {
-            const inputs = document.querySelectorAll('input');
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.parentElement.style.transform = 'scale(1.02)';
-                });
-                input.addEventListener('blur', function() {
-                    this.parentElement.style.transform = 'scale(1)';
-                });
-            });
+        function closeMenu() {
+            menu.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        hamburger.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        backdrop.addEventListener('click', closeMenu);
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeMenu();
         });
+
+        // Password toggle
+        function togglePassword() {
+            var input = document.getElementById('passwordInput');
+            var icon  = document.getElementById('eyeIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa fa-eye';
+            }
+        }
     </script>
 </body>
-
 </html>

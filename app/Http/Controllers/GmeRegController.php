@@ -8,6 +8,7 @@ use App\Models\BusinessPhoto;
 use App\Models\GmeBusinessForm;
 use App\Models\BusinessCategory;
 use App\Mail\BusinessCreatedMail;
+use App\Mail\BusinessCreatedMailforDirectory;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
