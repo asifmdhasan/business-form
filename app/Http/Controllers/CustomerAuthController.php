@@ -118,41 +118,9 @@ class CustomerAuthController extends Controller
             'status'          => 0,
         ]);
 
-
-
-
-        // Mail::send([], [], function ($message) use ($customer, $otp) {
-        //     $message->to($customer->email)
-        //         ->subject('Your verification code')
-        //         ->html("
-
-                    
-        //             <div style='text-align: center; margin-bottom: 30px;'>
-        //                 <img src="{{ asset('assets/image/logo.png') }}" style='max-width: 200px;'>
-        //             </div>
-        //             <p>Assalamu Alaikum,</p>
-
-        //             <p>Thank you for signing up with the <strong>Global Muslim Business Directory</strong>.</p>
-
-        //             <p>Please use the following verification code to complete your request:</p>
-
-        //             <h2>Verification Code: {$otp}</h2>
-
-        //             <p>This code is valid for a limited time. If you did not request this code, you may safely ignore this email.</p>
-
-        //             <br>
-
-        //             <p>Warm regards,<br>
-        //             Global Muslim Business Directory<br>
-        //             Powered by GME Network</p>
-        //         ");
-        // });
-
-
-
         Mail::send([], [], function ($message) use ($customer, $otp) {
 
-            $logo = asset('assets/image/logo.png');
+            $logo = asset('assets/image/gmemail.png');
 
             $message->to($customer->email)
                 ->subject('Your verification code')
