@@ -1972,6 +1972,8 @@
                                     {{ $business->website }}
                                     <i class="fas fa-external-link-alt ms-2"></i>
                                 </a>
+                            @else
+                                <p class="text-muted mb-0">Not Available</p>
                             @endif
                         </div>
                     </div>
