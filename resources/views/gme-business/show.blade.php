@@ -40,6 +40,35 @@
     }
 
     /* Hero Section */
+    .hero-section-2 {
+        margin-top: 5rem;
+        background-size: cover;
+        background-position: center;
+        border-radius: 1rem;
+        padding: 6rem 5rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        min-height: 280px;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        border-radius: 1rem;
+    }
+
+    .hero-section-2::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url('https://www.transparenttextures.com/patterns/subtle-prism.png');
+        opacity: 0.15;
+        /* z-index: 1; */
+    }
+
+    /* Hero Section */
     .hero-section {
         background-size: cover;
         background-position: center;
