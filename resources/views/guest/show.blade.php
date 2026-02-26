@@ -1781,7 +1781,7 @@
         <div class="pt-3" style="border-top: 1px solid var(--border-light);">
             
             <!-- Row 1: Primary Contact - Name, Contact, Email in 3 columns -->
-            <div class="row g-4 mb-4">
+            {{-- <div class="row g-4 mb-4">
                 <div class="col-md-12">
                     <div class="contact-section">
                         <h5 class="contact-heading">
@@ -1802,7 +1802,7 @@
 
 
 
-            </div>
+            </div> --}}
 
             <!-- Row 2: Social Media -->
             <div class="row g-4 mb-4">
@@ -1920,7 +1920,7 @@
             </div>
 
             <!-- Row 2: Social Media -->
-            <div class="row g-4 mb-4">
+            {{-- <div class="row g-4 mb-4">
                 <div class="col-6">
                     <div class="contact-section">
                         <h5 class="contact-heading">
@@ -1976,7 +1976,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </section>
 
