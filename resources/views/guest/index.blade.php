@@ -8,24 +8,30 @@
     .featured-business{
         text-align: left;
     }
+    
+    .featuredSwiper {
+        padding-bottom: 40px;
+    }
+
+    .swiper-slide {
+        height: auto;
+        display: flex;
+    }
+
+    .business-card {
+        width: 100%;
+        height: 100%;
+    }
+
     @media (max-width: 768px) {
         .featured-business{
             text-align: center;
         }
+        .filter-box{
+            display: none;
+        }
     }
-    .featuredSwiper {
-    padding-bottom: 40px;
-}
 
-.swiper-slide {
-    height: auto;
-    display: flex;
-}
-
-.business-card {
-    width: 100%;
-    height: 100%;
-}
 </style>
 
 
@@ -67,10 +73,10 @@
     </div>
 </section>
 
-<div class="container py-5">
+<div class="container py-5 ">
     <div class="row">
         <!-- Filter Sidebar -->
-        <div class="col-lg-3">
+        <div class="col-lg-3 filter-box">
             <div class="filter-sidebar">
                 <div class="filter-header">
                     <i class="fas fa-filter filter-icon"></i>

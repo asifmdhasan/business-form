@@ -1345,10 +1345,15 @@
                 padding-bottom: 4rem;
             }
             .hero-section h1 {
-                font-size: 1.5rem;
+                font-size: 1.75rem;
+            }
+            .main-footer {
+                background: var(--dark-footer);
+                padding: 56px 1rem 36px;
+                /* position: relative; */
             }
             .hero-section p {
-                font-size: 0.875rem;
+                font-size: 1.1rem;
             }
             .position-relative.w-100 {
                 max-width: 100% !important;
@@ -1356,6 +1361,16 @@
             }
             #heroSearchResults {
                 max-height: 200px;
+                margin-top: -5rem !important;
+            }
+            .hero-search-item {
+                padding: 4px;
+            }
+            .btn-partner{
+                    padding: 0.75rem 1rem;
+            }
+            .featured-business{
+                font-size: 28px;
             }
 
             #businessGrid {
@@ -1413,23 +1428,35 @@
             }
             .islamic-bg {
                 padding-top:7rem;
-                padding-bottom:7rem;
+                padding-bottom:3rem;
+            }
+            .container {
+                max-width: 1160px;
+                margin: 0 auto;
+                padding: 0 1rem;
             }
             .footer.islamic-bg {
                 padding-top:0rem;
                 padding-bottom:1.5rem;
             }
+
+            .heading-text-home{
+                font-size: 1.65rem;
+            }
+            .featured-business{
+                font-size: 28px !important;
+            } 
         }
 
-            .join-network:hover {
-                color: #fff;
-            }
-            .join-network-white:hover {
-                color: #fff !important;
-            }
+        .join-network:hover {
+            color: #fff;
+        }
+        .join-network-white:hover {
+            color: #fff !important;
+        }
 
 
-            .gme-btn {
+        .gme-btn {
             background-color: #EDEDED;
             font-family: "SF Ui Display", Sans-serif;
             font-size: 18px;
@@ -1478,11 +1505,291 @@
             border-bottom: 1px solid #9C7D2D !important;   
         }
 
+        .featured-business{
+            text-align: center;
+                        font-size: 34px;
+                        text-transform: uppercase;
+                        line-height: 1.3em;
+        } 
+    </style>
+
+
+    <style>
+        /* ── HEADER ───────────────────────────────── */
+        .gme-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: #fdfaf2;
+            transition: all 0.3s ease;
+        }
+
+        .gme-header-inner {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 18px 0;
+        }
+
+        .gme-header.scrolled {
+            background: #f9f6ef;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .gme-header.scrolled .gme-header-inner {
+            padding: 12px 0;
+        }
+
+        .gme-logo img {
+            height: 42px;
+            display: block;
+            margin: auto;
+        }
+
+        .gme-nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .gme-nav-left {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 2.5rem;
+        }
+
+        .gme-nav-right {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 2.5rem;
+            gap: 20px;
+        }
+
+        .gme-nav a {
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            color: #9C7D2D;
+        }
+
+        .gme-nav a:hover,
+        .gme-nav a.active {
+            color: #b08d2f;
+        }
+
+        /* ── DASHBOARD / LOGIN BUTTON ─────────────── */
+        .gme-nav .btn-outline-gme {
+            border: 1px solid #9C7D2D;
+            padding: 0.45rem 0.85rem;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #9C7D2D;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+        .gme-nav .btn-outline-gme:hover {
+            background: #9C7D2D;
+            color: #fff;
+        }
+
+        /* ── HAMBURGER ────────────────────────────── */
+        .gme-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .gme-hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #9C7D2D;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* ── MOBILE OVERLAY ───────────────────────── */
+        #mobileMenu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+        }
+
+        #mobileMenu.open {
+            display: block;
+        }
+
+        .gme-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+        }
+
+        .gme-drawer {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: min(300px, 85vw);
+            height: 100%;
+            background: #fdfaf2;
+            box-shadow: -10px 0 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            animation: drawerIn 0.3s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        @keyframes drawerIn {
+            from { transform: translateX(100%); }
+            to   { transform: translateX(0); }
+        }
+
+        .gme-drawer-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0ead8;
+        }
+
+        .gme-drawer-top img { height: 32px; }
+
+        .gme-close-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #9C7D2D;
+            transition: background 0.2s;
+        }
+
+        .gme-close-btn:hover { background: rgba(156,125,45,0.1); }
+
+        .gme-drawer-links {
+            flex: 1;
+            padding: 8px 0;
+            overflow-y: auto;
+        }
+
+        .gme-drawer-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 24px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            color: #3a2e10;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .gme-drawer-links a i {
+            width: 18px;
+            text-align: center;
+            color: #9C7D2D;
+        }
+
+        .gme-drawer-links a:hover,
+        .gme-drawer-links a.active {
+            background: #fdf5e0;
+            color: #9C7D2D;
+            border-left-color: #9C7D2D;
+        }
+
+        .gme-drawer-divider {
+            height: 1px;
+            background: #f0ead8;
+            margin: 6px 24px;
+        }
+
+        .gme-drawer-footer {
+            padding: 16px 20px;
+            border-top: 1px solid #f0ead8;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .gme-drawer-footer a.btn-drawer-primary {
+            display: block;
+            text-align: center;
+            background: linear-gradient(135deg, #9C7D2D, #e6b83a);
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .gme-drawer-footer a.btn-drawer-primary:hover { opacity: 0.9; }
+
+        .gme-drawer-footer a.btn-drawer-outline {
+            display: block;
+            text-align: center;
+            border: 1.5px solid #9C7D2D;
+            color: #9C7D2D;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 11px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .gme-drawer-footer a.btn-drawer-outline:hover {
+            background: #9C7D2D;
+            color: #fff;
+        }
+
+        /* ── MOBILE (≤768px) ──────────────────────── */
+        @media (max-width: 768px) {
+            .gme-nav-left,
+            .gme-nav-right { display: none; }
+
+            .gme-hamburger { display: flex; }
+
+            .gme-header-inner {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 16px;
+            }
+
+            .gme-logo {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 
 <body class="bg-light">
-<header id="mainHeader" class="gme-header">
+{{-- <header id="mainHeader" class="gme-header">
     <div class="container gme-header-inner">
 
         <!-- LEFT MENU -->
@@ -1522,8 +1829,115 @@
             </ul>
         </nav>
     </div>
-</header>
+</header> --}}
+    <header id="mainHeader" class="gme-header">
+        <div class="container gme-header-inner">
 
+            {{-- LEFT NAV --}}
+            <nav class="gme-nav gme-nav-left">
+                <ul>
+                    <li><a class="active" href="{{ route('guest.index') }}">Home</a></li>
+                    <li><a href="https://gme.network/get-involved/">Get Involved</a></li>
+                </ul>
+            </nav>
+
+            {{-- CENTER LOGO --}}
+            <div class="gme-logo">
+                <a href="https://gme.network/">
+                    <img src="{{ asset('assets/image/logo.webp') }}" alt="GME">
+                </a>
+            </div>
+
+            {{-- RIGHT NAV --}}
+            <nav class="gme-nav gme-nav-right">
+                <ul>
+                    <li><a href="https://gme.network/events/">Events</a></li>
+                    <li><a href="https://gme.network/news/">News</a></li>
+                    <li>
+                        @auth('customer')
+                            <a style="color:#9C7D2D" href="{{ route('gme.business.register') }}">Add Your Business</a>
+                        @else
+                            <a style="color:#9C7D2D" href="{{ route('customer.register') }}">Add Your Business</a>
+                        @endauth
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        @auth('customer')
+                            <a class="btn-outline-gme" href="{{ route('customer.gme-business-form.index') }}">
+                                <i class="fa fa-home me-1"></i> Dashboard
+                            </a>
+                        @else
+                            <a class="btn-outline-gme" href="{{ route('customer.login') }}">
+                                <i class="fa fa-user me-1"></i> Login
+                            </a>
+                        @endauth
+                    </li>
+                </ul>
+            </nav>
+
+            {{-- HAMBURGER (mobile only) --}}
+            <button class="gme-hamburger" id="hamburgerBtn" aria-label="Open menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+    </header>
+    <div id="mobileMenu">
+        <div class="gme-backdrop" id="menuBackdrop"></div>
+        <div class="gme-drawer">
+
+            <div class="gme-drawer-top">
+                <img src="{{ asset('assets/image/logo.webp') }}" alt="GME">
+                <button class="gme-close-btn" id="closeBtn" aria-label="Close menu">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+            <nav class="gme-drawer-links">
+                <a class="active" href="{{ route('guest.index') }}">
+                    <i class="fa fa-home"></i> Home
+                </a>
+                <a href="https://gme.network/get-involved/">
+                    <i class="fa fa-hands-helping"></i> Get Involved
+                </a>
+                <div class="gme-drawer-divider"></div>
+                <a href="https://gme.network/events/">
+                    <i class="fa fa-calendar-alt"></i> Events
+                </a>
+                <a href="https://gme.network/news/">
+                    <i class="fa fa-newspaper"></i> News
+                </a>
+            </nav>
+
+            <div class="gme-drawer-footer">
+                {{-- Add Your Business --}}
+                @auth('customer')
+                    <a class="btn-drawer-primary" href="{{ route('gme.business.register') }}">
+                        <i class="fa fa-plus-circle me-2"></i> Add Your Business
+                    </a>
+                @else
+                    <a class="btn-drawer-primary" href="{{ route('customer.register') }}">
+                        <i class="fa fa-plus-circle me-2"></i> Add Your Business
+                    </a>
+                @endauth
+
+                {{-- Dashboard / Login --}}
+                @auth('customer')
+                    <a class="btn-drawer-outline" href="{{ route('customer.gme-business-form.index') }}">
+                        <i class="fa fa-home me-2"></i> Dashboard
+                    </a>
+                @else
+                    <a class="btn-drawer-outline" href="{{ route('customer.login') }}">
+                        <i class="fa fa-user me-2"></i> Login
+                    </a>
+                @endauth
+            </div>
+
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main class="main-content" style="">
@@ -1536,7 +1950,7 @@
                     <img src="{{ asset('assets/image/round.webp') }}" alt="Islamic Pattern">
                 </div>
                 <div class="container">
-                    <h1 class="fw-bold mb-3">Find a Muslim Entrepreneur Near You</h1>
+                    <h1 class="fw-bold mb-3 heading-text-home">Find a Muslim Entrepreneur Near You</h1>
                     <p class="mb-4">Showcase your business within a trusted community of Muslim entrepreneurs.<br> Connect, collaborate, and grow together with shared values.</p>
 
                     <div class="d-flex justify-content-center">
@@ -1585,10 +1999,7 @@
                 {{-- <h2>Bring Your Business to the <strong>Global Stage</strong></h2> --}}
                 <h4 class="fw-bold mb-4 featured-business "
                     style="
-                        text-align: center;
-                        font-size: 34px;
-                        text-transform: uppercase;
-                        line-height: 1.3em;">
+                        ">
                     <span style="color:#fff;  font-weight: 300;">Bring Your Business to the  </span>
                     <span style="color:#fff;font-weight: 900;">Global Stage </span>
                 </h4>
@@ -2365,6 +2776,38 @@
 
     gtag('config', 'G-E2CE4Z4PC1');
     </script>
+
+    <script>
+    // Sticky header
+    window.addEventListener('scroll', function () {
+        document.getElementById('mainHeader')
+            .classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // Mobile menu
+    var menu      = document.getElementById('mobileMenu');
+    var hamburger = document.getElementById('hamburgerBtn');
+    var closeBtn  = document.getElementById('closeBtn');
+    var backdrop  = document.getElementById('menuBackdrop');
+
+    function openMenu() {
+        menu.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+        menu.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click',  closeMenu);
+    backdrop.addEventListener('click',  closeMenu);
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeMenu();
+    });
+</script>
 {{-- <script>
 document.addEventListener('DOMContentLoaded', function () {
     const navbar = document.getElementById('mainNavbar');
