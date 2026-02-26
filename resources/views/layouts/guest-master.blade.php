@@ -1489,20 +1489,7 @@
         <nav class="gme-nav gme-nav-left">
             <ul>
                 <li><a class="active" href="{{ route('guest.index') }}">Home</a></li>
-                {{-- Get Involved --}}
                 <li><a class="active" href="https://gme.network/get-involved/">Get Involved</a></li>
-
-                {{-- <li><a href="#">About GME</a></li> --}}
-                {{-- <li class="has-dropdown">
-                    <a href="#">Get Involved</a>
-                    <ul class="dropdown" style="display: inline-block;">
-                        <li><a href="#">Become a Member</a></li>
-                        <li><a href="#">Become a Partner</a></li>
-                        <li><a href="#">Become a Volunteer</a></li>
-                        <li><a href="#">Country Convenor</a></li>
-                    </ul>
-                </li> --}}
-                {{-- <li><a href="#">Business</a></li> --}}
             </ul>
         </nav>
 
@@ -1516,9 +1503,7 @@
         <!-- RIGHT MENU -->
         <nav class="gme-nav gme-nav-right">
             <ul>
-                {{-- Events --}}
                 <li><a class="active" href="{{ url('https://gme.network/events/') }}">Events</a></li>
-                {{-- News --}}
                 <li><a class="active" href="{{ url('https://gme.network/news/') }}">News</a></li>
                 <ul>
                     @auth('customer')
@@ -1536,11 +1521,6 @@
                 @endauth
             </ul>
         </nav>
-
-        {{-- <nav class="gme-nav gme-nav-right">
-            
-        </nav> --}}
-
     </div>
 </header>
 
@@ -1598,81 +1578,7 @@
 
             @yield('content')
 
-            {{-- FOOTER --}}
-            {{-- <footer class="footer islamic-bg">
-                <div class="container">
-                    <div class="footer-cta text-center mb-4 d-md-flex justify-content-between align-items-center">
-                        <div class="mb-3 mb-md-0">
-                            <h2 class="h4 mb-1 grow-business" style="color: #fff;">Bring Your Business to the Global Stage</h2>
-                            <p class="mb-0" style="color: rgba(255,255,255,0.8);">
-                                Join a growing network of Muslim entrepreneurs building real businesses, real partnerships, and real impact.
-                            </p>
-                        </div>
-                        <a href="{{ route('customer.register') }}" class="btn btn-login join-network" style=" color: #191970;">
-                            Add Your Business Today
-                        </a>
-                    </div>
-
-                    <!-- Community Contribution Section -->
-                    <div class="footer-cta  mb-4 d-md-flex justify-content-between align-items-center">
-
-                        <div class="col-md-12 mb-3 mb-md-0 padding-5rem">
-                            <h2 class="h4 mb-1 grow-business" style="color: #fff;"> Help Us Build This Together</h2>
-                            <p class="mb-0 padding-top-1rem" style="color: rgba(255,255,255,0.8);">
-                                This is a community-led initiative built to elevate Muslim-owned businesses worldwide. If you find value in this initiative, consider contributing a small amount — even $5 — to help us maintain and grow this platform with integrity.
-                            </p>
-
-                            <a href="{{ route('customer.login') }}" class="btn btn-login join-network padding-top-1rem" style=" color: #191970;">
-                                Contribute $5 or More
-                            </a>
-                            <p class="mb-0 padding-top-1rem" style="color: rgba(255,255,255,0.8);">
-                                
-                                Contributions are voluntary and do not affect your listing status.
-                            </p>
-                        </div>
-                    </div>
-
-
-                    <div class="row g-4 pb-4 border-bottom border-opacity-25 pt-4">
-                        <div class="col-md-3">
-                            <img src="{{ asset('assets/image/front-logo.png') }}" 
-                                alt="Gme Network Logo" 
-                                class="img-fluid mb-2 mx-auto" 
-                                style="max-width: 65%;height: auto;padding-right: 4rem;">
-                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">Connecting communities, <br>one business at a time.</p>
-                        </div>
-                        <div class="col-md-3">
-                            <h3 style="color: #fff;">Explore</h3>
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><a href="#">About GME </a></li>
-                                <li class="mb-2"><a href="#">Get Involved</a></li>
-                                <li class="mb-2"><a href="#">Events</a></li>
-                                <li class="mb-2"><a href="#">News</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-3">
-                            <h3 style="color: #fff;">Legal</h3>
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><a href="#">Privacy Policy</a></li>
-                                <li class="mb-2"><a href="#">Terms of Use</a></li>
-                                <li class="mb-2"><a href="#">Contact</a></li>
-                                <li class="mb-2"><a href="#">Members Charter</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-3">
-                            <h3 style="color: #fff;">Connect us</h3>
-                            <div class="d-flex gap-3">
-                                <a href="https://www.linkedin.com/company/gmenetwork/" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a>
-                                <a href="https://www.instagram.com/gme.network" target="_blank"><i class="fab fa-instagram fa-lg"></i></a>
-                                <a href="https://www.facebook.com/gme.network/" target="_blank"><i class="fab fa-facebook fa-lg"></i></a>
-                                <a href="https://www.youtube.com/@gmenetwork" target="_blank"><i class="fab fa-youtube fa-lg"></i></a>
-                                <a href="https://x.com/GmeNetwork50551" target="_blank"><i class="fab fa-x fa-lg"></i></a>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer> --}}
+            
             <!-- ══ SECTION 1: GOLDEN CTA ══ -->
             <section class="partner-section">
                 {{-- <div class="tag">Community</div> --}}
@@ -1697,9 +1603,9 @@
             </section>
 
             <!-- ══ SECTION 2: WHITE COMMUNITY ══ -->
-            <section class="community-section">
+            {{-- Do Not Delete Its Depends Payment --}}
+            {{-- <section class="community-section">
                 <div class="inner">
-                {{-- <div class="eyebrow">Community Initiative</div> --}}
                 <h4 class="fw-bold mb-4 featured-business "
                     style="
                         text-align: center;
@@ -1718,7 +1624,7 @@
                 <a href="#" class="btn-contribute">Contribute $5 or More</a>
                 <p class="note">Contributions are voluntary and do not affect your listing status.</p>
                 </div>
-            </section>
+            </section> --}}
 
             <!-- ══ FOOTER: DARK ══ -->
             <footer class="main-footer">
@@ -1737,13 +1643,6 @@
                 </div>
 
                 <div class="footer-tagline-center">Connecting communities, one business at a time.</div>
-
-                {{-- <div class="footer-subscribe">
-                <form class="subscribe-form" onsubmit="return false;">
-                    <input type="email" placeholder="Your Email" />
-                    <button type="submit">Subscribe</button>
-                </form>
-                </div> --}}
 
                 <hr class="footer-divider">
 
@@ -2124,7 +2023,7 @@
                 : '';
 
             return `
-            <div class="col-md-4 col-lg-4 p-2">
+            <div class="col-6 col-md-4 col-lg-4 p-2">
                 <div class="business-card" onclick="location.href='{{ url('guest-gme-business-form') }}/${business.slug}'">
                     <div style="position:relative">
                         ${photoSection}
