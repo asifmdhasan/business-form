@@ -34,9 +34,9 @@
 
     <p>
         View your business here:<br>
-        <a href="{{ url('/gme-business-form/' . $mailData['slug']) }}" 
+        <a href="{{ url('/guest-gme-business-form/' . $mailData['slug']) }}" 
         style="color: #9C7D2D; font-weight: bold;">
-            {{ url('/gme-business-form/' . $mailData['slug']) }}
+            {{ url('/guest-gme-business-form/' . $mailData['slug']) }}
         </a>
     </p>
 
