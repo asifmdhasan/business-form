@@ -1752,82 +1752,7 @@
     </section>
 
 
-    <!-- CONTACT INFORMATION -->
 
-    {{-- <section class="contact-card mt-4">
-        <h4 class="fw-bold mb-4 featured-business "
-                    style="
-                        font-size: 34px;
-                        text-transform: uppercase;
-                        line-height: 1.3em;">
-                    <span style=" font-weight: 300;">Contact </span>
-                    <span style="color:#9b7d2d;font-weight: 900;">Information </span>
-                </h4>
-                <br>
-
-        <div class="row g-3 pt-3" style="border-top: 1px solid var(--border-light);">
-            <div class="col-md-4">
-                <div class="info-item">
-                    <i class="fas fa-user"></i>
-                    <div>
-                        <p class="info-label">Primary Contact</p>
-                        <p class="mb-0" style="font-size: .9rem"> Name: <span class=""> {{ $business->business_contact_person_name ?? '——' }}</span></p>
-                        <p class="mb-0" style="font-size: .9rem"> Contact: {{ $business->whatsapp_number ?? '——' }}</p>
-                        <p class="mb-0" style="font-size: .9rem"> Email: {{ $business->email ?? '——' }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="info-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <p class="info-label mb-0">Social Media</p>
-                        <div class="d-flex flex-wrap gap-2 pt-3" style="margin-left: -1rem;">
-                            @if($business->whatsapp_number)
-                                <a href="https://wa.me/{{ $business->whatsapp_number }}"
-                                class="social-icon" target="_blank">
-                                    <i class="fab fa-whatsapp"></i>
-                                </a>
-                            @endif
-                            @if($business->facebook)
-                                <a href="{{ $business->facebook }}" class="social-icon" target="_blank">
-                                    <i class="fab fa-facebook-f"></i>
-                                </a>
-                            @endif
-                            @if($business->instagram)
-                                <a href="{{ $business->instagram }}" class="social-icon" target="_blank">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
-                            @endif
-                            @if($business->linkedin)
-                                <a href="{{ $business->linkedin }}" class="social-icon" target="_blank">
-                                    <i class="fab fa-linkedin-in"></i>
-                                </a>
-                            @endif
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="info-item">
-                    <i class="fas fa-globe"></i>
-                    <div>
-                        <p class="info-label mb-0">Website</p>
-                        @if($business->website)
-                            <a href="{{ $business->website }}" target="_blank" class="info-value text-decoration-none">
-                                {{ $business->website }}
-                            </a>
-                        @else
-                            <p class="info-value mb-0">——</p>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        
-    </section> --}}
     <section class="contact-card mt-4">
         <h4 class="fw-bold mb-4 featured-business"
             style="font-size: 34px; text-transform: uppercase; line-height: 1.3em;">
@@ -1853,7 +1778,7 @@
             </div>
         </div> --}}
 
-        {{-- <div class="pt-3" style="border-top: 1px solid var(--border-light);">
+        <div class="pt-3" style="border-top: 1px solid var(--border-light);">
             
             <!-- Row 1: Primary Contact - Name, Contact, Email in 3 columns -->
             <div class="row g-4 mb-4">
@@ -1933,7 +1858,7 @@
                                 </a>
                             @else
                                 <p class="text-muted mb-0">Not Available</p>
-                            @endif --}}
+                            @endif  --}}
                             @if($business->website)
                                 <a href="{{ $business->website_url }}" target="_blank" class="website-link">
                                     {{ $business->website }}
@@ -1944,7 +1869,7 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div> 
 
         <div class="pt-3" style="border-top: 1px solid var(--border-light);">
             
