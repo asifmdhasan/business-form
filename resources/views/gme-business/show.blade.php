@@ -1098,10 +1098,30 @@
     }
 
 </style>
+@php
+    $gradients = [
+        'linear-gradient(135deg, #917F2D, #C6B75E)',
+        'linear-gradient(135deg, #808181, #B4B5B6)',
+        'linear-gradient(135deg, #566828, #8FAF3C)',
+        'linear-gradient(135deg, #03045D, #4361EE)',
+    ];
 
+    $gradientIndex = $business->id % count($gradients);
+    $selectedGradient = $gradients[$gradientIndex];
+@endphp
 <div class="container my-4">
     <!-- HERO SECTION -->
-    <section class="hero-section" style="background-image: url('{{ $business->cover_photo ? asset('assets/'.$business->cover_photo) : 'https://images.unsplash.com/photo-1497366216548-37526070297c' }}');">
+    {{-- <section class="hero-section" style="background-image: url('{{ $business->cover_photo ? asset('assets/'.$business->cover_photo) : 'https://images.unsplash.com/photo-1497366216548-37526070297c' }}');"> --}}
+        <section class="hero-section-2"
+            style="
+                @if($business->cover_photo)
+                    background-image: url('{{ asset('assets/'.$business->cover_photo) }}');
+                @else
+                    background: {{ $selectedGradient }};
+                @endif
+                background-size: cover;
+                background-position: center;
+        ">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="row align-items-center">
@@ -1366,7 +1386,7 @@
                     <a href="#" 
                     class="btn btn-collaboration-cta">
                         <i class="fas fa-envelope me-2"></i>
-                        Get in Touch
+                        Contact for Partnerships
                     </a>
                 </div>
             </div>

@@ -634,10 +634,41 @@
             const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
             const category = business.category?.name ?? '';
-            const logo = `{{ asset('assets') }}/${business.logo}`;
-            const photo = business.cover_photo
-                ? `{{ asset('assets') }}/${business.cover_photo}`
-                : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
+            // const logo = `{{ asset('assets') }}/${business.logo}`;
+            const logo = business.logo
+                ? `{{ asset('assets') }}/${business.logo}`
+                : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}`;
+
+
+            // const photo = business.cover_photo
+            //     ? `{{ asset('assets') }}/${business.cover_photo}`
+            //     : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
+            const gradients = [
+                'linear-gradient(135deg, #917F2D, #C6B75E)',
+                'linear-gradient(135deg, #808181, #B4B5B6)',
+                'linear-gradient(135deg, #566828, #8FAF3C)',
+                'linear-gradient(135deg, #03045D, #4361EE)'
+            ];
+
+            let photoSection;
+
+            if (business.cover_photo) {
+                const photo = `{{ asset('assets') }}/${business.cover_photo}`;
+                photoSection = `<img src="${photo}" class="business-image">`;
+            } else {
+                const gradientIndex = business.id % gradients.length;
+                const gradient = gradients[gradientIndex];
+
+                photoSection = `
+                    <div class="business-image"
+                        style="
+                            background:${gradient};
+                            height:200px;
+                            width:100%;
+                            border-radius:8px 8px 0 0;
+                        ">
+                    </div>`;
+            }
 
             const verified = (business.status === 'approved' && business.is_verified === 1)
                 ? `<div class="verified-badge">
@@ -674,7 +705,7 @@
                      style="position:relative; cursor:pointer;">
                     ${deleteBtn}
                     <div style="position:relative">
-                        <img src="${photo}" class="business-image">
+                        ${photoSection}
                         ${verified}
                     </div>
                     <div class="business-content">

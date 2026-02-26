@@ -757,6 +757,12 @@
                                     @error('logo')
                                         <small class="text-danger d-block">{{ $message }}</small>
                                     @enderror
+                                    <small class="text-muted d-block mt-2">
+                                        Logo too large? 
+                                        <a href="https://tinypng.com" target="_blank" class="fw-semibold text-primary">
+                                            Reduce image size here
+                                        </a>
+                                    </small>
                                 </div>
 
                                 <div class="col-md-4 mb-3">
@@ -787,6 +793,12 @@
                                     @error('cover_photo')
                                         <small class="text-danger d-block">{{ $message }}</small>
                                     @enderror
+                                    <small class="text-muted d-block mt-2">
+                                        Cover photo too large? 
+                                        <a href="https://www.iloveimg.com/compress-image" target="_blank" class="fw-semibold text-primary">
+                                            Reduce image size here
+                                        </a>
+                                    </small>
                                 </div>
                             </div>
                             <div class="row">
@@ -1126,9 +1138,16 @@
                                 <span></span>
                             @endif
 
-                            <button type="submit" class="btn {{ $step < 4 ? 'btn-primary' : 'btn-success' }}">
+                            {{-- <button type="submit" class="btn {{ $step < 4 ? 'btn-primary' : 'btn-success' }}">
                                 {{ $step < 4 ? 'Save & Next →' : 'Submit Application' }}
-                            </button>
+                            </button> --}}
+                            @if($step < 4)
+                                <button type="submit" class="btn btn-primary">Save & Next →</button>
+                            @else
+                                <button type="button" class="btn btn-success" id="openSubmitModal">
+                                    Submit Application
+                                </button>
+                            @endif
                         </div>
 
                     </form>
@@ -2027,4 +2046,55 @@
         });
     });
 </script>
+
+
+
+@if($step == 4)
+<!-- Confirmation Modal -->
+<div class="modal fade" id="submitConfirmModal" tabindex="-1" aria-labelledby="submitConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-warning">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title fw-bold" id="submitConfirmLabel">
+                    ⚠ Confirm Submission
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                {{-- <div style="font-size: 3rem;">⚠️</div> --}}
+                <p class="fw-semibold mt-3 mb-2" style="font-size: 1.05rem;">
+                    Please review carefully before submitting.
+                </p>
+                <p class="text-muted">
+                    To maintain accuracy and trust, this information <strong>cannot be edited</strong> after submission.
+                </p>
+            </div>
+            <div class="modal-footer justify-content-center gap-3">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-success px-4" id="confirmSubmitBtn">
+                    OK, Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('openSubmitModal').addEventListener('click', function () {
+        var modal = new bootstrap.Modal(document.getElementById('submitConfirmModal'));
+        modal.show();
+    });
+
+    document.getElementById('confirmSubmitBtn').addEventListener('click', function () {
+        // Disable button to prevent double click
+        this.disabled = true;
+        this.textContent = 'Submitting...';
+
+        // Submit the form
+        document.querySelector('form').submit();
+    });
+</script>
+@endif
 @endsection

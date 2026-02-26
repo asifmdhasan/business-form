@@ -8,7 +8,7 @@
 
     <!-- Site logo in center -->
     <div style="text-align: center; margin-bottom: 30px;">
-        <img src="{{ asset('assets/image/gmemail.png') }}" alt="Global Muslim Business Directory" style="max-width: 200px;">
+        <img src="{{ asset('assets/image/gmemail.png') }}" alt="Global Muslim Business Directory" style="max-width: 300px;">
     </div>
     <table width="100%" cellpadding="0" cellspacing="0">
         <tr>

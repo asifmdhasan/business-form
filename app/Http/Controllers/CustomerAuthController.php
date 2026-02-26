@@ -128,7 +128,7 @@ class CustomerAuthController extends Controller
                     <div style='font-family: Arial, sans-serif; line-height: 1.6;'>
 
                         <div style='text-align: center; margin-bottom: 30px;'>
-                            <img src='{$logo}' style='max-width: 200px;'>
+                            <img src='{$logo}' style='max-width: 300px;'>
                         </div>
 
                         <p>Assalamu Alaikum,</p>
