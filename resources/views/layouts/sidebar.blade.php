@@ -52,7 +52,7 @@
             </li>
 
             {{-- DO NOT REMOVE --}}
-            {{-- <li class="nav-item">
+            <li class="nav-item">
                 <a href="{{ route('contact-requests.index') }}"
                     class="nav-link text-white {{ request()->routeIs('contact-requests.index') ? 'active' : '' }}">
                     <i class="fas fa-envelope-open me-2"></i> Contact Requests
@@ -60,17 +60,9 @@
                         <span class="badge bg-warning ms-2">{{ $pendingCount }}</span>
                     @endif
                 </a>
-            </li> --}}
+            </li>
 
-            {{-- <li class="nav-item">
-                <a href="{{ route('contact-requests.index') }}" class="nav-link">
-                    <i class="fas fa-envelope-open-text me-2"></i>
-                    Contact Requests
-                    @if($pendingCount = \App\Models\ContactRequest::where('status', 'pending')->count())
-                        <span class="badge bg-warning ms-2">{{ $pendingCount }}</span>
-                    @endif
-                </a>
-            </li> --}}
+
 
 
 
