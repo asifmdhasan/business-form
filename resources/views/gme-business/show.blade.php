@@ -41,7 +41,7 @@
 
     /* Hero Section */
     .hero-section-2 {
-        margin-top: 5rem;
+        margin-top: 2rem;
         background-size: cover;
         background-position: center;
         border-radius: 1rem;
