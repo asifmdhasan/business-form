@@ -1781,99 +1781,6 @@
         <div class="pt-3" style="border-top: 1px solid var(--border-light);">
             
             <!-- Row 1: Primary Contact - Name, Contact, Email in 3 columns -->
-            {{-- <div class="row g-4 mb-4">
-                <div class="col-md-12">
-                    <div class="contact-section">
-                        <h5 class="contact-heading">
-                            <i class="fas fa-user me-2"></i>
-                            Primary Contact
-                        </h5>
-                        <div class="contact-details">
-                            <div class="contact-item">
-                                <a style="color: #9C7D2D;cursor: pointer" class="fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#contactRequestModal">
-                                    Privacy Protected
-                                </a>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-            </div> --}}
-
-            <!-- Row 2: Social Media -->
-            <div class="row g-4 mb-4">
-                <div class="col-6">
-                    <div class="contact-section">
-                        <h5 class="contact-heading">
-                            <i class="fas fa-share-alt me-2"></i>
-                            Social Media
-                        </h5>
-                        <div class="contact-details">
-                            @if($business->whatsapp_number || $business->facebook || $business->instagram || $business->linkedin)
-                                <div class=" gap-2">
-                                    @if($business->whatsapp_number)
-                                        <a href="https://wa.me/{{ $business->whatsapp_number }}"
-                                        class="social-icon" target="_blank" title="WhatsApp">
-                                            <i class="fab fa-whatsapp"></i>
-                                        </a>
-                                    @endif
-                                    @if($business->facebook)
-                                        <a href="{{ $business->facebook }}" class="social-icon" target="_blank" title="Facebook">
-                                            <i class="fab fa-facebook-f"></i>
-                                        </a>
-                                    @endif
-                                    @if($business->instagram)
-                                        <a href="{{ $business->instagram }}" class="social-icon" target="_blank" title="Instagram">
-                                            <i class="fab fa-instagram"></i>
-                                        </a>
-                                    @endif
-                                    @if($business->linkedin)
-                                        <a href="{{ $business->linkedin }}" class="social-icon" target="_blank" title="LinkedIn">
-                                            <i class="fab fa-linkedin-in"></i>
-                                        </a>
-                                    @endif
-                                </div>
-                            @else
-                                <p class="text-muted mb-0">Not Available</p>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6">
-                    <div class="contact-section">
-                        <h5 class="contact-heading">
-                            <i class="fas fa-globe me-2"></i>
-                            Website
-                        </h5>
-                        <div class="contact-details">
-                            {{-- @if($business->website)
-                                <a href="{{ $business->website }}" target="_blank" class="website-link">
-                                    {{ $business->website }}
-                                    <i class="fas fa-external-link-alt ms-2"></i>
-                                </a>
-                            @else
-                                <p class="text-muted mb-0">Not Available</p>
-                            @endif  --}}
-                            @if($business->website)
-                                <a href="{{ $business->website_url }}" target="_blank" class="website-link">
-                                    {{ $business->website }}
-                                    <i class="fas fa-external-link-alt ms-2"></i>
-                                </a>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> 
-
-        <div class="pt-3" style="border-top: 1px solid var(--border-light);">
-            
-            <!-- Row 1: Primary Contact - Name, Contact, Email in 3 columns -->
             <div class="row g-4 mb-4">
                 <div class="col-md-4">
                     <div class="contact-section">
@@ -1978,6 +1885,101 @@
                 </div>
             </div> --}}
         </div>
+
+        <div class="pt-3" style="border-top: 1px solid var(--border-light);">
+            
+            <!-- Row 1: Primary Contact - Name, Contact, Email in 3 columns -->
+            {{-- <div class="row g-4 mb-4">
+                <div class="col-md-12">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-user me-2"></i>
+                            Primary Contact
+                        </h5>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <a style="color: #9C7D2D;cursor: pointer" class="fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#contactRequestModal">
+                                    Privacy Protected
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div> --}}
+
+            <!-- Row 2: Social Media -->
+            <div class="row g-4 mb-4">
+                <div class="col-6">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-share-alt me-2"></i>
+                            Social Media
+                        </h5>
+                        <div class="contact-details">
+                            @if($business->whatsapp_number || $business->facebook || $business->instagram || $business->linkedin)
+                                <div class=" gap-2">
+                                    @if($business->whatsapp_number)
+                                        <a href="https://wa.me/{{ $business->whatsapp_number }}"
+                                        class="social-icon" target="_blank" title="WhatsApp">
+                                            <i class="fab fa-whatsapp"></i>
+                                        </a>
+                                    @endif
+                                    @if($business->facebook)
+                                        <a href="{{ $business->facebook }}" class="social-icon" target="_blank" title="Facebook">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    @endif
+                                    @if($business->instagram)
+                                        <a href="{{ $business->instagram }}" class="social-icon" target="_blank" title="Instagram">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                    @endif
+                                    @if($business->linkedin)
+                                        <a href="{{ $business->linkedin }}" class="social-icon" target="_blank" title="LinkedIn">
+                                            <i class="fab fa-linkedin-in"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            @else
+                                <p class="text-muted mb-0">Not Available</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-globe me-2"></i>
+                            Website
+                        </h5>
+                        <div class="contact-details">
+                            {{-- @if($business->website)
+                                <a href="{{ $business->website }}" target="_blank" class="website-link">
+                                    {{ $business->website }}
+                                    <i class="fas fa-external-link-alt ms-2"></i>
+                                </a>
+                            @else
+                                <p class="text-muted mb-0">Not Available</p>
+                            @endif  --}}
+                            @if($business->website)
+                                <a href="{{ $business->website_url }}" target="_blank" class="website-link">
+                                    {{ $business->website }}
+                                    <i class="fas fa-external-link-alt ms-2"></i>
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        
     </section>
 
     <!-- Contact Request Modal -->
