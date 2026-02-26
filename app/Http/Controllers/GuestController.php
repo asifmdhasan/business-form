@@ -230,7 +230,7 @@ class GuestController extends Controller
                     'open_for_guidance' => 'required|in:yes,no,maybe',
                     'collaboration_open' => 'required|in:yes,no,maybe',
                     'collaboration_types' => 'nullable|array',
-                    'collaboration_types.*' => 'in:Partnerships,Investment Oportunities,Vendor Supply Chain,Marketing Promotion,Networking,Training Workshops,Community Charity Projects,Not Sure Yet',
+                    'collaboration_types.*' => 'in:Partnerships,Investment Oportunities,Vendor Supply Chain,Marketing Promotion,Networking,Mentorship or Growth Coaching,Community Charity Projects,Not Sure Yet',
                 ];
                 break;
 

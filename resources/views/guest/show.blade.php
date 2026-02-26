@@ -1244,10 +1244,30 @@
     }
     
 </style>
+@php
+    $gradients = [
+        'linear-gradient(135deg, #917F2D, #C6B75E)',
+        'linear-gradient(135deg, #808181, #B4B5B6)',
+        'linear-gradient(135deg, #566828, #8FAF3C)',
+        'linear-gradient(135deg, #03045D, #4361EE)',
+    ];
 
+    $gradientIndex = $business->id % count($gradients);
+    $selectedGradient = $gradients[$gradientIndex];
+@endphp
 <div class="container my-4">
     <!-- HERO SECTION -->
-    <section class="hero-section-2" style="background-image: url('{{ $business->cover_photo ? asset('assets/'.$business->cover_photo) : 'https://images.unsplash.com/photo-1497366216548-37526070297c' }}');">
+    {{-- <section class="hero-section-2" style="background-image: url('{{ $business->cover_photo ? asset('assets/'.$business->cover_photo) : 'https://images.unsplash.com/photo-1497366216548-37526070297c' }}');"> --}}
+        <section class="hero-section-2"
+            style="
+                @if($business->cover_photo)
+                    background-image: url('{{ asset('assets/'.$business->cover_photo) }}');
+                @else
+                    background: {{ $selectedGradient }};
+                @endif
+                background-size: cover;
+                background-position: center;
+        ">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="row align-items-center">
@@ -1470,7 +1490,7 @@
                         'Vendor Supply Chain' => 'fa-truck',
                         'Marketing Promotion' => 'fa-bullhorn',
                         'Networking' => 'fa-users',
-                        'Training Workshops' => 'fa-graduation-cap',
+                        'Mentorship or Growth Coaching' => 'fa-graduation-cap',
                         'Community Charity Projects' => 'fa-heart',
                         'Not Sure Yet' => 'fa-question-circle'
                     ];
@@ -1496,7 +1516,7 @@
                 <div class="mt-4">
                     <button type="button" class="btn btn-collaboration-cta" data-bs-toggle="modal" data-bs-target="#contactRequestModal">
                         <i class="fas fa-envelope me-2"></i>
-                        Get in Touch
+                        Contact for Partnerships
                     </button>
                 </div>
             </div>
@@ -1815,8 +1835,8 @@
             <span style="color:#9b7d2d; font-weight: 900;">Information</span>
         </h4>
 
-        <!-- Privacy Protected Notice -->
-        <div class="privacy-notice mb-4">
+        <!-- Privacy Protected Notice IMPORTANT NOT DELETE-->
+        {{-- <div class="privacy-notice mb-4">
             <div class="d-flex align-items-start">
                 <i class="fas fa-shield-alt text-primary me-3" style="font-size: 2rem; color: #9C7D2D !important;"></i>
                 <div>
@@ -1831,9 +1851,9 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
-        <div class="pt-3" style="border-top: 1px solid var(--border-light);">
+        {{-- <div class="pt-3" style="border-top: 1px solid var(--border-light);">
             
             <!-- Row 1: Primary Contact - Name, Contact, Email in 3 columns -->
             <div class="row g-4 mb-4">
@@ -1846,11 +1866,9 @@
                         <div class="contact-details">
                             <div class="contact-item">
                                 <a style="color: #9C7D2D;cursor: pointer" class="fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#contactRequestModal">
-                                    {{-- <i class="fas fa-user-check me-2"></i> --}}
                                     Privacy Protected
                                 </a>
 
-                                 {{-- <p class="fw-bold mb-2" style="color: #9C7D2D;"> Privacy Protected</p> --}}
                             </div>
                         </div>
                     </div>
@@ -1921,6 +1939,114 @@
                                     {{ $business->website }}
                                     <i class="fas fa-external-link-alt ms-2"></i>
                                 </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> --}}
+
+        <div class="pt-3" style="border-top: 1px solid var(--border-light);">
+            
+            <!-- Row 1: Primary Contact - Name, Contact, Email in 3 columns -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-user me-2"></i>
+                            Primary Contact
+                        </h5>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                {{-- <span class="contact-label">Name:</span> --}}
+                                <span class="contact-value">{{ $business->business_contact_person_name ?? '——' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-phone me-2"></i>
+                            Contact
+                        </h5>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <span class="contact-value">{{ $business->whatsapp_number ?? '——' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-envelope me-2"></i>
+                            Email
+                        </h5>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <span class="contact-value">{{ $business->email ?? '——' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Social Media -->
+            <div class="row g-4 mb-4">
+                <div class="col-6">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-share-alt me-2"></i>
+                            Social Media
+                        </h5>
+                        <div class="contact-details">
+                            @if($business->whatsapp_number || $business->facebook || $business->instagram || $business->linkedin)
+                                <div class="social-links d-flex flex-wrap gap-2">
+                                    @if($business->whatsapp_number)
+                                        <a href="https://wa.me/{{ $business->whatsapp_number }}"
+                                        class="social-icon" target="_blank" title="WhatsApp">
+                                            <i class="fab fa-whatsapp"></i>
+                                        </a>
+                                    @endif
+                                    @if($business->facebook)
+                                        <a href="{{ $business->facebook }}" class="social-icon" target="_blank" title="Facebook">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    @endif
+                                    @if($business->instagram)
+                                        <a href="{{ $business->instagram }}" class="social-icon" target="_blank" title="Instagram">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                    @endif
+                                    @if($business->linkedin)
+                                        <a href="{{ $business->linkedin }}" class="social-icon" target="_blank" title="LinkedIn">
+                                            <i class="fab fa-linkedin-in"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            @else
+                                <p class="text-muted mb-0">Not Available</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-globe me-2"></i>
+                            Website
+                        </h5>
+                        <div class="contact-details">
+                            @if($business->website)
+                                <a href="{{ $business->website }}" target="_blank" class="website-link">
+                                    {{ $business->website }}
+                                    <i class="fas fa-external-link-alt ms-2"></i>
+                                </a>
+                            @else
+                                <p class="text-muted mb-0">Not Available</p>
                             @endif
                         </div>
                     </div>

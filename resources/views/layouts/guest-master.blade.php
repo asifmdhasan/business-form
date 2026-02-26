@@ -9,7 +9,8 @@
     <title>{{ __('layouts.siteTitle') }}</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}" />
+    
+    <link rel="icon" type="image/png" href="{{ asset('assets/image/logo.webp') }}" />
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -39,6 +40,18 @@
 
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 
+
+    <meta property="og:title" content="Muslim Business Directory">
+    <meta property="og:description" content="Find a Muslim Entrepreneur Near You">
+    <meta property="og:image" content="{{ url('assets/image/logo.webp') }}">
+    <meta property="og:url" content="https://directory.gme.network/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Muslim Business Directory">
+    <meta name="twitter:description" content="Find a Muslim Entrepreneur Near You">
+    <meta name="twitter:image" content="{{ url('assets/image/logo.webp') }}">
 
     <style>
         .footer-col ul{
@@ -2063,9 +2076,35 @@
                 : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}`;
 
             // Cover Photo - use default if not available
-            const photo = business.cover_photo
-                ? `{{ asset('assets') }}/${business.cover_photo}`
-                : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
+            // const photo = business.cover_photo
+            //     ? `{{ asset('assets') }}/${business.cover_photo}`
+            //     : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
+            const gradients = [
+                'linear-gradient(135deg, #917F2D, #C6B75E)',
+                'linear-gradient(135deg, #808181, #B4B5B6)',
+                'linear-gradient(135deg, #566828, #8FAF3C)',
+                'linear-gradient(135deg, #03045D, #4361EE)'
+            ];
+
+            let photoSection;
+
+            if (business.cover_photo) {
+                const photo = `{{ asset('assets') }}/${business.cover_photo}`;
+                photoSection = `<img src="${photo}" class="business-image" style="height:200px; object-fit:cover;">`;
+            } else {
+                const gradientIndex = business.id % gradients.length;
+                const gradient = gradients[gradientIndex];
+
+                photoSection = `
+                    <div class="business-image"
+                        style="
+                            background:${gradient};
+                            height:200px;
+                            width:100%;
+                            border-radius:8px 8px 0 0;
+                        ">
+                    </div>`;
+            }
 
             const verified = (business.status === 'approved' && business.is_verified === 1)
                 ? `<div class="verified-badge">
@@ -2088,8 +2127,8 @@
             <div class="col-md-4 col-lg-4 p-2">
                 <div class="business-card" onclick="location.href='{{ url('guest-gme-business-form') }}/${business.slug}'">
                     <div style="position:relative">
+                        ${photoSection}
                         
-                        <img src="${photo}" class="business-image"style="height:200px; object-fit:cover;">
                         ${verified}
                     </div>
                     <div class="business-content">
@@ -2418,7 +2457,15 @@
             confirmDelete();
         }
     </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E2CE4Z4PC1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
+    gtag('config', 'G-E2CE4Z4PC1');
+    </script>
 {{-- <script>
 document.addEventListener('DOMContentLoaded', function () {
     const navbar = document.getElementById('mainNavbar');

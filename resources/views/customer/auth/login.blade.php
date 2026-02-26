@@ -15,12 +15,12 @@
             min-height: 100vh;
         }
 
-        /* HEADER */
+        /* ── HEADER ───────────────────────────────── */
         .gme-header {
             position: fixed;
             top: 0;
             width: 100%;
-            z-index: 9999;
+            z-index: 100;
             background: #fdfaf2;
             transition: all 0.3s ease;
         }
@@ -79,7 +79,157 @@
             color: #b08d2f;
         }
 
-        /* LOGIN CARD */
+        /* ── HAMBURGER ────────────────────────────── */
+        .gme-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .gme-hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #9C7D2D;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* ── MOBILE OVERLAY ───────────────────────── */
+        #mobileMenu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+        }
+
+        #mobileMenu.open {
+            display: block;
+        }
+
+        .gme-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+        }
+
+        .gme-drawer {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: min(300px, 85vw);
+            height: 100%;
+            background: #fdfaf2;
+            box-shadow: -10px 0 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            animation: drawerIn 0.3s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        @keyframes drawerIn {
+            from { transform: translateX(100%); }
+            to   { transform: translateX(0); }
+        }
+
+        .gme-drawer-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0ead8;
+        }
+
+        .gme-drawer-top img {
+            height: 32px;
+        }
+
+        .gme-close-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #9C7D2D;
+            transition: background 0.2s;
+        }
+
+        .gme-close-btn:hover {
+            background: rgba(156,125,45,0.1);
+        }
+
+        .gme-drawer-links {
+            flex: 1;
+            padding: 8px 0;
+            overflow-y: auto;
+        }
+
+        .gme-drawer-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 24px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            color: #3a2e10;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .gme-drawer-links a i {
+            width: 18px;
+            text-align: center;
+            color: #9C7D2D;
+        }
+
+        .gme-drawer-links a:hover,
+        .gme-drawer-links a.active {
+            background: #fdf5e0;
+            color: #9C7D2D;
+            border-left-color: #9C7D2D;
+        }
+
+        .gme-drawer-divider {
+            height: 1px;
+            background: #f0ead8;
+            margin: 6px 24px;
+        }
+
+        .gme-drawer-footer {
+            padding: 16px 20px;
+            border-top: 1px solid #f0ead8;
+        }
+
+        .gme-drawer-footer a {
+            display: block;
+            text-align: center;
+            background: linear-gradient(135deg, #9C7D2D, #e6b83a);
+            color: #fff !important;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .gme-drawer-footer a:hover {
+            opacity: 0.9;
+        }
+
+        /* ── LOGIN CARD ───────────────────────────── */
         .login-wrapper {
             min-height: 100vh;
             display: flex;
@@ -90,7 +240,7 @@
         }
 
         .login-card {
-            background: rgba(255, 255, 255, 0.97);
+            background: rgba(255,255,255,0.97);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.3);
             border-radius: 1.5rem;
@@ -100,22 +250,17 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.15);
         }
 
-        /* .login-logo {
-            max-width: 50%;
-            height: auto;
-            display: block;
-            margin: 0 auto 1.5rem;
-        } */
         .login-logo {
             max-width: 15rem;
             height: auto;
             padding-right: 3rem;
             padding-top: 3rem;
+            display: block;
             margin: 0 auto 1.5rem;
         }
 
         .form-control:focus {
-            box-shadow: 0 0 0 3px rgba(87, 104, 41, 0.15);
+            box-shadow: 0 0 0 3px rgba(87,104,41,0.15);
             border-color: #576829;
         }
 
@@ -131,7 +276,7 @@
 
         .btn-login:hover {
             transform: translateY(-1px);
-            box-shadow: 0 10px 25px rgba(87, 104, 41, 0.35);
+            box-shadow: 0 10px 25px rgba(87,104,41,0.35);
             color: #fff;
         }
 
@@ -145,6 +290,47 @@
             color: #9C7D2D;
             text-decoration: underline;
         }
+
+        /* ── MOBILE (≤768px) ──────────────────────── */
+        @media (max-width: 768px) {
+            .gme-nav-left,
+            .gme-nav-right { display: none; }
+
+            .gme-hamburger { display: flex; }
+
+            .gme-header-inner {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 16px;
+            }
+
+            .gme-logo {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+            }
+
+            .login-wrapper { padding: 5rem 1rem 2rem; }
+
+            .login-logo {
+                max-width: 10rem;
+                padding-right: 1.5rem;
+                padding-top: 0;
+            }
+
+            .login-card {
+                padding: 1.75rem 1.25rem;
+                border-radius: 1.25rem;
+            }
+            .mob-margin{
+                margin-top: -1rem;
+            }
+            .mob-pad{
+                padding-top: 1rem;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -153,7 +339,6 @@
     <header id="mainHeader" class="gme-header">
         <div class="container gme-header-inner">
 
-            <!-- LEFT NAV -->
             <nav class="gme-nav gme-nav-left">
                 <ul>
                     <li><a class="active" href="{{ route('guest.index') }}">Home</a></li>
@@ -161,14 +346,12 @@
                 </ul>
             </nav>
 
-            <!-- LOGO -->
             <div class="gme-logo">
                 <a href="https://gme.network/">
                     <img src="{{ asset('assets/image/logo.webp') }}" alt="GME">
                 </a>
             </div>
 
-            <!-- RIGHT NAV -->
             <nav class="gme-nav gme-nav-right">
                 <ul>
                     <li><a href="https://gme.network/events/">Events</a></li>
@@ -181,35 +364,68 @@
                         @endauth
                     </li>
                 </ul>
-                {{-- <ul class="d-flex align-items-center">
-                    @auth('customer')
-                        <li>
-                            <a href="{{ route('customer.gme-business-form.index') }}" style="border:1px solid #9C7D2D; padding:0.7rem; border-radius:6px;">
-                                <i class="fa fa-home me-2"></i>Dashboard
-                            </a>
-                        </li>
-                    @else
-                        <li>
-                            <a href="{{ route('customer.login') }}" style="border:1px solid #9C7D2D; padding:0.7rem; border-radius:6px;">
-                                <i class="fa fa-user me-2"></i>Login
-                            </a>
-                        </li>
-                    @endauth
-                </ul> --}}
             </nav>
+
+            <!-- HAMBURGER (mobile only) -->
+            <button class="gme-hamburger" id="hamburgerBtn" aria-label="Open menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
         </div>
     </header>
 
-    <!-- LOGIN SECTION -->
-    <div class="login-wrapper">
+    <!-- MOBILE MENU — backdrop + drawer in one fixed container -->
+    <div id="mobileMenu">
+        <div class="gme-backdrop" id="menuBackdrop"></div>
 
+        <div class="gme-drawer">
+            <div class="gme-drawer-top">
+                <img src="{{ asset('assets/image/logo.webp') }}" alt="GME">
+                <button class="gme-close-btn" id="closeBtn" aria-label="Close menu">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+            <nav class="gme-drawer-links">
+                <a class="active" href="{{ route('guest.index') }}">
+                    <i class="fa fa-home"></i> Home
+                </a>
+                <a href="https://gme.network/get-involved/">
+                    <i class="fa fa-hands-helping"></i> Get Involved
+                </a>
+                <div class="gme-drawer-divider"></div>
+                <a href="https://gme.network/events/">
+                    <i class="fa fa-calendar-alt"></i> Events
+                </a>
+                <a href="https://gme.network/news/">
+                    <i class="fa fa-newspaper"></i> News
+                </a>
+            </nav>
+
+            <div class="gme-drawer-footer">
+                @auth('customer')
+                    <a href="{{ route('gme.business.register') }}">
+                        <i class="fa fa-plus-circle me-2"></i> Add Your Business
+                    </a>
+                @else
+                    <a href="{{ route('customer.register') }}">
+                        <i class="fa fa-plus-circle me-2"></i> Add Your Business
+                    </a>
+                @endauth
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="login-wrapper">
         <img src="{{ asset('assets/image/front-logo.png') }}"
              alt="GME Network Logo"
              class="login-logo">
 
         <div class="login-card">
 
-            {{-- Validation Errors --}}
             @if ($errors->any())
                 <div class="alert alert-danger py-2 mb-4">
                     <ul class="mb-0 ps-3">
@@ -225,13 +441,15 @@
 
                 <div class="mb-3">
                     <label class="form-label fw-medium">Email</label>
-                    <input type="email" name="email" class="form-control" placeholder="Enter email" required value="{{ old('email') }}">
+                    <input type="email" name="email" class="form-control"
+                           placeholder="Enter email" required value="{{ old('email') }}">
                     @error('email')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                 </div>
 
                 <div class="mb-4">
                     <label class="form-label fw-medium">Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+                    <input type="password" name="password" class="form-control"
+                           placeholder="Enter password" required>
                 </div>
 
                 <div class="d-grid mb-4">
@@ -240,13 +458,19 @@
                     </button>
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center">
-                    <a href="{{ route('customer.forget.password') }}" class="link-gold">
-                        Forgot Password?
-                    </a>
-                    <a href="{{ route('customer.register') }}" class="link-gold">
-                        <i class="fa fa-user-plus me-1"></i>Create new account
-                    </a>
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-md-6 mob-margin">
+                        <a href="{{ route('customer.forget.password') }}" class="link-gold">
+                            Forgot Password?
+                        </a>
+                    </div>
+                    <div class="col-md-6 mob-pad">
+                        <a href="{{ route('customer.register') }}" class="link-gold">
+                            <i class="fa fa-user-plus me-1"></i>Create new account
+                        </a>
+                    </div>
+                    
+                    
                 </div>
 
             </form>
@@ -255,10 +479,34 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Sticky header on scroll
+        // Sticky header
         window.addEventListener('scroll', function () {
-            const header = document.getElementById('mainHeader');
-            header.classList.toggle('scrolled', window.scrollY > 10);
+            document.getElementById('mainHeader')
+                .classList.toggle('scrolled', window.scrollY > 10);
+        });
+
+        // Mobile menu — vanilla JS, no classes needed
+        var menu      = document.getElementById('mobileMenu');
+        var hamburger = document.getElementById('hamburgerBtn');
+        var closeBtn  = document.getElementById('closeBtn');
+        var backdrop  = document.getElementById('menuBackdrop');
+
+        function openMenu() {
+            menu.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            menu.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        hamburger.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        backdrop.addEventListener('click', closeMenu);
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeMenu();
         });
     </script>
 </body>

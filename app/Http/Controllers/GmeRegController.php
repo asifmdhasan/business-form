@@ -8,6 +8,7 @@ use App\Models\BusinessPhoto;
 use App\Models\GmeBusinessForm;
 use App\Models\BusinessCategory;
 use App\Mail\BusinessCreatedMail;
+use App\Mail\BusinessCreatedMailforDirectory;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -192,7 +193,7 @@ class GmeRegController extends Controller
 
                     'collaboration_open' => 'required|in:yes,no,maybe',
                     'collaboration_types' => 'nullable|array',
-                    'collaboration_types.*' => 'in:Partnerships,Investment Oportunities,Vendor Supply Chain,Marketing Promotion,Networking,Training Workshops,Community Charity Projects,Not Sure Yet',
+                    'collaboration_types.*' => 'in:Partnerships,Investment Oportunities,Vendor Supply Chain,Marketing Promotion,Networking,Mentorship or Growth Coaching,Community Charity Projects,Not Sure Yet',
 
                     // Documents + Images
                     'registration_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,webp,avif|max:5120',

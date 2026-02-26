@@ -51,8 +51,8 @@
                 </a>
             </li>
 
-
-            <li class="nav-item">
+            {{-- DO NOT REMOVE --}}
+            {{-- <li class="nav-item">
                 <a href="{{ route('contact-requests.index') }}"
                     class="nav-link text-white {{ request()->routeIs('contact-requests.index') ? 'active' : '' }}">
                     <i class="fas fa-envelope-open me-2"></i> Contact Requests
@@ -60,7 +60,7 @@
                         <span class="badge bg-warning ms-2">{{ $pendingCount }}</span>
                     @endif
                 </a>
-            </li>
+            </li> --}}
 
             {{-- <li class="nav-item">
                 <a href="{{ route('contact-requests.index') }}" class="nav-link">
