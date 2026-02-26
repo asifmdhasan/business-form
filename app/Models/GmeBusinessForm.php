@@ -225,4 +225,15 @@ class GmeBusinessForm extends Model
     {
         return $this->status === 'rejected';
     }
+
+    public function getWebsiteUrlAttribute()
+    {
+        if (!$this->website) {
+            return null;
+        }
+
+        return Str::startsWith($this->website, ['http://', 'https://'])
+            ? $this->website
+            : 'https://' . $this->website;
+    }
 }

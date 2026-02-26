@@ -1908,13 +1908,19 @@
                             Website
                         </h5>
                         <div class="contact-details">
-                            @if($business->website)
+                            {{-- @if($business->website)
                                 <a href="{{ $business->website }}" target="_blank" class="website-link">
                                     {{ $business->website }}
                                     <i class="fas fa-external-link-alt ms-2"></i>
                                 </a>
                             @else
                                 <p class="text-muted mb-0">Not Available</p>
+                            @endif --}}
+                            @if($business->website)
+                                <a href="{{ $business->website_url }}" target="_blank" class="website-link">
+                                    {{ $business->website }}
+                                    <i class="fas fa-external-link-alt ms-2"></i>
+                                </a>
                             @endif
                         </div>
                     </div>
