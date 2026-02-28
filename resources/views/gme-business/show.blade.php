@@ -1,6 +1,7 @@
 @extends('layouts.frontend-master')
 
 @section('content')
+
 @php
     $countries = is_string($business->countries_of_operation)
         ? json_decode($business->countries_of_operation, true)
@@ -1127,6 +1128,73 @@
     }
 
 </style>
+
+
+
+<style>
+    .class-hide-laptop{
+        display: none;
+    }
+    /* main-content {
+        margin-left: 260px;
+    } */
+    @media (max-width: 991px) {
+        .main-content {
+            margin-left: 0 !important;
+        }
+    }
+    @media (max-width: 768px) {
+        .gallery-img-container {
+            height: 180px !important;
+        }
+
+        .featured-business {
+            font-size: 24px !important;
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 0.75rem !important;
+        }
+        .hero-section-2{
+            padding: 6rem 1rem;
+        }
+        .section-title.mb-0{
+            font-size: 1.5rem;
+        }
+        .logo-box {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 0.5rem;
+        }
+        .class-hide{
+            display: none;
+        }
+        .product-card {
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .header-ection{
+            justify-content: center;
+            text-align: center;
+        }
+        .d-flex.text-cen{
+            display: flow !important;
+        }
+
+        .social-icon {
+            width: 34px;
+            height: 34px;
+            font-size: 1rem;
+        }
+        .h5.fw-bold{
+            font-size: 1rem !important;
+        }
+
+    }
+
+</style>
+
 @php
     $gradients = [
         'linear-gradient(135deg, #917F2D, #C6B75E)',
@@ -1153,7 +1221,7 @@
         ">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <div class="row align-items-center">
+            <div class="row align-items-center header-ection">
                 <div class="col-auto">
                     <div class="logo-box">
                         <img src="{{ $business->logo ? asset('assets/'.$business->logo) : 'https://ui-avatars.com/api/?name='.urlencode($business->business_name) }}"
@@ -1161,7 +1229,7 @@
                     </div>
                 </div>
                 <div class="col p-8">
-                    <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
+                    <div class="d-flex text-cen align-items-center flex-wrap gap-2 mb-1">
                         <h1 class="section-title mb-0">{{ $business->business_name }}</h1>
                         @if($business->status === 'approved' && $business->is_verified === 1)
                             <span class="verified-badge">
@@ -1334,7 +1402,7 @@
                 <span style=" font-weight: 300;">Products & </span>
                 <span style="color:#9b7d2d;font-weight: 900;">Services </span>
             </h4>
-                <p class="section-subtitle"style="color:#414141;font-weight: 600; font-size: 24px;">What They Offer</p>
+                <p class="section-subtitle class-hide"style="color:#414141;font-weight: 600; font-size: 24px;">What They Offer</p>
             </div>
 
             <div class="row">
@@ -1740,7 +1808,7 @@
         <div class="pt-3" style="border-top: 1px solid var(--border-light);">
             
             <!-- Row 1: Primary Contact - Name, Contact, Email in 3 columns -->
-            <div class="row g-4 mb-4">
+            <div class="row g-4 mb-4 class-hide">
                 <div class="col-md-4">
                     <div class="contact-section">
                         <h5 class="contact-heading">
@@ -1785,9 +1853,29 @@
                 </div>
             </div>
 
+
+            <div class="row g-4 mb-4 class-hide-laptop">
+                <div class="col-md-4">
+                    <div class="contact-section">
+                        <h5 class="contact-heading">
+                            <i class="fas fa-user me-2"></i>
+                            Primary Contact
+                        </h5>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                {{-- <span class="contact-label">Name:</span> --}}
+                                <span class="contact-value">{{ $business->business_contact_person_name ?? '——' }}</span>
+                                <span class="contact-value">{{ $business->whatsapp_number ?? '——' }}</span>
+                                <span class="contact-value">{{ $business->email ?? '——' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Row 2: Social Media -->
             <div class="row g-4 mb-4">
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     <div class="contact-section">
                         <h5 class="contact-heading">
                             <i class="fas fa-share-alt me-2"></i>
@@ -1824,7 +1912,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     <div class="contact-section">
                         <h5 class="contact-heading">
                             <i class="fas fa-globe me-2"></i>

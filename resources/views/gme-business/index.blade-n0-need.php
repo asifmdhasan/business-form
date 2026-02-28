@@ -4,7 +4,7 @@
 
 
 
-    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
     
 <style>
     .home-btn a:hover {
@@ -313,6 +313,12 @@
         .mob-menu-overlay,
         .mob-search-overlay { display: none !important; }
     }
+    .active > .page-link, .page-link.active {
+        background-color: #9C7D2D;
+        border-color: #9C7D2D;
+        color: #fff;
+    }
+    .page-link { color: #000; }
 </style>
 
 
@@ -409,18 +415,60 @@
 
 </div>
 
+<!-- Business Grid Section -->
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold" style="color:#2C3E50;">My Businesses</h4>
+                <a href="{{ route('gme.business.register') }}"
+                   class="btn text-white px-4 py-2"
+                   style="background-color:#9C7D2D; border-radius:8px;">
+                    + Add Business
+                </a>
+            </div>
 
+            <!-- Cards -->
+            <div class="row" id="businessGrid">
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-spinner fa-spin fa-3x" style="color:#9C7D2D;"></i>
+                    <p class="mt-3 text-muted">Loading businesses...</p>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="text-center d-none" style="margin-top:60px;">
+                <i class="fas fa-store fa-4x mb-3" style="color:#DDD;"></i>
+                <h5 class="text-muted mb-3">You haven't added any business yet</h5>
+                <a href="{{ route('gme.business.register') }}"
+                   class="btn text-white px-4 py-2"
+                   style="background-color:#9C7D2D;">
+                    + Add Your Business
+                </a>
+            </div>
+
+            <!-- Pagination -->
+            <div class="row mt-4">
+                <div class="col-12 d-flex justify-content-center">
+                    <nav>
+                        <ul class="pagination" id="pagination"></ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 {{-- Desktop sidebar toggle (unchanged) --}}
-<script>
+{{-- <script>
     document.getElementById('menuToggle').addEventListener('click', function () {
         const sidebar = document.querySelector('nav.bg-dark');
         if (sidebar) {
             sidebar.style.left = sidebar.style.left === "0px" ? "-260px" : "0px";
         }
     });
-</script>
+</script> --}}
 
 <style>
     @media (max-width: 991px) {
@@ -582,4 +630,219 @@
             if (e.key === 'Escape') { closeMenu(); closeSearch(); }
         });
     })();
+
+
+
+
+</script>
+<script>
+/* ══════════════════════════════
+   My Business Cards — Home Page
+══════════════════════════════ */
+$(document).ready(function () {
+
+    /* ── Pagination click ── */
+    $(document).on('click', '#pagination a', function (e) {
+        e.preventDefault();
+        fetchMyBusinesses($(this).data('page'));
+    });
+
+    /* ── Fetch ── */
+    function fetchMyBusinesses(page = 1) {
+        $.ajax({
+            url: '{{ route("customer.gme-business.ajax") }}',
+            method: 'GET',
+            data: { page: page },
+            success: function (response) {
+                const businesses = response.businesses.data;
+
+                if (!businesses || businesses.length === 0) {
+                    $('#businessGrid').addClass('d-none');
+                    $('#emptyState').removeClass('d-none');
+                    $('#pagination').empty();
+                    return;
+                }
+
+                $('#emptyState').addClass('d-none');
+                $('#businessGrid').removeClass('d-none');
+
+                renderMyBusinesses(businesses);
+                renderMyPagination(response.businesses);
+            },
+            error: function () {
+                $('#businessGrid').html(`
+                    <div class="col-12 text-center py-4 text-danger">
+                        <i class="fas fa-exclamation-circle fa-2x mb-2"></i>
+                        <p>Failed to load businesses. Please refresh.</p>
+                    </div>
+                `);
+            }
+        });
+    }
+
+    /* ── Render Cards ── */
+    function renderMyBusinesses(businesses) {
+        const $grid = $('#businessGrid').empty();
+
+        businesses.forEach(function (business) {
+            $grid.append(createMyBusinessCard(business));
+        });
+    }
+
+    /* ── Create Card ── */
+    function createMyBusinessCard(business) {
+        const capitalize = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+
+        const logo = business.logo
+            ? `{{ asset('assets') }}/${business.logo}`
+            : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}&background=9C7D2D&color=fff`;
+
+        const gradients = [
+            'linear-gradient(135deg, #917F2D, #C6B75E)',
+            'linear-gradient(135deg, #808181, #B4B5B6)',
+            'linear-gradient(135deg, #566828, #8FAF3C)',
+            'linear-gradient(135deg, #03045D, #4361EE)'
+        ];
+
+        const photoSection = business.cover_photo
+            ? `<img src="{{ asset('assets') }}/${business.cover_photo}"
+                    style="width:100%;height:180px;object-fit:cover;">`
+            : `<div style="
+                    background:${gradients[business.id % gradients.length]};
+                    height:180px;width:100%;
+                "></div>`;
+
+        const verified = (business.status === 'approved' && business.is_verified === 1)
+            ? `<div style="
+                    position:absolute;top:12px;left:12px;
+                    background:white;padding:5px 10px;
+                    border-radius:20px;font-size:11px;
+                    font-weight:600;color:#27AE60;
+                    box-shadow:0 2px 8px rgba(0,0,0,0.15);
+                    display:flex;align-items:center;gap:4px;">
+                    <i class="fas fa-check-circle"></i> GME Verified
+               </div>`
+            : '';
+
+        const shortIntro = business.short_introduction
+            ? (business.short_introduction.length > 90
+                ? business.short_introduction.substring(0, 90) + '...'
+                : business.short_introduction)
+            : '';
+
+        const link = (business.status === 'draft')
+            ? '{{ route("gme.business.register") }}'
+            : `{{ url('gme-business-form') }}/${business.slug}`;
+
+        const deleteBtn = (business.status === 'draft')
+            ? `<button class="draft-delete-btn" data-business-id="${business.id}" title="Delete Draft"
+                    style="position:absolute;top:10px;right:10px;z-index:10;
+                           width:34px;height:34px;border-radius:50%;border:none;
+                           background:rgba(220,38,38,0.92);color:#fff;font-size:12px;
+                           display:flex;align-items:center;justify-content:center;
+                           box-shadow:0 2px 8px rgba(0,0,0,0.2);cursor:pointer;">
+                    <i class="fas fa-trash-alt"></i>
+               </button>`
+            : '';
+
+        return `
+        <div class="col-6 col-md-4 col-lg-3 mb-4">
+            <div data-link="${link}"
+                 style="background:white;border-radius:12px;overflow:hidden;
+                        box-shadow:0 2px 8px rgba(0,0,0,0.08);
+                        border:1px solid #9b7d2d;cursor:pointer;
+                        transition:all 0.3s;height:100%;position:relative;"
+                 class="my-biz-card">
+                ${deleteBtn}
+                <div style="position:relative;">
+                    ${photoSection}
+                    ${verified}
+                </div>
+                <div style="padding:15px;">
+                    <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
+                        <img src="${logo}"
+                             style="width:48px;height:48px;border-radius:6px;
+                                    object-fit:cover;border:1px solid #EEE;flex-shrink:0;">
+                        <div>
+                            <div style="font-size:14px;font-weight:700;color:#2C3E50;line-height:1.3;">
+                                ${business.business_name}
+                                <span style="font-size:11px;color:#9C7D2D;font-weight:600;">
+                                    (${capitalize(business.status)})
+                                </span>
+                            </div>
+                            <div style="font-size:12px;color:#7F8C8D;">
+                                ${business.category?.name ?? ''}
+                            </div>
+                        </div>
+                    </div>
+                    <p style="font-size:13px;color:#555;margin:0;line-height:1.5;">
+                        ${shortIntro}
+                    </p>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    /* ── Pagination ── */
+    function renderMyPagination(data) {
+        const $p = $('#pagination').empty();
+        if (data.last_page <= 1) return;
+
+        if (data.current_page > 1)
+            $p.append(`<li class="page-item">
+                <a class="page-link" href="#" data-page="${data.current_page - 1}">Previous</a>
+            </li>`);
+
+        for (let i = 1; i <= data.last_page; i++)
+            $p.append(`<li class="page-item ${i === data.current_page ? 'active' : ''}">
+                <a class="page-link" href="#" data-page="${i}">${i}</a>
+            </li>`);
+
+        if (data.current_page < data.last_page)
+            $p.append(`<li class="page-item">
+                <a class="page-link" href="#" data-page="${data.current_page + 1}">Next</a>
+            </li>`);
+    }
+
+    /* ── Card Click + Delete ── */
+    $(document).on('click', '.my-biz-card', function (e) {
+        const deleteBtn = $(e.target).closest('.draft-delete-btn');
+
+        if (deleteBtn.length) {
+            e.stopPropagation();
+            const id = deleteBtn.data('business-id');
+
+            if (!confirm('Warning: All data will be permanently deleted.\n\nDelete this draft?')) return;
+
+            const csrf = $('meta[name="csrf-token"]').attr('content');
+
+            fetch(`/gme-business/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrf,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ _method: 'DELETE' })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    deleteBtn.closest('.col-6').remove();
+                } else {
+                    alert(data.message ?? 'Could not delete.');
+                }
+            })
+            .catch(() => alert('Something went wrong.'));
+
+            return;
+        }
+
+        const link = $(this).data('link');
+        if (link) window.location.href = link;
+    });
+
+    /* ── Init ── */
+    fetchMyBusinesses();
+});
 </script>

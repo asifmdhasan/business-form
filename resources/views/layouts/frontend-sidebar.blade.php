@@ -10,8 +10,13 @@
         border-radius: 5px;
         font-weight: 600;
     }
+    @media (max-width: 768px) {
+        .hide-for-mobile {
+            display: none;
+        }
+    }
 </style>
-<nav class="bg-dark text-white position-fixed h-100 d-flex flex-column" style="width:260px; top:0; left:0; overflow-y:auto;">
+<nav class="bg-dark text-white position-fixed h-100 d-flex flex-column hide-for-mobile" style="width:260px; top:0; left:0; overflow-y:auto;">
     <div class="p-3">
         <div class="p-3 text-center">
             <!-- Logo -->

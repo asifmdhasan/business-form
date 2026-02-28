@@ -293,6 +293,9 @@
             .filter-sidebar {
                 margin-bottom: 30px;
             }
+            .main-content{
+                margin-left: 0 !important;
+            }
         }
 
 
@@ -334,7 +337,22 @@
         .draft-delete-btn:active {
             transform: scale(0.96);
         }
+        .container-fluid.py-4{
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
+        }
 
+        #businessGrid .col-md-6 {
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
+        }
+        .business-logo {
+            width: 50px;
+            height: 50px;
+        }
+        .business-name {
+            font-size: 16px;
+        }
 
 
 

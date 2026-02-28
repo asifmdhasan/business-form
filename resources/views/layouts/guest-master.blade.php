@@ -468,7 +468,7 @@
         .subscribe-form button { border-radius: 0 0 30px 30px; }
         }
         @media (max-width: 420px) {
-        .footer-cols { grid-template-columns: 1fr; }
+        .footer-cols { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
     <style>
@@ -1338,6 +1338,18 @@
                 .filter-sidebar {
                     margin-bottom: 30px;
                 }
+                .hide-for-mobile {
+                    display: none !important;
+                }
+                .hide-for-desktop {
+                    display: block !important;
+                }
+            }
+            .hide-for-mobile {
+                display: block;
+            }
+            .hide-for-desktop {
+                display: none;
             }
             @media (max-width: 768px) {
             .hero-section {
@@ -2058,36 +2070,54 @@
                 <hr class="footer-divider">
 
                 <div class="footer-cols">
-                <div class="footer-col">
-                    <h3>Explore</h3>
-                    <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About GME</a></li>
-                    <li><a href="#">Get Involved</a></li>
-                    <li><a href="#">Events</a></li>
-                    <li><a href="#">News</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Legal</h3>
-                    <ul>
-                    <li><a href="{{ route('legal.privacy') }}">Privacy Policy</a></li>
-                    <li><a href="{{ route('legal.cookie') }}">Cookie Policy</a></li>
-                    <li><a href="{{ route('legal.terms') }}">Terms and Conditions</a></li>
-                    <li><a href="{{ route('legal.ethics') }}">Ethical Business Commitment</a></li>
-                    <li><a href="{{ route('legal.disclaimer') }}">Disclaimer</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Connect Us</h3>
-                    <div class="social-links">
-                    <a href="https://www.facebook.com/gme.network/" target="_blank"><i class="fab fa-facebook"></i>Facebook</a>
-                    <a href="https://www.linkedin.com/company/gmenetwork/" target="_blank"><i class="fab fa-linkedin"></i>LinkedIn</a>
-                    <a href="https://www.instagram.com/gme.network" target="_blank"><i class="fab fa-instagram"></i>Instagram</a>
-                    <a href="https://www.youtube.com/@gmenetwork" target="_blank"><i class="fab fa-youtube"></i>YouTube</a>
-                    <a href="https://x.com/GmeNetwork50551" target="_blank"><i class="fab fa-x-twitter"></i>X</a>
+                    <div class="footer-col">
+                        <h3>Explore</h3>
+                        <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About GME</a></li>
+                        <li><a href="#">Get Involved</a></li>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="#">News</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>Legal</h3>
+                        <ul>
+                        <li><a href="{{ route('legal.privacy') }}">Privacy Policy</a></li>
+                        <li><a href="{{ route('legal.cookie') }}">Cookie Policy</a></li>
+                        <li><a href="{{ route('legal.terms') }}">Terms and Conditions</a></li>
+                        <li><a href="{{ route('legal.ethics') }}">Ethical Business Commitment</a></li>
+                        <li><a href="{{ route('legal.disclaimer') }}">Disclaimer</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col hide-for-mobile">
+                        <h3>Connect Us</h3>
+                        <div class="social-links">
+                        <a href="https://www.facebook.com/gme.network/" target="_blank"><i class="fab fa-facebook"></i>Facebook</a>
+                        <a href="https://www.linkedin.com/company/gmenetwork/" target="_blank"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                        <a href="https://www.instagram.com/gme.network" target="_blank"><i class="fab fa-instagram"></i>Instagram</a>
+                        <a href="https://www.youtube.com/@gmenetwork" target="_blank"><i class="fab fa-youtube"></i>YouTube</a>
+                        <a href="https://x.com/GmeNetwork50551" target="_blank"><i class="fab fa-x-twitter"></i>X</a>
+                        </div>
                     </div>
                 </div>
+
+
+                <div class="row hide-for-desktop">
+                    <h3 style="    font-family: 'Cinzel', serif;
+                        font-size: 0.75rem;
+                        font-weight: 700;
+                        letter-spacing: 0.25em;
+                        text-transform: uppercase;
+                        color: var(--gold-light);
+                        margin-bottom: 1rem;">Connect Us</h3>
+                    <div class="social-links row" style="width: 15%;flex-flow: nowrap;">
+                    <a href="https://www.facebook.com/gme.network/" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.linkedin.com/company/gmenetwork/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.instagram.com/gme.network" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@gmenetwork" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://x.com/GmeNetwork50551" target="_blank"><i class="fab fa-x-twitter"></i></a>
+                    </div>
                 </div>
             </footer>
 
@@ -2434,7 +2464,7 @@
                 : '';
 
             return `
-            <div class="col-6 col-md-4 col-lg-4 p-2">
+            <div class="col-md-4 col-lg-4 p-2">
                 <div class="business-card" onclick="location.href='{{ url('guest-gme-business-form') }}/${business.slug}'">
                     <div style="position:relative">
                         ${photoSection}
