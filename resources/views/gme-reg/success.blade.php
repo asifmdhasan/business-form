@@ -1,6 +1,23 @@
 @extends('layouts.frontend-master')
 
 @section('content')
+<style>
+    .main-form{
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+    @media (max-width: 767px) {
+        .main-content{
+            margin-left: 0 !important;
+        }
+        .p-5 {
+            padding: 1rem!important;
+        }
+        .btn.btn-outline-gme.btn-lg.w-100 {
+            font-size: 1rem !important;
+        }
+    }
+</style>
 <div class="container-fluid py-5">
     <div class="row justify-content-center">
         <div class="col-xl-8 col-lg-10">

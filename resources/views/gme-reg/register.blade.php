@@ -180,6 +180,36 @@
         background-color: #9C7D2D;
         border-color: #9C7D2D;
     }
+    @media (max-width: 767px) {
+        .main-content{
+            margin-left: 0 !important;
+        }
+        .small, small {
+            font-size: .75em;
+        }
+        .rounded-circle{
+            width: 30px !important;
+            height: 30px !important;
+            line-height: 30px !important;
+        }
+        .card{
+            border: none !important;
+            --bs-card-bg: transparent !important;
+        }
+
+        .fw-bold {
+            text-align: center;
+        }
+        .card-for-mobile{
+            padding: 0rem !important;
+        }
+        .shadow-sm {
+            box-shadow: none !important;
+        }
+        .question-label {
+            font-size: 1rem !important;
+        }
+    }
 </style>
 
 <div class="container-fluid">
@@ -215,7 +245,7 @@
             @endif
 
             <div class="card shadow-sm">
-                <div class="card-body p-4">
+                <div class="card-body p-4 card-for-mobile">
 
                     <h3 class="fw-bold mb-4">
                         <i class="fa fa-building me-2"></i> Business Registration

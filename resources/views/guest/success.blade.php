@@ -6,6 +6,11 @@
         padding-top: 5rem;
         padding-bottom: 5rem;
     }
+    @media (max-width: 767px) {
+        .main-content{
+            margin-left: 0 !important;
+        }
+    }
     </style>
 <div class="container-fluid main-form">
     <div class="row justify-content-center">
