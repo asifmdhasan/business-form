@@ -156,6 +156,30 @@
         min-width: 100px;
         text-align: left;
     }
+    .ethical-section .form-check {
+        padding-left: 2rem;
+    }
+
+    .ethical-section .form-check-input {
+        width: 1.2em;
+        height: 1.2em;
+        margin-top: 0.2em;
+    }
+
+    .ethical-section .form-check-label {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .ethical-section h6 {
+        color: #2c3e50;
+        border-bottom: 2px solid #9C7D2D;
+        padding-bottom: 0.5rem;
+    }
+    .form-check-input:checked{
+        background-color: #9C7D2D;
+        border-color: #9C7D2D;
+    }
 </style>
 
 <div class="container-fluid">
@@ -253,7 +277,8 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Short Introduction</label>
-                                <textarea class="form-control" rows="3" name="short_introduction">{{ old('short_introduction', $business->short_introduction ?? '') }}</textarea>
+                                <textarea class="form-control" rows="3" name="short_introduction" maxlength="200">{{ old('short_introduction', $business->short_introduction ?? '') }}</textarea>
+                                <small class="text-muted">Maximum 200 characters</small>
                             </div>
 
                             <div class="row">
@@ -264,7 +289,7 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Business Category <span class="text-danger">*</span></label>
+                                    <label class="form-label">Business Category/Industry  <span class="text-danger">*</span></label>
                                     <select class="form-select" name="business_category_id" id="business_category" required>
                                         <option value="">Select Category</option>
                                         @foreach($categories as $category)
@@ -282,6 +307,27 @@
                             </div>
 
                             <div class="row">
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email <span class="text-danger">*</span></label>
+                                    <input type="email" name="email" class="form-control"
+                                        value="{{ old('email', $business->email ?? '') }}" required>
+                                    <!-- Error Message -->
+                                    @error('email')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Website</label>
+                                    <input type="website" name="website" class="form-control"
+                                        value="{{ old('website', $business->website ?? '') }}">
+                                </div>
+                            </div>
+
+                            
+                                
+
+                            <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Countries of Operation <span class="text-danger">*</span></label>
                                         <select class="form-select search_select" name="countries_of_operation[]" multiple required>
@@ -296,26 +342,6 @@
                                     @error('countries_of_operation')
                                         <div class="text-danger mt-1">{{ $message }}</div>
                                     @enderror
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Email <span class="text-danger">*</span></label>
-                                    <input type="email" name="email" class="form-control"
-                                        value="{{ old('email', $business->email ?? '') }}" required>
-                                    <!-- Error Message -->
-                                    @error('email')
-                                        <div class="text-danger mt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            
-                                
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Website</label>
-                                    <input type="website" name="website" class="form-control"
-                                        value="{{ old('website', $business->website ?? '') }}">
                                 </div>
                             </div>
 
@@ -360,7 +386,7 @@
                             </div>
 
                             <hr>
-                            <h6 class="fw-bold mb-3">Business Contact Person</h6>
+                            <h6 class="fw-bold mb-3">Business Contact Person (This information will be Display for Public view)</h6>
 
                             
                             <div class="border rounded p-3 mb-3 founder-item">
@@ -595,7 +621,7 @@
                                 </div>
 
                                 {{-- DEBUG: Remove after testing --}}
-                                @php
+                                {{-- @php
                                     $savedServices = old('services_id',
                                         is_array($business->services_id ?? null)
                                             ? $business->services_id
@@ -610,6 +636,26 @@
                                             multiple name="services_id[]" id="services" required>
                                         <!-- Options will be loaded by JavaScript -->
                                     </select>
+                                    <small class="text-muted">Type and press comma (,) to add custom service</small>
+
+                                    @error('services_id')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror --}}
+                                    @php
+                                        $savedServices = old('services_id',
+                                            is_array($business->services_id ?? null)
+                                                ? $business->services_id
+                                                : json_decode($business->services_id ?? '[]', true)
+                                        );
+                                    @endphp
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Products / Services <span class="text-danger">*</span></label>
+                                    <select class="form-select search_select @error('services_id') is-invalid @enderror"
+                                            multiple name="services_id[]" id="services" required>
+                                        <!-- Options will be loaded by JavaScript -->
+                                    </select>
+                                    <small class="text-muted">Type and press comma (,) to add custom service</small>
                                     @error('services_id')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
@@ -620,13 +666,13 @@
 
                             {{-- Collaboration Open --}}
                             <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Collaboration Open <span class="text-danger">*</span></label>
+                                <label class="form-label question-label" style="font-size: 1.35rem; font-weight: 600;">Collaboration Open <span class="text-danger">*</span></label>
                                 @php $value = old('collaboration_open', $business->collaboration_open ?? ''); @endphp
                                 <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
                                     @foreach ([
                                         'yes' => 'Yes',
                                         'no' => 'No',
-                                        'maybe' => 'Maybe'
+                                   
                                     ] as $key => $label)
                                         <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
                                             <input type="radio" name="collaboration_open" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
@@ -682,8 +728,8 @@
 
                             <h5 class="fw-bold mt-4 mb-3">Business Media Uploads</h5>
                             <div class="row">
-                                <div class="col-md-3 mb-3">
-                                    <label class="form-label">Upload Business Logo</label>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Upload Business Logo <span class="text-danger">*</span></label>
 
                                     <!-- Upload Container -->
                                     <div class="rounded p-2 text-center position-relative @error('logo') border-danger @enderror"
@@ -698,21 +744,28 @@
                                         <!-- Hidden File Input -->
                                         <input type="file"
                                             name="logo"
+                                            
                                             accept="image/*"
                                             onchange="previewLogo(this)"
                                             style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;">
                                     </div>
 
-                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 2MB)</small>
+                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 5MB)</small>
                                     @if(!empty($business->logo))
                                         <small class="text-success d-block"><i class="fa fa-check"></i> Logo uploaded</small>
                                     @endif
                                     @error('logo')
                                         <small class="text-danger d-block">{{ $message }}</small>
                                     @enderror
+                                    <small class="text-muted d-block mt-2">
+                                        Logo too large? 
+                                        <a href="https://tinypng.com" target="_blank" class="fw-semibold text-primary">
+                                            Reduce image size here
+                                        </a>
+                                    </small>
                                 </div>
 
-                                <div class="col-md-2 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label">Upload Cover Photo</label>
 
                                     <!-- Upload Container -->
@@ -733,13 +786,19 @@
                                             style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;">
                                     </div>
 
-                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 2MB)</small>
+                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 5MB)</small>
                                     @if(!empty($business->cover_photo))
                                         <small class="text-success d-block"><i class="fa fa-check"></i> Cover uploaded</small>
                                     @endif
                                     @error('cover_photo')
                                         <small class="text-danger d-block">{{ $message }}</small>
                                     @enderror
+                                    <small class="text-muted d-block mt-2">
+                                        Cover photo too large? 
+                                        <a href="https://www.iloveimg.com/compress-image" target="_blank" class="fw-semibold text-primary">
+                                            Reduce image size here
+                                        </a>
+                                    </small>
                                 </div>
                             </div>
                             <div class="row">
@@ -757,14 +816,14 @@
 
                                                 <button type="button"
                                                         class="remove-btn"
-                                                        onclick="removeExistingPhoto(this, {{ $photo->id }})">
+                                                        onclick="deleteGalleryPhoto(this, {{ $photo->id }})">
                                                     &times;
                                                 </button>
 
-                                                <input type="checkbox"
+                                                {{-- <input type="checkbox"
                                                     name="delete_photos[]"
                                                     value="{{ $photo->id }}"
-                                                    class="d-none">
+                                                    class="d-none"> --}}
                                             </div>
                                         @endforeach
 
@@ -781,14 +840,14 @@
 
                                     </div>
 
-                                    <small class="text-muted">Max 6 images (PNG, JPG, JPEG | 2MB each)</small>
+                                    <small class="text-muted">Max 6 images (PNG, JPG, JPEG | 5MB each)</small>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <!-- Registration Document -->
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Upload Registration Document  <small class="text-muted">(Max 2MB)</small></label>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label"><h5 class="fw-bold mb-3">Upload Registration Document <small class="text-muted">(Max 5MB)</small></h5> </label>
                                     <input type="file" name="registration_document" class="form-control @error('registration_document') is-invalid @enderror">
                                     <!-- Document Links -->
                                     @if(!empty($business->registration_document))
@@ -803,8 +862,8 @@
                                 </div>
 
                                 <!-- Business Profile -->
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Business Profile <small class="text-muted">(Max 2MB)</small></label>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label"><h5 class="fw-bold mb-3">Business Profile <small class="text-muted">(Max 5MB)</small></h5></label>
                                     <input type="file" name="business_profile" class="form-control @error('business_profile') is-invalid @enderror">
                                     @if(!empty($business->business_profile))
                                         <small class="text-success d-block mt-1">
@@ -818,8 +877,8 @@
                                 </div>
 
                                 <!-- Product Catalogue -->
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Product Catalogue <small class="text-muted">(Max 2MB)</small></label>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label"><h5 class="fw-bold mb-3">Product Catalogue <small class="text-muted">(Max 5MB)</small></h5></label>
                                     <input type="file" name="product_catalogue" class="form-control @error('product_catalogue') is-invalid @enderror">
                                     @if(!empty($business->product_catalogue))
                                         <small class="text-success d-block mt-1">
@@ -835,9 +894,11 @@
 
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    <label class="form-label">Business Overview</label>
+                                    <label class="form-label">About the Business <sup class="text-danger">*</sup></label>
                                     <textarea class="form-control @error('business_overview') is-invalid @enderror"
                                             rows="6"
+                                            required
+                                            maxlength="1800"
                                             name="business_overview"
                                             placeholder="Describe your business, mission, vision, products/services in detail...">{{ old('business_overview', $business->business_overview ?? '') }}</textarea>
                                     @error('business_overview')
@@ -852,107 +913,149 @@
                         {{-- ================= STEP 3 ================= --}}
 
                         @if($step == 3)
-                            <h5 class="fw-bold mb-3">Islamic Ethics & Community</h5>
+                            <div class="ethical-section">
+                                <h5 class="fw-bold mb-2">Islamic Ethics & Community</h5>
+                                <p class="text-muted mb-4">Ethical Standards that Reflect Our Values and Responsibility</p>
 
-                            {{-- Avoid Interest (Riba)? --}}
-                            <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Avoid Interest (Riba)? <span class="text-danger">*</span></label>
-                                @php $value = old('avoid_riba', $business->avoid_riba ?? ''); @endphp
-                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                    @foreach ([
-                                        'yes' => 'Yes',
-                                        'no' => 'No',
-                                        'partially_transitioning' => 'Partially Transitioning',
-                                        'prefer_not_to_say' => 'Prefer Not to Say'
-                                    ] as $key => $label)
-                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
-                                            <input type="radio" name="avoid_riba" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
+                                {{-- Finance & Business Practices --}}
+                                <div class="mb-4">
+                                    <h6 class="fw-semibold mb-3">Finance & Business Practices</h6>
+                                    @php 
+                                        $financePractices = old('finance_practices', $business->finance_practices ?? []);
+                                    @endphp
+                                    
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
+                                            value="I do not deal in riba or interest-based transactions" id="finance1"
+                                            {{ in_array('I do not deal in riba or interest-based transactions', $financePractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="finance1">
+                                            I do not deal in riba or interest-based transactions
                                         </label>
-                                    @endforeach
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
+                                            value="I do not engage in unethical or exploitative trade" id="finance2"
+                                            {{ in_array('I do not engage in unethical or exploitative trade', $financePractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="finance2">
+                                            I do not engage in unethical or exploitative trade
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
+                                            value="I follow Shariah-compliant financial practices" id="finance3"
+                                            {{ in_array('I follow Shariah-compliant financial practices', $financePractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="finance3">
+                                            I follow Shariah-compliant financial practices
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="finance_practices[]" 
+                                            value="I am honest and transparent in all dealings" id="finance4"
+                                            {{ in_array('I am honest and transparent in all dealings', $financePractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="finance4">
+                                            I am honest and transparent in all dealings
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {{-- Products & Services Practices --}}
+                                <div class="mb-4">
+                                    <h6 class="fw-semibold mb-3">Products & Services Practices</h6>
+                                    @php 
+                                        $productPractices = old('product_practices', $business->product_practices ?? []);
+                                    @endphp
+                                    
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
+                                            value="My products/services are halal" id="product1"
+                                            {{ in_array('My products/services are halal', $productPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="product1">
+                                            My products/services are halal
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
+                                            value="I avoid selling haram or prohibited items" id="product2"
+                                            {{ in_array('I avoid selling haram or prohibited items', $productPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="product2">
+                                            I avoid selling haram or prohibited items
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
+                                            value="I maintain high quality and honesty in offerings" id="product3"
+                                            {{ in_array('I maintain high quality and honesty in offerings', $productPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="product3">
+                                            I maintain high quality and honesty in offerings
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="product_practices[]" 
+                                            value="I provide accurate information of my products and services" id="product4"
+                                            {{ in_array('I provide accurate information of my products and services', $productPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="product4">
+                                            I provide accurate information of my products and services
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {{-- Community & Responsibility Practices --}}
+                                <div class="mb-4">
+                                    <h6 class="fw-semibold mb-3">Community & Responsibility Practices</h6>
+                                    @php 
+                                        $communityPractices = old('community_practices', $business->community_practices ?? []);
+                                    @endphp
+                                    
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
+                                            value="I pay fair wages and treat employees with respect" id="community1"
+                                            {{ in_array('I pay fair wages and treat employees with respect', $communityPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="community1">
+                                            I pay fair wages and treat employees with respect
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
+                                            value="I support local communities and charitable initiatives" id="community2"
+                                            {{ in_array('I support local communities and charitable initiatives', $communityPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="community2">
+                                            I support local communities and charitable initiatives
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
+                                            value="I practice environmental responsibility in my operations" id="community3"
+                                            {{ in_array('I practice environmental responsibility in my operations', $communityPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="community3">
+                                            I practice environmental responsibility in my operations
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="community_practices[]" 
+                                            value="I collaborate ethically with other Muslim businesses" id="community4"
+                                            {{ in_array('I collaborate ethically with other Muslim businesses', $communityPractices) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="community4">
+                                            I collaborate ethically with other Muslim businesses
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {{-- Ethical Description (Optional) --}}
+                                <div class="mb-3">
+                                    <label class="form-label">Ethical Description</label>
+                                    <textarea class="form-control" rows="4" maxlength="1200" name="ethical_description" maxlength="1200">{{ old('ethical_description', $business->ethical_description ?? '') }}</textarea>
+                                    <small class="text-muted">Maximum 1200 characters</small>
                                 </div>
                             </div>
-                            @error('avoid_riba')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-
-                            {{-- Avoid Haram Products? --}}
-                            <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Avoid Haram Products? <span class="text-danger">*</span></label>
-                                @php $value = old('avoid_haram_products', $business->avoid_haram_products ?? ''); @endphp
-                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                    @foreach ([
-                                        'yes' => 'Yes',
-                                        'no' => 'No',
-                                        'partially_compliant' => 'Partially Compliant',
-                                    ] as $key => $label)
-                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
-                                            <input type="radio" name="avoid_haram_products" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @error('avoid_haram_products')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-
-                            {{-- Fair Pricing --}}
-                            <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Fair Pricing <span class="text-danger">*</span></label>
-                                @php $value = old('fair_pricing', $business->fair_pricing ?? ''); @endphp
-                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                    @foreach ([
-                                        'yes' => 'Yes',
-                                        'mostly' => 'Mostly',
-                                        'needs_improvement' => 'Needs Improvement'
-                                    ] as $key => $label)
-                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
-                                            <input type="radio" name="fair_pricing" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @error('fair_pricing')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-
-                            {{-- Open for Guidance --}}
-                            <div class="mb-3 d-flex align-items-center">
-                                <label class="form-label question-label">Open for Guidance <span class="text-danger">*</span></label>
-                                @php $value = old('open_for_guidance', $business->open_for_guidance ?? ''); @endphp
-                                <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                    @foreach ([
-                                        'yes' => 'Yes',
-                                        'no' => 'No',
-                                        'maybe' => 'Maybe'
-                                    ] as $key => $label)
-                                        <label class="btn btn-outline {{ $value === $key ? 'active' : '' }}">
-                                            <input type="radio" name="open_for_guidance" value="{{ $key }}" autocomplete="off" {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @error('open_for_guidance')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-
-
-
-
-
-
-                            <div class="mb-3">
-                                <label class="form-label">Ethical Description</label>
-                                <textarea class="form-control @error('ethical_description') is-invalid @enderror"
-                                        rows="4"
-                                        name="ethical_description"
-                                        placeholder="Describe your business ethics and values...">{{ old('ethical_description', $business->ethical_description ?? '') }}</textarea>
-                                @error('ethical_description')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <small class="text-muted">Maximum 1200 characters</small>
-                            </div>
-
-
                         @endif
 
                         {{-- ================= STEP 4 ================= --}}
@@ -1035,9 +1138,16 @@
                                 <span></span>
                             @endif
 
-                            <button type="submit" class="btn {{ $step < 4 ? 'btn-primary' : 'btn-success' }}">
+                            {{-- <button type="submit" class="btn {{ $step < 4 ? 'btn-primary' : 'btn-success' }}">
                                 {{ $step < 4 ? 'Save & Next →' : 'Submit Application' }}
-                            </button>
+                            </button> --}}
+                            @if($step < 4)
+                                <button type="submit" class="btn btn-primary">Save & Next →</button>
+                            @else
+                                <button type="button" class="btn btn-success" id="openSubmitModal">
+                                    Submit Application
+                                </button>
+                            @endif
                         </div>
 
                     </form>
@@ -1064,18 +1174,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js"></script>
 
 <script>
-$(document).ready(function () {
-    $('form').on('submit', function () {
-        // Show loader
-        $('#pageLoader').removeClass('d-none');
+    $(document).ready(function () {
+        $('form').on('submit', function () {
+            // Show loader
+            $('#pageLoader').removeClass('d-none');
 
-        // Disable submit button to prevent double click
-        $(this).find('button[type="submit"]').prop('disabled', true);
+            // Disable submit button to prevent double click
+            $(this).find('button[type="submit"]').prop('disabled', true);
+        });
+
+        // Initialize WhatsApp dropdowns on page load
+        initializeWhatsAppDropdowns();
     });
-
-    // Initialize WhatsApp dropdowns on page load
-    initializeWhatsAppDropdowns();
-});
 </script>
 
 <script>
@@ -1093,37 +1203,37 @@ $(document).ready(function () {
     }
 
     // Add new files
-    input.addEventListener('change', function(e) {
-        const files = Array.from(e.target.files);
+    // input.addEventListener('change', function(e) {
+    //     const files = Array.from(e.target.files);
 
-        files.forEach(file => {
-            if (document.querySelectorAll('.gallery-item').length >= MAX_IMAGES) return;
+    //     files.forEach(file => {
+    //         if (document.querySelectorAll('.gallery-item').length >= MAX_IMAGES) return;
 
-            if (!file.type.startsWith('image/')) {
-                alert(file.name + ' is not an image.');
-                return;
-            }
+    //         if (!file.type.startsWith('image/')) {
+    //             alert(file.name + ' is not an image.');
+    //             return;
+    //         }
 
-            if (file.size > 5 * 1024 * 1024) {
-                alert(file.name + ' is larger than 5MB.');
-                return;
-            }
+    //         if (file.size > 5 * 1024 * 1024) {
+    //             alert(file.name + ' is larger than 5MB.');
+    //             return;
+    //         }
 
-            fileStore.items.add(file);
-            input.files = fileStore.files;
+    //         fileStore.items.add(file);
+    //         input.files = fileStore.files;
 
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const div = document.createElement('div');
-                div.className = 'gallery-item new-photo';
-                div.style.backgroundImage = `url(${event.target.result})`;
-                div.innerHTML = `<button type="button" class="remove-btn" onclick="removeNewPhoto(this, '${file.name}')">&times;</button>`;
-                container.insertBefore(div, uploadBox);
-                toggleUploadBox();
-            };
-            reader.readAsDataURL(file);
-        });
-    });
+    //         const reader = new FileReader();
+    //         reader.onload = function(event) {
+    //             const div = document.createElement('div');
+    //             div.className = 'gallery-item new-photo';
+    //             div.style.backgroundImage = `url(${event.target.result})`;
+    //             div.innerHTML = `<button type="button" class="remove-btn" onclick="removeNewPhoto(this, '${file.name}')">&times;</button>`;
+    //             container.insertBefore(div, uploadBox);
+    //             toggleUploadBox();
+    //         };
+    //         reader.readAsDataURL(file);
+    //     });
+    // });
 
     // Remove new photo
     function removeNewPhoto(btn, fileName) {
@@ -1140,12 +1250,12 @@ $(document).ready(function () {
     }
 
     // Remove existing photo
-    function removeExistingPhoto(btn, photoId) {
-        const item = btn.closest('.gallery-item');
-        item.querySelector('input[type="checkbox"]').checked = true;
-        item.remove();
-        toggleUploadBox();
-    }
+    // function removeExistingPhoto(btn, photoId) {
+    //     const item = btn.closest('.gallery-item');
+    //     item.querySelector('input[type="checkbox"]').checked = true;
+    //     item.remove();
+    //     toggleUploadBox();
+    // }
 
     // Init
     toggleUploadBox();
@@ -1382,296 +1492,6 @@ $(document).ready(function () {
         });
     });
 </script>
-{{-- <script>
-    // Country codes data
-    const topCountries = [
-        { name: "Bangladesh", code: "+880" },
-        { name: "India", code: "+91" },
-        { name: "United States", code: "+1" },
-        { name: "United Kingdom", code: "+44" },
-        { name: "Saudi Arabia", code: "+966" }
-    ];
-
-    const allCountries = [
-        { name: "Afghanistan", code: "+93" },
-        { name: "Albania", code: "+355" },
-        { name: "Algeria", code: "+213" },
-        { name: "Argentina", code: "+54" },
-        { name: "Australia", code: "+61" },
-        { name: "Austria", code: "+43" },
-        { name: "Bangladesh", code: "+880" },
-        { name: "Belgium", code: "+32" },
-        { name: "Brazil", code: "+55" },
-        { name: "Canada", code: "+1" },
-        { name: "China", code: "+86" },
-        { name: "Denmark", code: "+45" },
-        { name: "Egypt", code: "+20" },
-        { name: "France", code: "+33" },
-        { name: "Germany", code: "+49" },
-        { name: "India", code: "+91" },
-        { name: "Indonesia", code: "+62" },
-        { name: "Italy", code: "+39" },
-        { name: "Japan", code: "+81" },
-        { name: "Malaysia", code: "+60" },
-        { name: "Nepal", code: "+977" },
-        { name: "Netherlands", code: "+31" },
-        { name: "New Zealand", code: "+64" },
-        { name: "Norway", code: "+47" },
-        { name: "Pakistan", code: "+92" },
-        { name: "Philippines", code: "+63" },
-        { name: "Qatar", code: "+974" },
-        { name: "Russia", code: "+7" },
-        { name: "Singapore", code: "+65" },
-        { name: "South Africa", code: "+27" },
-        { name: "South Korea", code: "+82" },
-        { name: "Spain", code: "+34" },
-        { name: "Sri Lanka", code: "+94" },
-        { name: "Sweden", code: "+46" },
-        { name: "Switzerland", code: "+41" },
-        { name: "Thailand", code: "+66" },
-        { name: "Turkey", code: "+90" },
-        { name: "UAE", code: "+971" },
-        { name: "United Kingdom", code: "+44" },
-        { name: "United States", code: "+1" },
-        { name: "Vietnam", code: "+84" },
-        { name: "Zimbabwe", code: "+263" }
-    ];
-
-    // Business WhatsApp dropdown (single instance)
-    const dropdown = document.getElementById("prefixDropdown");
-    const list = document.getElementById("prefixList");
-    const ul = document.getElementById("prefixItems");
-    const search = document.getElementById("prefixSearch");
-    const selected = document.getElementById("selectedPrefix");
-    const hiddenPrefix = document.getElementById("whatsappPrefix");
-
-    function renderList(filter = "") {
-        if (!ul) return;
-        
-        ul.innerHTML = "";
-
-        // Always show top 5 first
-        topCountries.forEach(c => {
-            if (c.name.toLowerCase().includes(filter.toLowerCase())) {
-                const li = document.createElement("li");
-                li.textContent = `${c.name} (${c.code})`;
-                li.style.fontWeight = "600";
-                li.onclick = () => {
-                    selected.textContent = c.code;
-                    hiddenPrefix.value = c.code;
-                    list.classList.add("d-none");
-                };
-                ul.appendChild(li);
-            }
-        });
-
-        // Divider
-        const divider = document.createElement("li");
-        divider.style.borderTop = "1px solid #ddd";
-        ul.appendChild(divider);
-
-        // All countries (FULL scroll)
-        allCountries
-            .filter(c => c.name.toLowerCase().includes(filter.toLowerCase()))
-            .forEach(c => {
-                const li = document.createElement("li");
-                li.textContent = `${c.name} (${c.code})`;
-                li.onclick = () => {
-                    selected.textContent = c.code;
-                    hiddenPrefix.value = c.code;
-                    list.classList.add("d-none");
-                };
-                ul.appendChild(li);
-            });
-    }
-
-    if (dropdown) {
-        dropdown.onclick = () => {
-            list.classList.toggle("d-none");
-            renderList();
-        };
-    }
-
-    if (search) {
-        search.onkeyup = () => {
-            renderList(search.value);
-        };
-    }
-
-    // Close business WhatsApp dropdown when clicking outside
-    document.addEventListener('click', function(e) {
-        if (list && dropdown && !dropdown.contains(e.target) && !list.contains(e.target)) {
-            list.classList.add('d-none');
-        }
-    });
-</script> --}}
-
-{{-- <script>
-    // Initialize WhatsApp Dropdowns for Founders (works for existing and new founders)
-    function initializeWhatsAppDropdowns() {
-        $('.whatsapp-wrapper').each(function() {
-            const $wrapper = $(this);
-            const $dropdown = $wrapper.find('.prefix-dropdown');
-            const $prefixList = $wrapper.next('.prefix-list');
-            const $selectedPrefix = $wrapper.find('.selectedPrefix');
-            const $hiddenInput = $wrapper.find('.whatsapp-prefix');
-            const $searchInput = $prefixList.find('.prefixSearch');
-            const $itemsList = $prefixList.find('.prefixItems');
-
-            // Skip if already initialized
-            if ($wrapper.data('initialized')) return;
-            $wrapper.data('initialized', true);
-
-            // Populate country codes if not already done
-            if ($itemsList.children().length === 0) {
-                // Top countries first
-                topCountries.forEach(country => {
-                    $itemsList.append(`
-                        <li data-code="${country.code}" style="font-weight: 600;">
-                            ${country.name} (${country.code})
-                        </li>
-                    `);
-                });
-
-                // Divider
-                $itemsList.append('<li style="border-top: 1px solid #ddd;"></li>');
-
-                // All countries
-                allCountries.forEach(country => {
-                    $itemsList.append(`
-                        <li data-code="${country.code}">
-                            ${country.name} (${country.code})
-                        </li>
-                    `);
-                });
-            }
-
-            // Toggle dropdown
-            $dropdown.off('click').on('click', function(e) {
-                e.stopPropagation();
-                
-                // Close other dropdowns
-                $('.prefix-list').not($prefixList).addClass('d-none');
-                
-                // Toggle current
-                $prefixList.toggleClass('d-none');
-            });
-
-            // Search functionality
-            $searchInput.off('input').on('input', function() {
-                const searchTerm = $(this).val().toLowerCase();
-                $itemsList.find('li').each(function() {
-                    const text = $(this).text().toLowerCase();
-                    const hasBorder = $(this).css('border-top') !== '0px none rgb(0, 0, 0)';
-                    
-                    if (hasBorder) {
-                        $(this).hide(); // Hide divider during search
-                    } else {
-                        $(this).toggle(text.includes(searchTerm));
-                    }
-                });
-
-                // Show divider only if search is empty
-                if (searchTerm === '') {
-                    $itemsList.find('li[style*="border-top"]').show();
-                }
-            });
-
-            // Select country code
-            $itemsList.off('click').on('click', 'li', function() {
-                const selectedCode = $(this).data('code');
-                if (!selectedCode) return; // Skip if clicking on divider
-                
-                $selectedPrefix.text(selectedCode);
-                $hiddenInput.val(selectedCode);
-                $prefixList.addClass('d-none');
-                $searchInput.val('');
-                $itemsList.find('li').show();
-            });
-        });
-
-        // Close dropdowns when clicking outside
-        $(document).off('click.whatsappFounder').on('click.whatsappFounder', function(e) {
-            if (!$(e.target).closest('.whatsapp-wrapper, .prefix-list').length) {
-                $('.whatsapp-wrapper').next('.prefix-list').addClass('d-none');
-            }
-        });
-    }
-</script> --}}
-
-{{-- <script>
-    // Founder Management
-        const founderIndex = $('#founders-container .border.rounded').length;
-
-
-    function addFounder() {
-        const newFounderHtml = `
-            <div class="border rounded p-3 mb-3 founder-item">
-                <div class="row">
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">Founder / Owner Full Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="founders[${founderIndex}][name]" required>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">Designation <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="founders[${founderIndex}][designation]" required>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">WhatsApp Number</label>
-
-                        <div class="whatsapp-wrapper" data-index="${founderIndex}">
-                            <div class="prefix-dropdown">
-                                <span class="selectedPrefix">+880</span>
-                                <span class="arrow">▼</span>
-                            </div>
-
-                            <input type="hidden"
-                                name="founders[${founderIndex}][whatsapp_prefix]"
-                                class="whatsapp-prefix"
-                                value="+880">
-
-                            <input type="text"
-                                name="founders[${founderIndex}][whatsapp_number]"
-                                class="form-control whatsapp-input"
-                                placeholder="Enter number"
-                                value="">
-                        </div>
-
-                        <div class="prefix-list d-none">
-                            <input type="text" class="prefixSearch" placeholder="Search country...">
-                            <ul class="prefixItems"></ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">Linkedin URL</label>
-                        <input type="text" class="form-control" name="founders[${founderIndex}][linkedin]">
-                    </div>
-                    <div class="col-12 mb-2">
-                        <button type="button" class="btn btn-danger btn-sm remove-founder">
-                            <i class="fa fa-trash"></i> Remove Founder
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        $('#founders-container').append(newFounderHtml);
-        founderIndex++;
-        
-        // Re-initialize WhatsApp dropdowns for the new founder
-        initializeWhatsAppDropdowns();
-    }
-
-    // Remove Founder
-    $(document).on('click', '.remove-founder', function() {
-        $(this).closest('.founder-item').remove();
-    });
-
-    // Add Founder button click
-    $(document).on('click', '#addFounderBtn', function() {
-        addFounder();
-    });
-</script> --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const radios = document.querySelectorAll('input[name="collaboration_open"]');
@@ -1698,7 +1518,6 @@ $(document).ready(function () {
         toggleCollaborationTypes();
     });
 </script>
-
 @if($step == 2)
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script>
@@ -1720,6 +1539,27 @@ $(document).ready(function () {
             console.log('Category ID:', categoryId);
             console.log('Selected Services:', selectedServices);
 
+            // Initialize Select2 with tags enabled
+            $services.select2({
+                tags: true,                    // Enable custom tags
+                tokenSeparators: [','],        // Comma দিয়ে separate হবে
+                placeholder: 'Select or type services',
+                allowClear: true,
+                createTag: function (params) {
+                    var term = $.trim(params.term);
+                    
+                    if (term === '') {
+                        return null;
+                    }
+
+                    return {
+                        id: 'new:' + term,     // নতুন item এর জন্য prefix
+                        text: term + ' (New)',
+                        newTag: true
+                    }
+                }
+            });
+
             // Initial load
             if (categoryId && $services.length) {
                 loadServices(categoryId, selectedServices);
@@ -1732,7 +1572,12 @@ $(document).ready(function () {
                 if (newCategoryId) {
                     loadServices(newCategoryId, []);
                 } else {
-                    $services.empty().append('<option value="">Select category first</option>');
+                    $services.empty().trigger('change');
+                    $services.select2({
+                        tags: true,
+                        tokenSeparators: [','],
+                        placeholder: 'Select category first'
+                    });
                 }
             });
 
@@ -1751,6 +1596,7 @@ $(document).ready(function () {
 
                         if (!Array.isArray(data) || data.length === 0) {
                             $services.append('<option value="">No services found</option>');
+                            initializeSelect2WithTags();
                             return;
                         }
 
@@ -1764,7 +1610,11 @@ $(document).ready(function () {
                             }
 
                             const isSelected = selected.some(function (val) {
-                                return val != null && val.toString() === serviceId.toString();
+                                // Check both ID and custom text
+                                if (val != null && val.toString() === serviceId.toString()) {
+                                    return true;
+                                }
+                                return false;
                             });
 
                             $services.append(`
@@ -1773,9 +1623,46 @@ $(document).ready(function () {
                                 </option>
                             `);
                         });
+
+                        // Add custom/new services that were previously saved
+                        selected.forEach(function(val) {
+                            if (val && val.toString().startsWith('new:')) {
+                                const customText = val.toString().replace('new:', '');
+                                $services.append(`
+                                    <option value="${val}" selected>
+                                        ${customText}
+                                    </option>
+                                `);
+                            }
+                        });
+
+                        initializeSelect2WithTags();
                     },
                     error: function () {
                         $services.empty().append('<option value="">Error loading services</option>');
+                        initializeSelect2WithTags();
+                    }
+                });
+            }
+
+            function initializeSelect2WithTags() {
+                $services.select2({
+                    tags: true,
+                    tokenSeparators: [','],
+                    placeholder: 'Select or type services',
+                    allowClear: true,
+                    createTag: function (params) {
+                        var term = $.trim(params.term);
+                        
+                        if (term === '') {
+                            return null;
+                        }
+
+                        return {
+                            id: 'new:' + term,
+                            text: term + ' (New)',
+                            newTag: true
+                        }
                     }
                 });
             }
@@ -1786,8 +1673,8 @@ $(document).ready(function () {
             if (input.files && input.files[0]) {
                 const file = input.files[0];
 
-                if (file.size > 2048 * 1024) {
-                    alert('Logo file size must be less than 2MB');
+                if (file.size > 5120 * 1024) {
+                    alert('Logo file size must be less than 5MB');
                     input.value = '';
                     return;
                 }
@@ -1805,8 +1692,8 @@ $(document).ready(function () {
             if (input.files && input.files[0]) {
                 const file = input.files[0];
 
-                if (file.size > 2048 * 1024) {
-                    alert('Cover photo file size must be less than 2MB');
+                if (file.size > 5120 * 1024) {
+                    alert('Cover photo file size must be less than 5MB');
                     input.value = '';
                     return;
                 }
@@ -1819,11 +1706,8 @@ $(document).ready(function () {
             }
         }
 
-
-
     </script>
 @endif
-
 {{-- Auto-upload scripts for Step 2 --}}
 <script>
     $(document).ready(function() {
@@ -1894,7 +1778,21 @@ $(document).ready(function () {
             if (!file) return;
 
             // Validation
-            const maxSize = fieldName === 'logo' ? 2048 : 5120; // KB
+            // const maxSize = fieldName === 'logo' ? 2048 : 5120; // KB
+            // if (file.size > maxSize * 1024) {
+            //     alert(`File size must be less than ${maxSize / 1024}MB`);
+            //     $(input).val('');
+            //     return;
+            // }
+            const maxSizes = {
+                'logo': 5120,
+                'cover_photo': 5120,
+                'registration_document': 5120,
+                'business_profile': 5120,
+                'product_catalogue': 5120
+            };
+            const maxSize = maxSizes[fieldName] ?? 5120;
+
             if (file.size > maxSize * 1024) {
                 alert(`File size must be less than ${maxSize / 1024}MB`);
                 $(input).val('');
@@ -1916,35 +1814,65 @@ $(document).ready(function () {
                 data: formData,
                 processData: false,
                 contentType: false,
+                // success: function(response) {
+                //     hideLoader();
+                    
+                //     if (response.success) {
+                //         // Update preview if image
+                //         if (previewSelector && response.file_url) {
+                //             $(previewSelector).attr('src', response.file_url);
+                //         }
+
+                //         // Show success message with delete button
+                //         const $parent = $(input).closest('.col-md-3, .col-md-4, .col-md-2');
+                //         $parent.find('.text-success').remove();
+                //         $parent.find('.delete-file-btn').remove();
+                        
+                //         $parent.append(`
+                //             <small class="text-success d-block mt-1">
+                //                 <i class="fa fa-check"></i> File uploaded successfully
+                //                 ${response.file_url ? `<a href="${response.file_url}" target="_blank">View</a>` : ''}
+                //             </small>
+                //             <button type="button" class="btn btn-danger btn-sm mt-2 delete-file-btn" 
+                //                     data-field="${fieldName}" data-business-id="${businessId}">
+                //                 <i class="fa fa-trash"></i> Delete
+                //             </button>
+                //         `);
+
+                //         // Clear input
+                //         $(input).val('');
+                        
+                //         // alert('File uploaded successfully!');
+                //     } else {
+                //         alert('Upload failed: ' + (response.message || 'Unknown error'));
+                //     }
+                // },
                 success: function(response) {
                     hideLoader();
                     
                     if (response.success) {
-                        // Update preview if image
                         if (previewSelector && response.file_url) {
                             $(previewSelector).attr('src', response.file_url);
                         }
 
-                        // Show success message with delete button
-                        const $parent = $(input).closest('.col-md-3, .col-md-4, .col-md-2');
-                        $parent.find('.text-success').remove();
-                        $parent.find('.delete-file-btn').remove();
+                        // ✅ এই অংশটা বদলান
+                        const $input = $(input);
                         
-                        $parent.append(`
-                            <small class="text-success d-block mt-1">
-                                <i class="fa fa-check"></i> File uploaded successfully
-                                ${response.file_url ? `<a href="${response.file_url}" target="_blank">View</a>` : ''}
+                        // আগের success message সরান
+                        $input.siblings('.upload-success-msg').remove();
+                        
+                        // নতুন success message যোগ করুন
+                        const viewLink = response.file_url 
+                            ? `<a href="${response.file_url}" target="_blank">View</a>` 
+                            : '';
+                            
+                        $input.after(`
+                            <small class="text-success d-block mt-1 upload-success-msg">
+                                <i class="fa fa-check"></i> Document uploaded: ${viewLink}
                             </small>
-                            <button type="button" class="btn btn-danger btn-sm mt-2 delete-file-btn" 
-                                    data-field="${fieldName}" data-business-id="${businessId}">
-                                <i class="fa fa-trash"></i> Delete
-                            </button>
                         `);
 
-                        // Clear input
                         $(input).val('');
-                        
-                        alert('File uploaded successfully!');
                     } else {
                         alert('Upload failed: ' + (response.message || 'Unknown error'));
                     }
@@ -1997,7 +1925,7 @@ $(document).ready(function () {
 
                         toggleUploadBox();
                         $(input).val('');
-                        alert('Photos uploaded successfully!');
+                        // alert('Photos uploaded successfully!');
                     } else {
                         alert('Upload failed: ' + (response.message || 'Unknown error'));
                     }
@@ -2047,7 +1975,7 @@ $(document).ready(function () {
                         $btn.siblings('.text-success').remove();
                         $btn.remove();
                         
-                        alert('File deleted successfully!');
+                        // alert('File deleted successfully!');
                     } else {
                         alert('Delete failed: ' + (response.message || 'Unknown error'));
                     }
@@ -2089,7 +2017,7 @@ $(document).ready(function () {
                 if (response.success) {
                     $(btn).closest('.gallery-item').remove();
                     toggleUploadBox();
-                    alert('Photo deleted successfully!');
+                    // alert('Photo deleted successfully!');
                 } else {
                     alert('Delete failed: ' + (response.message || 'Unknown error'));
                 }
@@ -2101,4 +2029,111 @@ $(document).ready(function () {
         });
     }
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const MAX_COLLABORATION = 4;
+        const checkboxes = document.querySelectorAll('input[name="collaboration_types[]"]');
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                const checked = document.querySelectorAll('input[name="collaboration_types[]"]:checked');
+
+                if (checked.length > MAX_COLLABORATION) {
+                    this.checked = false;
+                    alert('You can select a maximum of 4 collaboration interests.');
+                }
+            });
+        });
+    });
+</script>
+
+
+
+@if($step == 4)
+<!-- Confirmation Modal -->
+<div class="modal fade" id="submitConfirmModal" tabindex="-1" aria-labelledby="submitConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-warning">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title fw-bold" id="submitConfirmLabel">
+                    ⚠ Confirm Submission
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                {{-- <div style="font-size: 3rem;">⚠️</div> --}}
+                <p class="fw-semibold mt-3 mb-2" style="font-size: 1.05rem;">
+                    Please review carefully before submitting.
+                </p>
+                <p class="text-muted">
+                    To maintain accuracy and trust, this information <strong>cannot be edited</strong> after submission.
+                </p>
+            </div>
+            <div class="modal-footer justify-content-center gap-3">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-success px-4" id="confirmSubmitBtn">
+                    OK, Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('openSubmitModal').addEventListener('click', function () {
+        var modal = new bootstrap.Modal(document.getElementById('submitConfirmModal'));
+        modal.show();
+    });
+
+    document.getElementById('confirmSubmitBtn').addEventListener('click', function () {
+        // Disable button to prevent double click
+        this.disabled = true;
+        this.textContent = 'Submitting...';
+
+        // Submit the form
+        document.querySelector('form').submit();
+    });
+</script>
+@endif
+@if($step == 1)
+<div class="modal fade" id="startBusinessModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-primary">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold">
+                    📋 Before You Begin
+                </h5>
+            </div>
+            <div class="modal-body text-center py-4">
+                <p class="fw-semibold mt-2 mb-2" style="font-size: 1.05rem;">
+                    Please have the following ready:
+                </p>
+                <ul class="text-start text-muted ps-4">
+                    <li>Business name & contact details</li>
+                    <li>Founder information</li>
+                    <li>Business logo & photos</li>
+                    <li>Registration documents (if any)</li>
+                </ul>
+                <p class="text-danger fw-semibold mt-3">
+                    ⚠ Information <strong>cannot be edited</strong> after final submission.
+                </p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary px-5" data-bs-dismiss="modal">
+                    I'm Ready, Let's Start!
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var modal = new bootstrap.Modal(document.getElementById('startBusinessModal'));
+        modal.show();
+    });
+</script>
+@endif
 @endsection

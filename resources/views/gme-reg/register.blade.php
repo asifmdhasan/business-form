@@ -750,7 +750,7 @@
                                             style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;">
                                     </div>
 
-                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 2MB)</small>
+                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 5MB)</small>
                                     @if(!empty($business->logo))
                                         <small class="text-success d-block"><i class="fa fa-check"></i> Logo uploaded</small>
                                     @endif
@@ -786,7 +786,7 @@
                                             style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;">
                                     </div>
 
-                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 2MB)</small>
+                                    <small class="text-muted d-block mt-1">PNG, JPG, JPEG (Max 5MB)</small>
                                     @if(!empty($business->cover_photo))
                                         <small class="text-success d-block"><i class="fa fa-check"></i> Cover uploaded</small>
                                     @endif
@@ -840,7 +840,7 @@
 
                                     </div>
 
-                                    <small class="text-muted">Max 6 images (PNG, JPG, JPEG | 2MB each)</small>
+                                    <small class="text-muted">Max 6 images (PNG, JPG, JPEG | 5MB each)</small>
                                 </div>
                             </div>
 
@@ -1673,8 +1673,8 @@
             if (input.files && input.files[0]) {
                 const file = input.files[0];
 
-                if (file.size > 2048 * 1024) {
-                    alert('Logo file size must be less than 2MB');
+                if (file.size > 5120 * 1024) {
+                    alert('Logo file size must be less than 5MB');
                     input.value = '';
                     return;
                 }
@@ -1692,8 +1692,8 @@
             if (input.files && input.files[0]) {
                 const file = input.files[0];
 
-                if (file.size > 2048 * 1024) {
-                    alert('Cover photo file size must be less than 2MB');
+                if (file.size > 5120 * 1024) {
+                    alert('Cover photo file size must be less than 5MB');
                     input.value = '';
                     return;
                 }
@@ -1785,13 +1785,13 @@
             //     return;
             // }
             const maxSizes = {
-                'logo': 2048,
-                'cover_photo': 2048,
+                'logo': 5120,
+                'cover_photo': 5120,
                 'registration_document': 5120,
                 'business_profile': 5120,
                 'product_catalogue': 5120
             };
-            const maxSize = maxSizes[fieldName] ?? 2048;
+            const maxSize = maxSizes[fieldName] ?? 5120;
 
             if (file.size > maxSize * 1024) {
                 alert(`File size must be less than ${maxSize / 1024}MB`);
@@ -2094,6 +2094,45 @@
 
         // Submit the form
         document.querySelector('form').submit();
+    });
+</script>
+@endif
+@if($step == 1)
+<div class="modal fade" id="startBusinessModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-primary">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold">
+                    📋 Before You Begin
+                </h5>
+            </div>
+            <div class="modal-body text-center py-4">
+                <p class="fw-semibold mt-2 mb-2" style="font-size: 1.05rem;">
+                    Please have the following ready:
+                </p>
+                <ul class="text-start text-muted ps-4">
+                    <li>Business name & contact details</li>
+                    <li>Founder information</li>
+                    <li>Business logo & photos</li>
+                    <li>Registration documents (if any)</li>
+                </ul>
+                <p class="text-danger fw-semibold mt-3">
+                    ⚠ Information <strong>cannot be edited</strong> after final submission.
+                </p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary px-5" data-bs-dismiss="modal">
+                    I'm Ready, Let's Start!
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var modal = new bootstrap.Modal(document.getElementById('startBusinessModal'));
+        modal.show();
     });
 </script>
 @endif

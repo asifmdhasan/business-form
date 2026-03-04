@@ -296,6 +296,10 @@
             .main-content{
                 margin-left: 0 !important;
             }
+            .container.py-5{
+                padding-top: 0rem !important;
+                padding-bottom: 0rem !important;
+            }
         }
 
 

@@ -1855,7 +1855,7 @@
 
             {{-- CENTER LOGO --}}
             <div class="gme-logo">
-                <a href="https://gme.network/">
+                <a href="{{ route('guest.index') }}">
                     <img src="{{ asset('assets/image/logo.webp') }}" alt="GME">
                 </a>
             </div>
@@ -2010,7 +2010,7 @@
                 {{-- <div class="tag">Community</div> --}}
                 {{-- <h2>Bring Your Business to the <strong>Global Stage</strong></h2> --}}
                 <h4 class="fw-bold mb-4 featured-business "
-                    style="
+                    style=" text-align: center;
                         ">
                     <span style="color:#fff;  font-weight: 300;">Bring Your Business to the  </span>
                     <span style="color:#fff;font-weight: 900;">Global Stage </span>
@@ -2662,7 +2662,7 @@
 
                 $results.append(`
                     <div class="hero-search-item"
-                        onclick="location.href='{{ url('guest-gme-business-form') }}/${business.id}'">
+                        onclick="location.href='{{ url('guest-gme-business-form') }}/${business.slug}'">
                         <img src="${image}" class="hero-search-img">
                         <div>
                             <div class="hero-search-title">

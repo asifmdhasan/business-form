@@ -569,7 +569,7 @@
                     : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp';
                 $container.append(`
                     <div class="hero-search-item"
-                        onclick="location.href='${baseUrl}/${business.id}'">
+                        onclick="location.href='${baseUrl}/${business.slug}'">
                         <img src="${image}" class="hero-search-img">
                         <div>
                             <div class="hero-search-title">${business.business_name}</div>

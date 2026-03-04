@@ -2,6 +2,9 @@
 
 @section('content')
 <style>
+    .edit-btn{
+        display: none;
+    }
     #businessTabs .nav-link{
         color: #576829;
         width: 10rem;
@@ -218,7 +221,7 @@ $(function () {
 
                     let editBtn = `
                         <a href="{{ url('gme-business-admin') }}/${row.id}/edit"
-                           class="btn btn-sm btn-primary">
+                           class="btn btn-sm btn-primary edit-btn">
                             <i class="fas fa-edit"></i>
                         </a>`;
 

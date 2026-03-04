@@ -33,7 +33,16 @@ use Illuminate\Support\Facades\Route;
 
 
 
-
+// Route for log
+Route::get('/show-log', function () {
+    $logPath = storage_path('logs/laravel.log');
+    if (!file_exists($logPath)) {
+        abort(404, 'Log file not found.');
+    }
+    return response()->file($logPath, [
+        'Content-Type' => 'text/plain'
+    ]);
+});
 
 Route::middleware(['web', 'setLocale'])->group(function () {
     Route::get('/', [GuestController::class, 'landingPage']);
@@ -73,21 +82,11 @@ Route::middleware(['web', 'setLocale'])->group(function () {
     Route::get('/ad-backdoor', [AuthController::class, 'showLoginForm']);
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-});
-
-// Route for log
-Route::get('/show-log', function () {
-    $logPath = storage_path('logs/laravel.log');
-    if (!file_exists($logPath)) {
-        abort(404, 'Log file not found.');
-    }
-    return response()->file($logPath, [
-        'Content-Type' => 'text/plain'
-    ]);
-});
 
 
-Route::middleware(['setLocale'])->group(function () {
+
+
+    //Login & Registration for Customer
     Route::get('/gme-network-login', [CustomerAuthController::class, 'showCustomerLoginForm'])->name('customer.login');
     Route::post('/gme-network-login', [CustomerAuthController::class, 'cusLogin'])->name('customer.login.submit');
     Route::get('/gme-network-register', function () { return view('customer.auth.register');})->name('customer.register');
@@ -119,6 +118,14 @@ Route::middleware(['setLocale'])->group(function () {
     Route::get('/business/success', [GmeRegController::class, 'success'])->name('gme.business.success');
     Route::get('/get-services/{category}', [GmeRegController::class, 'getServices'])->name('get.services');
 
+
+
+    // Route::post('/logout', [CustomerAuthController::class, 'logout'])->middleware('auth:customer');
+    Route::post('/forgot-password', [CustomerAuthController::class, 'forgotPassword']);
+    Route::post('/verify-otp', [CustomerAuthController::class, 'verifyOtp']);
+    Route::post('/reset-password', [CustomerAuthController::class, 'resetPassword']);
+
+
 });
 
 
@@ -126,16 +133,14 @@ Route::middleware(['setLocale'])->group(function () {
 
 
 
-// Route::post('/logout', [CustomerAuthController::class, 'logout'])->middleware('auth:customer');
-Route::post('/forgot-password', [CustomerAuthController::class, 'forgotPassword']);
-Route::post('/verify-otp', [CustomerAuthController::class, 'verifyOtp']);
-Route::post('/reset-password', [CustomerAuthController::class, 'resetPassword']);
+
 
 
 
 
 
 Route::middleware([
+    'web',
     'setLocale',
     CustomerAuth::class,
 ])->group(function () {
@@ -203,6 +208,7 @@ Route::get('/make-hash/{string}', function ($string) {
 });
 
 Route::middleware([
+    'web',
     'setLocale',
     LoginAuthMiddleware::class,
 ])->group(function () {

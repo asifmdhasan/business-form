@@ -487,10 +487,15 @@
                             <div class="info-separator">:</div>
                             <div class="info-value">
                                 @if($business->website)
-                                    <a href="{{ $business->website }}" target="_blank">{{ $business->website }}</a>
+                                    <a href="{{ $business->website_url }}" target="_blank">{{ $business->website }}</a>
                                 @else
                                     <span class="text-empty">-</span>
                                 @endif
+                                {{-- @if($business->website)
+                                    <a href="{{ $business->website }}" target="_blank">{{ $business->website }}</a>
+                                @else
+                                    <span class="text-empty">-</span>
+                                @endif --}}
                             </div>
                         </div>
                         

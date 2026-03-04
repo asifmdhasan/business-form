@@ -451,7 +451,7 @@
             </nav>
 
             <div class="gme-logo">
-                <a href="https://gme.network/">
+                <a href="{{ route('guest.index') }}">
                     <img src="{{ asset('assets/image/logo.webp') }}" alt="GME">
                 </a>
             </div>

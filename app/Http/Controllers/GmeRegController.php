@@ -435,8 +435,8 @@ class GmeRegController extends Controller
             ];
 
             $maxSizes = [
-                'logo' => 2048,
-                'cover_photo' => 2048,
+                'logo' => 5120,
+                'cover_photo' => 5120,
                 'registration_document' => 5120,
                 'business_profile' => 5120,
                 'product_catalogue' => 5120
@@ -532,7 +532,7 @@ class GmeRegController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'photos.*' => 'required|image|max:2048',
+                'photos.*' => 'required|image|max:5120',
                 'business_id' => 'required|exists:gme_business_forms,id'
             ]);
 
