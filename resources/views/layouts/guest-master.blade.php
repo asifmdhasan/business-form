@@ -2019,7 +2019,7 @@
                 Join a growing network of Muslim entrepreneurs building real businesses,
                 real partnerships, and real impact.
                 </p>
-                <a href="{{ route('gme.business.register') }}" class="btn-partner">
+                <a href="{{ route('customer.register') }}" class="btn-partner">
                 Add Your Business Today
                 <span class="arrow-circle"><i class="fas fa-arrow-right"></i></span>
                 </a>
