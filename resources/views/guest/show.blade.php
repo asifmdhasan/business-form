@@ -2048,7 +2048,7 @@
                 <div class="modal-header border-0" style="margin-top:2.5rem;background: linear-gradient(135deg, #9C7D2D 0%, #7A6324 100%);">
                     <h5 class="modal-title text-white fw-bold" id="contactRequestModalLabel">
                         <i class="fas fa-user-check me-2"></i>
-                        Request Contact Information
+                        Request Collaboration Form
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
