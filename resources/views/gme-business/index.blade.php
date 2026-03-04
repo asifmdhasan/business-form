@@ -6,6 +6,10 @@
 
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
     <style>
+        .py-5 {
+            padding-top: 0rem!important;
+            padding-bottom: 3rem!important;
+        }
         .active>.page-link, .page-link.active {
             z-index: 3;
             color: var(--bs-pagination-active-color);
