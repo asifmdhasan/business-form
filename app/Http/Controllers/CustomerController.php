@@ -171,31 +171,6 @@ class CustomerController extends Controller
     }
 
 
-    // public function show($id)
-    // {
-    //     $business = GmeBusinessForm::findOrFail($id);
-    //     return view('gme-business.show', compact('business'));
-    // }
-// public function show($id)
-// {
-//     $business = GmeBusinessForm::with('category.services')->findOrFail($id);
-
-//     // Decode services_id JSON
-//     $selectedServiceIds = $business->services_id ?? [];
-//     if (is_string($selectedServiceIds)) {
-//         $selectedServiceIds = json_decode($selectedServiceIds, true);
-//     }
-
-//     // Filter category services based on selected IDs
-//     $services = $business->category
-//         ? $business->category->services->whereIn('id', $selectedServiceIds)
-//         : collect();
-
-//     return view('gme-business.show', compact('business', 'services'));
-// }
-
-
-
     public function show(GmeBusinessForm $business)
     {
         $business = GmeBusinessForm::with(['category.services', 'businessPhotos'])

@@ -45,52 +45,8 @@ class CustomerAuthController extends Controller
     }
 
 
-    // public function cusLogin(Request $request)
-    // {
-    //     $request->validate([
-    //         'email'    => 'required|email',
-    //         'password' => 'required'
-    //     ]);
-
-    //     $credentials = $request->only('email', 'password');
-
-    //     // Use the correct guard
-    //     if (Auth::guard('customer')->attempt($credentials)) {
-
-    //         $customer = Auth::guard('customer')->user();
-
-    //         return redirect()->route('customer.dashboard');
-    //     }
-
-    //     return redirect()->back()->withErrors([
-    //         'email' => __('login.login_failed'),
-    //     ]);
-    // }
 
 
-    // ============================
-    // SHOW REGISTER FORM
-    // ============================
-    // public function showRegisterForm()
-    // {
-    //     return view('customer.auth.register');
-    // }
-    // public function showRegisterForm(Request $request)
-    // {
-    //     $step = $request->get('step', 1);
-    //     $user = auth()->user(); // Authenticated user
-        
-    //     // Get or create business for this user
-    //     $business = GmeBusinessForm::firstOrCreate(
-    //         ['user_id' => $user->id, 'status' => 'draft'],
-    //         ['user_id' => $user->id]
-    //     );
-        
-    //     $categories = BusinessCategory::all();
-    //     $countries = $this->getCountriesList();
-        
-    //     return view('gme.business.register', compact('step', 'business', 'categories', 'countries'));
-    // }
 
     // ============================
     // REGISTER

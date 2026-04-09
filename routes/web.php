@@ -22,17 +22,6 @@ use App\Http\Middleware\LoginAuthMiddleware;
 use Illuminate\Support\Facades\Route;
 
 
-
-
-
-
-
-
-
-
-
-
-
 // Route for log
 Route::get('/show-log', function () {
     $logPath = storage_path('logs/laravel.log');
@@ -127,15 +116,6 @@ Route::middleware(['web', 'setLocale'])->group(function () {
 
 
 });
-
-
-
-
-
-
-
-
-
 
 
 

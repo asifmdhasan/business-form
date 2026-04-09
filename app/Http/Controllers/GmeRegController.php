@@ -170,21 +170,18 @@ class GmeRegController extends Controller
                     'business_overview' => 'nullable|string|max:1800',
                     'services_id' => 'required|array|max:10',
                     // 'services_id.*' => 'exists:services,id',
-                    // Custom validation যোগ করুন
+                    // Custom validation
                     'services_id.*' => [
                         'required',
                         'string',
                         function ($attribute, $value, $fail) {
-                            // যদি "new:" দিয়ে শুরু হয় তাহলে allow করুন
                             if (strpos($value, 'new:') === 0) {
                                 $serviceName = str_replace('new:', '', $value);
-                                // Check করুন নাম খালি নয়
                                 if (empty(trim($serviceName))) {
                                     $fail('Service name cannot be empty.');
                                 }
                                 return;
                             }
-                            // নাহলে database-এ exist করতে হবে
                             if (!is_numeric($value) || !\App\Models\Service::where('id', $value)->exists()) {
                                 $fail('The selected service is invalid.');
                             }
@@ -308,11 +305,9 @@ class GmeRegController extends Controller
         if ($request->has('services_id') && is_array($request->services_id)) {
             foreach ($request->services_id as $serviceId) {
                 if (strpos($serviceId, 'new:') === 0) {
-                    // নতুন custom service
                     $newServiceName = trim(str_replace('new:', '', $serviceId));
                     
                     if (!empty($newServiceName)) {
-                        // Database-এ নতুন service create করুন
                         $newService = \App\Models\Service::firstOrCreate(
                             ['name' => $newServiceName],
                             ['business_category_id' => $business->business_category_id ?? null]

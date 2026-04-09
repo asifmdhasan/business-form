@@ -18,10 +18,7 @@ class CartController extends Controller
             'unit_price'        => 'required|numeric',
             'total_amount'      => 'required|numeric',
         ]);
-        // if ($validator->fails()) {
-        //     notify()->error("All Fields are Required");
-        //     return redirect()->back()->withErrors($validator)->withInput();
-        // }
+
 
         $partVariant = Variant::with('part' , 'attribute')->find($request->variant_id);
 
