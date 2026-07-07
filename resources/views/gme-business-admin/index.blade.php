@@ -2,9 +2,9 @@
 
 @section('content')
 <style>
-    .edit-btn{
+    /* .edit-btn{
         display: none;
-    }
+    } */
     #businessTabs .nav-link{
         color: #576829;
         width: 10rem;

@@ -64,6 +64,57 @@
 
 
 
+            <li class="nav-item mt-3">
+                <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                data-bs-toggle="collapse"
+                href="#smsMenu"
+                role="button"
+                aria-expanded="{{ request()->routeIs('sms.*') ? 'true' : 'false' }}"
+                aria-controls="smsMenu"
+                style="cursor: pointer;">
+                    <span>
+                        <i class="fa fa-cogs me-2"></i>
+                        <span class="text-uppercase small fw-bold">CMS</span>
+                    </span>
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <div class="collapse {{ request()->routeIs('sms.*') ? 'show' : '' }}" id="smsMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item">
+                            <a href="{{ route('sms.hero.edit') }}"
+                            class="nav-link text-white {{ request()->routeIs('sms.hero.edit') ? 'active' : '' }}">
+                                <i class="fa fa-image me-2"></i> Hero Section
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sms.featured.edit') }}"
+                            class="nav-link text-white {{ request()->routeIs('sms.featured.edit') ? 'active' : '' }}">
+                                <i class="fa fa-star me-2"></i> Featured Businesses
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sms.filter.edit') }}"
+                            class="nav-link text-white {{ request()->routeIs('sms.filter.edit') ? 'active' : '' }}">
+                                <i class="fa fa-filter me-2"></i> Filter Businesses
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sms.cta.edit') }}"
+                            class="nav-link text-white {{ request()->routeIs('sms.cta.edit') ? 'active' : '' }}">
+                                <i class="fa fa-bullhorn me-2"></i> Global Stage CTA
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sms.footer.edit') }}"
+                            class="nav-link text-white {{ request()->routeIs('sms.footer.edit') ? 'active' : '' }}">
+                                <i class="fa fa-shoe-prints me-2"></i> Footer
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+
 
 
             <!-- Categories Dropdown -->

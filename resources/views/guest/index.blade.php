@@ -34,30 +34,30 @@
 
 </style>
 
-
-
-
+{{--
+    Word-alternating title helper:
+    takes a title string from the DB and renders it word-by-word,
+    alternating light (odd words: 1st, 3rd, 5th...) and bold/gold (even words: 2nd, 4th, 6th...).
+--}}
+@php
+    $featuredTitle = \App\Models\SiteSetting::get('featured_title', 'Featured Businesses');
+    $filterTitle   = \App\Models\SiteSetting::get('filter_title', 'Filter Businesses');
+    $featuredWords = preg_split('/\s+/', trim($featuredTitle));
+    $filterWords   = preg_split('/\s+/', trim($filterTitle));
+@endphp
 
 {{-- FEATURED BUSINESSES --}}
-{{-- <section class="py-5">
-    <div class="container">
-        <h4 class="fw-bold mb-4 featured-business "
-            style="
-                font-size: 34px;
-                text-transform: uppercase;
-                line-height: 1.3em;">
-            <span style=" font-weight: 300;">Featured </span>
-            <span style="color:#9b7d2d;font-weight: 900;">Businesses </span>
-        </h4>
-        <div class="row" id="featuredGrid"></div>
-    </div>
-</section> --}}
 <section class="py-5">
     <div class="container">
         <h4 class="fw-bold mb-4 featured-business"
             style="font-size:34px;text-transform:uppercase;line-height:1.3em;">
-            <span style="font-weight:300;">Featured </span>
-            <span style="color:#9b7d2d;font-weight:900;">Businesses</span>
+            @foreach ($featuredWords as $i => $word)
+                @if ($i % 2 === 0)
+                    <span style="font-weight:300;">{{ $word }} </span>
+                @else
+                    <span style="color:#9b7d2d;font-weight:900;">{{ $word }} </span>
+                @endif
+            @endforeach
         </h4>
 
         <div class="swiper featuredSwiper" dir="ltr">
@@ -80,14 +80,18 @@
             <div class="filter-sidebar">
                 <div class="filter-header">
                     <i class="fas fa-filter filter-icon"></i>
-                    {{-- Filter Businesses --}}
                     <h4 class="fw-bold mb-4 featured-business "
                         style="
                             font-size: 34px;
                             text-transform: uppercase;
                             line-height: 1.3em;">
-                        <span style=" font-weight: 300;"> Filter </span>
-                        <span style="color:#9b7d2d;font-weight: 900;">Businesses </span>
+                        @foreach ($filterWords as $i => $word)
+                            @if ($i % 2 === 0)
+                                <span style=" font-weight: 300;">{{ $word }} </span>
+                            @else
+                                <span style="color:#9b7d2d;font-weight: 900;">{{ $word }} </span>
+                            @endif
+                        @endforeach
                     </h4>
                 </div>
 
@@ -102,10 +106,6 @@
                     <select class="form-select" id="categoryFilter" style="width: 100%;">
                         <option value="">All Categories</option>
                     </select>
-
-                    {{-- <select class="form-select" id="categoryFilter" style="width: 100%;">
-                        <option value="">All Categories</option>
-                    </select> --}}
                 </div>
 
                 <!-- Location Filter -->
@@ -127,19 +127,11 @@
                         <input type="radio" name="status" id="statusVerified" value="1">
                         <label for="statusVerified">GME Verified</label>
                     </div>
-                    {{-- <div class="radio-option">
-                        <input type="radio" name="status" id="statusPending" value="pending">
-                        <label for="statusPending">Pending</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" name="status" id="statusRejected" value="rejected">
-                        <label for="statusRejected">Rejected</label>
-                    </div> --}}
                 </div>
 
                 <!-- Action Buttons -->
-                <button class="btn-apply-filter" id="applyFilters">Apply Filters</button>
-                <button class="btn-reset" id="resetFilters">Reset</button>
+                <button class="btn-apply-filter" id="applyFilters">{{ \App\Models\SiteSetting::get('filter_apply_button_text', 'Apply Filters') }}</button>
+                <button class="btn-reset" id="resetFilters">{{ \App\Models\SiteSetting::get('filter_reset_button_text', 'Reset') }}</button>
             </div>
         </div>
 
@@ -180,20 +172,6 @@
     </div>
 </div>
 
-{{-- <section class="py-5 bg-white">
-    <div class="container">
-        <h4 class="fw-bold mb-4 featured-business "
-            style="
-                font-size: 34px;
-                text-transform: uppercase;
-                line-height: 1.3em;">
-            <span style=" font-weight: 300;">Browse by </span>
-            <span style="color:#9b7d2d;font-weight: 900;">Category </span>
-        </h4>
-        <div class="row g-4 pt-4" id="categoryBrowse">
-        </div>
-    </div>
-</section> --}}
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
 const swiper = new Swiper('.featuredSwiper', {
@@ -228,4 +206,3 @@ const swiper = new Swiper('.featuredSwiper', {
 });
 </script>
 @endsection
-

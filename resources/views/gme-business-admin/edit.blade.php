@@ -196,6 +196,18 @@
         color: var(--secondary-color);
         border-left: 4px solid var(--gold);
     }
+
+    .practice-box {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .practice-box .form-check {
+        margin-bottom: 0.5rem;
+    }
 </style>
 
 <div class="container-fluid py-4">
@@ -219,7 +231,7 @@
         </a>
     </div>
 
-    <form action="{{ route('gme-business-admin.update', $business->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('gme-business-admin.update', $business->id) }}" method="POST" enctype="multipart/form-data" id="businessEditForm">
         @csrf
         @method('PUT')
 
@@ -232,13 +244,19 @@
                 <div class="row">
                     <div class="col-md-6 form-group mb-3">
                         <label class="form-label">Business Name <span class="text-danger">*</span></label>
-                        <input type="text" name="business_name" class="form-control" 
+                        <input type="text" name="business_name" class="form-control"
                                value="{{ old('business_name', $business->business_name) }}" required>
                     </div>
 
                     <div class="col-md-6 form-group mb-3">
+                        <label class="form-label">Business Contact Person Name</label>
+                        <input type="text" name="business_contact_person_name" class="form-control"
+                               value="{{ old('business_contact_person_name', $business->business_contact_person_name) }}">
+                    </div>
+
+                    <div class="col-md-6 form-group mb-3">
                         <label class="form-label">Year Established</label>
-                        <input type="text" name="year_established" class="form-control" 
+                        <input type="text" name="year_established" class="form-control"
                                value="{{ old('year_established', $business->year_established) }}">
                     </div>
 
@@ -272,7 +290,7 @@
                         @endphp
                         <select class="form-select search_select" name="countries_of_operation[]" multiple required>
                             @foreach($countries as $country)
-                                <option value="{{ $country }}" {{ in_array($country, $savedCountries) ? 'selected' : '' }}>
+                                <option value="{{ $country }}" {{ in_array($country, $savedCountries ?? []) ? 'selected' : '' }}>
                                     {{ $country }}
                                 </option>
                             @endforeach
@@ -291,13 +309,19 @@
 
                     <div class="col-md-6 form-group mb-3">
                         <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control" 
+                        <input type="email" name="email" class="form-control"
                                value="{{ old('email', $business->email) }}">
                     </div>
 
                     <div class="col-md-6 form-group mb-3">
+                        <label class="form-label">WhatsApp Number</label>
+                        <input type="text" name="whatsapp_number" class="form-control"
+                               value="{{ old('whatsapp_number', $business->whatsapp_number) }}">
+                    </div>
+
+                    <div class="col-md-6 form-group mb-3">
                         <label class="form-label">Website</label>
-                        <input type="text" name="website" class="form-control" 
+                        <input type="text" name="website" class="form-control"
                                value="{{ old('website', $business->website) }}">
                     </div>
                 </div>
@@ -309,31 +333,31 @@
                 <div class="row">
                     <div class="col-md-6 form-group mb-3">
                         <label class="form-label">Facebook</label>
-                        <input type="string" name="facebook" class="form-control" 
+                        <input type="text" name="facebook" class="form-control"
                                value="{{ old('facebook', $business->facebook) }}">
                     </div>
 
                     <div class="col-md-6 form-group mb-3">
                         <label class="form-label">Instagram</label>
-                        <input type="string" name="instagram" class="form-control" 
+                        <input type="text" name="instagram" class="form-control"
                                value="{{ old('instagram', $business->instagram) }}">
                     </div>
 
                     <div class="col-md-6 form-group mb-3">
                         <label class="form-label">LinkedIn</label>
-                        <input type="string" name="linkedin" class="form-control" 
+                        <input type="text" name="linkedin" class="form-control"
                                value="{{ old('linkedin', $business->linkedin) }}">
                     </div>
 
                     <div class="col-md-6 form-group mb-3">
                         <label class="form-label">YouTube</label>
-                        <input type="string" name="youtube" class="form-control" 
+                        <input type="text" name="youtube" class="form-control"
                                value="{{ old('youtube', $business->youtube) }}">
                     </div>
 
                     <div class="col-md-6 form-group mb-3">
                         <label class="form-label">Online Store</label>
-                        <input type="string" name="online_store" class="form-control" 
+                        <input type="text" name="online_store" class="form-control"
                                value="{{ old('online_store', $business->online_store) }}">
                     </div>
                 </div>
@@ -352,6 +376,7 @@
                                     ? json_decode($business->founders, true)
                                     : [])
                         );
+                        $founders = is_array($founders) ? $founders : [];
                     @endphp
 
                     @if(count($founders) > 0)
@@ -360,22 +385,22 @@
                             <div class="row">
                                 <div class="col-md-3 form-group mb-3">
                                     <label class="form-label">Full Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="founders[{{ $index }}][name]" class="form-control" 
+                                    <input type="text" name="founders[{{ $index }}][name]" class="form-control"
                                            value="{{ old("founders.$index.name", $founder['name'] ?? '') }}" required>
                                 </div>
                                 <div class="col-md-3 form-group mb-3">
                                     <label class="form-label">Designation</label>
-                                    <input type="text" name="founders[{{ $index }}][designation]" class="form-control" 
+                                    <input type="text" name="founders[{{ $index }}][designation]" class="form-control"
                                            value="{{ old("founders.$index.designation", $founder['designation'] ?? '') }}">
                                 </div>
                                 <div class="col-md-3 form-group mb-3">
                                     <label class="form-label">WhatsApp</label>
-                                    <input type="text" name="founders[{{ $index }}][whatsapp]" class="form-control" 
-                                           value="{{ old("founders.$index.whatsapp", $founder['whatsapp'] ?? '') }}">
+                                    <input type="text" name="founders[{{ $index }}][whatsapp_number]" class="form-control"
+                                           value="{{ old("founders.$index.whatsapp_number", $founder['whatsapp_number'] ?? '') }}">
                                 </div>
                                 <div class="col-md-3 form-group mb-3">
                                     <label class="form-label">LinkedIn</label>
-                                    <input type="string" name="founders[{{ $index }}][linkedin]" class="form-control" 
+                                    <input type="text" name="founders[{{ $index }}][linkedin]" class="form-control"
                                            value="{{ old("founders.$index.linkedin", $founder['linkedin'] ?? '') }}">
                                 </div>
                             </div>
@@ -399,7 +424,7 @@
                                 </div>
                                 <div class="col-md-3 form-group mb-3">
                                     <label class="form-label">WhatsApp</label>
-                                    <input type="text" name="founders[0][whatsapp]" class="form-control">
+                                    <input type="text" name="founders[0][whatsapp_number]" class="form-control">
                                 </div>
                                 <div class="col-md-3 form-group mb-3">
                                     <label class="form-label">LinkedIn</label>
@@ -631,7 +656,7 @@
                             <label class="form-label">Registration Document</label>
                             <div class="mb-2">
                                 @if($business->registration_document)
-                                    <a href="{{ asset('assets/' . $business->registration_document) }}" 
+                                    <a href="{{ asset('assets/' . $business->registration_document) }}"
                                        target="_blank" class="btn btn-info btn-sm">
                                         <i class="fa fa-file-pdf"></i> View Document
                                     </a>
@@ -644,7 +669,7 @@
                             <label class="form-label">Business Profile</label>
                             <div class="mb-2">
                                 @if($business->business_profile)
-                                    <a href="{{ asset('assets/' . $business->business_profile) }}" 
+                                    <a href="{{ asset('assets/' . $business->business_profile) }}"
                                        target="_blank" class="btn btn-info btn-sm">
                                         <i class="fa fa-file"></i> View File
                                     </a>
@@ -657,7 +682,7 @@
                             <label class="form-label">Product Catalogue</label>
                             <div class="mb-2">
                                 @if($business->product_catalogue)
-                                    <a href="{{ asset('assets/' . $business->product_catalogue) }}" 
+                                    <a href="{{ asset('assets/' . $business->product_catalogue) }}"
                                        target="_blank" class="btn btn-info btn-sm">
                                         <i class="fa fa-file"></i> View File
                                     </a>
@@ -678,73 +703,89 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-7">
-                        <div class="mb-4">
-                            <label class="form-label question-label">Avoid Interest (Riba)? <span class="text-danger">*</span></label>
-                            @php $value = old('avoid_riba', $business->avoid_riba ?? ''); @endphp
-                            <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                @foreach([
-                                    'yes' => 'Yes',
-                                    'no' => 'No',
-                                    'partially_transitioning' => 'Partially Transitioning',
-                                    'prefer_not_to_say' => 'Prefer Not to Say'
-                                ] as $key => $label)
-                                    <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
-                                        <input type="radio" name="avoid_riba" value="{{ $key }}" autocomplete="off" 
-                                               {{ $value === $key ? 'checked' : '' }}> {{ $label }}
-                                    </label>
-                                @endforeach
-                            </div>
+
+                        @php
+                            $financePractices = old('finance_practices',
+                                is_array($business->finance_practices ?? null)
+                                    ? $business->finance_practices
+                                    : json_decode($business->finance_practices ?? '[]', true)
+                            );
+                            $financePractices = is_array($financePractices) ? $financePractices : [];
+
+                            $financeOptions = [
+                                'no_riba' => 'No Riba/Interest',
+                                'no_unethical_trade' => 'No Unethical Trade',
+                                'shariah_compliant' => 'Shariah Compliant',
+                                'honest_transparent' => 'Honest & Transparent',
+                            ];
+                        @endphp
+                        <div class="practice-box">
+                            <label class="form-label d-block mb-2">Finance & Business Practices</label>
+                            @foreach($financeOptions as $key => $label)
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                        name="finance_practices[]" value="{{ $key }}"
+                                        id="finance_{{ $key }}"
+                                        {{ in_array($key, $financePractices) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="finance_{{ $key }}">{{ $label }}</label>
+                                </div>
+                            @endforeach
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label question-label">Avoid Haram Products? <span class="text-danger">*</span></label>
-                            @php $value = old('avoid_haram_products', $business->avoid_haram_products ?? ''); @endphp
-                            <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                @foreach([
-                                    'yes' => 'Yes',
-                                    'no' => 'No',
-                                    'partially_compliant' => 'Partially Compliant',
-                                ] as $key => $label)
-                                    <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
-                                        <input type="radio" name="avoid_haram_products" value="{{ $key }}" autocomplete="off" 
-                                               {{ $value === $key ? 'checked' : '' }}> {{ $label }}
-                                    </label>
-                                @endforeach
-                            </div>
+                        @php
+                            $productPractices = old('product_practices',
+                                is_array($business->product_practices ?? null)
+                                    ? $business->product_practices
+                                    : json_decode($business->product_practices ?? '[]', true)
+                            );
+                            $productPractices = is_array($productPractices) ? $productPractices : [];
+
+                            $productOptions = [
+                                'halal_products' => 'Halal Products',
+                                'avoid_haram' => 'Avoid Haram Items',
+                                'high_quality_honest' => 'High Quality & Honest',
+                                'accurate_information' => 'Accurate Information',
+                            ];
+                        @endphp
+                        <div class="practice-box">
+                            <label class="form-label d-block mb-2">Product & Services Practices</label>
+                            @foreach($productOptions as $key => $label)
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                        name="product_practices[]" value="{{ $key }}"
+                                        id="product_{{ $key }}"
+                                        {{ in_array($key, $productPractices) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="product_{{ $key }}">{{ $label }}</label>
+                                </div>
+                            @endforeach
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label question-label">Fair Pricing <span class="text-danger">*</span></label>
-                            @php $value = old('fair_pricing', $business->fair_pricing ?? ''); @endphp
-                            <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                @foreach([
-                                    'yes' => 'Yes',
-                                    'mostly' => 'Mostly',
-                                    'needs_improvement' => 'Needs Improvement'
-                                ] as $key => $label)
-                                    <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
-                                        <input type="radio" name="fair_pricing" value="{{ $key }}" autocomplete="off" 
-                                               {{ $value === $key ? 'checked' : '' }}> {{ $label }}
-                                    </label>
-                                @endforeach
-                            </div>
-                        </div>
+                        @php
+                            $communityPractices = old('community_practices',
+                                is_array($business->community_practices ?? null)
+                                    ? $business->community_practices
+                                    : json_decode($business->community_practices ?? '[]', true)
+                            );
+                            $communityPractices = is_array($communityPractices) ? $communityPractices : [];
 
-                        <div class="mb-4">
-                            <label class="form-label question-label">Open for Guidance <span class="text-danger">*</span></label>
-                            @php $value = old('open_for_guidance', $business->open_for_guidance ?? ''); @endphp
-                            <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-                                @foreach([
-                                    'yes' => 'Yes',
-                                    'no' => 'No',
-                                    'maybe' => 'Maybe'
-                                ] as $key => $label)
-                                    <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
-                                        <input type="radio" name="open_for_guidance" value="{{ $key }}" autocomplete="off" 
-                                               {{ $value === $key ? 'checked' : '' }}> {{ $label }}
-                                    </label>
-                                @endforeach
-                            </div>
+                            $communityOptions = [
+                                'fair_wages' => 'Fair Wages',
+                                'support_community' => 'Support Community',
+                                'environmental_responsibility' => 'Environmental Responsibility',
+                                'ethical_collaboration' => 'Ethical Collaboration',
+                            ];
+                        @endphp
+                        <div class="practice-box">
+                            <label class="form-label d-block mb-2">Community & Responsibility Practices</label>
+                            @foreach($communityOptions as $key => $label)
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                        name="community_practices[]" value="{{ $key }}"
+                                        id="community_{{ $key }}"
+                                        {{ in_array($key, $communityPractices) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="community_{{ $key }}">{{ $label }}</label>
+                                </div>
+                            @endforeach
                         </div>
 
                         <div class="mb-4">
@@ -757,8 +798,8 @@
                                     'maybe' => 'Maybe'
                                 ] as $key => $label)
                                     <label class="btn btn-outline-secondary {{ $value === $key ? 'active' : '' }}">
-                                        <input type="radio" name="collaboration_open" value="{{ $key }}" autocomplete="off" 
-                                               {{ $value === $key ? 'checked' : '' }}> {{ $label }}
+                                        <input type="radio" name="collaboration_open" value="{{ $key }}" autocomplete="off"
+                                               {{ $value === $key ? 'checked' : '' }} required> {{ $label }}
                                     </label>
                                 @endforeach
                             </div>
@@ -776,6 +817,7 @@
                                         ? $business->collaboration_types
                                         : json_decode($business->collaboration_types ?? '[]', true)
                                 );
+                                $savedCollaborationTypes = is_array($savedCollaborationTypes) ? $savedCollaborationTypes : [];
                             @endphp
 
                             @foreach(['Partnerships','Investment Oportunities','Vendor Supply Chain','Marketing Promotion','Networking','Mentorship or Growth Coaching','Community Charity Projects','Not Sure Yet'] as $type)
@@ -814,7 +856,7 @@
                             <input type="checkbox" name="info_accuracy" value="1" class="form-check-input" id="info_accuracy"
                                 {{ old('info_accuracy', $business->info_accuracy) ? 'checked' : '' }} required>
                             <label class="form-check-label fw-bold" for="info_accuracy">
-                                Info Accuracy
+                                Info Accuracy <span class="text-danger">*</span>
                             </label>
                         </div>
                     </div>
@@ -834,7 +876,7 @@
                             <input type="checkbox" name="allow_contact" value="1" class="form-check-input" id="allow_contact"
                                 {{ old('allow_contact', $business->allow_contact) ? 'checked' : '' }} required>
                             <label class="form-check-label fw-bold" for="allow_contact">
-                                Allow Contact 
+                                Allow Contact <span class="text-danger">*</span>
                             </label>
                         </div>
                     </div>
@@ -849,51 +891,50 @@
         </div>
 
         {{-- Step 5: Status - Admin Only --}}
-<div class="card">
-    <div class="card-header bg-info">
-        <i class="fa fa-cog"></i> Step 5: Status - Admin Only
-    </div>
-    <div class="card-body">
-        <div class="alert alert-warning">
-            @if($business->updatedBy)
-                <span>Last Updated By: <strong>{{ $business->updatedBy->name }}</strong></span>
-            @endif
-        </div>
-        <div class="row">
-            <div class="col-md-3 form-group mb-3">
-                <div class="form-check pt-2">
-                    {{-- ❌ REMOVE THIS: <input type="hidden" name="is_verified" value="0"> --}}
-                    <input type="checkbox" name="is_verified" value="1" class="form-check-input" id="is_verified"
-                        {{ old('is_verified', $business->is_verified) ? 'checked' : '' }}>
-                    <label class="form-check-label fw-bold" for="is_verified">
-                        <i class="fa fa-check-circle"></i> GME Verified
-                    </label>
+        <div class="card">
+            <div class="card-header bg-info">
+                <i class="fa fa-cog"></i> Step 5: Status - Admin Only
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    @if($business->updatedBy)
+                        <span>Last Updated By: <strong>{{ $business->updatedBy->name }}</strong></span>
+                    @endif
+                </div>
+                <div class="row">
+                    <div class="col-md-3 form-group mb-3">
+                        <div class="form-check pt-2">
+                            <input type="checkbox" name="is_verified" value="1" class="form-check-input" id="is_verified"
+                                {{ old('is_verified', $business->is_verified) ? 'checked' : '' }}>
+                            <label class="form-check-label fw-bold" for="is_verified">
+                                <i class="fa fa-check-circle"></i> GME Verified
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 form-group mb-3">
+                        <div class="form-check pt-2">
+                            <input type="checkbox" name="is_featured" value="1" class="form-check-input" id="is_featured"
+                                {{ old('is_featured', $business->is_featured) ? 'checked' : '' }}>
+                            <label class="form-check-label fw-bold" for="is_featured">
+                                <i class="fa fa-star"></i> Featured Business
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 form-group">
+                        <label class="form-label">Business Status <span class="text-danger">*</span></label>
+                        <select name="status" class="form-control" required>
+                            <option value="draft" {{ old('status', $business->status) == 'draft' ? 'selected' : '' }}>Draft</option>
+                            <option value="pending" {{ old('status', $business->status) == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="approved" {{ old('status', $business->status) == 'approved' ? 'selected' : '' }}>Approved</option>
+                            <option value="rejected" {{ old('status', $business->status) == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                            <option value="request_for_delete" {{ old('status', $business->status) == 'request_for_delete' ? 'selected' : '' }}>Request for Delete</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-
-            <div class="col-md-3 form-group mb-3">
-                <div class="form-check pt-2">
-                    {{-- ❌ REMOVE THIS: <input type="hidden" name="is_featured" value="0"> --}}
-                    <input type="checkbox" name="is_featured" value="1" class="form-check-input" id="is_featured"
-                        {{ old('is_featured', $business->is_featured) ? 'checked' : '' }}>
-                    <label class="form-check-label fw-bold" for="is_featured">
-                        <i class="fa fa-star"></i> Featured Business
-                    </label>
-                </div>
-            </div>
-
-            <div class="col-md-4 form-group">
-                <label class="form-label">Business Status</label>
-                <select name="status" class="form-control" required>
-                    <option value="pending" {{ old('status', $business->status) == 'pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="approved" {{ old('status', $business->status) == 'approved' ? 'selected' : '' }}>Approved</option>
-                    <option value="rejected" {{ old('status', $business->status) == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                    <option value="request_for_delete" {{ old('status', $business->status) == 'request_for_delete' ? 'selected' : '' }}>Request for Delete</option>
-                </select>
-            </div>
         </div>
-    </div>
-</div>
 
         <div class="d-flex justify-content-end gap-2 mb-5">
             <a href="{{ route('gme-business-admin.index') }}" class="btn btn-secondary">
@@ -912,14 +953,17 @@
     <div class="d-flex justify-content-center align-items-center h-100">
         <div class="text-center">
             <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem; color: var(--gold) !important;"></div>
-            <div class="fw-semibold" style="color: var(--secondary-color);">Please wait, updating business...</div>
+            <div class="fw-semibold" style="color: var(--secondary-color);">
+                Please wait, updating business and sending notification email...
+            </div>
+            <div class="text-muted small mt-1">This may take a few seconds. Please do not close this page.</div>
         </div>
     </div>
 </div>
 
 {{-- JS for dynamic founder fields --}}
 <script>
-    let founderIndex = {{ count($founders) }};
+    let founderIndex = {{ count($founders) > 0 ? count($founders) : 1 }};
 
     document.getElementById('add-founder').addEventListener('click', function() {
         const container = document.getElementById('founders-container');
@@ -937,7 +981,7 @@
                 </div>
                 <div class="col-md-3 form-group mb-3">
                     <label class="form-label">WhatsApp</label>
-                    <input type="text" name="founders[${founderIndex}][whatsapp]" class="form-control">
+                    <input type="text" name="founders[${founderIndex}][whatsapp_number]" class="form-control">
                 </div>
                 <div class="col-md-3 form-group mb-3">
                     <label class="form-label">LinkedIn</label>
@@ -975,7 +1019,6 @@
                 preview.src = e.target.result;
                 preview.classList.remove('d-none');
 
-                // Create or update overlay
                 let overlay = wrapper.querySelector('.image-overlay');
                 if (!overlay) {
                     overlay = document.createElement('div');
@@ -1039,7 +1082,6 @@
         let categoryId = "{{ $business->business_category_id ?? '' }}";
         let $services = $('#services');
 
-        // Get selected services
         let selectedServices = @json(
             old(
                 'services_id',
@@ -1049,15 +1091,10 @@
             ) ?? []
         );
 
-        console.log('Category ID:', categoryId);
-        console.log('Selected Services:', selectedServices);
-
-        // Initial load
         if (categoryId && $services.length) {
             loadServices(categoryId, selectedServices);
         }
 
-        // On category change
         $('#business_category').on('change', function () {
             const newCategoryId = $(this).val();
 
@@ -1113,115 +1150,13 @@
         }
     });
 
-    /* ================= LOGO PREVIEW ================= */
-    function previewLogo(input) {
-        if (input.files && input.files[0]) {
-            const file = input.files[0];
-
-            if (file.size > 2048 * 1024) {
-                alert('Logo file size must be less than 2MB');
-                input.value = '';
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = e => {
-                document.getElementById('logoPreview').src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
-    /* ================= COVER PHOTO PREVIEW ================= */
-    function previewCoverPhoto(input) {
-        if (input.files && input.files[0]) {
-            const file = input.files[0];
-
-            if (file.size > 5120 * 1024) {
-                alert('Cover photo file size must be less than 5MB');
-                input.value = '';
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = e => {
-                document.getElementById('coverPhotoPreview').src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
-    /* ================= GALLERY ================= */
-    let galleryFiles = new DataTransfer();
-
-    function previewGallery(input) {
-        const container = document.getElementById('gallery-container');
-        const uploadBox = container.querySelector('.gallery-upload');
-        const existingPhotos = container.querySelectorAll('.existing-photo').length;
-
-        Array.from(input.files).forEach(file => {
-
-            if (galleryFiles.files.length + existingPhotos >= 5) {
-                alert('Maximum 5 photos allowed');
-                return;
-            }
-
-            if (file.size > 5120 * 1024) {
-                alert('Each photo must be less than 5MB');
-                return;
-            }
-
-            galleryFiles.items.add(file);
-
-            const reader = new FileReader();
-            reader.onload = e => {
-                const div = document.createElement('div');
-                div.className = 'position-relative rounded new-photo';
-                div.style.cssText = 'width:10rem;height:10rem;border:1px dashed #ccc;overflow:hidden;';
-                div.innerHTML = `
-                    <img src="${e.target.result}" class="w-100 h-100" style="object-fit:cover;">
-                    <button type="button"
-                        class="btn btn-sm btn-danger position-absolute top-0 end-0"
-                        onclick="removeNewPhoto(this)">×</button>
-                `;
-                container.insertBefore(div, uploadBox);
-            };
-            reader.readAsDataURL(file);
-        });
-
-        input.files = galleryFiles.files;
-    }
-
-    function removeNewPhoto(btn) {
-        const photos = document.querySelectorAll('.new-photo');
-        const index = [...photos].indexOf(btn.parentElement);
-
-        if (index > -1) {
-            galleryFiles.items.remove(index);
-        }
-
-        btn.parentElement.remove();
-        document.querySelector('input[name="photos[]"]').files = galleryFiles.files;
-    }
-
-    function removeGalleryImage(btn) {
-        if (confirm('Are you sure you want to remove this image?')) {
-            btn.closest('.existing-photo').remove();
-        }
-    }
-</script>
-
-<script>
     $(document).ready(function () {
-
-        $('form').on('submit', function () {
-            // Show loader
+        $('#businessEditForm').on('submit', function () {
+            // Show loader - it stays visible until the browser navigates away
+            // (i.e. until the server finishes updating + sending the email + redirecting)
             $('#pageLoader').removeClass('d-none');
-
-            // Disable submit button to prevent double click
             $(this).find('button[type="submit"]').prop('disabled', true);
         });
-
     });
 </script>
 @endsection

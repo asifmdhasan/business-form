@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\SmsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AuthController;
@@ -192,6 +193,27 @@ Route::middleware([
     'setLocale',
     LoginAuthMiddleware::class,
 ])->group(function () {
+
+
+
+    Route::prefix('admin/sms')->name('sms.')->group(function () {
+
+        Route::get('hero', [SmsController::class, 'heroEdit'])->name('hero.edit');
+        Route::post('hero', [SmsController::class, 'heroUpdate'])->name('hero.update');
+
+        Route::get('featured', [SmsController::class, 'featuredEdit'])->name('featured.edit');
+        Route::post('featured', [SmsController::class, 'featuredUpdate'])->name('featured.update');
+
+        Route::get('filter', [SmsController::class, 'filterEdit'])->name('filter.edit');
+        Route::post('filter', [SmsController::class, 'filterUpdate'])->name('filter.update');
+
+        Route::get('cta', [SmsController::class, 'ctaEdit'])->name('cta.edit');
+        Route::post('cta', [SmsController::class, 'ctaUpdate'])->name('cta.update');
+
+        Route::get('footer', [SmsController::class, 'footerEdit'])->name('footer.edit');
+        Route::post('footer', [SmsController::class, 'footerUpdate'])->name('footer.update');
+
+    });
 
 
 

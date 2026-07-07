@@ -114,24 +114,6 @@
             z-index: -1;
         }
 
-        /* decorative floral silhouettes */
-        /* .partner-section::before,
-        .partner-section::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 220px;
-        height: 220px;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cellipse cx='100' cy='100' rx='8' ry='35' fill='rgba(255,255,255,0.13)' transform='rotate(0 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='8' ry='35' fill='rgba(255,255,255,0.13)' transform='rotate(30 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='8' ry='35' fill='rgba(255,255,255,0.13)' transform='rotate(60 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='8' ry='35' fill='rgba(255,255,255,0.13)' transform='rotate(90 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='8' ry='35' fill='rgba(255,255,255,0.13)' transform='rotate(120 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='8' ry='35' fill='rgba(255,255,255,0.13)' transform='rotate(150 100 100)'/%3E%3C/svg%3E");
-        background-size: contain;
-        background-repeat: no-repeat;
-        opacity: 0.6;
-        pointer-events: none;
-        }
-        .partner-section::before { left: -60px; }
-        .partner-section::after  { right: -60px; } */
-
         .partner-section .tag {
         font-family: "SF Ui Display", sans-serif;
         font-size: 0.75rem;
@@ -144,10 +126,7 @@
 
         .partner-section h2 {
         font-family: "SF Ui Display", sans-serif;
-        /* font-size: clamp(1.5rem, 3.5vw, 2.6rem); */
-        /* font-weight: 400; */
         color: #fff;
-        /* letter-spacing: 0.12em; */
         text-transform: uppercase;
         line-height: 1.2;
         margin-bottom: 0.5rem;
@@ -206,13 +185,7 @@
         flex-shrink: 0;
         transition: background 0.25s;
         }
-        /* .btn-partner:hover .arrow-circle {
-        background: var(--dark);
-        } */
 
-        /* ════════════════════════════════════════════
-        SECTION 2 — WHITE "HELP US BUILD"
-        ════════════════════════════════════════════ */
         .community-section {
         background: var(--white);
         padding: 64px 2rem;
@@ -236,10 +209,7 @@
 
         .community-section h2 {
         font-family: "SF Ui Display", sans-serif;
-        /* font-size: clamp(1.3rem, 3vw, 2rem); */
-        /* font-weight: 700; */
         color: var(--dark);
-        /* letter-spacing: 0.06em; */
         margin-bottom: 1.2rem;
         line-height: 1.25;
         }
@@ -280,16 +250,11 @@
         margin-top: 0.6rem;
         }
 
-        /* ════════════════════════════════════════════
-        FOOTER — DARK (matches image bottom section)
-        ════════════════════════════════════════════ */
         .main-footer {
         background: var(--dark-footer);
         padding: 56px 2rem 36px;
-        /* position: relative; */
         }
 
-        /* subtle mosque silhouette bg */
         .main-footer::before {
         content: '';
         position: absolute;
@@ -456,7 +421,6 @@
         .social-links a:hover { color: var(--gold-light); }
         .social-links a:hover i { color: var(--gold-light); }
 
-        /* Responsive */
         @media (max-width: 640px) {
         .footer-cols { grid-template-columns: 1fr 1fr; }
         .subscribe-form { flex-direction: column; }
@@ -484,7 +448,6 @@
             margin-top: 2rem;
         }
         .padding-5rem{
-            /* padding-left: 5rem; */
             padding-right: 10rem;
         }
         .swiper-button-next, .swiper-button-prev{
@@ -518,7 +481,6 @@
                 );
         }
 
-        /* Islamic background enhancement */
         .islamic-bg {
             background-color: #9C7D2D;
         }
@@ -540,7 +502,6 @@
             animation: rotatePattern 60s linear infinite;
         }
 
-        /* Rotation animation */
         @keyframes rotatePattern {
             from {
                 transform: rotate(360deg);
@@ -550,18 +511,10 @@
             }
         }
 
-        /* ===============================
-        CONTENT ABOVE BACKGROUND
-        ================================ */
-
         .hero-section .container {
             position: relative;
             z-index: 2;
         }
-
-        /* ===============================
-        TEXT STYLING
-        ================================ */
 
         .hero-section h1 {
             font-size: clamp(2rem, 4vw, 3.2rem);
@@ -573,10 +526,6 @@
             opacity: 0.9;
         }
 
-        /* ===============================
-        SEARCH BOX STYLING
-        ================================ */
-
         #heroSearchInput {
             border-radius: 999px 0 0 999px;
             padding-left: 22px;
@@ -587,10 +536,6 @@
             border-radius: 0 999px 999px 0;
             font-weight: 600;
         }
-
-        /* ===============================
-        MOBILE OPTIMIZATION
-        ================================ */
 
         @media (max-width: 768px) {
             .hero-section {
@@ -618,17 +563,12 @@
                 --text-muted: #666666;
             }
 
-            /* body {
-                background-color: #F8F9FA;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            } */
             body {
                 font-family: 'Exo 2', 'Segoe UI', sans-serif;
                 background-color: var(--light-bg);
                 color: var(--text-primary);
             }
 
-                /* Category Cards */
             .category-card {
                 background: white;
                 border-radius: 12px;
@@ -669,10 +609,8 @@
                 color: var(--primary-navy);
             }
 
-                /* Islamic Pattern Background */
             .islamic-bg {
-                /* background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23FFD700' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h16v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm-90-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm-90-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm-90-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm-90-10v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9zm10 0v-9h-9v9h9z'/%3E%3Cpath d='M6 5V0h1v5h94V0h1v5h-1v90h1v5H95v-5H6v5H5v-5H0V5h5V0h1v5h94V0h1v5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); */
-                background-image: url('{{ asset('assets/image/bg.webp') }}');
+                background-image: url('{{ \App\Models\SiteSetting::get('hero_bg_image') ? asset('storage/'.\App\Models\SiteSetting::get('hero_bg_image')) : asset('assets/image/bg.webp') }}');
                 background-size: cover;
                 padding-top:10rem;
                 padding-bottom:8rem;
@@ -960,7 +898,6 @@
             }
 
 
-            /* Footer */
             .footer {
                 background: var(--primary-navy);
                 color: white;
@@ -973,22 +910,6 @@
                 margin-bottom: 1rem;
             }
 
-            /* .footer a {
-                color: rgba(255,255,255,0.7);
-                text-decoration: none;
-                transition: color 0.3s;
-            }
-
-            .footer a:hover {
-                color: var(--primary-gold);
-            }
-
-            .footer-cta {
-                background: var(--dark-navy);
-                border-radius: 12px;
-                padding: 2rem;
-                margin-bottom: 3rem;
-            } */
             .grow-business{
                 text-align: left;
             }
@@ -1073,17 +994,14 @@
 
 
 
-            /* =========================
-        FOOTER BASE
-        ========================= */
-        .footer {
+            .footer {
             position: relative;
             color: #fff;
             padding: 90px 0 40px;
             overflow: hidden;
 
             background:
-                linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)), /* super dark overlay */
+                linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)),
                 url('/assets/image/foo.webp');
             background-size: cover;
             background-position: center;
@@ -1091,10 +1009,6 @@
         }
 
 
-
-        /* =========================
-        ISLAMIC PATTERN OVERLAY
-        ========================= */
 
         .footer::before {
             content: "";
@@ -1105,21 +1019,12 @@
             z-index: 0;
         }
 
-        /* =========================
-        FOOTER CONTENT ABOVE
-        ========================= */
-
         .footer .container {
             position: relative;
             z-index: 2;
         }
 
-        /* =========================
-        CTA BAR
-        ========================= */
-
         .footer-cta {
-            /* background: rgba(180, 150, 60, 0.15); */
             border-radius: 20px;
             padding: 28px 32px;
             border: 1px solid #9C7D2D;
@@ -1133,10 +1038,8 @@
             color: rgba(255,255,255,0.75);
         }
 
-        /* CTA Button */
         .join-network {
             background: #9c7d2d;
-            /* background: linear-gradient( #c9a23a, #9c7d2d); */
             color: #fff !important;
             font-weight: 600;
             border-radius: 999px;
@@ -1153,9 +1056,6 @@
             border-radius: 999px;
             padding: 12px 26px;
         }
-        /* =========================
-        FOOTER HEADINGS
-        ========================= */
 
         .footer h3 {
             font-size: 1.1rem;
@@ -1163,10 +1063,6 @@
             color: #e6d48a;
             letter-spacing: 0.5px;
         }
-
-        /* =========================
-        LINKS
-        ========================= */
 
         .footer a {
             color: rgba(255,255,255,0.75);
@@ -1176,10 +1072,6 @@
         .footer a:hover {
             color: #e6d48a;
         }
-
-        /* =========================
-        SOCIAL ICONS
-        ========================= */
 
         .footer .fab {
             color: #fff;
@@ -1191,17 +1083,12 @@
             color: #fff;
         }
 
-        /* =========================
-        COPYRIGHT
-        ========================= */
-
         .footer .text-center {
             color: rgba(255,255,255,0.5);
         }
 
 
 
-        /* HEADER BASE */
         .gme-header {
             position: fixed;
             top: 0;
@@ -1211,17 +1098,7 @@
             transition: all 0.3s ease;
 
         }
-        /* .gme-header {
-            transition: all 0.3s ease;
-        }
 
-        #mainNavbar.scrolled {
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            background-color: rgba(240, 235, 223, 0.6);
-        } */
-
-        /* INNER GRID */
         .gme-header-inner {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -1229,7 +1106,6 @@
             padding: 18px 0;
         }
 
-        /* STICKY EFFECT */
         .gme-header.scrolled {
             padding: 0;
             background: #f9f6ef;
@@ -1240,14 +1116,12 @@
             padding: 12px 0;
         }
 
-        /* LOGO */
         .gme-logo img {
             height: 42px;
             display: block;
             margin: auto;
         }
 
-        /* NAV */
         .gme-nav ul {
             list-style: none;
             display: flex;
@@ -1281,7 +1155,6 @@
             color: #9C7D2D;
         }
 
-        /* DROPDOWN */
         .has-dropdown {
             position: relative;
         }
@@ -1316,7 +1189,6 @@
             background: #f5f2ea;
         }
 
-        /* SHOW DROPDOWN */
         .has-dropdown:hover .dropdown {
             opacity: 1;
             visibility: visible;
@@ -1362,7 +1234,6 @@
             .main-footer {
                 background: var(--dark-footer);
                 padding: 56px 1rem 36px;
-                /* position: relative; */
             }
             .hero-section p {
                 font-size: 1.1rem;
@@ -1495,15 +1366,8 @@
         }
 
         .gme-btn-icon  {
-            /* font-size: 14px; */
             transition: transform 0.25s ease;
         }
-
-        /* Hover effect (Elementor-like) */
-        /* .gme-btn:hover {
-            background-color: #9c7a24;
-            color: #fff;
-        } */
 
         .gme-btn:hover .gme-btn-icon i {
             transform: translateX(4px);
@@ -1594,7 +1458,6 @@
             color: #b08d2f;
         }
 
-        /* ── DASHBOARD / LOGIN BUTTON ─────────────── */
         .gme-nav .btn-outline-gme {
             border: 1px solid #9C7D2D;
             padding: 0.45rem 0.85rem;
@@ -1612,7 +1475,6 @@
             color: #fff;
         }
 
-        /* ── HAMBURGER ────────────────────────────── */
         .gme-hamburger {
             display: none;
             background: none;
@@ -1635,7 +1497,6 @@
             transition: all 0.3s ease;
         }
 
-        /* ── MOBILE OVERLAY ───────────────────────── */
         #mobileMenu {
             display: none;
             position: fixed;
@@ -1777,7 +1638,6 @@
             color: #fff;
         }
 
-        /* ── MOBILE (≤768px) ──────────────────────── */
         @media (max-width: 768px) {
             .gme-nav-left,
             .gme-nav-right { display: none; }
@@ -1801,47 +1661,6 @@
 </head>
 
 <body class="bg-light">
-{{-- <header id="mainHeader" class="gme-header">
-    <div class="container gme-header-inner">
-
-        <!-- LEFT MENU -->
-        <nav class="gme-nav gme-nav-left">
-            <ul>
-                <li><a class="active" href="{{ route('guest.index') }}">Home</a></li>
-                <li><a class="active" href="https://gme.network/get-involved/">Get Involved</a></li>
-            </ul>
-        </nav>
-
-        <!-- CENTER LOGO -->
-        <div class="gme-logo">
-            <a href="https://gme.network/">
-                <img src="{{ asset('assets/image/logo.webp') }}" alt="GME">
-            </a>
-        </div>
-
-        <!-- RIGHT MENU -->
-        <nav class="gme-nav gme-nav-right">
-            <ul>
-                <li><a class="active" href="{{ url('https://gme.network/events/') }}">Events</a></li>
-                <li><a class="active" href="{{ url('https://gme.network/news/') }}">News</a></li>
-                <ul>
-                    @auth('customer')
-                        <li><a style="color: #9C7D2D" href="{{ route('gme.business.register') }}">Add Your Business</a></li>
-                    @else
-                        <li><a style="color: #9C7D2D" href="{{ route('customer.register') }}">Add Your Business</a></li>
-                    @endauth
-                </ul>
-            </ul>
-            <ul class="d-flex align-items-center">
-                @auth('customer')
-                    <li><a href="{{ route('customer.gme-business-form.index') }}" style="border: 1px solid #9C7D2D; padding: 0.7rem;border-radius: 6px;"><i class="fa fa-home me-2"></i>Dashboard</a></li>
-                @else
-                    <li><a href="{{ route('customer.login') }}" style="border: 1px solid #9C7D2D;padding: 0.7rem;border-radius: 6px;"><i class="fa fa-user me-2"></i>Login</a></li>
-                @endauth
-            </ul>
-        </nav>
-    </div>
-</header> --}}
     <header id="mainHeader" class="gme-header">
         <div class="container gme-header-inner">
 
@@ -1955,43 +1774,36 @@
     <main class="main-content" style="">
 
         <div class="container-fluid py-0 px-0">
-            <section class="hero-section text-center text-white islamic-bg"
-                {{-- style="background:linear-gradient(135deg,#1E2A78,#283593); " --}}
-                >
+            <section class="hero-section text-center text-white islamic-bg">
                 <div class="hero-ornament">
-                    <img src="{{ asset('assets/image/round.webp') }}" alt="Islamic Pattern">
+                    <img src="{{ \App\Models\SiteSetting::get('hero_animation_image') ? asset('storage/'.\App\Models\SiteSetting::get('hero_animation_image')) : asset('assets/image/round.webp') }}" alt="Islamic Pattern">
                 </div>
                 <div class="container">
-                    <h1 class="fw-bold mb-3 heading-text-home">Find a Muslim Entrepreneur Near You</h1>
-                    <p class="mb-4">Showcase your business within a trusted community of Muslim entrepreneurs.<br> Connect, collaborate, and grow together with shared values.</p>
+                    <h1 class="fw-bold mb-3 heading-text-home">{{ \App\Models\SiteSetting::get('hero_title', 'Find a Muslim Entrepreneur Near You') }}</h1>
+                    <p class="mb-4">{!! \App\Models\SiteSetting::get('hero_subtitle', 'Showcase your business within a trusted community of Muslim entrepreneurs.<br> Connect, collaborate, and grow together with shared values.') !!}</p>
 
                     <div class="d-flex justify-content-center">
-                        <!-- 🔹 Relative wrapper (IMPORTANT) -->
                         <div class="position-relative w-100" style="max-width:600px;">
 
-                            <!-- Search box -->
                             <div class="input-group input-group-lg">
                                 <input type="text"
                                     id="heroSearchInput"
                                     class="form-control"
-                                    placeholder="Search by business name ...">
+                                    placeholder="{{ \App\Models\SiteSetting::get('hero_search_placeholder', 'Search by business name ...') }}">
                                 <button class="btn" id="heroSearchBtn">
-                                    <span style="font-weight: 400;color: #fff; font-size: 18px;"> Search
+                                    <span style="font-weight: 400;color: #fff; font-size: 18px;">{{ \App\Models\SiteSetting::get('hero_search_button_text', 'Search') }}</span>
                                 </button>
                             </div>
-                            <a href="{{ route('customer.register') }}" class="btn btn-login join-network-white" style=" color: #576829; margin-top: 3rem;;">
-                                Add Your Business
-                            </a>
-                            {{-- <a href="{{ route('guest.form') }}" class="gme-btn">
-                                <span class="gme-btn-inner">
-                                    <span class="gme-btn-icon">
-                                        <i class="icon icon-arrow-right"></i>
-                                    </span>
-                                    <span class="gme-btn-text">Join the Network</span>
-                                </span>
-                            </a> --}}
+                            @auth('customer')
+                                <a href="{{ route('gme.business.register') }}" class="btn btn-login join-network-white" style=" color: #576829; margin-top: 3rem;;">
+                                    {{ \App\Models\SiteSetting::get('hero_button_text', 'Add Your Business') }}
+                                </a>
+                            @else
+                                <a href="{{ \App\Models\SiteSetting::get('hero_button_link') ?: route('customer.register') }}" class="btn btn-login join-network-white" style=" color: #576829; margin-top: 3rem;;">
+                                    {{ \App\Models\SiteSetting::get('hero_button_text', 'Add Your Business') }}
+                                </a>
+                            @endauth
 
-                            <!-- 🔽 Live Search Results Dropdown -->
                             <div id="heroSearchResults"
                                 class="position-absolute w-100 bg-white shadow rounded mt-2 d-none"
                                 style="z-index:999; max-height:260px; overflow-y:auto;">
@@ -2007,20 +1819,17 @@
             
             <!-- ══ SECTION 1: GOLDEN CTA ══ -->
             <section class="partner-section">
-                {{-- <div class="tag">Community</div> --}}
-                {{-- <h2>Bring Your Business to the <strong>Global Stage</strong></h2> --}}
                 <h4 class="fw-bold mb-4 featured-business "
                     style=" text-align: center;
                         ">
-                    <span style="color:#fff;  font-weight: 300;">Bring Your Business to the  </span>
-                    <span style="color:#fff;font-weight: 900;">Global Stage </span>
+                    <span style="color:#fff;  font-weight: 300;">{{ \App\Models\SiteSetting::get('cta_title_light', 'Bring Your Business to the') }}  </span>
+                    <span style="color:#fff;font-weight: 900;">{{ \App\Models\SiteSetting::get('cta_title_bold', 'Global Stage') }} </span>
                 </h4>
                 <p class="desc">
-                Join a growing network of Muslim entrepreneurs building real businesses,
-                real partnerships, and real impact.
+                {{ \App\Models\SiteSetting::get('cta_subtitle', 'Join a growing network of Muslim entrepreneurs building real businesses, real partnerships, and real impact.') }}
                 </p>
-                <a href="{{ route('customer.register') }}" class="btn-partner">
-                Add Your Business Today
+                <a href="{{ \App\Models\SiteSetting::get('cta_button_link') ?: route('customer.register') }}" class="btn-partner">
+                {{ \App\Models\SiteSetting::get('cta_button_text', 'Add Your Business Today') }}
                 <span class="arrow-circle"><i class="fas fa-arrow-right"></i></span>
                 </a>
             </section>
@@ -2054,18 +1863,11 @@
                 <div class="footer-logo-row">
                 <!-- GME circular logo mark -->
                 <div class="footer-logo">
-                    {{-- <a href="https://gme.network/"> --}}
-                        <img style="width: 8rem; margin-left: -2rem;" src="{{ asset('assets/image/logo.webp') }}" style="max-width: 100%; height: auto;" alt="GME">
-                    {{-- </a> --}}
-                    {{-- <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="20" cy="20" r="18" stroke="#fff" stroke-width="1.5" fill="none"/>
-                    <text x="20" y="25" text-anchor="middle" font-family="serif" font-size="12" font-weight="bold" fill="#fff">GME</text>
-                    </svg> --}}
+                        <img style="width: 8rem; margin-left: -2rem; max-width: 100%; height: auto;" src="{{ \App\Models\SiteSetting::get('footer_logo') ? asset('storage/'.\App\Models\SiteSetting::get('footer_logo')) : asset('assets/image/logo.webp') }}" alt="GME">
                 </div>
-                {{-- <div class="footer-brand">GME <span>Network</span></div> --}}
                 </div>
 
-                <div class="footer-tagline-center">Connecting communities, one business at a time.</div>
+                <div class="footer-tagline-center">{{ \App\Models\SiteSetting::get('footer_tagline', 'Connecting communities, one business at a time.') }}</div>
 
                 <hr class="footer-divider">
 
@@ -2166,7 +1968,6 @@
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
@@ -2178,9 +1979,6 @@
         let currentPage = 1;
         const perPage = 9;
 
-        /* =========================
-        Select2 Init
-        ========================== */
         $('#categoryFilter').select2({
             theme: 'bootstrap-5',
             placeholder: 'All Categories',
@@ -2193,28 +1991,12 @@
             allowClear: true
         });
 
-        /* =========================
-        Fetch Businesses
-        ========================== */
         function fetchBusinesses() {
             $.ajax({
                 url: '{{ route("guest.gme-business.ajax") }}',
                 method: 'GET',
                 success: function (response) {
-                    // console.log(response);
                         allBusinesses = response.businesses;
-
-                    // ✅ Parse countries_of_operation JSON
-                    // allBusinesses = response.businesses.map(business => {
-                    //     try {
-                    //         business.countries_of_operation = Array.isArray(business.countries_of_operation)
-                    //             ? business.countries_of_operation
-                    //             : JSON.parse(business.countries_of_operation || '[]');
-                    //     } catch(e) {
-                    //         business.countries_of_operation = [];
-                    //     }
-                    //     return business;
-                    // });
 
                     filteredBusinesses = [...allBusinesses];
                     renderFeatured(response.featured);
@@ -2225,9 +2007,6 @@
         }
        
 
-        /* =========================
-        Fetch Categories
-        ========================== */
         function fetchCategories() {
             $.ajax({
                 url: '{{ route("guest.get-category.ajax") }}',
@@ -2241,21 +2020,10 @@
                         response.categories.forEach(cat => {
                             $category.append(new Option(cat.name, cat.id));
                         });
-                    // const $category = $('#categoryFilter').empty()
-                    //     .append('<option value="">All Categories</option>');
-
-                    // response.categories.forEach(cat => {
-                    //     $category.append(new Option(cat.name, cat.id));
-                    // });
-
-                    // $category.trigger('change');
                 }
             });
         }
 
-        /* =========================
-        Fetch Locations
-        ========================== */
         function fetchLocations() {
             $.ajax({
                 url: '{{ route("guest.get-locations.ajax") }}',
@@ -2272,20 +2040,15 @@
             });
         }
 
-        /* =========================
-        Filter Businesses
-        ========================== */
         function filterBusinesses() {
 
             const searchText = $('#searchInput').val().toLowerCase();
             const selectedCategory = $('#categoryFilter').val();
             const selectedLocations = $('#locationFilter').val() || [];
             const status = $('input[name="status"]:checked').val();
-            // console.log('Selected Status:', status);
 
             filteredBusinesses = allBusinesses.filter(business => {
 
-                // Search
                 if (searchText) {
                     const text = [
                         business.business_name,
@@ -2296,22 +2059,15 @@
                     if (!text.includes(searchText)) return false;
                 }
 
-                // Category
                 if (selectedCategory && business.business_category_id != selectedCategory) {
                     return false;
                 }
 
-                // ✅ Location Filter (handle JSON array)
                 if (selectedLocations.length > 0) {
                     const countries = business.countries_of_operation || [];
                     const match = selectedLocations.some(loc => countries.includes(loc));
                     if (!match) return false;
                 }
-                // console.log('Business verified:', business.is_verified);
-                // Status
-                // if (business.is_verified !== status) {
-                //     return false;
-                // }
                 if (status !== "") {
                     if (Number(business.is_verified) !== Number(status)) {
                         return false;
@@ -2324,9 +2080,6 @@
             renderBusinesses();
         }
 
-        /* =========================
-        Sort
-        ========================== */
         function sortBusinesses() {
             const sortBy = $('#sortBy').val();
 
@@ -2378,7 +2131,6 @@
 
             if (totalPages <= 1) return;
 
-            // Prev
             $pagination.append(`
                 <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
                     <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a>
@@ -2393,7 +2145,6 @@
                 `);
             }
 
-            // Next
             $pagination.append(`
                 <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
                     <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a>
@@ -2410,15 +2161,10 @@
 
             const category = business.category?.name ?? '';
 
-            // Logo - use avatar if not available
             const logo = business.logo
                 ? `{{ asset('assets') }}/${business.logo}`
                 : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}`;
 
-            // Cover Photo - use default if not available
-            // const photo = business.cover_photo
-            //     ? `{{ asset('assets') }}/${business.cover_photo}`
-            //     : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
             const gradients = [
                 'linear-gradient(135deg, #917F2D, #C6B75E)',
                 'linear-gradient(135deg, #808181, #B4B5B6)',
@@ -2451,7 +2197,6 @@
                         <i class="fas fa-check-circle"></i> GME Verified
                     </div>`
                 : '';
-                // console.log('verified:', verified);
 
             const countries = business.countries_of_operation && business.countries_of_operation.length > 0
                 ? business.countries_of_operation.join(', ')
@@ -2499,12 +2244,10 @@
 
             const category = business.category?.name ?? '';
 
-            // Logo - use avatar if not available
             const logo = business.logo
                 ? `{{ asset('assets') }}/${business.logo}`
                 : `https://ui-avatars.com/api/?name=${encodeURIComponent(business.business_name)}`;
 
-            // Cover Photo - use default if not available
             const photo = business.cover_photo
                 ? `{{ asset('assets') }}/${business.cover_photo}`
                 : 'http://gme.network/wp-content/uploads/2025/08/GME-Logo-1-01.webp?w=500&h=300&fit=crop';
@@ -2514,7 +2257,6 @@
                         <i class="fas fa-check-circle"></i> GME Verified
                     </div>`
                 : '';
-                // console.log('verified:', verified);
 
             const countries = business.countries_of_operation && business.countries_of_operation.length > 0
                 ? business.countries_of_operation.join(', ')
@@ -2583,22 +2325,6 @@
             });
         }
 
-        // function renderBrowseCategories(categories) {
-        //     const $wrap = $('#categoryBrowse').empty();
-
-        //     categories.slice(0,5).forEach(cat => {
-        //         $wrap.append(`
-        //             <div class="col-6 col-md-2">
-        //                 <div class="card p-3 shadow-sm category-card"
-        //                     style="cursor:pointer"
-        //                     onclick="filterByCategory(${cat.id})">
-        //                     <div class="fw-semibold">${cat.name}</div>
-        //                 </div>
-        //             </div>
-        //         `);
-        //     });
-        // }
-
 
 
         function filterByCategory(id) {
@@ -2610,7 +2336,6 @@
 
 
         function renderFeatured(businesses) {
-            // console.log(businesses);
             const $grid = $('#featuredGrid').empty();
 
             if (!Array.isArray(businesses) || !businesses.length) {
@@ -2679,17 +2404,10 @@
             $results.removeClass('d-none');
         });
 
-        /* =========================
-        Count
-        ========================== */
         function updateResultsCount(count) {
             $('#showingCount').text(count);
             $('#totalCount').text(allBusinesses.length);
         }
-
-        /* =========================
-        Events
-        ========================== */
 
         $(document).on('click', '#pagination a', function (e) {
             e.preventDefault();
@@ -2736,9 +2454,6 @@
 
 
 
-        /* =========================
-        Init
-        ========================== */
         fetchBusinesses();
         fetchCategories();
         fetchLocations();
@@ -2806,15 +2521,6 @@
 
     gtag('config', 'G-ECFRK29VSC');
     </script>
-    <!-- Google tag (gtag.js) -->
-    {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-E2CE4Z4PC1"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-E2CE4Z4PC1');
-    </script> --}}
 
     <script>
     // Sticky header
@@ -2847,19 +2553,6 @@
         if (e.key === 'Escape') closeMenu();
     });
 </script>
-{{-- <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const navbar = document.getElementById('mainNavbar');
-
-    window.addEventListener('scroll', function () {
-        if (window.scrollY > 80) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-});
-</script> --}}
 
 
 </body>
